@@ -1,0 +1,31 @@
+# Secrets — never commit
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+
+# Claude Code — local context and machine-specific settings
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Data / volumes a compose file might create locally
+*-data/

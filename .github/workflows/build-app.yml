@@ -42,6 +42,9 @@ jobs:
   deploy:
     needs: build
     runs-on: [self-hosted, afp-droplet]
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - uses: actions/checkout@v4
@@ -51,11 +54,20 @@ jobs:
             Caddyfile
           sparse-checkout-cone-mode: false
 
+      # Fixed 2026-08-21 (real failure, caught by actually running this
+      # workflow end to end): originally read a hand-managed GHCR_TOKEN
+      # from a local .env file, which needed the file to exist at exactly
+      # ${{ vars.APPDATA_PATH }} (never set — that's bug #1 this same pass
+      # found) and a manually-provisioned pull token (bug #2). Using the
+      # same auto-provided, auto-scoped GITHUB_TOKEN the `build` job
+      # already uses above eliminates both — no local file, no manual
+      # token to create or rotate.
       - name: Log in to GHCR
-        run: |
-          OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')
-          GHCR_TOKEN=$(grep '^GHCR_TOKEN=' ${{ vars.APPDATA_PATH }}/.env | cut -d= -f2- | tr -d '\r\n')
-          echo "$GHCR_TOKEN" | docker login ghcr.io -u "$OWNER" --password-stdin
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # Multi-service stack (app/postgres/worker/runner/caddy) — pull +
       # `compose up` rather than AniDex's raw `docker run` for a single

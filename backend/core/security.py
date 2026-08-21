@@ -1,8 +1,12 @@
 """Signed-token helpers backing the session cookie and the OAuth `state`
-parameter. Both use itsdangerous — HMAC-signed, tamper-evident, with a
-built-in expiry check. No server-side session table (see core/config.py's
+parameter, plus API-key generation/hashing for #22's export gate. Session
+tokens use itsdangerous — HMAC-signed, tamper-evident, with a built-in
+expiry check. No server-side session table (see core/config.py's
 session_secret_key docstring for why).
 """
+
+import hashlib
+import secrets
 
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 
@@ -47,3 +51,22 @@ def verify_oauth_state(token: str) -> dict | None:
         return _serializer("oauth-state").loads(token, max_age=600)
     except (BadSignature, SignatureExpired):
         return None
+
+
+def generate_api_key() -> str:
+    """A high-entropy random token, not a signed/decodable one — unlike the
+    session cookie above, this has no payload to encode, just needs to be
+    unguessable. `secrets.token_urlsafe` is the standard choice.
+    """
+    return f"afp_export_{secrets.token_urlsafe(32)}"
+
+
+def hash_api_key(key: str) -> str:
+    """sha256, not bcrypt/argon2: those adaptive hashes exist to slow down
+    brute-forcing a *low-entropy* human password. This key already has
+    256 bits of entropy from generate_api_key() — a fast hash is fine and
+    standard practice for high-entropy API keys (same pattern GitHub/Stripe
+    -style tokens use), and lets key lookup stay a simple indexed equality
+    query instead of needing to re-derive a slow hash on every /export call.
+    """
+    return hashlib.sha256(key.encode("utf-8")).hexdigest()

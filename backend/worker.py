@@ -1,12 +1,17 @@
 """Outbox worker entrypoint — polls outbox_events and dispatches each row to
-a handler registered for its event_type. This is the mechanism only (#9);
-the actual handlers (Telegram notification, Cloudflare cache purge) are
-#15's scope and get registered into HANDLERS from there, not here.
+a handler registered for its event_type. The mechanism itself is #9; the
+handlers below (Telegram notification, Cloudflare cache purge) are #15.
 
 An event_type with no registered handler is deliberately left unprocessed
 rather than marked done — so nothing is ever silently dropped once a real
 handler exists for it later. Run as its own container (docker-compose.yml
 `worker` service), same image as the app, different entrypoint.
+
+Every handler registered here MUST NOT raise — process_batch() wraps a
+whole batch in one transaction, so a raising handler rolls back
+mark_processed for every row already handled in that same batch, not just
+its own. See services/notifications.py's module docstring for the full
+reasoning. Handlers catch their own errors and log them instead.
 """
 
 import asyncio
@@ -16,13 +21,28 @@ from collections.abc import Awaitable, Callable
 from core.config import get_settings
 from core.db import async_session_factory
 from repositories.outbox import fetch_unprocessed_batch, mark_processed
+from services.cache_purge import purge_series_page_cache
+from services.notifications import notify_moderators_new_submission
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("outbox_worker")
 
-# event_type -> async handler(payload: dict) -> None. Populated by #15;
-# empty here on purpose — see module docstring.
-HANDLERS: dict[str, Callable[[dict], Awaitable[None]]] = {}
+# event_type -> async handler(payload: dict) -> None.
+#
+# contribution.approved / series_proposal.approved event_type strings
+# match the dotted convention #12 already established for .submitted
+# (verified directly in services/contributions.py and
+# services/series_proposals.py) — #13 (moderator approve/reject, running
+# in parallel) is expected to use these same two names when it writes
+# outbox events on approval. If #13 lands with different names, update
+# the keys below to match rather than changing #13's naming after the
+# fact — .submitted's convention is the one already shipped and tested.
+HANDLERS: dict[str, Callable[[dict], Awaitable[None]]] = {
+    "contribution.submitted": notify_moderators_new_submission,
+    "series_proposal.submitted": notify_moderators_new_submission,
+    "contribution.approved": purge_series_page_cache,
+    "series_proposal.approved": purge_series_page_cache,
+}
 
 
 async def process_batch() -> int:

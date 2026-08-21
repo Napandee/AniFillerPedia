@@ -131,6 +131,77 @@ async def list_for_episode(
     return list(result.fetchall())
 
 
+async def list_pending(session: AsyncSession) -> list[Row]:
+    result = await session.execute(
+        text(
+            """
+            SELECT co.*, c.url AS citation_url, c.description AS citation_description
+            FROM contributions co
+            JOIN citations c ON c.id = co.citation_id
+            WHERE co.review_status = 'pending'
+            ORDER BY co.submitted_at
+            """
+        )
+    )
+    return list(result.fetchall())
+
+
+async def get_by_id(session: AsyncSession, contribution_id: int) -> Row | None:
+    result = await session.execute(
+        text("SELECT * FROM contributions WHERE id = :id"),
+        {"id": contribution_id},
+    )
+    return result.first()
+
+
+async def approve(session: AsyncSession, contribution_id: int, reviewed_by: int) -> Row | None:
+    """#13: guarded UPDATE, not a separate lock-then-check — `WHERE
+    review_status = 'pending'` is what makes the double-approval race safe.
+    Postgres takes an implicit row lock on UPDATE; a second concurrent
+    approve() on the same row blocks until the first commits, then
+    re-evaluates this WHERE clause against the now-changed row and matches
+    zero rows — RETURNING * then yields nothing, which the caller must
+    treat as "already resolved," never as a second success.
+    """
+    result = await session.execute(
+        text(
+            """
+            UPDATE contributions
+            SET review_status = 'approved',
+                resolution_method = 'moderator',
+                reviewed_by = :reviewed_by,
+                reviewed_at = now()
+            WHERE id = :id AND review_status = 'pending'
+            RETURNING *
+            """
+        ),
+        {"id": contribution_id, "reviewed_by": reviewed_by},
+    )
+    return result.first()
+
+
+async def reject(
+    session: AsyncSession, contribution_id: int, reviewed_by: int, review_note: str
+) -> Row | None:
+    """Same guarded-UPDATE race protection as approve() above."""
+    result = await session.execute(
+        text(
+            """
+            UPDATE contributions
+            SET review_status = 'rejected',
+                resolution_method = 'moderator',
+                reviewed_by = :reviewed_by,
+                reviewed_at = now(),
+                review_note = :review_note
+            WHERE id = :id AND review_status = 'pending'
+            RETURNING *
+            """
+        ),
+        {"id": contribution_id, "reviewed_by": reviewed_by, "review_note": review_note},
+    )
+    return result.first()
+
+
 async def list_votes_for_contributions(
     session: AsyncSession, contribution_ids: list[int]
 ) -> list[Row]:

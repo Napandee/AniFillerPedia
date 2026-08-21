@@ -4,8 +4,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import services.contributions as contributions_service
 import services.turnstile as turnstile_service
 from core.db import get_session
-from core.deps import get_current_user, get_current_user_optional
-from schemas.contributions import ContributionCreate, ContributionOut, DuplicatePendingContribution
+from core.deps import get_current_user, get_current_user_optional, require_moderator
+from schemas.contributions import (
+    ContributionCreate,
+    ContributionOut,
+    ContributionReject,
+    ContributionReviewOut,
+    DuplicatePendingContribution,
+)
 
 router = APIRouter(tags=["contributions"])
 
@@ -51,3 +57,43 @@ async def my_contributions(
     session: AsyncSession = Depends(get_session),
 ) -> list[ContributionOut]:
     return await contributions_service.list_my_contributions(session, current_user.id)
+
+
+@router.get("/contributions", response_model=list[ContributionOut])
+async def list_pending_contributions(
+    review_status: str = "pending",
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> list[ContributionOut]:
+    # #13: the moderation queue. review_status is accepted but only
+    # "pending" is meaningful right now — everything else 404s rather than
+    # silently returning an empty list, so a caller finds out immediately
+    # if they typo'd it rather than assuming the queue is empty.
+    if review_status != "pending":
+        raise HTTPException(status_code=404, detail="only review_status=pending is supported")
+    return await contributions_service.list_pending_contributions(session)
+
+
+@router.post("/contributions/{contribution_id}/approve", response_model=ContributionReviewOut)
+async def approve_contribution(
+    contribution_id: int,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> ContributionReviewOut:
+    result = await contributions_service.approve_contribution(session, contribution_id, current_user.id)
+    await session.commit()
+    return result
+
+
+@router.post("/contributions/{contribution_id}/reject", response_model=ContributionReviewOut)
+async def reject_contribution(
+    contribution_id: int,
+    payload: ContributionReject,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> ContributionReviewOut:
+    result = await contributions_service.reject_contribution(
+        session, contribution_id, current_user.id, payload.review_note
+    )
+    await session.commit()
+    return result

@@ -59,3 +59,55 @@ async def list_mine(session: AsyncSession, user_id: int) -> list[Row]:
         {"user_id": user_id},
     )
     return list(result.fetchall())
+
+
+async def list_pending(session: AsyncSession) -> list[Row]:
+    result = await session.execute(
+        text("SELECT * FROM series_proposals WHERE review_status = 'pending' ORDER BY submitted_at")
+    )
+    return list(result.fetchall())
+
+
+async def get_by_id(session: AsyncSession, proposal_id: int) -> Row | None:
+    result = await session.execute(
+        text("SELECT * FROM series_proposals WHERE id = :id"),
+        {"id": proposal_id},
+    )
+    return result.first()
+
+
+async def approve(session: AsyncSession, proposal_id: int, reviewed_by: int) -> Row | None:
+    """Same guarded-UPDATE race protection as contributions.approve() —
+    series_proposals has no resolution_method column (that's specific to
+    contributions' moderator-vs-vote distinction; a proposal only ever has
+    one approval path)."""
+    result = await session.execute(
+        text(
+            """
+            UPDATE series_proposals
+            SET review_status = 'approved', reviewed_by = :reviewed_by, reviewed_at = now()
+            WHERE id = :id AND review_status = 'pending'
+            RETURNING *
+            """
+        ),
+        {"id": proposal_id, "reviewed_by": reviewed_by},
+    )
+    return result.first()
+
+
+async def reject(
+    session: AsyncSession, proposal_id: int, reviewed_by: int, review_note: str
+) -> Row | None:
+    result = await session.execute(
+        text(
+            """
+            UPDATE series_proposals
+            SET review_status = 'rejected', reviewed_by = :reviewed_by,
+                reviewed_at = now(), review_note = :review_note
+            WHERE id = :id AND review_status = 'pending'
+            RETURNING *
+            """
+        ),
+        {"id": proposal_id, "reviewed_by": reviewed_by, "review_note": review_note},
+    )
+    return result.first()

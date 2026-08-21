@@ -4,8 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 import repositories.citations as citations_repo
 import repositories.contributions as contributions_repo
+import repositories.episodes as episodes_repo
 import repositories.outbox as outbox_repo
-from schemas.contributions import CitationOut, ContributionCreate, ContributionOut
+from schemas.contributions import CitationOut, ContributionCreate, ContributionOut, ContributionReviewOut
 
 # NOTE ON TRANSACTIONS: this module assumes the caller (the router) has
 # already opened `async with session.begin():` — matching the convention
@@ -81,6 +82,101 @@ async def submit_contribution(
         resolution_method=contribution_row.resolution_method,
         reviewed_at=contribution_row.reviewed_at,
         review_note=contribution_row.review_note,
+    )
+
+
+async def list_pending_contributions(session: AsyncSession) -> list[ContributionOut]:
+    rows = await contributions_repo.list_pending(session)
+    return [
+        ContributionOut(
+            id=row.id,
+            series_id=row.series_id,
+            episode_number=row.episode_number,
+            proposed_status=row.proposed_status,
+            proposed_note=row.proposed_note,
+            citation=CitationOut(
+                id=row.citation_id, url=row.citation_url, description=row.citation_description
+            ),
+            submitted_at=row.submitted_at,
+            review_status=row.review_status,
+            resolution_method=row.resolution_method,
+            reviewed_at=row.reviewed_at,
+            review_note=row.review_note,
+        )
+        for row in rows
+    ]
+
+
+async def approve_contribution(
+    session: AsyncSession, contribution_id: int, moderator_id: int
+) -> ContributionReviewOut:
+    approved_row = await contributions_repo.approve(session, contribution_id, moderator_id)
+    if approved_row is None:
+        existing = await contributions_repo.get_by_id(session, contribution_id)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="contribution not found")
+        raise HTTPException(
+            status_code=409,
+            detail=f"contribution is not pending (current status: {existing.review_status})",
+        )
+
+    # Promote into the live episodes table — same transaction as the
+    # approval itself (CLAUDE.md Architecture: state change + its outbox
+    # event + anything else it implies all happen atomically together).
+    await episodes_repo.upsert(
+        session,
+        series_id=approved_row.series_id,
+        episode_number=approved_row.episode_number,
+        status=approved_row.proposed_status,
+        status_note=approved_row.proposed_note,
+        citation_id=approved_row.citation_id,
+        approved_contribution_id=approved_row.id,
+    )
+
+    await outbox_repo.write(
+        session,
+        event_type="contribution.approved",
+        payload={
+            "contribution_id": approved_row.id,
+            "series_id": approved_row.series_id,
+            "episode_number": approved_row.episode_number,
+        },
+    )
+
+    return ContributionReviewOut(
+        id=approved_row.id,
+        review_status=approved_row.review_status,
+        resolution_method=approved_row.resolution_method,
+        reviewed_at=approved_row.reviewed_at,
+        review_note=approved_row.review_note,
+    )
+
+
+async def reject_contribution(
+    session: AsyncSession, contribution_id: int, moderator_id: int, review_note: str
+) -> ContributionReviewOut:
+    rejected_row = await contributions_repo.reject(session, contribution_id, moderator_id, review_note)
+    if rejected_row is None:
+        existing = await contributions_repo.get_by_id(session, contribution_id)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="contribution not found")
+        raise HTTPException(
+            status_code=409,
+            detail=f"contribution is not pending (current status: {existing.review_status})",
+        )
+
+    await outbox_repo.write(
+        session,
+        event_type="contribution.rejected",
+        payload={"contribution_id": rejected_row.id},
+    )
+
+    return ContributionReviewOut(
+        id=rejected_row.id,
+        review_status=rejected_row.review_status,
+        resolution_method=rejected_row.resolution_method,
+        reviewed_at=rejected_row.reviewed_at,
+        review_note=rejected_row.review_note,
     )
 
 

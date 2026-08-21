@@ -85,8 +85,8 @@ async def _make_approved_episode(series_id: int, episode_number: int, citation_i
                     text(
                         "INSERT INTO contributions "
                         "(series_id, episode_number, proposed_status, citation_id, "
-                        " review_status, resolution_method) "
-                        "VALUES (:sid, :epnum, 'canon', :cid, 'approved', 'moderator') "
+                        " review_status, resolution_method, license_accepted) "
+                        "VALUES (:sid, :epnum, 'canon', :cid, 'approved', 'moderator', true) "
                         "RETURNING id"
                     ),
                     {"sid": series_id, "epnum": episode_number, "cid": citation_id},

@@ -98,7 +98,11 @@ CREATE TABLE series_proposals (
     review_status TEXT NOT NULL DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected')),
     reviewed_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
     reviewed_at   TIMESTAMPTZ,
-    review_note   TEXT
+    review_note   TEXT,
+    -- CC BY-NC-SA structural proof of agreement (CLAUDE.md, issue #21) —
+    -- every submission, not a one-time account flag; see the identical
+    -- column on contributions below for the full reasoning.
+    license_accepted BOOLEAN NOT NULL
 );
 
 -- =========================================================================
@@ -147,8 +151,27 @@ CREATE TABLE contributions (
     resolution_method TEXT CHECK (resolution_method IN ('moderator', 'community_vote')),   -- NULL until resolved
     reviewed_by       INTEGER REFERENCES users(id) ON DELETE SET NULL,
     reviewed_at       TIMESTAMPTZ,
-    review_note       TEXT   -- moderator's reason, mainly for rejections
+    review_note       TEXT,   -- moderator's reason, mainly for rejections
+    -- CC BY-NC-SA structural proof of agreement (CLAUDE.md, issue #21) —
+    -- every submission, not a one-time account-level flag: mirrors how
+    -- citation_id NOT NULL above already enforces its own guardrail
+    -- structurally rather than trusting app-layer discipline. Decided
+    -- per-submission specifically because anonymous submission has no
+    -- persistent identity to attach a one-time flag to anyway.
+    license_accepted BOOLEAN NOT NULL
 );
+
+-- At most one pending contribution per episode (CLAUDE.md, issue #20) —
+-- a new submission targeting an (series_id, episode_number) that already
+-- has a pending contribution is rejected at the app layer and pointed at
+-- the existing one instead of creating a competing row. Enforced
+-- structurally here too, not just trusted to application code: a partial
+-- unique index only applies to pending rows, so multiple *resolved*
+-- (approved/rejected) contributions for the same episode over time — the
+-- normal history — are unaffected.
+CREATE UNIQUE INDEX contributions_one_pending_per_episode
+    ON contributions (series_id, episode_number)
+    WHERE review_status = 'pending';
 
 -- Community trust-weighted votes on a *pending* contribution — the
 -- alternative path to promotion alongside direct moderator approval (see
@@ -209,4 +232,24 @@ CREATE TABLE outbox_events (
     payload      JSONB NOT NULL,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
     processed_at TIMESTAMPTZ   -- NULL until a consumer has handled it
+);
+
+-- =========================================================================
+-- EXPORT ACCESS (issue #22 — terms-acceptance + API key gate for /export)
+-- =========================================================================
+
+-- One row per acceptance record. No full contributor account required —
+-- deliberately lighter-weight than #8's OAuth-based auth. Key is stored
+-- hashed (sha256), never plaintext, same discipline as a password; the
+-- plaintext value is shown to the requester exactly once, at issuance.
+-- terms_version lets a future license-terms change be distinguished from
+-- what an older key-holder actually agreed to.
+CREATE TABLE export_api_keys (
+    id                SERIAL PRIMARY KEY,
+    key_hash          TEXT NOT NULL UNIQUE,
+    email             TEXT NOT NULL,
+    license_accepted  BOOLEAN NOT NULL,
+    terms_version     TEXT NOT NULL,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+    revoked_at        TIMESTAMPTZ
 );

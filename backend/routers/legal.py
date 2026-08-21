@@ -1,12 +1,12 @@
 """Legal/policy pages served directly by the API — no frontend exists yet
 (Phase 5), and Google's OAuth verification review (#24) needs a real,
-stable public URL to point at, so this can't wait for one. `/license`
-(issue #21's dedicated attribution endpoint) belongs here too once
-someone builds it — not this issue's scope.
+stable public URL to point at, so this can't wait for one.
 """
 
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
+
+from schemas.export import ExportManifest
 
 router = APIRouter(tags=["legal"])
 
@@ -57,12 +57,11 @@ are no longer linked to your identity. Deleted personal data may persist in
 backups for up to 14 days.</p>
 
 <h2>Your rights</h2>
-<p>You can request deletion of your account and personal data at any time.
-Self-service deletion (a direct API call you can make yourself) is planned
-but not yet built; in the meantime, open an issue at
-<a href="https://github.com/Napandee/AniFillerPedia">github.com/Napandee/AniFillerPedia</a>
-requesting deletion and we'll process it manually. This page will be updated
-once self-service deletion ships.</p>
+<p>You can delete your account and personal data at any time, yourself,
+with no approval step: call <code>DELETE /api/v1/users/me</code> while
+signed in (or use the account settings page once it exists). This removes
+your email, display name, avatar, and linked sign-in identifiers
+immediately, per the retention terms above.</p>
 
 <h2>Infrastructure</h2>
 <p>This site is served through Cloudflare, which processes standard web
@@ -88,3 +87,14 @@ for the terms that govern reusing that data.</p>
 @router.get("/privacy", response_class=HTMLResponse)
 async def privacy_policy() -> str:
     return _PRIVACY_HTML
+
+
+@router.get("/license", response_model=ExportManifest)
+async def license_info() -> ExportManifest:
+    """#21's dedicated attribution endpoint — was decided but never
+    actually built until now (found while writing #16's API docs).
+    Reuses ExportManifest as-is: the bulk export payload (#22) and this
+    endpoint describe the exact same license/attribution facts, so one
+    model backs both rather than maintaining the text twice.
+    """
+    return ExportManifest()

@@ -171,6 +171,17 @@ Not yet decided.
   side never rebuilds or redeploys the other. This is what makes the
   monorepo choice safe rather than a shortcut to coupling them — don't
   quietly erode it for convenience.
+- **Stay stateless — no local-disk dependencies for anything that persists
+  or that other requests rely on.** The droplet-based deploy (decided
+  2026-08-21, see Decisions Made) is deliberate, not a technical necessity —
+  the app layer itself should stay portable to a serverless target (Cloud
+  Run, etc.) even though that's not the current plan. The concrete case to
+  watch: the bulk `/export` dump (#7/#22) must use object storage (DO
+  Spaces or Cloudflare R2, both S3-compatible) rather than local disk on
+  the droplet. Local disk breaks under any future stateless/scale-to-zero
+  deploy target; object storage doesn't, and costs nothing extra to use
+  from the start. No in-memory state that other requests or instances
+  depend on, either.
 
 ## Decisions Made
 

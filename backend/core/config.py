@@ -42,6 +42,11 @@ class Settings(BaseSettings):
     # URIs (must exactly match what's registered with each provider).
     public_base_url: str = "http://localhost:8000"
 
+    # Cloudflare Turnstile (#12/#20) — anonymous submission endpoint only.
+    # Empty until a real site is provisioned; see services/turnstile.py's
+    # docstring for what happens while it's unset.
+    turnstile_secret_key: str = ""
+
 
 @lru_cache
 def get_settings() -> Settings:

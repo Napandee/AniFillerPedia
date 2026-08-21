@@ -1,0 +1,53 @@
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+
+import services.contributions as contributions_service
+import services.turnstile as turnstile_service
+from core.db import get_session
+from core.deps import get_current_user, get_current_user_optional
+from schemas.contributions import ContributionCreate, ContributionOut, DuplicatePendingContribution
+
+router = APIRouter(tags=["contributions"])
+
+
+@router.post(
+    "/contributions",
+    response_model=ContributionOut,
+    status_code=201,
+    responses={409: {"model": DuplicatePendingContribution}},
+)
+async def submit_contribution(
+    payload: ContributionCreate,
+    current_user=Depends(get_current_user_optional),  # noqa: ANN001 - Row | None, anonymous allowed
+    session: AsyncSession = Depends(get_session),
+) -> ContributionOut:
+    # Turnstile only gates the anonymous path (CLAUDE.md, decided
+    # 2026-08-21) — an authenticated OAuth login is already a stronger
+    # signal, checking it again here would be redundant.
+    if current_user is None:
+        allowed = await turnstile_service.verify(payload.turnstile_token)
+        if not allowed:
+            raise HTTPException(status_code=422, detail="Turnstile verification failed")
+
+    # NOT `async with session.begin():` here — deliberately. When
+    # current_user is resolved (get_current_user_optional runs a SELECT),
+    # SQLAlchemy's AsyncSession autobegins a transaction on that first
+    # execute(), and session.begin() then raises "a transaction is already
+    # begun." Every prior get_session()-consuming handler in this codebase
+    # only ever exercised ONE of {an auth dependency, an explicit begin()}
+    # per request, never both, so this never surfaced before — caught by
+    # actually testing the authenticated submission path, not the
+    # anonymous one every earlier test happened to use. get_session()
+    # still doesn't auto-commit (#8's own fix note, core/db.py), so the
+    # explicit commit below is still required either way.
+    result = await contributions_service.submit_contribution(session, payload, current_user)
+    await session.commit()
+    return result
+
+
+@router.get("/contributions/mine", response_model=list[ContributionOut])
+async def my_contributions(
+    current_user=Depends(get_current_user),  # noqa: ANN001 - Row, auth required
+    session: AsyncSession = Depends(get_session),
+) -> list[ContributionOut]:
+    return await contributions_service.list_my_contributions(session, current_user.id)

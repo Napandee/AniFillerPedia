@@ -98,7 +98,13 @@ CREATE TABLE series_proposals (
     review_status TEXT NOT NULL DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected')),
     reviewed_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
     reviewed_at   TIMESTAMPTZ,
-    review_note   TEXT
+    review_note   TEXT,
+    -- Structural proof of CC BY-NC-SA agreement (#21) — per-proposal, not a
+    -- one-time account flag, same reasoning as contributions.license_accepted
+    -- below: anonymous submission has no persistent identity to attach a
+    -- one-time flag to, so authenticated submissions just follow the same
+    -- one rule instead of needing two.
+    license_accepted BOOLEAN NOT NULL
 );
 
 -- =========================================================================
@@ -147,8 +153,25 @@ CREATE TABLE contributions (
     resolution_method TEXT CHECK (resolution_method IN ('moderator', 'community_vote')),   -- NULL until resolved
     reviewed_by       INTEGER REFERENCES users(id) ON DELETE SET NULL,
     reviewed_at       TIMESTAMPTZ,
-    review_note       TEXT   -- moderator's reason, mainly for rejections
+    review_note       TEXT,   -- moderator's reason, mainly for rejections
+    -- Structural proof of CC BY-NC-SA agreement (#21) — required on every
+    -- submission, not a one-time account-level flag: anonymous submission
+    -- has no persistent identity to attach a one-time flag to, so this
+    -- keeps one uniform rule for both anonymous and authenticated callers.
+    license_accepted  BOOLEAN NOT NULL
 );
+
+-- At most one pending contribution per episode at a time (#20) — enforced
+-- structurally, not just in application code, matching this project's
+-- preference for DB-level guarantees over policies to remember. A new
+-- submission against an episode that already has a pending contribution
+-- must be rejected by the app layer (409, pointing at the existing pending
+-- row) rather than relying solely on this index to reject it, since a
+-- clean error message is better than a raw constraint violation — but the
+-- index is what makes that guarantee real under concurrent requests.
+CREATE UNIQUE INDEX contributions_one_pending_per_episode
+    ON contributions (series_id, episode_number)
+    WHERE review_status = 'pending';
 
 -- Community trust-weighted votes on a *pending* contribution — the
 -- alternative path to promotion alongside direct moderator approval (see

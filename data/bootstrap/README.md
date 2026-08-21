@@ -24,33 +24,42 @@ exists.
 
 ## #5 — naruto-shippuden-episodes.json
 
-**Honest status: partial, not complete.** Only episodes 1–32 (Kazekage
-Rescue Mission, canon) and 57–71 (Twelve Guardian Ninja Arc, filler) are
-researched and cited — 47 of Naruto: Shippuden's ~500 episodes. Episodes
-33–56 and 72+ are deliberately NOT included rather than guessed.
+**Honest status: partial, not complete — updated 2026-08-21 (second pass).**
+100 of Naruto: Shippuden's ~500 episodes now have real citations: episodes
+1–44, 57–112. Two ranges are deliberately excluded rather than guessed:
 
-Why it stopped here: every claim in the output is backed by at least one
-directly-fetched, re-readable source, most by two independent ones
-cross-checked against each other (a genuine discrepancy actually turned up
-mid-research — an AI-search-summarized "manga chapters 245–281" figure for
-the Kazekage Rescue arc could not be corroborated by directly fetching two
-of the pages that claim listed, so it was dropped rather than reported as
-fact). Getting exact per-episode manga-chapter citations for the rest of a
-500-episode series properly, not by asserting well-known fan consensus from
-memory, is real, slow research work — the directive was explicit that a
-smaller well-cited dataset beats a large rushed one for a citation-based
-project, so this stopped rather than padding out further arcs on weaker
-sourcing.
+- **Episodes 45–56**: two independent filler guides
+  (narutoshippudenfillerguide.com, Yahoo Entertainment) agree episodes
+  33–53ish are "canon/mixed" at the arc level, but only one of them gives
+  single-episode-level mixed-status boundaries within that range (e.g.
+  flagging ep 45 specifically as mixed, 46–48 as canon, etc.) — the second
+  source doesn't confirm that exact granularity, so rather than assert one
+  source's precision alone, this range was left out. Worth a dedicated pass
+  later specifically to find a second source with matching per-episode
+  detail, rather than treating it as unresearchable.
+- **Episodes 113+**: not yet researched at all.
+
+This pass's new citations: episodes 33–44 (Tenchi Bridge Reconnaissance
+Mission, canon), 72–88 (Akatsuki Suppression Mission — Hidan and Kakuzu
+arc, canon, includes Asuma's death), 89–90 (mixed transition), 91–112
+(Three-Tails' Appearance arc, filler) — all cross-referenced across two
+independent guides plus Wikipedia's episode list for exact titles.
+
+Why it stopped at 112: same discipline as the first pass — a smaller,
+genuinely well-cited dataset beats a larger rushed one for a citation-based
+project. 113 onward is a fresh arc (Itachi Pursuit Mission) not yet
+cross-checked.
 
 **Which show got researched, and why**: Naruto: Shippuden specifically
 (the seven-show list in #5 names it first, and it's the most heavily
 publicly documented of the seven, which mattered for finding independently
 corroborated sources quickly).
 
-**Remaining work for full #5 completion**: episodes 33–56, 72–500 of
-Shippuden (this issue's Scope also still needs the other 6 shows entirely —
-Naruto original, Bleach, DBZ/Super, Fairy Tail, Black Clover, Boruto, and
-both FMA series — none of that was started this pass).
+**Remaining work for full #5 completion**: episodes 45–56 (the disputed
+gap above), 113–500 of Shippuden (this issue's Scope also still needs the
+other 6 shows entirely — Naruto original, Bleach, DBZ/Super, Fairy Tail,
+Black Clover, Boruto, and both FMA series — none of that was started
+across either pass).
 
 ## Format note for whoever builds the loader
 

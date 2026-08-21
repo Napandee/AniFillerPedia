@@ -47,3 +47,13 @@ async def require_moderator(current_user: Row = Depends(get_current_user)) -> Ro
     if current_user.role not in ("moderator", "admin"):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="moderator or admin role required")
     return current_user
+
+
+async def require_admin(current_user: Row = Depends(get_current_user)) -> Row:
+    """#27: admin tier is strictly above moderator, not just "logged in"
+    — a moderator hitting an admin-only route should get a real 403, not
+    silently succeed because it only checked for authentication.
+    """
+    if current_user.role != "admin":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="admin access required")
+    return current_user

@@ -219,3 +219,84 @@ async def test_role_update_nonexistent_user_404s() -> None:
         assert response.status_code == 404
     finally:
         await _cleanup(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_owner_role_is_not_a_valid_promotion_target() -> None:
+    """'owner' is deliberately excluded from VALID_ROLES — bootstrap-only,
+    never assignable through this endpoint, not even by the owner.
+    """
+    admin_id = await _create_user("admin")
+    target_id = await _create_user("contributor")
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(admin_id)) as client:
+            response = await client.patch(f"/api/v1/admin/users/{target_id}/role", json={"role": "owner"})
+        assert response.status_code == 422
+    finally:
+        await _cleanup(admin_id, target_id)
+
+
+@pytest.mark.asyncio
+async def test_plain_admin_cannot_grant_admin_role() -> None:
+    """Owner tier (decided 2026-08-21, CLAUDE.md): only the owner mints new
+    admins — a plain admin can still promote/demote contributor<->moderator
+    (require_admin already gates the endpoint), just not grant 'admin'
+    itself.
+    """
+    admin_id = await _create_user("admin")
+    target_id = await _create_user("contributor")
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(admin_id)) as client:
+            response = await client.patch(f"/api/v1/admin/users/{target_id}/role", json={"role": "admin"})
+        assert response.status_code == 403
+
+        async with async_session_factory() as session:
+            row = (
+                await session.execute(text("SELECT role FROM users WHERE id = :id"), {"id": target_id})
+            ).fetchone()
+            assert row.role == "contributor"  # unchanged
+    finally:
+        await _cleanup(admin_id, target_id)
+
+
+@pytest.mark.asyncio
+async def test_owner_can_grant_admin_role() -> None:
+    owner_id = await _create_user("owner")
+    target_id = await _create_user("contributor")
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(owner_id)) as client:
+            response = await client.patch(f"/api/v1/admin/users/{target_id}/role", json={"role": "admin"})
+        assert response.status_code == 200, response.text
+        assert response.json() == {"id": target_id, "role": "admin"}
+    finally:
+        await _cleanup(owner_id, target_id)
+
+
+@pytest.mark.asyncio
+async def test_owner_role_cannot_be_changed_by_anyone() -> None:
+    """Not even the owner can demote themselves through this endpoint —
+    'owner' is immutable via the API entirely, by design (see schema.sql's
+    comment on the role column).
+    """
+    owner_id = await _create_user("owner")
+    other_owner_target = await _create_user("owner")  # simulate via direct insert, not the API
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(owner_id)) as client:
+            response = await client.patch(
+                f"/api/v1/admin/users/{other_owner_target}/role", json={"role": "moderator"}
+            )
+        assert response.status_code == 403
+
+        async with async_session_factory() as session:
+            row = (
+                await session.execute(
+                    text("SELECT role FROM users WHERE id = :id"), {"id": other_owner_target}
+                )
+            ).fetchone()
+            assert row.role == "owner"  # unchanged
+    finally:
+        await _cleanup(owner_id, other_owner_target)

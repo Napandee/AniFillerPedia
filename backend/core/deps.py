@@ -39,21 +39,40 @@ async def get_current_user_optional(
 
 
 async def require_moderator(current_user: Row = Depends(get_current_user)) -> Row:
-    """#13: moderation endpoints (approve/reject) — moderator or admin
-    only. Admin is a superset of moderator here (CLAUDE.md/#27), so this
-    single check covers both roles rather than needing a separate
-    require_admin for anything moderation-shaped.
+    """#13: moderation endpoints (approve/reject) — moderator, admin, or
+    owner. Each tier is a superset of the one below (CLAUDE.md/#27/owner
+    tier decided 2026-08-21), so this single check covers all three rather
+    than needing separate checks for anything moderation-shaped.
     """
-    if current_user.role not in ("moderator", "admin"):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="moderator or admin role required")
+    if current_user.role not in ("moderator", "admin", "owner"):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="moderator, admin, or owner role required")
     return current_user
 
 
 async def require_admin(current_user: Row = Depends(get_current_user)) -> Row:
     """#27: admin tier is strictly above moderator, not just "logged in"
     — a moderator hitting an admin-only route should get a real 403, not
-    silently succeed because it only checked for authentication.
+    silently succeed because it only checked for authentication. Owner is
+    a superset of admin (decided 2026-08-21) — an owner passes this check
+    too; the one thing owner adds beyond plain admin (granting the admin
+    role itself, and immunity from role changes) is enforced separately in
+    services/admin.py's update_role(), not by a stricter version of this
+    dependency.
     """
-    if current_user.role != "admin":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="admin access required")
+    if current_user.role not in ("admin", "owner"):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="admin or owner access required")
+    return current_user
+
+
+async def require_owner(current_user: Row = Depends(get_current_user)) -> Row:
+    """Owner-only tier (decided 2026-08-21, CLAUDE.md) — strictly above
+    admin, and structurally unreachable via the role-promotion endpoint
+    (repositories/admin.py's VALID_ROLES excludes 'owner' entirely; it is
+    set once at bootstrap, see services/auth.py). Not yet bound to any
+    route of its own — added alongside require_moderator/require_admin as
+    the same reusable primitive, for Phase 5's owner-only surfaces (and
+    services/admin.py's inline admin-granting check) to depend on.
+    """
+    if current_user.role != "owner":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="owner access required")
     return current_user

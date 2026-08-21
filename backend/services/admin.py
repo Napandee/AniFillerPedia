@@ -50,13 +50,29 @@ async def list_users(session, limit: int, offset: int) -> AdminUserListOut:
     return AdminUserListOut(items=items, total=total, limit=limit, offset=offset)
 
 
-async def update_role(session, *, target_user_id: int, new_role: str, changed_by_user_id: int) -> dict:
+async def update_role(
+    session, *, target_user_id: int, new_role: str, changed_by_user_id: int, changed_by_role: str
+) -> dict:
     if new_role not in admin_repo.VALID_ROLES:
         raise fastapi.HTTPException(status_code=422, detail=f"role must be one of {admin_repo.VALID_ROLES}")
 
     old_role = await admin_repo.get_user_role(session, target_user_id)
     if old_role is None:
         raise fastapi.HTTPException(status_code=404, detail="user not found")
+
+    # Owner tier (decided 2026-08-21, CLAUDE.md): the owner's own row can
+    # never be changed through this endpoint, by anyone — 'owner' isn't in
+    # VALID_ROLES so a demotion is the only thing this check needs to catch
+    # (an attempt to set someone's role TO 'owner' already 422s above).
+    if old_role == "owner":
+        raise fastapi.HTTPException(status_code=403, detail="the owner's role cannot be changed")
+
+    # Only the owner can mint new admins — a plain admin can still promote/
+    # demote between contributor and moderator (require_admin already
+    # gates this whole endpoint), but granting 'admin' itself is reserved
+    # so admins can't create peers or bypass the owner.
+    if new_role == "admin" and changed_by_role != "owner":
+        raise fastapi.HTTPException(status_code=403, detail="only the owner can grant the admin role")
 
     # NOT `async with session.begin():` here — deliberately, same fix as
     # #12's routers/contributions.py: the require_admin dependency this

@@ -78,10 +78,11 @@ async def test_login_second_time_reuses_same_account_not_a_new_one() -> None:
 
 
 @pytest.mark.asyncio
-async def test_admin_bootstrap_via_env_var_not_first_user_wins(monkeypatch: pytest.MonkeyPatch) -> None:
+async def test_owner_bootstrap_via_env_var_not_first_user_wins(monkeypatch: pytest.MonkeyPatch) -> None:
     """The actual Guardrail this project cares about: role is granted
     because the id matches INITIAL_ADMIN_GITHUB_ID, never because of
-    signup order.
+    signup order. The granted role is 'owner' (decided 2026-08-21, CLAUDE.md)
+    — the bootstrap identity is the distinct top tier, not just 'admin'.
     """
     from core.config import get_settings
 
@@ -110,7 +111,7 @@ async def test_admin_bootstrap_via_env_var_not_first_user_wins(monkeypatch: pyte
                 admin = await login_or_create_user(
                     session, "github", Profile(provider_id=admin_id, email=None, display_name=None, avatar_url=None)
                 )
-        assert admin.role == "admin"
+        assert admin.role == "owner"
     finally:
         await _delete_user_by_github_id(admin_id)
         get_settings.cache_clear()

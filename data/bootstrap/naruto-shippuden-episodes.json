@@ -1,0 +1,76 @@
+{
+  "series_title": "Naruto: Shippuden",
+  "research_status": "PARTIAL — episodes 1-32 and 57-71 only. Episodes 33-56 and 72+ are NOT researched, deliberately excluded rather than guessed. See README.md in this directory for the full honest status.",
+  "citation_sources": [
+    {
+      "id": "wikipedia-s1",
+      "url": "https://en.wikipedia.org/wiki/Naruto:_Shippuden_(season_1)",
+      "description": "Wikipedia, 'Naruto: Shippuden (season 1)' — confirms episodes 1-32 are 'based on Part II' of the manga (does not give exact chapter numbers)."
+    },
+    {
+      "id": "wikipedia-eplist",
+      "url": "https://en.wikipedia.org/wiki/List_of_Naruto:_Shippuden_episodes",
+      "description": "Wikipedia, 'List of Naruto: Shippuden episodes' — episode numbers, English titles, original air dates."
+    },
+    {
+      "id": "beebom-filler",
+      "url": "https://beebom.com/naruto-shippuden-filler-episode-list/",
+      "description": "Beebom filler guide — confirms episodes 57-71 ('Twelve Guardian Ninja Arc') as filler."
+    },
+    {
+      "id": "superherohype-filler",
+      "url": "https://www.superherohype.com/guides/604623-naruto-shippuden-filler-episodes-arcs-skip-miss",
+      "description": "SuperHeroHype filler guide — independently confirms episodes 57-71 as the only filler arc within episodes 1-90, cross-referencing Beebom's claim."
+    }
+  ],
+  "episodes": [
+    { "episode_number": 1, "title": "Homecoming", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"], "status_note": "Part of the Kazekage Rescue Mission arc (eps 1-32), confirmed adapting Part II of the manga. Exact per-episode manga chapter mapping not yet independently verified — see research_status." },
+    { "episode_number": 2, "title": "The Akatsuki Makes Its Move", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 3, "title": "The Results of Training", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 4, "title": "The Jinchuriki of the Sand", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 5, "title": "The Kazekage Stands Tall", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 6, "title": "Mission Cleared", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 7, "title": "Run, Kankuro", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 8, "title": "Team Kakashi, Deployed", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 9, "title": "The Jinchuriki's Tears", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 10, "title": "Sealing Technique: Phantom Dragons Nine Consuming Seals", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 11, "title": "The Medical Ninja's Student", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 12, "title": "The Retired Granny's Determination", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 13, "title": "A Meeting With Destiny", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 14, "title": "Naruto's Growth", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 15, "title": "The Secret Weapon is Called....", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 16, "title": "The Secret of Jinchuriki", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 17, "title": "The Death of Gaara!", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 18, "title": "Charge Tactic! Button Hook Entry!!", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 19, "title": "Traps Activate! Team Guy's Enemy", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 20, "title": "Hiruko vs. Two Kunoichi!", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 21, "title": "Sasori's Real Face", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 22, "title": "Chiyo's Secret Skills", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 23, "title": "Father and Mother", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 24, "title": "The Third Kazekage", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 25, "title": "Three Minutes Between Life and Death", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 26, "title": "Puppet Fight: 10 vs. 100!", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 27, "title": "Impossible Dream", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 28, "title": "Beasts: Alive Again!", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 29, "title": "Kakashi Enlightened!", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 30, "title": "Aesthetics of an Instant", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 31, "title": "The Legacy", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
+    { "episode_number": 32, "title": "Return of the Kazekage", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"], "status_note": "Final episode of the Kazekage Rescue Mission arc." },
+
+    { "episode_number": 57, "title": "Deprived of Eternal Sleep", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"], "status_note": "First episode of the Twelve Guardian Ninja filler arc (eps 57-71) — anime-original, not adapted from the manga. Two independent filler guides agree on this range." },
+    { "episode_number": 58, "title": "Loneliness", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 59, "title": "A New Enemy", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 60, "title": "Impermanence", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 61, "title": "Contact", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 62, "title": "Teammate", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 63, "title": "The Two Kings", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 64, "title": "Jet Black Signal Fire", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 65, "title": "Lockdown of Darkness", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 66, "title": "Revived Souls", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 67, "title": "Everyone's Struggle to the Death", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 68, "title": "Moment of Awakening", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 69, "title": "Despair", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 70, "title": "Resonance", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
+    { "episode_number": 71, "title": "My Friend", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"], "status_note": "Final episode of the Twelve Guardian Ninja filler arc." }
+  ]
+}

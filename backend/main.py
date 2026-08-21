@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 
 from core.version import API_VERSION
-from routers import health
+from routers import auth, health, settings, users
 
 app = FastAPI(title="AniFillerPedia API", version=API_VERSION)
 
 app.include_router(health.router, prefix="/api/v1")
+app.include_router(auth.router, prefix="/api/v1")
+app.include_router(settings.router, prefix="/api/v1")
+app.include_router(users.router, prefix="/api/v1")

@@ -31,7 +31,11 @@ async def update_user_role(
     # (see services/admin.py's own note on the same fix). Commit
     # explicitly after the service's writes, same pattern as #12/#13.
     result = await admin_service.update_role(
-        session, target_user_id=user_id, new_role=payload.role, changed_by_user_id=current_user.id
+        session,
+        target_user_id=user_id,
+        new_role=payload.role,
+        changed_by_user_id=current_user.id,
+        changed_by_role=current_user.role,
     )
     await session.commit()
     return result

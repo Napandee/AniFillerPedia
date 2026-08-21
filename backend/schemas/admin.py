@@ -22,4 +22,11 @@ class AdminUserListOut(BaseModel):
 
 
 class RoleUpdateIn(BaseModel):
-    role: str = Field(description="One of: contributor, moderator, admin")
+    role: str = Field(
+        description=(
+            "One of: contributor, moderator, admin. 'owner' is deliberately "
+            "not a valid value here — it is set once at bootstrap and is "
+            "never assignable through this endpoint. Setting 'admin' "
+            "requires the caller to be the owner."
+        )
+    )

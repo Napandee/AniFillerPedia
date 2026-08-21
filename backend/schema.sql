@@ -43,7 +43,16 @@ CREATE TABLE users (
     email         TEXT,          -- from whichever provider supplied it; never the login key
     display_name  TEXT,
     avatar_url    TEXT,
-    role          TEXT NOT NULL DEFAULT 'contributor' CHECK (role IN ('contributor', 'moderator', 'admin')),
+    -- 'owner' is a distinct tier above 'admin' (decided 2026-08-21, see
+    -- CLAUDE.md), not just a cosmetic label on the bootstrap identity: only
+    -- the owner can grant/revoke the 'admin' role, and the owner's own row
+    -- can never be changed via the role-promotion endpoint by anyone
+    -- (including another admin) — see services/admin.py's update_role().
+    -- 'owner' is deliberately excluded from repositories/admin.py's
+    -- VALID_ROLES, so it is never assignable through the API at all; it is
+    -- set once, at bootstrap (services/auth.py), by matching
+    -- INITIAL_ADMIN_GITHUB_ID.
+    role          TEXT NOT NULL DEFAULT 'contributor' CHECK (role IN ('contributor', 'moderator', 'admin', 'owner')),
     created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
     last_login_at TIMESTAMPTZ
 );

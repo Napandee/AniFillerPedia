@@ -414,3 +414,22 @@ Not yet decided.
      inquiry gets negotiated individually until real demand justifies
      building one — consistent with this project's general bias against
      building for demand that doesn't exist yet.
+- **Owner role tier, distinct from admin** (decided 2026-08-21, issue #28,
+  during Phase 5 planning) — the existing two-tier model (moderator/admin)
+  let any admin promote/demote anyone else to any role, including minting
+  other admins; on a public open-signup site that's a real
+  privilege-escalation surface, not just a UI nuance. `users.role` gains a
+  fourth value, `'owner'`, strictly above `'admin'` (each tier a superset
+  of the one below, matching the existing admin-is-a-superset-of-moderator
+  pattern). Only the owner can grant the `'admin'` role; the owner's own
+  row can never be changed via the role-promotion endpoint, by anyone,
+  including themselves. `'owner'` is deliberately excluded from the
+  promotable-roles list entirely — never assignable through the API, set
+  once at bootstrap (`INITIAL_ADMIN_GITHUB_ID` now grants `'owner'`, not
+  `'admin'`) and otherwise only changeable via a manual, one-time DB
+  update, matching the deliberate manual-not-automated stance already
+  taken on GDPR deletion's retention window. **Rejected**: treating
+  "owner" as purely cosmetic (the bootstrap identity keeps role `'admin'`,
+  with no structural distinction) — the simpler option, but it leaves the
+  privilege-escalation gap open the moment a second admin exists, which
+  Phase 5's admin UI is expected to make easy to create.

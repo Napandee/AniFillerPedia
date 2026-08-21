@@ -27,7 +27,7 @@ class Profile:
     avatar_url: str | None
 
 
-def _is_bootstrap_admin(provider: str, provider_id: str) -> bool:
+def _is_bootstrap_owner(provider: str, provider_id: str) -> bool:
     settings = get_settings()
     return (
         provider == "github"
@@ -49,7 +49,9 @@ async def login_or_create_user(
         await touch_last_login(session, existing.id)
         return existing
 
-    role = "admin" if _is_bootstrap_admin(provider, profile.provider_id) else "contributor"
+    # 'owner', not 'admin' — the bootstrap identity is the distinct top
+    # tier decided 2026-08-21 (CLAUDE.md), never assignable any other way.
+    role = "owner" if _is_bootstrap_owner(provider, profile.provider_id) else "contributor"
     return await create_user(
         session,
         provider=provider,

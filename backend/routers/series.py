@@ -18,10 +18,11 @@ async def list_series(
     anidb_id: int | None = None,
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
+    sort: str | None = Query(default=None, pattern="^(recently_updated)$"),
     session: AsyncSession = Depends(get_session),
 ) -> SeriesListOut:
     return await series_service.search_series(
-        session, q, anilist_id, mal_id, anidb_id, limit, offset
+        session, q, anilist_id, mal_id, anidb_id, limit, offset, sort
     )
 
 

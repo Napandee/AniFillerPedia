@@ -279,6 +279,32 @@ async def promote_via_vote(session: AsyncSession, contribution_id: int) -> Row |
     return result.first()
 
 
+async def list_votes_by_voter(session: AsyncSession, voter_id: int) -> list[Row]:
+    """#30: the votes-cast counterpart to list_mine() (a user's own
+    submissions) — enough of the contribution's own shape (series title,
+    episode, current status) joined in that a UI can render each row
+    without a follow-up request per vote.
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT
+                v.vote, v.weight_at_vote, v.created_at,
+                c.id AS contribution_id, c.series_id, c.episode_number,
+                c.proposed_status, c.review_status, c.resolution_method,
+                s.title AS series_title
+            FROM contribution_votes v
+            JOIN contributions c ON c.id = v.contribution_id
+            JOIN series s ON s.id = c.series_id
+            WHERE v.voter_id = :voter_id
+            ORDER BY v.created_at DESC
+            """
+        ),
+        {"voter_id": voter_id},
+    )
+    return list(result.fetchall())
+
+
 async def list_votes_for_contributions(
     session: AsyncSession, contribution_ids: list[int]
 ) -> list[Row]:

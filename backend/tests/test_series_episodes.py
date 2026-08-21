@@ -125,6 +125,48 @@ async def client():
 
 
 @pytest.mark.asyncio
+async def test_series_sort_recently_updated_orders_by_latest_episode(client: AsyncClient) -> None:
+    """#42: a series with a more recently-approved episode sorts first; a
+    series with no episodes at all sorts last (NULLS LAST), not dropped.
+    """
+    older_series_id = await _make_series("Older", anilist_id=900101)
+    newer_series_id = await _make_series("Newer", anilist_id=900102)
+    empty_series_id = await _make_series("Empty", anilist_id=900103)
+    try:
+        citation_id = await _make_citation()
+        await _make_approved_episode(older_series_id, 1, citation_id)
+        async with async_session_factory() as session:
+            async with session.begin():
+                # Force a real, distinguishable ordering rather than relying
+                # on two now()-default inserts landing in the right order.
+                await session.execute(
+                    text("UPDATE episodes SET updated_at = now() - interval '1 day' WHERE series_id = :sid"),
+                    {"sid": older_series_id},
+                )
+        await _make_approved_episode(newer_series_id, 1, citation_id)
+
+        response = await client.get(
+            "/api/v1/series", params={"sort": "recently_updated", "limit": 100}
+        )
+        assert response.status_code == 200
+        ids_in_order = [item["id"] for item in response.json()["items"]]
+
+        test_ids = {older_series_id, newer_series_id, empty_series_id}
+        ordered_test_ids = [i for i in ids_in_order if i in test_ids]
+        assert ordered_test_ids == [newer_series_id, older_series_id, empty_series_id]
+    finally:
+        await _cleanup_series(older_series_id)
+        await _cleanup_series(newer_series_id)
+        await _cleanup_series(empty_series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_invalid_sort_value_rejected(client: AsyncClient) -> None:
+    response = await client.get("/api/v1/series", params={"sort": "not_a_real_sort"})
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
 async def test_series_search_by_title_and_synonym(client: AsyncClient) -> None:
     series_id = await _make_series("Alpha", anilist_id=900001)
     try:

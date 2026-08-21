@@ -275,6 +275,218 @@ async def test_users_me_requires_auth() -> None:
 
 
 @pytest.mark.asyncio
+async def test_users_me_reports_own_trust_score() -> None:
+    """#43: GET /users/me exposes the caller's own trust_score, computed
+    the same way #14/#27's admin listing computes it for anyone else.
+    """
+    from sqlalchemy import text as sql_text
+
+    from core.security import SESSION_COOKIE_NAME, create_session_token
+
+    gh_id = _unique_id()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await login_or_create_user(
+                    session, "github", Profile(provider_id=gh_id, email=None, display_name=None, avatar_url=None)
+                )
+        user_id = user.id
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            fresh = await client.get("/api/v1/users/me")
+            assert fresh.status_code == 200
+            assert fresh.json()["approved_count"] == 0
+            assert fresh.json()["rejected_count"] == 0
+            assert fresh.json()["trust_score"] == 0
+
+            # Seed one approved and one rejected contribution directly
+            # (mirrors tests/test_admin.py's own _create_contribution
+            # pattern) rather than exercising the full submit->approve
+            # flow, which isn't what's under test here.
+            async with async_session_factory() as session:
+                async with session.begin():
+                    series_id = (
+                        await session.execute(sql_text("SELECT id FROM series LIMIT 1"))
+                    ).scalar_one()
+                    for status in ("approved", "rejected"):
+                        citation_id = (
+                            await session.execute(
+                                sql_text(
+                                    "INSERT INTO citations (url, description, submitted_by) "
+                                    "VALUES ('https://example.com', '__test_43__citation', :uid) RETURNING id"
+                                ),
+                                {"uid": user_id},
+                            )
+                        ).scalar_one()
+                        await session.execute(
+                            sql_text(
+                                """
+                                INSERT INTO contributions
+                                    (series_id, episode_number, proposed_status, citation_id,
+                                     submitted_by, review_status, license_accepted)
+                                VALUES (:sid, 999002, 'canon', :cid, :uid, :status, true)
+                                """
+                            ),
+                            {"sid": series_id, "cid": citation_id, "uid": user_id, "status": status},
+                        )
+
+            updated = await client.get("/api/v1/users/me")
+            assert updated.json()["approved_count"] == 1
+            assert updated.json()["rejected_count"] == 1
+            assert updated.json()["trust_score"] == 1 - (1 * 2)  # REJECTION_PENALTY = 2
+    finally:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    sql_text("DELETE FROM contributions WHERE submitted_by = :uid"), {"uid": user_id}
+                )
+                await session.execute(
+                    sql_text("DELETE FROM citations WHERE submitted_by = :uid"), {"uid": user_id}
+                )
+        await _delete_user_by_github_id(gh_id)
+
+
+@pytest.mark.asyncio
+async def test_delete_me_requires_auth() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.delete("/api/v1/users/me")
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_delete_me_removes_own_account_and_clears_session() -> None:
+    """#29/#18: self-service deletion, no admin gate — deletes the caller's
+    own row and clears the session cookie so the deleted account can't
+    keep using it.
+
+    Checks the Set-Cookie header directly rather than httpx's client-side
+    cookie jar: a cookie seeded via `client.cookies.set(...)` (not received
+    from a real Set-Cookie response) doesn't reconcile against a later
+    deletion Set-Cookie in httpx's jar — confirmed as a test-harness quirk,
+    not a server bug (the header itself is correct; any real browser
+    clears it). What actually matters — a stale token becomes unusable —
+    is checked below instead: the user row is gone, so get_current_user's
+    lookup 401s on any later request with the old token, regardless of
+    what any particular client does with the Set-Cookie header.
+    """
+    from core.security import SESSION_COOKIE_NAME, create_session_token
+
+    gh_id = _unique_id()
+    async with async_session_factory() as session:
+        async with session.begin():
+            user = await login_or_create_user(
+                session, "github", Profile(provider_id=gh_id, email=None, display_name=None, avatar_url=None)
+            )
+    user_id = user.id
+    stale_token = create_session_token(user_id)
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        client.cookies.set(SESSION_COOKIE_NAME, stale_token)
+        response = await client.delete("/api/v1/users/me")
+        assert response.status_code == 204
+        set_cookie = response.headers.get("set-cookie", "")
+        assert SESSION_COOKIE_NAME in set_cookie
+        assert "Max-Age=0" in set_cookie  # the server did tell the client to clear it
+
+    async with async_session_factory() as session:
+        row = (
+            await session.execute(text("SELECT id FROM users WHERE id = :id"), {"id": user_id})
+        ).first()
+        assert row is None
+
+    # The stale token is a validly-signed cookie for an id that no longer
+    # exists — this is what actually makes it unusable post-deletion.
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        client.cookies.set(SESSION_COOKIE_NAME, stale_token)
+        reused = await client.get("/api/v1/users/me")
+        assert reused.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_delete_me_anonymizes_past_contributions_not_deletes_them() -> None:
+    """The whole point of ON DELETE SET NULL (schema.sql) — a deleted
+    user's past contributions stay in the audit trail, just no longer
+    attributed to them.
+    """
+    from sqlalchemy import text as sql_text
+
+    from core.security import SESSION_COOKIE_NAME, create_session_token
+
+    gh_id = _unique_id()
+    async with async_session_factory() as session:
+        async with session.begin():
+            user = await login_or_create_user(
+                session, "github", Profile(provider_id=gh_id, email=None, display_name=None, avatar_url=None)
+            )
+    user_id = user.id
+
+    series_id = None
+    contribution_id = None
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                series_id = (
+                    await session.execute(
+                        sql_text(
+                            "INSERT INTO series (title, provenance) VALUES "
+                            "('__test_29__series', 'community') RETURNING id"
+                        )
+                    )
+                ).scalar_one()
+                citation_id = (
+                    await session.execute(
+                        sql_text(
+                            "INSERT INTO citations (url, description, submitted_by) "
+                            "VALUES ('https://example.com', '__test_29__citation', :uid) RETURNING id"
+                        ),
+                        {"uid": user_id},
+                    )
+                ).scalar_one()
+                contribution_id = (
+                    await session.execute(
+                        sql_text(
+                            """
+                            INSERT INTO contributions
+                                (series_id, episode_number, proposed_status, citation_id,
+                                 submitted_by, review_status, license_accepted)
+                            VALUES (:sid, 1, 'canon', :cid, :uid, 'pending', true)
+                            RETURNING id
+                            """
+                        ),
+                        {"sid": series_id, "cid": citation_id, "uid": user_id},
+                    )
+                ).scalar_one()
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            response = await client.delete("/api/v1/users/me")
+            assert response.status_code == 204
+
+        async with async_session_factory() as session:
+            row = (
+                await session.execute(
+                    sql_text("SELECT submitted_by FROM contributions WHERE id = :id"),
+                    {"id": contribution_id},
+                )
+            ).one()
+            assert row.submitted_by is None  # anonymized, not deleted
+    finally:
+        async with async_session_factory() as session:
+            async with session.begin():
+                if contribution_id is not None:
+                    await session.execute(
+                        text("DELETE FROM contributions WHERE id = :id"), {"id": contribution_id}
+                    )
+                if series_id is not None:
+                    await session.execute(text("DELETE FROM series WHERE id = :id"), {"id": series_id})
+
+
+@pytest.mark.asyncio
 async def test_settings_link_requires_auth() -> None:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

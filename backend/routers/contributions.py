@@ -11,6 +11,7 @@ from schemas.contributions import (
     ContributionReject,
     ContributionReviewOut,
     DuplicatePendingContribution,
+    MyVoteOut,
     VoteCastOut,
     VoteCreate,
 )
@@ -59,6 +60,15 @@ async def my_contributions(
     session: AsyncSession = Depends(get_session),
 ) -> list[ContributionOut]:
     return await contributions_service.list_my_contributions(session, current_user.id)
+
+
+@router.get("/contributions/mine/votes", response_model=list[MyVoteOut])
+async def my_votes(
+    current_user=Depends(get_current_user),  # noqa: ANN001 - Row, auth required
+    session: AsyncSession = Depends(get_session),
+) -> list[MyVoteOut]:
+    # #30: votes-cast counterpart to /contributions/mine (own submissions).
+    return await contributions_service.list_my_votes(session, current_user.id)
 
 
 @router.get("/contributions", response_model=list[ContributionOut])

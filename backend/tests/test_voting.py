@@ -351,6 +351,49 @@ async def test_negative_trust_score_clamped_to_zero_weight(test_series_id: int, 
 
 
 @pytest.mark.asyncio
+async def test_my_votes_lists_only_own_votes_with_context(test_series_id: int, submitter_id: int) -> None:
+    """#30: GET /contributions/mine/votes — the votes-cast counterpart to
+    GET /contributions/mine (own submissions).
+    """
+    voter_id = await _make_user()
+    other_voter_id = await _make_user()
+    try:
+        contribution_id = await _submit_contribution_as(submitter_id, test_series_id, 20)
+        endorse = await _vote_as(voter_id, contribution_id, "endorse")
+        assert endorse.status_code == 200
+
+        # A different user's vote on the same contribution must never show
+        # up in voter_id's own list.
+        other = await _vote_as(other_voter_id, contribution_id, "dispute")
+        assert other.status_code == 200
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(voter_id))
+            response = await client.get("/api/v1/contributions/mine/votes")
+        assert response.status_code == 200, response.text
+        body = response.json()
+        assert len(body) == 1
+        entry = body[0]
+        assert entry["contribution_id"] == contribution_id
+        assert entry["series_id"] == test_series_id
+        assert entry["episode_number"] == 20
+        assert entry["vote"] == "endorse"
+        assert entry["review_status"] == "pending"
+    finally:
+        await _delete_user(voter_id)
+        await _delete_user(other_voter_id)
+
+
+@pytest.mark.asyncio
+async def test_my_votes_requires_authentication() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.get("/api/v1/contributions/mine/votes")
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
 async def test_weight_at_vote_snapshotted_not_rewritten_by_later_trust_change(
     test_series_id: int, submitter_id: int
 ) -> None:

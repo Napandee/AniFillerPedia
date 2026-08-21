@@ -64,6 +64,15 @@ async def touch_last_login(session: AsyncSession, user_id: int) -> None:
     )
 
 
+async def delete_user(session: AsyncSession, user_id: int) -> None:
+    """#29: self-service account deletion. Every FK referencing users is
+    ON DELETE SET NULL (schema.sql) — this DELETE is the whole operation,
+    anonymization of past contributions/votes/citations happens as a
+    consequence of that FK behavior, not extra cleanup logic here.
+    """
+    await session.execute(text("DELETE FROM users WHERE id = :id"), {"id": user_id})
+
+
 async def link_provider(
     session: AsyncSession, *, user_id: int, provider: str, provider_id: str
 ) -> None:

@@ -17,6 +17,7 @@ async def search_series(
     anidb_id: int | None,
     limit: int,
     offset: int,
+    sort: str | None = None,
 ) -> tuple[list[Row], int]:
     where = []
     params: dict = {"limit": limit, "offset": offset}
@@ -40,27 +41,51 @@ async def search_series(
 
     where_sql = f"WHERE {' AND '.join(where)}" if where else ""
 
+    # Total count is unaffected by sort mode — same WHERE, no join/group.
     total = (
         await session.execute(
             text(f"SELECT count(*) FROM series s {where_sql}"), params
         )
     ).scalar_one()
 
-    rows = (
-        await session.execute(
-            text(
-                f"""
-                SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
-                       s.provenance, s.created_at
-                FROM series s
-                {where_sql}
-                ORDER BY s.id
-                LIMIT :limit OFFSET :offset
-                """
-            ),
-            params,
-        )
-    ).fetchall()
+    if sort == "recently_updated":
+        # #42: series has no updated_at of its own — "recently updated"
+        # means "most recently had an episode approved." LEFT JOIN so a
+        # series with zero episodes still appears (NULLS LAST sorts it
+        # after everything with real activity, rather than dropping it).
+        rows = (
+            await session.execute(
+                text(
+                    f"""
+                    SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
+                           s.provenance, s.created_at
+                    FROM series s
+                    LEFT JOIN episodes e ON e.series_id = s.id
+                    {where_sql}
+                    GROUP BY s.id
+                    ORDER BY MAX(e.updated_at) DESC NULLS LAST, s.id
+                    LIMIT :limit OFFSET :offset
+                    """
+                ),
+                params,
+            )
+        ).fetchall()
+    else:
+        rows = (
+            await session.execute(
+                text(
+                    f"""
+                    SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
+                           s.provenance, s.created_at
+                    FROM series s
+                    {where_sql}
+                    ORDER BY s.id
+                    LIMIT :limit OFFSET :offset
+                    """
+                ),
+                params,
+            )
+        ).fetchall()
 
     return list(rows), total
 

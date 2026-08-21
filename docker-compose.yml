@@ -78,6 +78,15 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - runner-work:/tmp/afp-runner
+      # Docker-outside-of-Docker (the socket mount above) means `docker`
+      # commands run *inside* this container control the *host's* daemon —
+      # but `docker compose` itself still needs docker-compose.yml visible
+      # in whatever filesystem is running the command. Bind-mount the repo
+      # at the identical host path so build-app.yml's deploy job
+      # (working-directory: ${{ vars.APPDATA_PATH }}) resolves correctly on
+      # both sides. Fixed 2026-08-21 — real failure caught by actually
+      # running the deploy job end to end ("No such file or directory").
+      - /opt/AniFillerPedia:/opt/AniFillerPedia
 
   caddy:
     image: caddy:2-alpine

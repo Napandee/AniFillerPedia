@@ -25,3 +25,14 @@ class SeriesProposalOut(BaseModel):
     review_status: str
     reviewed_at: datetime | None
     review_note: str | None
+
+
+class SeriesProposalReject(BaseModel):
+    review_note: str = Field(min_length=1)
+
+
+class SeriesProposalReviewOut(BaseModel):
+    id: int
+    review_status: str
+    reviewed_at: datetime | None
+    review_note: str | None

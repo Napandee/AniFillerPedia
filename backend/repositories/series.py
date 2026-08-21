@@ -82,3 +82,39 @@ async def get_synonyms(session: AsyncSession, series_id: int) -> list[str]:
         {"id": series_id},
     )
     return [row.synonym for row in result.fetchall()]
+
+
+async def create(
+    session: AsyncSession,
+    *,
+    title: str,
+    anilist_id: int | None,
+    mal_id: int | None,
+    anidb_id: int | None,
+    provenance: str,
+    added_by: int | None,
+) -> Row:
+    """#13: promote an approved series_proposal into the live series
+    catalog. anilist_id/mal_id/anidb_id are UNIQUE but nullable — a
+    proposal whose external ID collides with an already-bootstrapped
+    series raises IntegrityError, which the service layer (not this
+    repository) turns into a clean 409 rather than a raw 500.
+    """
+    result = await session.execute(
+        text(
+            """
+            INSERT INTO series (title, anilist_id, mal_id, anidb_id, provenance, added_by)
+            VALUES (:title, :anilist_id, :mal_id, :anidb_id, :provenance, :added_by)
+            RETURNING *
+            """
+        ),
+        {
+            "title": title,
+            "anilist_id": anilist_id,
+            "mal_id": mal_id,
+            "anidb_id": anidb_id,
+            "provenance": provenance,
+            "added_by": added_by,
+        },
+    )
+    return result.one()

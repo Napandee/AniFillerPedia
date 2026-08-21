@@ -41,6 +41,20 @@ class ContributionOut(BaseModel):
     review_note: str | None
 
 
+class ContributionReject(BaseModel):
+    # Required, not optional — #13/#3: a moderator must give a reason, so a
+    # rejected contributor understands why rather than just that they were.
+    review_note: str = Field(min_length=1)
+
+
+class ContributionReviewOut(BaseModel):
+    id: int
+    review_status: str
+    resolution_method: str | None
+    reviewed_at: datetime | None
+    review_note: str | None
+
+
 class DuplicatePendingContributionDetail(BaseModel):
     message: str
     existing_contribution_id: int

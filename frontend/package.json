@@ -1,0 +1,17 @@
+{
+  "name": "anifillerpedia-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Frontend workspace (Astro app lands here in Phase 5). Currently home to the typed API client codegen pipeline only (#11) — no application code yet.",
+  "scripts": {
+    "generate:api-client": "node scripts/fetch-schema.mjs && openapi-typescript src/api/openapi.json -o src/api/schema.d.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.5.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.13.4"
+  }
+}

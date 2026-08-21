@@ -202,6 +202,83 @@ async def reject(
     return result.first()
 
 
+async def insert_vote(
+    session: AsyncSession, *, contribution_id: int, voter_id: int, vote: str, weight_at_vote: int
+) -> Row:
+    """The UNIQUE (contribution_id, voter_id) constraint in schema.sql is
+    the real one-vote-per-user guarantee — this raises IntegrityError on a
+    repeat vote, which the service layer converts to a clean 409 rather
+    than a raw constraint error reaching the caller.
+    """
+    result = await session.execute(
+        text(
+            """
+            INSERT INTO contribution_votes (contribution_id, voter_id, vote, weight_at_vote)
+            VALUES (:contribution_id, :voter_id, :vote, :weight_at_vote)
+            RETURNING *
+            """
+        ),
+        {
+            "contribution_id": contribution_id,
+            "voter_id": voter_id,
+            "vote": vote,
+            "weight_at_vote": weight_at_vote,
+        },
+    )
+    return result.one()
+
+
+async def get_net_endorsement_score(session: AsyncSession, contribution_id: int) -> int:
+    """Cumulative weighted endorsement minus weighted dispute (CLAUDE.md:
+    "one sufficiently-trusted user's single vote can cross the threshold
+    alone, or several lower-trust users' votes can combine to") — dispute
+    votes count against the total rather than being ignored, so a
+    contested-but-not-yet-rejected contribution can't be pushed through by
+    endorsements alone while credible disputes pile up unweighed.
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT COALESCE(
+                SUM(CASE WHEN vote = 'endorse' THEN weight_at_vote ELSE -weight_at_vote END),
+                0
+            ) AS net_score
+            FROM contribution_votes
+            WHERE contribution_id = :contribution_id
+            """
+        ),
+        {"contribution_id": contribution_id},
+    )
+    return result.scalar_one()
+
+
+async def promote_via_vote(session: AsyncSession, contribution_id: int) -> Row | None:
+    """Auto-promotion counterpart to approve() above — same guarded
+    `WHERE review_status = 'pending'` race protection (concurrent votes
+    that both compute a stale net_score crossing the threshold will only
+    ever have one UPDATE actually match a row; the loser's vote is still
+    recorded, it just doesn't trigger a second promotion). reviewed_by
+    stays NULL — a community-vote promotion has no single reviewing
+    moderator, only the votes themselves, which contribution_votes already
+    records in full.
+    """
+    result = await session.execute(
+        text(
+            """
+            UPDATE contributions
+            SET review_status = 'approved',
+                resolution_method = 'community_vote',
+                reviewed_by = NULL,
+                reviewed_at = now()
+            WHERE id = :id AND review_status = 'pending'
+            RETURNING *
+            """
+        ),
+        {"id": contribution_id},
+    )
+    return result.first()
+
+
 async def list_votes_for_contributions(
     session: AsyncSession, contribution_ids: list[int]
 ) -> list[Row]:

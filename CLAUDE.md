@@ -299,6 +299,34 @@ Not yet decided.
   per-identity rate limit — needs a basic anti-abuse layer (e.g. Cloudflare
   edge rate-limiting on the anonymous submission endpoint specifically)
   before launch, not yet designed in detail.
+- **#14 (community trust-weighted voting) implemented** (2026-08-21) —
+  `POST /api/v1/contributions/{id}/vote` (any logged-in user; anonymous
+  voting is NOT offered, unlike submission, since a vote's whole value is
+  being weighted by an accountable `trust_score`). Auto-approval threshold
+  shipped as `75` — a starting default, not a tuned number (still
+  explicitly tunable per the trust-voting decision above), chosen to match
+  the "3 endorse · trust 61/75" figure already used as the illustrative
+  example in this project's own UI mockups rather than inventing an
+  unrelated number. `weight_at_vote` is the voter's `trust_score` at cast
+  time, floored at 0 (a negative `trust_score` is meaningful at the
+  user-record level, but a negative-weighted vote would invert its own
+  polarity in the endorse-minus-dispute net-score sum). Two additions
+  beyond #14's written scope, both judged necessary rather than optional:
+  a submitter cannot vote on their own pending contribution (403 —
+  otherwise any submitter with a positive `trust_score` could self-endorse
+  toward the threshold), and dispute votes subtract from net score rather
+  than being ignored, so credible disputes can hold off a promotion that
+  endorsements alone would otherwise cross. **Sybil-resistance decision**
+  (#14's own flagged open question): accepted as a documented v1
+  limitation, not engineered around further — no real abuse data exists
+  yet to weigh the rate-limiting/tenure-weighting/correlation-heuristic
+  alternatives against, matching this project's general bias against
+  building for demand that doesn't exist yet. The one mitigation already
+  shipped is incidental, not built for this: Turnstile on the anonymous
+  submission endpoint (below) raises the cost of farming the
+  `approved_count` history a sockpuppet would need in the first place.
+  Revisit with a real design pass if real abuse is observed post-launch,
+  not before.
 - **Cloudflare Turnstile on the anonymous submission endpoint** (decided
   2026-08-21, issue #20) — free, privacy-friendly, trivial given the
   project is already fully on Cloudflare. Scoped narrowly: the anonymous

@@ -17,6 +17,82 @@ from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
+async def find_pending_for_episode(
+    session: AsyncSession, series_id: int, episode_number: int
+) -> Row | None:
+    """Existence check backing the #20 rule (at most one pending
+    contribution per episode) — the *readable* half of the guarantee, an
+    app-layer check so a duplicate submission gets a clean 409 pointing at
+    the existing row. The partial unique index in schema.sql is the real,
+    concurrency-safe backstop; this is what makes the common case a nice
+    error message instead of a raw constraint violation.
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT id FROM contributions
+            WHERE series_id = :series_id
+              AND episode_number = :episode_number
+              AND review_status = 'pending'
+            """
+        ),
+        {"series_id": series_id, "episode_number": episode_number},
+    )
+    return result.first()
+
+
+async def create(
+    session: AsyncSession,
+    *,
+    series_id: int,
+    episode_number: int,
+    proposed_status: str,
+    proposed_note: str | None,
+    citation_id: int,
+    submitted_by: int | None,
+    license_accepted: bool,
+) -> Row:
+    result = await session.execute(
+        text(
+            """
+            INSERT INTO contributions
+                (series_id, episode_number, proposed_status, proposed_note,
+                 citation_id, submitted_by, license_accepted)
+            VALUES
+                (:series_id, :episode_number, :proposed_status, :proposed_note,
+                 :citation_id, :submitted_by, :license_accepted)
+            RETURNING *
+            """
+        ),
+        {
+            "series_id": series_id,
+            "episode_number": episode_number,
+            "proposed_status": proposed_status,
+            "proposed_note": proposed_note,
+            "citation_id": citation_id,
+            "submitted_by": submitted_by,
+            "license_accepted": license_accepted,
+        },
+    )
+    return result.one()
+
+
+async def list_mine(session: AsyncSession, user_id: int) -> list[Row]:
+    result = await session.execute(
+        text(
+            """
+            SELECT co.*, c.url AS citation_url, c.description AS citation_description
+            FROM contributions co
+            JOIN citations c ON c.id = co.citation_id
+            WHERE co.submitted_by = :user_id
+            ORDER BY co.submitted_at DESC
+            """
+        ),
+        {"user_id": user_id},
+    )
+    return list(result.fetchall())
+
+
 async def get_episode_series_and_number(
     session: AsyncSession, episode_id: int
 ) -> Row | None:

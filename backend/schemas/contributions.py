@@ -115,6 +115,24 @@ class VoteCastOut(BaseModel):
     resolution_method: str | None
 
 
+class MyVoteOut(BaseModel):
+    """#30: one entry per vote the caller has cast, enough context
+    (series title, episode, current resolution) to render without a
+    follow-up request per row.
+    """
+
+    contribution_id: int
+    series_id: int
+    series_title: str
+    episode_number: int
+    proposed_status: str
+    vote: str
+    weight_at_vote: int
+    review_status: str
+    resolution_method: str | None
+    created_at: datetime
+
+
 class ContributionHistoryEntry(BaseModel):
     id: int
     proposed_status: str

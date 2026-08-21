@@ -13,9 +13,10 @@ async def search_series(
     anidb_id: int | None,
     limit: int,
     offset: int,
+    sort: str | None = None,
 ) -> SeriesListOut:
     rows, total = await series_repo.search_series(
-        session, q, anilist_id, mal_id, anidb_id, limit, offset
+        session, q, anilist_id, mal_id, anidb_id, limit, offset, sort
     )
     return SeriesListOut(
         items=[SeriesOut(**row._mapping) for row in rows],

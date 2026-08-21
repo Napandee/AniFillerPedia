@@ -13,6 +13,7 @@ from schemas.contributions import (
     ContributionCreate,
     ContributionOut,
     ContributionReviewOut,
+    MyVoteOut,
     VoteCastOut,
 )
 from services.admin import compute_trust_score
@@ -281,6 +282,25 @@ async def reject_contribution(
         reviewed_at=rejected_row.reviewed_at,
         review_note=rejected_row.review_note,
     )
+
+
+async def list_my_votes(session: AsyncSession, user_id: int) -> list[MyVoteOut]:
+    rows = await contributions_repo.list_votes_by_voter(session, user_id)
+    return [
+        MyVoteOut(
+            contribution_id=row.contribution_id,
+            series_id=row.series_id,
+            series_title=row.series_title,
+            episode_number=row.episode_number,
+            proposed_status=row.proposed_status,
+            vote=row.vote,
+            weight_at_vote=row.weight_at_vote,
+            review_status=row.review_status,
+            resolution_method=row.resolution_method,
+            created_at=row.created_at,
+        )
+        for row in rows
+    ]
 
 
 async def list_my_contributions(session: AsyncSession, user_id: int) -> list[ContributionOut]:

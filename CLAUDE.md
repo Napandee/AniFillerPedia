@@ -5,10 +5,20 @@
 An open, community-editable database of anime filler/canon episode data — which
 episodes are anime-original ("filler") versus adapted from the source manga
 ("canon"), with mixed episodes flagged separately. It exists because no
-existing option is both genuinely open (freely reusable, no ToS wall) and
-API-accessible (see Guardrails — the two closest existing sources each fail
-one of those). Standalone project, not part of AniDex — see Decisions Made for
-why.
+existing option is both genuinely open (free to read, free to contribute to,
+no ToS wall) and API-accessible (see Guardrails — the two closest existing
+sources each fail one of those). Standalone project, not part of AniDex — see
+Decisions Made for why.
+
+**Open for reading and contributing; not for powering paid products without
+agreement** (decided 2026-08-20, see Decisions Made — License): anyone may
+read the data or contribute corrections/citations/new-series proposals,
+regardless of who they work for — an employee of a commercial, paid anime
+tracker is as welcome to contribute as anyone else. What requires a separate
+commercial agreement is *using* this project's data (via the API, a bulk
+export, or otherwise) as a backing data source for a product or service that
+charges its own end users. Contribution and consumption are governed
+differently on purpose.
 
 ## Scope
 
@@ -45,6 +55,14 @@ legitimate sources, deliberately not from one restricted site:
   tags in [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database)
   (ODbL-licensed, genuinely open) — used to identify *which* shows are worth
   researching in detail, not as a source of per-episode data (it has none).
+  **One-time bootstrap import only, not a live dependency**: confirmed
+  2026-08-20 that the upstream repo is archived (last release `2026-27`,
+  2026-07-04) — the ODbL license means the last snapshot stays permanently
+  reusable, but there's no active maintainer to keep pulling updates from.
+  The `series` catalog is seeded once from that snapshot and grows afterward
+  entirely through community series-proposal submissions (see Data Model) —
+  it is not an auto-synced/rebuildable table the way AniDex's AniList-sourced
+  tables are.
 - **Per-episode data**: hand-compiled, cited research per show — reading
   public sources (wiki prose, forum discussions, official chronology guides)
   and cross-referencing multiple sources rather than trusting one, the same
@@ -66,11 +84,13 @@ legitimate sources, deliberately not from one restricted site:
 
 Not yet built. Known requirements, to get right from the start:
 
-- Separate the community-contributed/correctable layer (episode filler/canon
-  status, source citations) from anything auto-imported (the series-level
-  targeting tag from manami-project) — same spirit as AniDex's own
-  AniList-sourced vs. personal-layer table separation, adapted to this
-  project's actual data.
+- Separate the episode-level community-contributed/correctable layer
+  (filler/canon status, source citations) from the series catalog — but note
+  the series catalog itself is *not* an auto-synced/rebuildable table the way
+  AniDex's AniList-sourced tables are (manami-project's dataset is archived,
+  see Data Source), so it's bootstrapped once and then grown the same way
+  episode data grows: community proposal + approval, never an unmoderated
+  direct write.
 - Every entry needs a status (pending/approved) and a citation — no entry
   should be live/authoritative without both a source and at least one
   approval, given the "Wikipedia-style, not open-write" model this project is
@@ -80,8 +100,33 @@ Not yet built. Known requirements, to get right from the start:
 
 ## Architecture
 
-Not yet built. No components exist yet — this section gets filled in as real
-decisions are made, not speculatively ahead of them.
+Not yet built, but the shape is decided (2026-08-20 planning session):
+
+- **API**: FastAPI, `/api/v1/...`, layered routers/services/repositories.
+  Public read endpoints (series, episodes, per-episode citation, per-episode
+  contribution history) are unauthenticated. Contribution/series-proposal
+  submission requires GitHub OAuth login (any contributor); approval/rejection
+  requires moderator/admin role. Same API serves both the public Astro
+  frontend (via a typed client generated from FastAPI's own OpenAPI schema)
+  and any external consumer (e.g. a future AniDex integration) — one contract,
+  no separate internal API.
+- **Async/side-effects**: transactional outbox pattern, not a message broker.
+  An `outbox_events` table is written to in the same DB transaction as any
+  state change other systems care about (contribution submitted/approved/
+  rejected, series proposal submitted/approved). A separate lightweight
+  worker container polls it (`FOR UPDATE SKIP LOCKED`) and dispatches side
+  effects (moderator Telegram notification on new pending contribution,
+  Cloudflare cache purge on approval so public pages refresh immediately
+  rather than waiting on a cache TTL). Postgres is the broker — no Redis/
+  Celery. Chosen deliberately over waiting to add this later: the
+  write-path/schema stay unchanged if real scale ever justifies swapping the
+  poller for a heavier Postgres-backed queue library or running more worker
+  replicas — only the consumer side would change.
+- **Frontend**: Astro, server-rendered (SSR/on-demand) for series/episode
+  pages rather than a full static prebuild — avoids needing any
+  rebuild-trigger pipeline to propagate approved changes; freshness instead
+  comes from the outbox-driven cache purge above. Islands for auth, search,
+  the contribution submission form, and the moderator approval-queue view.
 
 ## Deploy
 
@@ -116,18 +161,63 @@ Not yet decided.
   fine to just do.
 - Ask before changing the deploy pipeline once one exists — changes there
   affect the live deployment path.
+- **Monorepo with a hard backend/frontend split, not a shared tangle.**
+  `backend/` (FastAPI/Python) and `frontend/` (Astro/Node) live in one repo
+  (decided 2026-08-21 specifically to keep the roadmap board and the
+  typed-client codegen pipeline simple — see Decisions Made) but must stay
+  genuinely separate: no dependency files, configs, or tooling bleeding
+  across the two directories. CI must use path-based triggers
+  (`paths: ['backend/**']` / `paths: ['frontend/**']`) so a change on one
+  side never rebuilds or redeploys the other. This is what makes the
+  monorepo choice safe rather than a shortcut to coupling them — don't
+  quietly erode it for convenience.
 
 ## Decisions Made
 
-- **License**: split — [ODbL v1.0](DATA_LICENSE) for the dataset itself,
-  [MIT](LICENSE) for code. Matches the precedent set by
-  manami-project/anime-offline-database (one of this project's own seed
-  sources), which uses the same split. Chosen over a single GPL-3.0 (the
-  project-template default) because GPL is a code-copyleft license and
-  doesn't map cleanly onto "is this dataset free to reuse" the way a
-  data-specific license does; chosen over CC0 because ODbL's attribution +
-  share-alike terms keep contributions flowing back to the community rather
-  than allowing a downstream paywalled fork with zero obligation back.
+- **Repo structure: monorepo** (`backend/` FastAPI + `frontend/` Astro in
+  one repo), decided 2026-08-21. Deciding factors: the typed-client codegen
+  pipeline (openapi-typescript against FastAPI's OpenAPI schema) is a local
+  file read in a monorepo versus real cross-repo fetch/auth complexity in a
+  split; and 23 issues already existed on one roadmap board by this point —
+  splitting would have fragmented planning work already done, not just
+  future work. **Rejected**: separate repos (`AniFillerPedia` +
+  `AniFillerPedia-web` or similar) — real advantages considered (contributor
+  clarity per side, reads more clearly as "the API is a standalone product"
+  to external consumers, cleaner mapping if frontend ever hosts somewhere
+  different like Cloudflare Pages) but doubled ops surface (two self-hosted
+  runners, two secret sets, two `pr-validate.yml`s) and the schema-fetch
+  complexity weren't worth it for a solo/small-team-maintained project.
+  Note even the "different host" advantage doesn't actually require a
+  split — Cloudflare Pages can build from a subdirectory of a monorepo
+  directly. The monorepo choice is only safe because of the hard
+  backend/frontend separation enforced in Guardrails — treat that
+  enforcement as load-bearing, not optional.
+- **License**: split — [CC BY-NC-SA 4.0](DATA_LICENSE) for the dataset
+  itself, [MIT](LICENSE) for code. The data/code split still matches the
+  *structural* precedent set by manami-project/anime-offline-database (one
+  of this project's own seed sources); code stays GPL-3.0-free/MIT
+  regardless of the dataset license.
+  **Changed 2026-08-20 from the original ODbL v1.0 choice.** ODbL was
+  initially picked over CC0 for its attribution + share-alike terms, but the
+  owner's actual intent — established the same day — is stricter than
+  share-alike: no paywalled/paid product may use this data as a backing
+  source without a separate commercial agreement, and ODbL has no
+  non-commercial clause at all, so this required a re-license, not a text
+  edit. Landed on CC BY-NC-SA 4.0 + an explicit "contact us for a commercial
+  license" carve-out over two alternatives: hand-written custom legal text
+  (rejected — real enforceability risk without a lawyer drafting it) and
+  staying on ODbL with a bolted-on restriction (not possible — the clause
+  doesn't exist in that license family). Known tradeoff, accepted knowingly:
+  CC licenses don't cover EU Sui Generis Database Rights as specifically as
+  ODbL does. **The restriction is on *use*, not *contribution*** — anyone
+  may contribute corrections/citations/proposals regardless of employer;
+  what needs an agreement is consuming the data (API, bulk export, or
+  otherwise) to power a product that charges its own end users. See
+  `DATA_LICENSE` for the full text and the commercial-licensing note.
+  **Not yet lawyer-reviewed** — same honesty flag as the rest of this
+  project's license reasoning (see issue #21): treat as a considered,
+  good-faith position, not confirmed legal advice, until a real review
+  happens before public launch.
 - **Standalone from AniDex, not a feature of it**: this started as a spike
   inside AniDex (issue #161, "filler episode tracking") but was deliberately
   split into its own project rather than built as an AniDex feature — the
@@ -135,4 +225,66 @@ Not yet decided.
   could also consume, not something scoped to one personal instance's users.
   AniDex may become a *consumer* of this project's API later, but that's a
   separate future decision, not assumed here.
-- **Tech stack**: not yet decided.
+- **Tech stack**: FastAPI (Python) + Postgres (SQLModel + SQLAlchemy 2.0 Core
+  where needed) + Astro frontend (islands for auth/search/submission-forms/
+  approval-queue), typed API client generated from FastAPI's own OpenAPI
+  schema via `openapi-typescript` + `openapi-fetch`, GitHub OAuth via FastAPI
+  Users. Deploy: DigitalOcean Droplet, GitHub Actions builds/pushes to GHCR,
+  a self-hosted runner on the droplet pulls and restarts — same
+  build-then-self-hosted-runner-deploys pattern as `Napandee/AniDex`, no
+  webhook/n8n hop. Decided 2026-08-20.
+- **Series catalog is community-grown, not auto-synced**: seeded once from
+  manami-project's archived last snapshot, then extended only via a
+  `series_proposals` approval flow (mirrors episode `contributions`) — never
+  an unmoderated direct write, and never a recurring external sync since
+  there's no longer an active upstream to sync from. Decided 2026-08-20.
+- **Episode status/numbering**: three values only — `canon` / `filler` /
+  `mixed` (a `recap` value was considered and deliberately dropped — not
+  worth the added distinction). Episode numbering is absolute (matches how
+  filler guides count, e.g. Naruto: Shippuden 1–500), not per-season.
+  Structured (non-freeform) citation data for `mixed` episodes — e.g. a
+  manga chapter range or scene/timestamp range instead of prose — is
+  deliberately deferred, tracked as
+  [issue #2](https://github.com/Napandee/AniFillerPedia/issues/2), Held on
+  the roadmap board. `status_note` ships as freeform text in v1 regardless.
+- **Auth: GitHub + Discord OAuth at launch; Google added separately, not
+  launch-blocking.** Originally decided 2026-08-20 as "all three at launch,"
+  **reversed 2026-08-21** once the practical consequence sank in: Google's
+  OAuth app needs to pass Google's verification review to leave "Testing"
+  mode (a 100-user cap otherwise), which depends on a privacy policy
+  existing, which depends on the account-deletion/data-retention decisions
+  in #18 — a real dependency chain with no fixed timeline. Bundling Google
+  into "launch" meant launch was implicitly gated on that whole chain
+  finishing. GitHub and Discord have no such dependency. Google OAuth is now
+  tracked as its own separable, non-blocking addition — see the issue
+  filed 2026-08-21 for it. Reuses `Napandee/AniDex`'s already-proven
+  multi-provider pattern regardless of provider count: explicit-only account
+  linking (never auto-link by email match — a provider-supplied email isn't
+  proof of identity; linking only via an authenticated
+  `/settings/link/{provider}` route, separate from ordinary login).
+  **Differs from AniDex on admin bootstrap**: AniDex's first-user-becomes-
+  admin is a real security hole for a public open-signup site (whoever signs
+  up first — or after any future DB reset — gets admin) — use an env var
+  (e.g. `INITIAL_ADMIN_GITHUB_ID`) checked against identity on first login
+  instead.
+- **Contribution model allows anonymous submission**, approved by one of two
+  paths: moderator approval (human backstop, always available), or a
+  **community trust-weighted vote** — any logged-in user can endorse/dispute
+  a pending contribution, weighted by their own `trust_score`; once
+  cumulative weighted endorsement crosses a threshold, it auto-promotes
+  with no moderator click needed (one sufficiently-trusted user's single
+  vote can cross the threshold alone, or several lower-trust users' votes
+  can combine to). `trust_score` is anchored primarily to track record, not
+  raw likes (likes are gameable via sockpuppets; "past submissions verified
+  correct" isn't): `approved_count + likes_received × small_weight −
+  rejected_count × penalty`, with rejection costing more than approval earns
+  to discourage low-effort spam — exact weights/threshold still tunable,
+  not finalized. Schema: `contributions.submitted_by` becomes nullable,
+  gains `resolution_method` (`'moderator'` | `'community_vote'`); new
+  `contribution_votes` table (`contribution_id`, `voter_id`, `vote`
+  endorse/dispute, `weight_at_vote` — snapshotted so later trust changes
+  don't rewrite resolved history, one vote per user per contribution).
+  **Known open gap**: anonymous submission removes the natural
+  per-identity rate limit — needs a basic anti-abuse layer (e.g. Cloudflare
+  edge rate-limiting on the anonymous submission endpoint specifically)
+  before launch, not yet designed in detail.

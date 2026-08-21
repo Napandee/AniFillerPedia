@@ -36,3 +36,14 @@ async def get_current_user_optional(
     if user_id is None:
         return None
     return await find_by_id(session, user_id)
+
+
+async def require_moderator(current_user: Row = Depends(get_current_user)) -> Row:
+    """#13: moderation endpoints (approve/reject) — moderator or admin
+    only. Admin is a superset of moderator here (CLAUDE.md/#27), so this
+    single check covers both roles rather than needing a separate
+    require_admin for anything moderation-shaped.
+    """
+    if current_user.role not in ("moderator", "admin"):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="moderator or admin role required")
+    return current_user

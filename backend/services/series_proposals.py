@@ -1,10 +1,16 @@
 from fastapi import HTTPException
 from sqlalchemy.engine import Row
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import repositories.outbox as outbox_repo
+import repositories.series as series_repo
 import repositories.series_proposals as series_proposals_repo
-from schemas.series_proposals import SeriesProposalCreate, SeriesProposalOut
+from schemas.series_proposals import (
+    SeriesProposalCreate,
+    SeriesProposalOut,
+    SeriesProposalReviewOut,
+)
 
 # Same transaction-boundary convention as services/contributions.py — the
 # caller (router) already has `async with session.begin():` open.
@@ -39,6 +45,85 @@ async def submit_series_proposal(
 async def list_my_series_proposals(session: AsyncSession, user_id: int) -> list[SeriesProposalOut]:
     rows = await series_proposals_repo.list_mine(session, user_id)
     return [_row_to_out(row) for row in rows]
+
+
+async def list_pending_series_proposals(session: AsyncSession) -> list[SeriesProposalOut]:
+    rows = await series_proposals_repo.list_pending(session)
+    return [_row_to_out(row) for row in rows]
+
+
+async def approve_series_proposal(
+    session: AsyncSession, series_proposal_id: int, moderator_id: int
+) -> SeriesProposalReviewOut:
+    approved_row = await series_proposals_repo.approve(session, series_proposal_id, moderator_id)
+    if approved_row is None:
+        existing = await series_proposals_repo.get_by_id(session, series_proposal_id)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="series proposal not found")
+        raise HTTPException(
+            status_code=409,
+            detail=f"series proposal is not pending (current status: {existing.review_status})",
+        )
+
+    # Promote into the live series catalog — same transaction as the
+    # approval itself. anilist_id/mal_id/anidb_id are UNIQUE but nullable;
+    # a collision with an already-bootstrapped series raises IntegrityError
+    # here, which we turn into a clean 409 rather than a raw 500.
+    try:
+        await series_repo.create(
+            session,
+            title=approved_row.title,
+            anilist_id=approved_row.anilist_id,
+            mal_id=approved_row.mal_id,
+            anidb_id=approved_row.anidb_id,
+            provenance="community",
+            added_by=moderator_id,
+        )
+    except IntegrityError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail="a series with one of these external IDs already exists",
+        ) from exc
+
+    await outbox_repo.write(
+        session,
+        event_type="series_proposal.approved",
+        payload={"series_proposal_id": approved_row.id, "title": approved_row.title},
+    )
+
+    return SeriesProposalReviewOut(
+        id=approved_row.id,
+        review_status=approved_row.review_status,
+        reviewed_at=approved_row.reviewed_at,
+        review_note=approved_row.review_note,
+    )
+
+
+async def reject_series_proposal(
+    session: AsyncSession, series_proposal_id: int, moderator_id: int, review_note: str
+) -> SeriesProposalReviewOut:
+    rejected_row = await series_proposals_repo.reject(session, series_proposal_id, moderator_id, review_note)
+    if rejected_row is None:
+        existing = await series_proposals_repo.get_by_id(session, series_proposal_id)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="series proposal not found")
+        raise HTTPException(
+            status_code=409,
+            detail=f"series proposal is not pending (current status: {existing.review_status})",
+        )
+
+    await outbox_repo.write(
+        session,
+        event_type="series_proposal.rejected",
+        payload={"series_proposal_id": rejected_row.id},
+    )
+
+    return SeriesProposalReviewOut(
+        id=rejected_row.id,
+        review_status=rejected_row.review_status,
+        reviewed_at=rejected_row.reviewed_at,
+        review_note=rejected_row.review_note,
+    )
 
 
 def _row_to_out(row: Row) -> SeriesProposalOut:

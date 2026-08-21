@@ -31,3 +31,48 @@ async def get_by_id(session: AsyncSession, episode_id: int) -> Row | None:
         {"id": episode_id},
     )
     return result.first()
+
+
+async def upsert(
+    session: AsyncSession,
+    *,
+    series_id: int,
+    episode_number: int,
+    status: str,
+    status_note: str | None,
+    citation_id: int,
+    approved_contribution_id: int,
+) -> Row:
+    """#13: promote an approved contribution into the live episodes table.
+    ON CONFLICT (series_id, episode_number) — schema.sql's own UNIQUE
+    constraint — so a later contribution correcting an already-approved
+    episode overwrites it rather than erroring; full history stays in
+    contributions regardless (episodes only ever reflects the current
+    approved state, per CLAUDE.md Architecture).
+    """
+    result = await session.execute(
+        text(
+            """
+            INSERT INTO episodes
+                (series_id, episode_number, status, status_note, citation_id, approved_contribution_id)
+            VALUES
+                (:series_id, :episode_number, :status, :status_note, :citation_id, :approved_contribution_id)
+            ON CONFLICT (series_id, episode_number) DO UPDATE SET
+                status = EXCLUDED.status,
+                status_note = EXCLUDED.status_note,
+                citation_id = EXCLUDED.citation_id,
+                approved_contribution_id = EXCLUDED.approved_contribution_id,
+                updated_at = now()
+            RETURNING *
+            """
+        ),
+        {
+            "series_id": series_id,
+            "episode_number": episode_number,
+            "status": status,
+            "status_note": status_note,
+            "citation_id": citation_id,
+            "approved_contribution_id": approved_contribution_id,
+        },
+    )
+    return result.one()

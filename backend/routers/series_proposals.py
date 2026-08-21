@@ -4,8 +4,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import services.series_proposals as series_proposals_service
 import services.turnstile as turnstile_service
 from core.db import get_session
-from core.deps import get_current_user, get_current_user_optional
-from schemas.series_proposals import SeriesProposalCreate, SeriesProposalOut
+from core.deps import get_current_user, get_current_user_optional, require_moderator
+from schemas.series_proposals import (
+    SeriesProposalCreate,
+    SeriesProposalOut,
+    SeriesProposalReject,
+    SeriesProposalReviewOut,
+)
 
 router = APIRouter(tags=["series-proposals"])
 
@@ -36,3 +41,41 @@ async def my_series_proposals(
     session: AsyncSession = Depends(get_session),
 ) -> list[SeriesProposalOut]:
     return await series_proposals_service.list_my_series_proposals(session, current_user.id)
+
+
+@router.get("/series-proposals", response_model=list[SeriesProposalOut])
+async def list_pending_series_proposals(
+    review_status: str = "pending",
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> list[SeriesProposalOut]:
+    if review_status != "pending":
+        raise HTTPException(status_code=404, detail="only review_status=pending is supported")
+    return await series_proposals_service.list_pending_series_proposals(session)
+
+
+@router.post("/series-proposals/{series_proposal_id}/approve", response_model=SeriesProposalReviewOut)
+async def approve_series_proposal(
+    series_proposal_id: int,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> SeriesProposalReviewOut:
+    result = await series_proposals_service.approve_series_proposal(
+        session, series_proposal_id, current_user.id
+    )
+    await session.commit()
+    return result
+
+
+@router.post("/series-proposals/{series_proposal_id}/reject", response_model=SeriesProposalReviewOut)
+async def reject_series_proposal(
+    series_proposal_id: int,
+    payload: SeriesProposalReject,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> SeriesProposalReviewOut:
+    result = await series_proposals_service.reject_series_proposal(
+        session, series_proposal_id, current_user.id, payload.review_note
+    )
+    await session.commit()
+    return result

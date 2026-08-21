@@ -4,7 +4,7 @@ name: Validate backend PR build
 # equivalent frontend-paths workflow once frontend/ has real work in it.
 on:
   pull_request:
-    branches: [main]
+    branches: [master]
     paths:
       - "backend/**"
       - "docker-compose.yml"
@@ -60,14 +60,14 @@ jobs:
 
           ok=""
           for i in $(seq 1 30); do
-            if curl -sf -o /dev/null http://localhost:8000/health; then
+            if curl -sf -o /dev/null http://localhost:8000/api/v1/health; then
               ok=1
               break
             fi
             sleep 1
           done
           if [ -z "$ok" ]; then
-            echo "App never became reachable on :8000/health"
+            echo "App never became reachable on :8000/api/v1/health"
             docker logs afp-smoke
             exit 1
           fi

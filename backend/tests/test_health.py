@@ -1,6 +1,7 @@
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+from core.version import API_VERSION
 from main import app
 
 
@@ -11,3 +12,12 @@ async def test_health() -> None:
         response = await client.get("/api/v1/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
+
+
+@pytest.mark.asyncio
+async def test_version() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.get("/api/v1/version")
+    assert response.status_code == 200
+    assert response.json() == {"version": API_VERSION}

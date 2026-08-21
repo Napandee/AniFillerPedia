@@ -1,0 +1,68 @@
+name: Build and deploy backend
+
+# Path-filtered on purpose (CLAUDE.md Guardrails — monorepo split, decided
+# 2026-08-21): this must never fire on a frontend/-only change once
+# frontend/ exists. Built in from the start rather than retrofitted later.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "docker-compose.yml"
+      - ".github/workflows/build-app.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set lowercase owner
+        run: echo "OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ghcr.io/${{ env.OWNER }}/anifillerpedia-backend:latest
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, afp-droplet]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docker-compose.yml
+            Caddyfile
+          sparse-checkout-cone-mode: false
+
+      - name: Log in to GHCR
+        run: |
+          OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')
+          GHCR_TOKEN=$(grep '^GHCR_TOKEN=' ${{ vars.APPDATA_PATH }}/.env | cut -d= -f2- | tr -d '\r\n')
+          echo "$GHCR_TOKEN" | docker login ghcr.io -u "$OWNER" --password-stdin
+
+      # Multi-service stack (app/postgres/worker/runner/caddy) — pull +
+      # `compose up` rather than AniDex's raw `docker run` for a single
+      # container. `--no-deps` on app/worker keeps this from restarting
+      # postgres/caddy/the runner itself on every backend deploy.
+      - name: Pull new image and restart app + worker
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          docker compose pull app worker
+          docker compose up -d --no-deps app worker

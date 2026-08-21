@@ -1,0 +1,82 @@
+name: Validate backend PR build
+
+# Path-filtered — monorepo split (CLAUDE.md Guardrails, 2026-08-21). Add an
+# equivalent frontend-paths workflow once frontend/ has real work in it.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "docker-compose.yml"
+      - ".github/workflows/pr-validate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: afp_test
+          POSTGRES_USER: afp_test
+          POSTGRES_PASSWORD: afp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U afp_test"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          load: true
+          tags: anifillerpedia-backend:pr-test
+
+      - name: Apply schema to test database
+        run: |
+          PGPASSWORD=afp_test psql -h localhost -U afp_test -d afp_test -f backend/schema.sql
+
+      # ASSUMPTION TO VERIFY once #6 lands for real: this expects a health
+      # endpoint at /health returning 200. If #6 ships it at a different path
+      # (e.g. /api/v1/health per the versioned API convention in CLAUDE.md),
+      # update this step's URL — don't assume this guess is correct.
+      - name: Smoke-test the built image
+        run: |
+          docker run -d --name afp-smoke --network host \
+            -e DATABASE_URL="postgresql://afp_test:afp_test@localhost:5432/afp_test" \
+            anifillerpedia-backend:pr-test
+
+          ok=""
+          for i in $(seq 1 30); do
+            if curl -sf -o /dev/null http://localhost:8000/health; then
+              ok=1
+              break
+            fi
+            sleep 1
+          done
+          if [ -z "$ok" ]; then
+            echo "App never became reachable on :8000/health"
+            docker logs afp-smoke
+            exit 1
+          fi
+          echo "Smoke test passed: health endpoint responded."
+
+      - name: Container logs
+        if: always()
+        run: docker logs afp-smoke || true
+
+      - name: Clean up
+        if: always()
+        run: docker rm -f afp-smoke || true

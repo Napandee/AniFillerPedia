@@ -1,0 +1,100 @@
+# Production stack for the DO Droplet. Five services: the FastAPI app, its
+# Postgres, the outbox-events worker, a self-hosted GitHub Actions runner
+# (so build-app.yml can deploy without a webhook/SSH hop — see
+# .github/workflows/build-app.yml), and Caddy for automatic TLS.
+#
+# Unlike AniDex's pattern (raw `docker pull` + `docker run`, no Compose),
+# this project genuinely needs multi-container orchestration on one box —
+# app, Postgres, worker, and runner all coordinate here. Compose IS the
+# deploy mechanism for this project, not just a container-manager convenience
+# file. See CLAUDE.md Architecture / Decisions Made for why.
+#
+# Backend image is built from ./backend (monorepo split — CLAUDE.md
+# Guardrails) — that Dockerfile doesn't exist in this worktree yet (issue #6
+# is being built in parallel), reference only, not buildable until it lands.
+
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: ghcr.io/napandee/anifillerpedia-backend:latest
+    container_name: afp-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8000:8000" # Caddy proxies to this; not exposed directly
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: afp-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: anifillerpedia
+      POSTGRES_USER: anifillerpedia
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anifillerpedia"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  worker:
+    # Same image as `app` — the outbox poller is a different entrypoint into
+    # the same backend/ codebase, not a separate build. Assumption to verify
+    # once #6's real backend/ structure lands: this expects an executable
+    # module/command like `python -m app.worker` (adjust CMD override below
+    # to match whatever #6 / the outbox-event-handling issue actually ships).
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: ghcr.io/napandee/anifillerpedia-backend:latest
+    container_name: afp-worker
+    restart: unless-stopped
+    command: ["python", "-m", "app.worker"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  runner:
+    image: myoung34/github-runner:latest
+    container_name: afp-runner
+    restart: unless-stopped
+    environment:
+      REPO_URL: https://github.com/Napandee/AniFillerPedia
+      RUNNER_NAME: afp-droplet
+      RUNNER_SCOPE: repo
+      LABELS: self-hosted,afp-droplet
+      ACCESS_TOKEN: ${GITHUB_RUNNER_ACCESS_TOKEN}
+      RUNNER_WORKDIR: /tmp/afp-runner
+      EPHEMERAL: "false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-work:/tmp/afp-runner
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: afp-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+
+volumes:
+  runner-work:
+  caddy-data:
+  caddy-config:

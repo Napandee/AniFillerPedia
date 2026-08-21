@@ -1,0 +1,19 @@
+anifillerpedia.wiki {
+	reverse_proxy app:8000
+
+	encode gzip
+
+	log {
+		output file /data/access.log
+		format json
+	}
+}
+
+# anifillerpedia.org and animefillerpedia.org redirect to the primary
+# domain — registered 2026-08-21, both forward to .wiki (CLAUDE.local.md
+# Live instance table). Actual redirect (registrar-level forwarding vs.
+# Caddy-level) is Andreas's call during #25's provisioning; this block
+# covers it here too in case Caddy-level redirect is preferred instead.
+anifillerpedia.org, animefillerpedia.org {
+	redir https://anifillerpedia.wiki{uri} permanent
+}

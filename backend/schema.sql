@@ -1,0 +1,212 @@
+-- AniFillerPedia — Postgres schema
+-- Fresh-install target schema (matching Napandee/AniDex's convention) — the
+-- upgrade path for an already-running database lives in migrations/, not
+-- here. This is the v1 schema; no migrations exist yet.
+--
+-- Design principles (see CLAUDE.md Decisions Made / Architecture for the
+-- full reasoning behind each):
+--   * The series catalog is community-grown, not auto-synced — bootstrapped
+--     once from manami-project's archived snapshot, then extended only via
+--     series_proposals. There is no "AniList-sourced, never hand-edit"
+--     table the way AniDex has one, because there's no live upstream left
+--     to treat as a system of record.
+--   * A contribution is never live/authoritative without both a citation
+--     and an approval — contributions.citation_id is NOT NULL, and
+--     episodes rows only ever come from promoting an approved contribution.
+--     This is a structural guarantee, not an app-layer policy.
+--   * Every FK to users(id) is ON DELETE SET NULL, not CASCADE — deleting
+--     an account anonymizes their past contributions/votes/citations
+--     rather than destroying the audit trail those rows exist to preserve
+--     (see issue #18, not yet fully resolved, but this is the documented
+--     lean and getting it wrong now means a painful migration once real
+--     user data exists). Where a column is NOT NULL by business rule today
+--     (e.g. contribution_votes.voter_id — a vote needs a voter), it's still
+--     made nullable here specifically so deletion can anonymize rather than
+--     cascade-delete the row and rewrite resolved history.
+
+-- =========================================================================
+-- AUTH
+-- =========================================================================
+
+-- One row per person who has ever logged in. OAuth-only — no password
+-- fields, since there's no reason to take on password-security surface
+-- when GitHub/Discord (and later Google, see issue #24) cover the whole
+-- target audience. A user may have any subset of the three provider ids
+-- set; account linking across providers is explicit-only (never automatic
+-- by email match — see CLAUDE.md), so linking logic lives in the app layer,
+-- not enforced here beyond each id being unique when present.
+CREATE TABLE users (
+    id            SERIAL PRIMARY KEY,
+    github_id     TEXT UNIQUE,
+    discord_id    TEXT UNIQUE,
+    google_id     TEXT UNIQUE,   -- nullable, reserved for issue #24 (Google OAuth, post-launch, not yet implemented)
+    email         TEXT,          -- from whichever provider supplied it; never the login key
+    display_name  TEXT,
+    avatar_url    TEXT,
+    role          TEXT NOT NULL DEFAULT 'contributor' CHECK (role IN ('contributor', 'moderator', 'admin')),
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_login_at TIMESTAMPTZ
+);
+
+-- =========================================================================
+-- SERIES CATALOG (community-grown — see header note above)
+-- =========================================================================
+
+-- One row per anime series. Seeded once from manami-project's archived
+-- snapshot (provenance='manami_bootstrap'), grown afterward only via
+-- series_proposals (provenance='community') — never an unmoderated direct
+-- write, matching the same approval-gated model episode contributions use.
+CREATE TABLE series (
+    id           SERIAL PRIMARY KEY,
+    anilist_id   INTEGER UNIQUE,
+    mal_id       INTEGER UNIQUE,
+    anidb_id     INTEGER UNIQUE,
+    title        TEXT NOT NULL,
+    provenance   TEXT NOT NULL CHECK (provenance IN ('manami_bootstrap', 'community')),
+    added_by     INTEGER REFERENCES users(id) ON DELETE SET NULL,   -- NULL for the one-time bootstrap import
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Alternate/romanized/native-script titles, captured during the one-time
+-- bootstrap import (issue #4) — the upstream manami-project dataset is
+-- archived, so this is the only chance to capture this data; it cannot be
+-- backfilled later the way a live-synced field could be. Also grows
+-- organically afterward if a contributor adds a synonym for a
+-- community-added series.
+CREATE TABLE series_synonyms (
+    id         SERIAL PRIMARY KEY,
+    series_id  INTEGER NOT NULL REFERENCES series(id) ON DELETE CASCADE,
+    synonym    TEXT NOT NULL,
+    UNIQUE (series_id, synonym)
+);
+
+-- A proposal to add a new series to the catalog. Mirrors the episode
+-- contributions/approval shape below, but for series-level identity rather
+-- than episode-level status. submitted_by is nullable purely to support
+-- ON DELETE SET NULL on account deletion (see header note) — whether
+-- anonymous series proposals are accepted is an application-layer business
+-- rule, not decided by this column's nullability.
+CREATE TABLE series_proposals (
+    id            SERIAL PRIMARY KEY,
+    title         TEXT NOT NULL,
+    anilist_id    INTEGER,
+    mal_id        INTEGER,
+    anidb_id      INTEGER,
+    justification TEXT NOT NULL,   -- why this show belongs — the series-level equivalent of a citation
+    submitted_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    submitted_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    review_status TEXT NOT NULL DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected')),
+    reviewed_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    reviewed_at   TIMESTAMPTZ,
+    review_note   TEXT
+);
+
+-- =========================================================================
+-- CITATIONS + CONTRIBUTIONS (the write surface AND the audit trail)
+-- =========================================================================
+
+-- A source backing a specific contribution. url is nullable (some sources
+-- are a book/guide with no URL) but description is always required — a
+-- bare URL isn't a citation on its own.
+CREATE TABLE citations (
+    id            SERIAL PRIMARY KEY,
+    url           TEXT,
+    description   TEXT NOT NULL,
+    submitted_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Every proposed episode status change, ever. This table IS the audit
+-- trail — rows are never deleted or overwritten, only review_status/
+-- resolution_method/reviewed_by/reviewed_at transition once. episodes
+-- reflects only the current approved state; contributions reflects
+-- everything anyone has ever proposed.
+--
+-- citation_id is NOT NULL — this is the structural guarantee, not an
+-- app-layer check, that nothing becomes live/authoritative without a
+-- source (see CLAUDE.md Guardrails).
+--
+-- submitted_by is nullable for two reasons: anonymous submission is an
+-- explicit, decided feature (see CLAUDE.md — "Contribution model allows
+-- anonymous submission"), and separately so deletion can anonymize rather
+-- than cascade-delete (see header note).
+--
+-- targets series_id + episode_number rather than an episodes.id FK,
+-- because the episode row may not exist yet (first-ever submission for
+-- that episode number).
+CREATE TABLE contributions (
+    id                SERIAL PRIMARY KEY,
+    series_id         INTEGER NOT NULL REFERENCES series(id) ON DELETE CASCADE,
+    episode_number    INTEGER NOT NULL,
+    proposed_status   TEXT NOT NULL CHECK (proposed_status IN ('canon', 'filler', 'mixed')),
+    proposed_note     TEXT,
+    citation_id       INTEGER NOT NULL REFERENCES citations(id),
+    submitted_by      INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    submitted_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    review_status     TEXT NOT NULL DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected')),
+    resolution_method TEXT CHECK (resolution_method IN ('moderator', 'community_vote')),   -- NULL until resolved
+    reviewed_by       INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    reviewed_at       TIMESTAMPTZ,
+    review_note       TEXT   -- moderator's reason, mainly for rejections
+);
+
+-- Community trust-weighted votes on a *pending* contribution — the
+-- alternative path to promotion alongside direct moderator approval (see
+-- CLAUDE.md). voter_id and weight_at_vote are both nullable/preserved
+-- carefully: weight_at_vote is a snapshot taken at vote time so a voter's
+-- later trust-score changes never retroactively rewrite an already-
+-- resolved contribution's history, and voter_id is nullable (ON DELETE SET
+-- NULL) so an account deletion anonymizes the vote rather than deleting it
+-- outright — deleting the row would itself rewrite resolved history, which
+-- is exactly what weight_at_vote's snapshotting exists to prevent.
+CREATE TABLE contribution_votes (
+    id               SERIAL PRIMARY KEY,
+    contribution_id  INTEGER NOT NULL REFERENCES contributions(id) ON DELETE CASCADE,
+    voter_id         INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    vote             TEXT NOT NULL CHECK (vote IN ('endorse', 'dispute')),
+    weight_at_vote   INTEGER NOT NULL,
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (contribution_id, voter_id)
+);
+
+-- =========================================================================
+-- EPISODES (the live, authoritative community layer)
+-- =========================================================================
+
+-- One row per episode with an APPROVED status. No row here for an episode
+-- nobody has researched yet — absence means "no data," not "canon by
+-- default." Episode numbering is absolute (matches how filler guides
+-- count, e.g. Naruto: Shippuden 1-500), not per-season. Only three status
+-- values — a 'recap' value was considered and deliberately dropped (see
+-- CLAUDE.md); structured (non-freeform) citation data for 'mixed' episodes
+-- is deliberately deferred, tracked as issue #2.
+CREATE TABLE episodes (
+    id                        SERIAL PRIMARY KEY,
+    series_id                 INTEGER NOT NULL REFERENCES series(id) ON DELETE CASCADE,
+    episode_number             INTEGER NOT NULL,
+    status                     TEXT NOT NULL CHECK (status IN ('canon', 'filler', 'mixed')),
+    status_note                TEXT,   -- freeform for v1 regardless of issue #2's outcome
+    citation_id                INTEGER NOT NULL REFERENCES citations(id),
+    approved_contribution_id   INTEGER NOT NULL REFERENCES contributions(id),   -- the specific contribution that made this row live — full history lives in contributions, not duplicated here
+    updated_at                 TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (series_id, episode_number)
+);
+
+-- =========================================================================
+-- ASYNC SIDE-EFFECTS (transactional outbox — see CLAUDE.md Architecture)
+-- =========================================================================
+
+-- Written to in the same DB transaction as any state change other systems
+-- care about (contribution submitted/approved/rejected, series proposal
+-- submitted/approved). A separate worker process polls this table
+-- (SELECT ... FOR UPDATE SKIP LOCKED) and dispatches side effects
+-- (moderator Telegram notification, Cloudflare cache purge on approval).
+-- Postgres is the broker — no Redis/Celery. Route handlers only ever write
+-- rows here; they never call Telegram/Cloudflare directly.
+CREATE TABLE outbox_events (
+    id           BIGSERIAL PRIMARY KEY,
+    event_type   TEXT NOT NULL,   -- 'contribution.submitted' | 'contribution.approved' | 'contribution.rejected' | 'series_proposal.submitted' | 'series_proposal.approved' | ...
+    payload      JSONB NOT NULL,
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    processed_at TIMESTAMPTZ   -- NULL until a consumer has handled it
+);

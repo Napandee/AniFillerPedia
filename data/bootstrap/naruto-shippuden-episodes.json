@@ -1,6 +1,6 @@
 {
   "series_title": "Naruto: Shippuden",
-  "research_status": "PARTIAL — episodes 1-32 and 57-71 only. Episodes 33-56 and 72+ are NOT researched, deliberately excluded rather than guessed. See README.md in this directory for the full honest status.",
+  "research_status": "PARTIAL — episodes 1-44, 57-112 done (100 of ~500). Episodes 45-56 deliberately excluded: two independent filler guides disagree on exact single-episode mixed-status boundaries in that range and couldn't be corroborated. Episodes 113+ not yet researched. See README.md in this directory for the full honest status.",
   "citation_sources": [
     {
       "id": "wikipedia-s1",
@@ -21,6 +21,16 @@
       "id": "superherohype-filler",
       "url": "https://www.superherohype.com/guides/604623-naruto-shippuden-filler-episodes-arcs-skip-miss",
       "description": "SuperHeroHype filler guide — independently confirms episodes 57-71 as the only filler arc within episodes 1-90, cross-referencing Beebom's claim."
+    },
+    {
+      "id": "narutoshippudenfillerguide",
+      "url": "https://narutoshippudenfillerguide.com/",
+      "description": "Naruto Shippuden Filler Guide — per-episode canon/filler/mixed breakdown, episodes 33-118 range used here."
+    },
+    {
+      "id": "yahoo-filler-guide",
+      "url": "https://www.yahoo.com/entertainment/naruto-shippuden-filler-list-episodes-121832153.html",
+      "description": "Yahoo Entertainment filler list — independent cross-reference for arc classifications, episodes 33-118 range used here."
     }
   ],
   "episodes": [
@@ -57,6 +67,19 @@
     { "episode_number": 31, "title": "The Legacy", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"] },
     { "episode_number": 32, "title": "Return of the Kazekage", "status": "canon", "arc": "Kazekage Rescue Mission", "citation_ids": ["wikipedia-s1", "wikipedia-eplist"], "status_note": "Final episode of the Kazekage Rescue Mission arc." },
 
+    { "episode_number": 33, "title": "The New Target", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "First episode of the Tenchi Bridge Reconnaissance Mission arc — both filler guides agree this arc adapts the manga. Note: the two guides disagree on exact single-episode mixed-status boundaries later in this same arc (around eps 45-56), so that narrower range is deliberately NOT included here — see README." },
+    { "episode_number": 34, "title": "Formation! New Team Kakashi!", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 35, "title": "An Unnecessary Addition", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 36, "title": "The Fake Smile", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 37, "title": "Untitled", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 38, "title": "Simulation", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 39, "title": "The Tenchi Bridge", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 40, "title": "The Nine-Tails Unleashed", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 41, "title": "The Top-Secret Mission Begins", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 42, "title": "Orochimaru vs. Jinchuriki", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 43, "title": "Sakura's Tears", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 44, "title": "The Secret of the Battle!", "status": "canon", "arc": "Tenchi Bridge Reconnaissance Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "Last episode before the two guides start disagreeing on exact per-episode mixed-status boundaries (eps 45-56, not included here)." },
+
     { "episode_number": 57, "title": "Deprived of Eternal Sleep", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"], "status_note": "First episode of the Twelve Guardian Ninja filler arc (eps 57-71) — anime-original, not adapted from the manga. Two independent filler guides agree on this range." },
     { "episode_number": 58, "title": "Loneliness", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
     { "episode_number": 59, "title": "A New Enemy", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
@@ -71,6 +94,48 @@
     { "episode_number": 68, "title": "Moment of Awakening", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
     { "episode_number": 69, "title": "Despair", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
     { "episode_number": 70, "title": "Resonance", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"] },
-    { "episode_number": 71, "title": "My Friend", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"], "status_note": "Final episode of the Twelve Guardian Ninja filler arc." }
+    { "episode_number": 71, "title": "My Friend", "status": "filler", "arc": "Twelve Guardian Ninja Arc", "citation_ids": ["beebom-filler", "superherohype-filler"], "status_note": "Final episode of the Twelve Guardian Ninja filler arc." },
+
+    { "episode_number": 72, "title": "The Quietly Approaching Threat", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "First episode of the Akatsuki Suppression Mission (Hidan and Kakuzu) arc — both guides agree episodes 72-88 are canon." },
+    { "episode_number": 73, "title": "Akatsuki's Invasion", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 74, "title": "Under the Starry Sky", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 75, "title": "The Old Monk's Prayer", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 76, "title": "The Next Step", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 77, "title": "Climbing Silver", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 78, "title": "The Judgment", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 79, "title": "Unfulfilled Scream", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 80, "title": "Last Words", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "Asuma's death — a major manga-canon story beat." },
+    { "episode_number": 81, "title": "Sad News", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 82, "title": "Team Ten", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 83, "title": "Target: Locked On", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 84, "title": "Kakuzu's Abilities", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 85, "title": "The Terrifying Secret", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 86, "title": "Shikamaru's Genius", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 87, "title": "When You Curse Someone, You Dig Your Own Grave", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 88, "title": "Wind Style: Rasen Shuriken!", "status": "canon", "arc": "Akatsuki Suppression Mission", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "Final episode of the Akatsuki Suppression Mission arc." },
+    { "episode_number": 89, "title": "The Price of Power", "status": "mixed", "arc": "Three-Tails' Appearance (transition)", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "Both guides mark 89-90 as a mixed canon/filler transition into the pure-filler Three-Tails' Appearance arc (91-112)." },
+    { "episode_number": 90, "title": "A Shinobi's Determination", "status": "mixed", "arc": "Three-Tails' Appearance (transition)", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 91, "title": "Orochimaru's Hideout Discovered", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "First fully-filler episode of the Three-Tails' Appearance arc (91-112) — anime-original, introduces original characters and expands Tailed Beast/shinobi-politics world-building not present in the manga at this point." },
+    { "episode_number": 92, "title": "Encounter", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 93, "title": "Connecting Hearts", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 94, "title": "A Night of Rain", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 95, "title": "The Two Charms", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 96, "title": "The Unseeing Enemy", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 97, "title": "The Labyrinth of Distorted Reflection", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 98, "title": "The Target Appears", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 99, "title": "The Rampaging Tailed Beast", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 100, "title": "Inside the Mist", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 101, "title": "Everyone's Feelings", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 102, "title": "Regroup!", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 103, "title": "The Four-Corner Sealing Barrier", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 104, "title": "Breaking the Crystal Style", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 105, "title": "The Battle Over the Barrier", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 106, "title": "Red Camellia", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 107, "title": "Strange Bedfellows", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 108, "title": "Guidepost of the Camellia", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 109, "title": "Counterattack of the Curse Mark", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 110, "title": "Memory of Guilt", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 111, "title": "Shattered Promise", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"] },
+    { "episode_number": 112, "title": "A Place to Return To", "status": "filler", "arc": "Three-Tails' Appearance Arc", "citation_ids": ["wikipedia-eplist", "narutoshippudenfillerguide", "yahoo-filler-guide"], "status_note": "Final episode of the Three-Tails' Appearance filler arc." }
   ]
 }

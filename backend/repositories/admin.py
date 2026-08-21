@@ -35,6 +35,31 @@ async def list_users_with_stats(session: AsyncSession, limit: int, offset: int) 
     return list(rows), total
 
 
+async def get_user_stats(session: AsyncSession, user_id: int) -> Row | None:
+    """Single-user version of list_users_with_stats's aggregate — #14 needs
+    just one voter's approved/rejected counts at vote-cast time, not a full
+    paginated listing. Returns None only if user_id doesn't exist (LEFT JOIN
+    means a user with zero contributions still returns a row with counts of
+    0, which is the common case for a brand-new voter).
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT
+                u.id,
+                count(*) FILTER (WHERE c.review_status = 'approved') AS approved_count,
+                count(*) FILTER (WHERE c.review_status = 'rejected') AS rejected_count
+            FROM users u
+            LEFT JOIN contributions c ON c.submitted_by = u.id
+            WHERE u.id = :user_id
+            GROUP BY u.id
+            """
+        ),
+        {"user_id": user_id},
+    )
+    return result.first()
+
+
 async def update_user_role(session: AsyncSession, user_id: int, new_role: str) -> Row | None:
     result = await session.execute(
         text("UPDATE users SET role = :role WHERE id = :id RETURNING id, role"),

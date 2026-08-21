@@ -92,6 +92,29 @@ class VoteOut(BaseModel):
     created_at: datetime
 
 
+class VoteCreate(BaseModel):
+    vote: str = Field(pattern="^(endorse|dispute)$")
+
+
+class VoteCastOut(BaseModel):
+    """Response for POST /contributions/{id}/vote — reports the outcome of
+    THIS vote (weight_at_vote, the vote's own contribution to net_score) as
+    well as the contribution's resulting state, which may reflect a
+    different concurrent voter's promotion rather than this one (see
+    repositories/contributions.py's promote_via_vote race note) — always
+    re-read from the row after voting rather than assumed from this
+    request alone.
+    """
+
+    contribution_id: int
+    vote: str
+    weight_at_vote: int
+    net_score: int
+    auto_approval_threshold: int
+    review_status: str
+    resolution_method: str | None
+
+
 class ContributionHistoryEntry(BaseModel):
     id: int
     proposed_status: str

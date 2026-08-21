@@ -11,6 +11,8 @@ from schemas.contributions import (
     ContributionReject,
     ContributionReviewOut,
     DuplicatePendingContribution,
+    VoteCastOut,
+    VoteCreate,
 )
 
 router = APIRouter(tags=["contributions"])
@@ -95,5 +97,23 @@ async def reject_contribution(
     result = await contributions_service.reject_contribution(
         session, contribution_id, current_user.id, payload.review_note
     )
+    await session.commit()
+    return result
+
+
+@router.post("/contributions/{contribution_id}/vote", response_model=VoteCastOut)
+async def vote_on_contribution(
+    contribution_id: int,
+    payload: VoteCreate,
+    current_user=Depends(get_current_user),  # noqa: ANN001 - Row, any logged-in user (not moderator-gated)
+    session: AsyncSession = Depends(get_session),
+) -> VoteCastOut:
+    # #14: the second approval path (CLAUDE.md) — endorse/dispute is open
+    # to any authenticated user, not just moderators; anonymous voting is
+    # not offered (unlike submission) since a vote's whole value is being
+    # weighted by an accountable trust_score. Same non-session.begin()
+    # pattern as approve/reject above: get_current_user already autobegan
+    # a transaction on this session.
+    result = await contributions_service.cast_vote(session, contribution_id, current_user, payload.vote)
     await session.commit()
     return result

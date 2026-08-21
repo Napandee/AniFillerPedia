@@ -9,6 +9,12 @@ is endorse/dispute on *pending* contributions, not likes on approved
 ones), so the likes term is 0 for now. Formula reduces to
 approved_count - rejected_count * REJECTION_PENALTY until a real likes
 data source exists to build the other term against.
+
+`compute_trust_score` is public (not module-private) because #14's
+community trust-weighted voting reuses this exact formula to derive each
+voter's `weight_at_vote` — one formula, two call sites (this module's user
+listing, services/contributions.py's vote-casting), never two
+implementations that could drift apart.
 """
 
 import fastapi
@@ -20,7 +26,7 @@ from schemas.admin import AdminUserListOut, AdminUserOut
 REJECTION_PENALTY = 2
 
 
-def _compute_trust_score(approved_count: int, rejected_count: int) -> int:
+def compute_trust_score(approved_count: int, rejected_count: int) -> int:
     return approved_count - rejected_count * REJECTION_PENALTY
 
 
@@ -36,7 +42,7 @@ async def list_users(session, limit: int, offset: int) -> AdminUserListOut:
             display_name=row.display_name,
             approved_count=row.approved_count,
             rejected_count=row.rejected_count,
-            trust_score=_compute_trust_score(row.approved_count, row.rejected_count),
+            trust_score=compute_trust_score(row.approved_count, row.rejected_count),
             created_at=row.created_at.isoformat(),
         )
         for row in rows

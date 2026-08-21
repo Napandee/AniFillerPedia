@@ -299,3 +299,90 @@ Not yet decided.
   per-identity rate limit — needs a basic anti-abuse layer (e.g. Cloudflare
   edge rate-limiting on the anonymous submission endpoint specifically)
   before launch, not yet designed in detail.
+- **Cloudflare Turnstile on the anonymous submission endpoint** (decided
+  2026-08-21, issue #20) — free, privacy-friendly, trivial given the
+  project is already fully on Cloudflare. Scoped narrowly: the anonymous
+  contribution-submission path specifically (the one path with literally
+  no identity behind it), and worth extending to signup/login too since
+  it doubles as a cheap first line of defense against the Sybil-farming
+  concern already flagged for #14. Deliberately NOT on read endpoints
+  (undermines the no-rate-limit-wall goal) or authenticated submissions
+  (OAuth login is already a stronger signal than a CAPTCHA).
+- **At most one pending contribution per episode** (decided 2026-08-21,
+  issue #20) — a new submission targeting an `(series_id, episode_number)`
+  that already has a `pending` contribution is rejected (409), pointing
+  the submitter at the existing pending contribution's id so they endorse/
+  dispute it instead of creating a competing row. Rejected alternative:
+  letting multiple competing pending contributions coexist and letting
+  voting sort it out — rejected because it risks vote-splitting (two
+  reasonable claims each stall below threshold instead of one clearly
+  succeeding), muddles the audit trail (whose citation actually informed
+  the final call), and doesn't match the single-current-draft model most
+  wiki-style systems use. Enforced structurally, not just in application
+  code: a partial unique index,
+  `UNIQUE (series_id, episode_number) WHERE review_status = 'pending'` —
+  consistent with this project's preference for DB-level guarantees over
+  policies to remember. Resolves #20's own open question about whether the
+  vote threshold applies per-contribution independently: moot now, since
+  there's never more than one pending contribution per episode to split
+  votes across. Moderation-queue implication: a moderator/voter always
+  sees exactly one pending item per episode, not several to reconcile.
+- **GDPR / account deletion** (decided 2026-08-21, issue #18) — confirms
+  and finalizes what #6's schema already shipped provisionally:
+  `ON DELETE SET NULL`, uniformly, on every FK referencing `users`
+  (`series.added_by`, `contributions.submitted_by`/`reviewed_by`,
+  `citations.submitted_by`, `series_proposals.submitted_by`/`reviewed_by`,
+  `contribution_votes.voter_id`) — including votes, resolving #18's own
+  open question about whether votes should behave differently: no,
+  because `contribution_votes.weight_at_vote` is already snapshotted at
+  vote time (see the trust-voting decision above), so a resolved
+  contribution's tally stays intact even once the voter's identity is
+  nulled — anonymizing loses *who*, never the *evidence* the audit trail
+  needs. **Account deletion is self-service**, not admin-mediated: a
+  `DELETE /api/v1/users/me` a user can call on their own account, no
+  admin approval gate. Reasoning: this is public open signup, not
+  AniDex's small invite-only pool — routing every deletion through an
+  admin doesn't scale for a solo maintainer and risks slow turnaround on
+  what GDPR expects to be a reasonably prompt right, and since `SET NULL`
+  already anonymizes rather than erasing the audit trail, self-service
+  deletion can't be used to hide misconduct — the contribution/vote
+  content stays, only the PII (email, display name, avatar, OAuth ids)
+  goes. **Data-retention statement** (feeds #19's privacy policy
+  directly): *"Deleting your account removes your personal data (email,
+  display name, avatar, linked sign-in identifiers) immediately. Your
+  past contributions and votes are preserved but anonymized — they
+  remain part of the public record and audit trail, which a
+  community-maintained database depends on, but are no longer linked to
+  your identity. Deleted personal data may persist in backups for up to
+  14 days"* (a real number, not invented — matches #10's actual shipped
+  `scripts/backup-postgres.sh` retention window).
+- **CC BY-NC-SA mechanics** (decided 2026-08-21, issue #21) — three parts:
+  1. **Contributor licensing**: every single contribution (not "once at
+     signup") carries structural proof of agreement — a `license_accepted`
+     boolean, `NOT NULL`, on the row itself, mirroring how `citation_id
+     NOT NULL` already enforces the citation guardrail structurally rather
+     than trusting app-layer discipline. Chosen over a one-time
+     account-level acceptance specifically because anonymous submission
+     (no persistent identity to attach a one-time flag to) has to be
+     per-submission anyway — making authenticated contributions follow the
+     identical rule is one uniform rule to build and reason about instead
+     of two, and it's a lightweight checkbox on the form each time, not a
+     legal-text re-read.
+  2. **API attribution**: a dedicated `GET /api/v1/license` endpoint
+     (structured JSON — license name, attribution notice, commercial
+     contact) plus FastAPI's own `license_info` field on the `FastAPI(...)`
+     app object, so it surfaces automatically in the OpenAPI schema `/docs`
+     and to anything consuming that schema (including #11's typed-client
+     codegen) — chosen over embedding a `license` field in every single
+     response object, which would repeat static metadata on every request
+     for no real benefit. The bulk export (#22) is different: a downloaded
+     file is disconnected from live API docs, so it needs its own embedded
+     attribution manifest baked into the export payload itself, not just a
+     reference to the docs.
+  3. **Commercial-licensing contact**: `licensing@anifillerpedia.wiki`,
+     proposed and written into `DATA_LICENSE` — not yet confirmed live,
+     flagged there for Andreas to set up mail routing or swap in a real
+     channel. No standard commercial-license template exists yet; each
+     inquiry gets negotiated individually until real demand justifies
+     building one — consistent with this project's general bias against
+     building for demand that doesn't exist yet.

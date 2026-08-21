@@ -37,8 +37,15 @@ product is the thing that needs a separate agreement.
 COMMERCIAL LICENSING: if you want to use this data (via the API, a bulk
 export, or otherwise) to power a product or service that charges its end
 users, contact the project owner to arrange a separate commercial license
-before doing so. [Contact point not yet established — placeholder, see the
-open issue tracking this.]
+before doing so: licensing@anifillerpedia.wiki
+
+[Andreas: this is a proposed address, not yet confirmed live — set up
+mail routing for it (e.g. Cloudflare Email Routing, already available on
+a domain you manage there) or swap in a different real contact channel
+before this matters for real. Placeholder is only this one address, not
+the mechanism — decided 2026-08-21 (issue #21): no standard commercial
+license template exists yet, each inquiry is negotiated individually
+until there's enough real demand to justify standardizing one.]
 
 Attribution notice required by this license (Section 3(a) — see "License
 Conditions" below), to include whenever data from this project is publicly

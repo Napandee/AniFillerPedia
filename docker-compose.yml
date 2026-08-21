@@ -47,17 +47,16 @@ services:
 
   worker:
     # Same image as `app` — the outbox poller is a different entrypoint into
-    # the same backend/ codebase, not a separate build. Assumption to verify
-    # once #6's real backend/ structure lands: this expects an executable
-    # module/command like `python -m app.worker` (adjust CMD override below
-    # to match whatever #6 / the outbox-event-handling issue actually ships).
+    # the same backend/ codebase, not a separate build. #9's real entrypoint
+    # is backend/worker.py (flat layout, matching main.py's own
+    # `from routers import health` style — no `app` package wrapper).
     build:
       context: ./backend
       dockerfile: Dockerfile
     image: ghcr.io/napandee/anifillerpedia-backend:latest
     container_name: afp-worker
     restart: unless-stopped
-    command: ["python", "-m", "app.worker"]
+    command: ["python", "worker.py"]
     depends_on:
       postgres:
         condition: service_healthy

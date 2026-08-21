@@ -11,6 +11,12 @@ class Settings(BaseSettings):
     database_url: str
     environment: str = "development"
 
+    # Outbox worker (#9) — how often it polls when there's nothing to do.
+    # Not a message broker's push latency; a few seconds is fine for
+    # moderator notifications / cache purges, per CLAUDE.md Architecture.
+    worker_poll_interval_seconds: int = 5
+    worker_batch_size: int = 10
+
 
 @lru_cache
 def get_settings() -> Settings:

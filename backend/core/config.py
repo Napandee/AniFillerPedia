@@ -47,6 +47,24 @@ class Settings(BaseSettings):
     # docstring for what happens while it's unset.
     turnstile_secret_key: str = ""
 
+    # Outbox consumers (#15). Neither token is set yet — both handlers are
+    # structurally correct and were verified against the real Telegram Bot
+    # API / Cloudflare purge_cache API shapes, but can't be live-verified
+    # end-to-end from inside the app until these are provisioned (same
+    # category of gap as OAuth/Turnstile — see CLAUDE.local.md's
+    # consolidated external-account checklist).
+    telegram_bot_token: str = ""
+    # Chat ID for the existing brantholm_github_bot, per global
+    # ~/.claude/CLAUDE.md — already public knowledge, safe to default here.
+    # The bot token itself is the actual secret and stays empty by default.
+    telegram_chat_id: str = "8528154154"
+
+    cloudflare_api_token: str = ""
+    # anifillerpedia.wiki's real zone ID, confirmed live 2026-08-21 (not
+    # sensitive — Cloudflare zone IDs aren't secrets, the API token is).
+    cloudflare_zone_id: str = "090a6d6b91e55f92740f23bad2c11de6"
+    public_site_base_url: str = "https://anifillerpedia.wiki"
+
 
 @lru_cache
 def get_settings() -> Settings:

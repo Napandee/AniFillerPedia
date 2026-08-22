@@ -13,7 +13,10 @@ const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 const html = marked.parse(apiGuideMd) as string;
 ---
 
-<Layout title="API Guide — AniFillerPedia">
+<Layout
+  title="API Guide — AniFillerPedia"
+  description="AniFillerPedia's public read API — free, unauthenticated access to per-episode filler/canon data, citations, and contribution history. No account or API key needed for reasonable use."
+>
   <h1 class="disp page-title">API guide</h1>
 
   <p class="links">

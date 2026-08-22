@@ -151,7 +151,7 @@ if (hasValidParams && Astro.request.method === "POST") {
 }
 ---
 
-<Layout title="Submit a correction — AniFillerPedia">
+<Layout title="Submit a correction — AniFillerPedia" noindex>
   {!hasValidParams && (
     <section class="panel">
       <p class="lead">This correction link is missing a valid series/episode reference.</p>

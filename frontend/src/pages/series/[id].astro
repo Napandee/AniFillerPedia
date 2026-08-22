@@ -90,9 +90,42 @@ const formatAiredAt = (iso: string | null) =>
   iso === null
     ? null
     : new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+// #63: a real, data-driven meta description — never generic boilerplate.
+// Distinct copy for "nothing researched yet" vs. a series with real stats,
+// since claiming a filler percentage with zero episodes tracked would be
+// actively misleading.
+const pageDescription =
+  series &&
+  (totalEpisodes > 0
+    ? `${series.title} filler episode guide — ${totalEpisodes}${
+        totalKnownEpisodes && totalKnownEpisodes > totalEpisodes ? ` of ${totalKnownEpisodes}` : ""
+      } episodes tracked, ${pct(canonCount)}% canon. See exactly which episodes to skip, every claim cited.`
+    : `${series.title} on AniFillerPedia — no episodes researched yet. Help build the filler/canon guide for this series.`);
+
+// schema.org structured data — only when there's a real series to describe.
+// numberOfEpisodes prefers the real AniList total over what's been
+// hand-researched so far; sameAs links out to the AniList entry when known.
+const structuredData = series
+  ? {
+      "@context": "https://schema.org",
+      "@type": "TVSeries",
+      name: series.title,
+      url: new URL(`/series/${seriesId}`, Astro.site).toString(),
+      ...(series.synonyms.length > 0 ? { alternateName: series.synonyms } : {}),
+      ...(totalKnownEpisodes ? { numberOfEpisodes: totalKnownEpisodes } : {}),
+      ...(series.anilist_id ? { sameAs: [`https://anilist.co/anime/${series.anilist_id}`] } : {}),
+    }
+  : undefined;
 ---
 
-<Layout title={pageTitle}>
+<Layout
+  title={pageTitle}
+  description={pageDescription || undefined}
+  image={bannerUrl ?? undefined}
+  noindex={notFound}
+  structuredData={structuredData}
+>
   {
     notFound ? (
       <section class="not-found">

@@ -34,7 +34,11 @@ differently on purpose.
 
 **Out of scope — do not build these:**
 - Scraping any site whose terms of service forbid it (see Guardrails — this
-  ruled out the most complete existing filler-list site).
+  ruled out animefillerlist.tv specifically; see Data Source below for why
+  that's a distinct question from animefillerlist.com, the actually
+  long-established, more complete site of the two — evaluated separately
+  in issue #48 and deliberately not pursued as a source either, for
+  reasons unrelated to `.tv`'s ToS).
 - Pulling from Simkl's catalog/discovery API without their explicit prior
   permission — their own published rules restrict catalog use to apps that
   also integrate Simkl login/sync, which this project does not (see
@@ -69,8 +73,27 @@ legitimate sources, deliberately not from one restricted site:
   way a human editor building this by hand would. Not an automated scrape of
   any single site's database.
 - **Ruled out, with reasons** (don't re-litigate these without new
-  information): animefillerlist.com (no API, ToS explicitly forbids
-  scraping); Simkl's catalog API (restricted to Simkl-integrating apps per
+  information): **animefillerlist.tv** (no API; ToS explicitly forbids
+  scraping/republishing — confirmed 2026-08-22 this is a *separate* site
+  from animefillerlist.com, not the same operator on two domains: `.tv`
+  was registered 2026-04-12 and has been live with real content only since
+  ~June 2026, vs. `.com`'s 2013 registration and Drupal 7 stack. No shared
+  branding, cross-linking, or platform between them found. **animefillerlist.com**
+  itself — the long-established, Google-ranked site this project's research
+  actually meant — has no ToS/terms page found anywhere on the domain (only
+  a 2014-era privacy policy with no scraping/reuse language at all); it was
+  never actually cleared for use, just never separately evaluated once `.tv`'s
+  hard "no" was mistakenly treated as covering both. **Evaluated separately
+  in issue #48 (2026-08-22) and deliberately not pursued as a source
+  either** — not because of a ToS (it has none found), but because giving
+  full credit for a public API layer over its data still wouldn't be a
+  substitute for the actual permission that content's copyright requires,
+  and building toward it would undercut this project's own reason for
+  existing (cited, cross-referenced, community-editable data, not a wrapper
+  around one upstream's compiled work). Treated as an extra cross-reference
+  signal during hand-compiled research at most, same spirit as
+  manami-project's tags, never as a thing to copy from directly); Simkl's
+  catalog API (restricted to Simkl-integrating apps per
   their own published rules, without explicit permission); Jikan/unofficial
   MAL API (has real filler/recap fields, but MAL's own terms prohibit using
   it to populate a separate database); TheTVDB (paywalled since 2020, and its

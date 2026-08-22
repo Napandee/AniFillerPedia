@@ -5,13 +5,14 @@ which episodes you can skip without missing manga-original story, and which
 ones you can't.
 
 No official source publishes this in a genuinely open, freely-reusable way.
-The closest existing option (animefillerlist.com) has no API and terms that
-forbid scraping; the closest API-accessible option (Simkl) restricts catalog
-access to apps that also integrate Simkl's own tracking/sync. This project
-exists to be the thing that doesn't have either problem: openly licensed data,
-a real API, no login/sync requirement to use it, and community
-correction built in from day one — closer to Wikipedia's model than a
-commercial tracker's.
+The closest existing option, animefillerlist.com, has no API — and
+animefillerlist.tv (a separate, much newer site, not the same operator)
+has terms that explicitly forbid scraping; the closest API-accessible
+option (Simkl) restricts catalog access to apps that also integrate
+Simkl's own tracking/sync. This project exists to be the thing that
+doesn't have either problem: openly licensed data, a real API, no
+login/sync requirement to use it, and community correction built in from
+day one — closer to Wikipedia's model than a commercial tracker's.
 
 **Live:** [anifillerpedia.wiki](https://anifillerpedia.wiki) ·
 [API docs](docs/API.md) · [Contributing](CONTRIBUTING.md)

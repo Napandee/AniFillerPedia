@@ -51,6 +51,33 @@ async def get_valid_key_record(session: AsyncSession, key_hash: str) -> Row | No
     return result.first()
 
 
+async def revoke_and_forget(session: AsyncSession, key_hash: str) -> bool:
+    """#46: the privacy-policy gap this closes — email had no deletion path
+    at all, since export_api_keys isn't tied to a user account and #29's
+    self-service account deletion never touches it. The key itself is the
+    only credential a requester has, so possessing it is sufficient to
+    revoke it and forget the email — no separate auth needed.
+
+    `email` stays NOT NULL (schema.sql) — changing that would be a real
+    migration, out of scope for a query-level privacy fix — so "forgotten"
+    is an empty string, not NULL. Idempotent: revoking an already-revoked
+    key is a no-op success, not an error, since the caller's goal (this key
+    no longer works, this email is gone) is already true either way.
+    """
+    result = await session.execute(
+        text(
+            """
+            UPDATE export_api_keys
+            SET revoked_at = COALESCE(revoked_at, now()), email = ''
+            WHERE key_hash = :key_hash
+            RETURNING id
+            """
+        ),
+        {"key_hash": key_hash},
+    )
+    return result.first() is not None
+
+
 async def fetch_full_dataset(session: AsyncSession) -> list[Row]:
     """All series + their episodes + citations, one row per episode. A
     series with zero approved episodes yet still needs representing (per

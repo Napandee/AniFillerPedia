@@ -20,6 +20,9 @@ async def test_privacy_policy_is_reachable() -> None:
     assert "DATA_LICENSE" in body
     assert "DELETE /api/v1/users/me" in body  # #29 shipped — no longer "planned but not yet built"
     assert "AniList" in body  # #46: cover art loads directly from AniList's CDN
+    assert "/export" in body  # discloses the export-access email collection
+    assert "POST /api/v1/export/revoke" in body  # self-service path for that email
+    assert "CC&nbsp;BY-NC-SA 4.0" in body or "CC BY-NC-SA 4.0" in body
 
 
 @pytest.mark.asyncio

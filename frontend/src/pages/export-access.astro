@@ -103,6 +103,16 @@ if (Astro.request.method === "POST") {
     <p>Send it as a header on the export request:</p>
     <pre><code>curl {baseUrl}/api/v1/export -H "X-API-Key: &lt;your key&gt;"</code></pre>
   </section>
+
+  <section class="block">
+    <h2 class="disp">Done with it?</h2>
+    <p>
+      Revoke your key yourself, any time — no approval step needed. This also deletes the email
+      address you provided above; see the <a href="/privacy">privacy policy</a> for why we collect
+      it in the first place.
+    </p>
+    <pre><code>curl -X POST {baseUrl}/api/v1/export/revoke -H "X-API-Key: &lt;your key&gt;"</code></pre>
+  </section>
 </Layout>
 
 <style>

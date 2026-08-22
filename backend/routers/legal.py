@@ -23,7 +23,7 @@ _PRIVACY_HTML = """<!doctype html>
 </head>
 <body>
 <h1>Privacy Policy</h1>
-<p><em>Last updated 2026-08-21.</em></p>
+<p><em>Last updated 2026-08-22.</em></p>
 
 <p>AniFillerPedia is a community-editable database of anime filler/canon episode
 data. You can read every piece of data on this site, and you can submit a
@@ -40,8 +40,13 @@ data collected if you choose to sign in.</p>
   <li>Your email address, if the provider shares it</li>
 </ul>
 <p>We never see or store your password &mdash; authentication happens entirely
-through the provider you choose. We do not collect anything beyond what's
-listed above.</p>
+through the provider you choose.</p>
+<p>Separately, if you request an API key for the bulk <code>/export</code>
+endpoint, we collect the email address you provide. Unlike your account
+data above, this isn't tied to a login and <code>DELETE /api/v1/users/me</code>
+doesn't touch it &mdash; see "How long we keep it" below for what applies
+to it instead.</p>
+<p>Beyond the two paths above, we do not collect anything else.</p>
 
 <h2>Why we collect it</h2>
 <p>Solely to attribute your contributions (corrections, citations, series
@@ -55,6 +60,13 @@ votes are preserved but anonymized &mdash; they remain part of the public
 record and audit trail, which a community-maintained database depends on, but
 are no longer linked to your identity. Deleted personal data may persist in
 backups for up to 14 days.</p>
+<p>The email address behind an <code>/export</code> API key is different:
+we keep it because it may serve as evidence that you agreed to the
+CC&nbsp;BY-NC-SA non-commercial terms before downloading the full dataset,
+which is the entire reason that endpoint asks for it &mdash; not a
+relationship with a natural end date the way an account is. We keep it for
+as long as the key could plausibly still be in use. You can end that
+yourself at any time; see "Your rights" below.</p>
 
 <h2>Your rights</h2>
 <p>You can delete your account and personal data at any time, yourself,
@@ -62,6 +74,10 @@ with no approval step: call <code>DELETE /api/v1/users/me</code> while
 signed in (or use the account settings page once it exists). This removes
 your email, display name, avatar, and linked sign-in identifiers
 immediately, per the retention terms above.</p>
+<p>If you requested an <code>/export</code> API key, you can revoke it and
+have the associated email removed at any time yourself, no approval step
+either: call <code>POST /api/v1/export/revoke</code> with that key in the
+<code>X-API-Key</code> header. The key stops working immediately.</p>
 
 <h2>Infrastructure</h2>
 <p>This site is served through Cloudflare, which processes standard web
@@ -83,6 +99,12 @@ episode dataset itself &mdash; the actual content of this project &mdash; is
 covered by a separate open license, not personal-data rules. See
 <a href="https://github.com/Napandee/AniFillerPedia/blob/master/DATA_LICENSE">DATA_LICENSE</a>
 for the terms that govern reusing that data.</p>
+<p>The same license applies to what you contribute: by submitting a
+correction or proposing a series, you're agreeing that contribution is
+released under CC&nbsp;BY-NC-SA 4.0, same as the rest of the dataset &mdash;
+every submission requires ticking that agreement explicitly, it's never
+assumed. See <a href="/api/v1/license">GET /license</a> for the current
+license text and attribution notice in machine-readable form.</p>
 
 <h2>Questions</h2>
 <p>Open an issue at

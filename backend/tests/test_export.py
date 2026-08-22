@@ -208,3 +208,90 @@ async def test_export_with_valid_key_returns_full_dataset_with_manifest() -> Non
     finally:
         await _cleanup_key(TEST_EMAIL)
         await _cleanup_series(series_id)
+
+
+async def _cleanup_key_by_hash(key: str) -> None:
+    """Revoke tests empty out `email` as part of what they're testing, so
+    the other tests' `_cleanup_key` (WHERE email = ...) can't find the row
+    afterward — clean up by key_hash instead.
+    """
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("DELETE FROM export_api_keys WHERE key_hash = :h"),
+                {"h": hash_api_key(key)},
+            )
+
+
+@pytest.mark.asyncio
+async def test_revoke_forgets_email_and_invalidates_key() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        access_response = await client.post(
+            "/api/v1/export/request-access",
+            json={"email": TEST_EMAIL, "license_accepted": True},
+        )
+        key = access_response.json()["api_key"]
+    try:
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            revoke_response = await client.post(
+                "/api/v1/export/revoke", headers={"X-API-Key": key}
+            )
+            assert revoke_response.status_code == 204
+
+            # The key no longer works...
+            export_response = await client.get(
+                "/api/v1/export", headers={"X-API-Key": key}
+            )
+            assert export_response.status_code == 401
+
+        # ...and the email is actually gone from the row, not just the key
+        # disabled — the whole point of this endpoint per #46.
+        async with async_session_factory() as session:
+            row = (
+                await session.execute(
+                    text("SELECT email, revoked_at FROM export_api_keys WHERE key_hash = :h"),
+                    {"h": hash_api_key(key)},
+                )
+            ).one()
+            assert row.email == ""
+            assert row.revoked_at is not None
+    finally:
+        await _cleanup_key_by_hash(key)
+
+
+@pytest.mark.asyncio
+async def test_revoke_is_idempotent_on_an_already_revoked_key() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        access_response = await client.post(
+            "/api/v1/export/request-access",
+            json={"email": TEST_EMAIL, "license_accepted": True},
+        )
+        key = access_response.json()["api_key"]
+    try:
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            first = await client.post("/api/v1/export/revoke", headers={"X-API-Key": key})
+            assert first.status_code == 204
+            second = await client.post("/api/v1/export/revoke", headers={"X-API-Key": key})
+            assert second.status_code == 204
+    finally:
+        await _cleanup_key_by_hash(key)
+
+
+@pytest.mark.asyncio
+async def test_revoke_unknown_key_404s() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/export/revoke", headers={"X-API-Key": "afp_export_not-a-real-key"}
+        )
+    assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_revoke_without_key_is_rejected() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post("/api/v1/export/revoke")
+    assert response.status_code == 401

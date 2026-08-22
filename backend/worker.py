@@ -21,6 +21,7 @@ from collections.abc import Awaitable, Callable
 from core.config import get_settings
 from core.db import async_session_factory
 from repositories.outbox import fetch_unprocessed_batch, mark_processed
+from services.anilist_sync import run_episode_schedule_sync_forever
 from services.cache_purge import purge_series_page_cache
 from services.notifications import notify_moderators_new_submission
 
@@ -84,5 +85,13 @@ async def run_forever() -> None:
         await asyncio.sleep(settings.worker_poll_interval_seconds)
 
 
+async def run_both_forever() -> None:
+    """#49: runs the outbox poller and the AniList episode-schedule sync
+    as two independent loops in the same container/process, each on its
+    own cadence — no new container or infrastructure needed for this.
+    """
+    await asyncio.gather(run_forever(), run_episode_schedule_sync_forever())
+
+
 if __name__ == "__main__":
-    asyncio.run(run_forever())
+    asyncio.run(run_both_forever())

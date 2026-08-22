@@ -73,7 +73,20 @@ CREATE TABLE series (
     title        TEXT NOT NULL,
     provenance   TEXT NOT NULL CHECK (provenance IN ('manami_bootstrap', 'community')),
     added_by     INTEGER REFERENCES users(id) ON DELETE SET NULL,   -- NULL for the one-time bootstrap import
-    created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    -- #49: AniList's own Media.status (FINISHED, RELEASING, ...) — the
+    -- cadence signal for services/anilist_sync.py. A FINISHED series
+    -- doesn't need re-fetching on every sync cycle, only RELEASING (or
+    -- NULL, never-synced) series do. anilist_episode_count (Media.episodes)
+    -- is stored separately from series_episode_schedule's row count
+    -- because AniList's airingSchedule field only retains a rolling window
+    -- of nodes, not a full historical archive — confirmed live that a
+    -- long-finished 500-episode show returns only its last 3 episodes'
+    -- worth of schedule nodes, while the total count is reliably present
+    -- regardless.
+    anilist_status               TEXT,
+    anilist_episode_count        INTEGER,
+    episode_schedule_synced_at   TIMESTAMPTZ
 );
 
 -- Alternate/romanized/native-script titles, captured during the one-time
@@ -261,4 +274,22 @@ CREATE TABLE export_api_keys (
     terms_version     TEXT NOT NULL,
     created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
     revoked_at        TIMESTAMPTZ
+);
+
+-- =========================================================================
+-- EPISODE SCHEDULE SYNC (issue #49 — repeatable AniList episode/air-date sync)
+-- =========================================================================
+
+-- One row per (series, episode) that AniList's own airing schedule reports
+-- as existing, with its real-world air date. Deliberately separate from
+-- `episodes` above: this table only ever answers "does episode N exist and
+-- when did it air," entirely independent of any filler/canon research —
+-- `episodes` still only gets a row once a contribution is approved. Lets a
+-- contributor (or future UI) see a series' real episode count/schedule
+-- even for a show nobody has researched a single episode of yet.
+CREATE TABLE series_episode_schedule (
+    series_id       INTEGER NOT NULL REFERENCES series(id) ON DELETE CASCADE,
+    episode_number  INTEGER NOT NULL,
+    aired_at        TIMESTAMPTZ NOT NULL,
+    PRIMARY KEY (series_id, episode_number)
 );

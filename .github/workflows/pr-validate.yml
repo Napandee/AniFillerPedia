@@ -55,7 +55,7 @@ jobs:
       - name: Smoke-test the built image
         run: |
           docker run -d --name afp-smoke --network host \
-            -e DATABASE_URL="postgresql://afp_test:afp_test@localhost:5432/afp_test" \
+            -e DATABASE_URL="postgresql+asyncpg://afp_test:afp_test@localhost:5432/afp_test" \
             anifillerpedia-backend:pr-test
 
           ok=""

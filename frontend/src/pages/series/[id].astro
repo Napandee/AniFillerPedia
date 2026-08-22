@@ -1,10 +1,12 @@
 ---
-// #33: the series detail page — episode list with canon/filler/mixed status
-// badges and citations. Backed by GET /api/v1/series/{id} (header data) and
-// GET /api/v1/series/{id}/episodes (the list itself). Per CLAUDE.md, episode
-// numbering is absolute and there's no episode-title field (decided in #33's
-// own planning pass — "Episode #N" only), and status is one of exactly three
-// values (no `recap`).
+// #33 (original scaffold) / #51 (this redesign): the series detail page —
+// dashboard-style canon/filler/mixed overview, collapsible synonyms, and a
+// decluttered episode list with per-row disclosure for citation/actions.
+// Backed by GET /api/v1/series/{id} (header data) and
+// GET /api/v1/series/{id}/episodes (the list itself, now including a
+// nullable aired_at per #49/#51). Per CLAUDE.md, episode numbering is
+// absolute and there's no episode-title field, and status is one of
+// exactly three values (no `recap`).
 //
 // output: "server" means this route is resolved per-request — no
 // getStaticPaths() needed, Astro.params.id is read directly.
@@ -45,7 +47,7 @@ if (idLooksValid) {
     });
     // An empty array is a normal, valid response (zero-episode series) —
     // `?? []` only guards against a genuinely failed/undefined fetch.
-    episodes = episodesData ?? [];
+    episodes = (episodesData ?? []).slice().sort((a, b) => a.episode_number - b.episode_number);
   }
 }
 
@@ -53,15 +55,15 @@ if (notFound) {
   Astro.response.status = 404;
 }
 
-// Rough "% filler-free" stat, computed client-side from the fetched episode
-// list per #33's scope — no dedicated backend field for this. Defined as the
-// share of episodes that aren't pure filler (canon + mixed both carry real
-// source-manga content, unlike filler), so it reads as "% you shouldn't
-// skip." Not shown at all when there's no episode data yet to compute it
-// from.
+// #51: full canon/filler/mixed breakdown for the dashboard cards, computed
+// client-side from the fetched episode list — no dedicated backend field
+// for this, same approach #33 originally used for the single "filler-free"
+// stat this replaces.
 const totalEpisodes = episodes.length;
-const nonFillerCount = episodes.filter((ep) => ep.status !== "filler").length;
-const fillerFreePct = totalEpisodes > 0 ? Math.round((nonFillerCount / totalEpisodes) * 100) : null;
+const canonCount = episodes.filter((ep) => ep.status === "canon").length;
+const fillerCount = episodes.filter((ep) => ep.status === "filler").length;
+const mixedCount = episodes.filter((ep) => ep.status === "mixed").length;
+const pct = (n: number) => (totalEpisodes > 0 ? Math.round((n / totalEpisodes) * 100) : 0);
 
 const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not found — AniFillerPedia";
 
@@ -71,6 +73,16 @@ const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not fo
 // handle that identically to a real lookup failure (never a broken image).
 const cover = series ? (await fetchAniListCovers([series.anilist_id])).get(series.anilist_id ?? -1) : undefined;
 const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
+
+// #51: aired_at is nullable (#49's AniList sync doesn't reach every
+// episode — notably not the earlier episodes of an already-finished long
+// show, since AniList's own schedule data only retains a rolling window).
+// Render nothing at all for an episode with no synced date, rather than
+// "Invalid Date" or a placeholder implying data that doesn't exist.
+const formatAiredAt = (iso: string | null) =>
+  iso === null
+    ? null
+    : new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 ---
 
 <Layout title={pageTitle}>
@@ -104,26 +116,73 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
                 <CoverFallback title={series!.title} fontSize="28px" />
               )}
             </div>
-            {/* Only the title lives in the banner-overlap zone — it's
-                reliably short (one line). Synonym lists aren't: some series
-                have a dozen+ localized names that wrap for several lines,
-                which overflowed the fixed-height dark scrim and went
-                illegible on the plain page background below it (a real bug,
-                reported with a screenshot on Boku no Hero Academia). Synonyms
-                now render below, in normal flow, on the page's own
-                background — never on top of an image, so no amount of text
-                can break it. */}
             <div class="title-block">
               <div class="disp title">{series!.title}</div>
             </div>
           </div>
+
           {series!.synonyms.length > 0 && (
-            <p class="synonyms">Also known as: {series!.synonyms.join(", ")}</p>
+            <details class="synonyms">
+              <summary>Also known as ({series!.synonyms.length})</summary>
+              <p class="synonyms-list">{series!.synonyms.join(", ")}</p>
+            </details>
           )}
+
+          {totalEpisodes > 0 && (
+            <div class="stat-cards" id="stat-cards">
+              <button class="stat-card" data-status="canon" data-count={canonCount} type="button">
+                <div class="stat-card-top">
+                  <span class="stat-icon stat-icon--canon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                  </span>
+                  <span class="stat-name">Canon</span>
+                  <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                </div>
+                <div class="stat-number">{canonCount}</div>
+                <div class="stat-pct">{pct(canonCount)}% of tracked</div>
+                <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--canon" style={`width:${pct(canonCount)}%`} /></div>
+              </button>
+
+              <button class="stat-card" data-status="filler" data-count={fillerCount} type="button">
+                <div class="stat-card-top">
+                  <span class="stat-icon stat-icon--filler">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2" /></svg>
+                  </span>
+                  <span class="stat-name">Filler</span>
+                  <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                </div>
+                <div class="stat-number">{fillerCount}</div>
+                <div class="stat-pct">{pct(fillerCount)}% of tracked</div>
+                <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--filler" style={`width:${pct(fillerCount)}%`} /></div>
+              </button>
+
+              <button class="stat-card" data-status="mixed" data-count={mixedCount} type="button">
+                <div class="stat-card-top">
+                  <span class="stat-icon stat-icon--mixed">
+                    <svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" /></svg>
+                  </span>
+                  <span class="stat-name">Mixed</span>
+                  <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                </div>
+                <div class="stat-number">{mixedCount}</div>
+                <div class="stat-pct">{pct(mixedCount)}% of tracked</div>
+                <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--mixed" style={`width:${pct(mixedCount)}%`} /></div>
+              </button>
+            </div>
+          )}
+
           <div class="stat-row">
             <span class="stat-chip">{totalEpisodes} episode{totalEpisodes === 1 ? "" : "s"} tracked</span>
-            {fillerFreePct !== null && <span class="stat-chip stat-chip--accent">~{fillerFreePct}% filler-free</span>}
           </div>
+
+          {totalEpisodes > 0 && (
+            <div class="filter-chip-row" id="filter-chip-row" hidden>
+              <span class="filter-chip">
+                Showing: <span id="filter-chip-label">filler</span> episodes only (<span id="filter-chip-count">0</span>)
+                <button type="button" id="filter-clear">&#10005; clear</button>
+              </span>
+            </div>
+          )}
         </section>
 
         <section class="episode-list">
@@ -136,36 +195,78 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
               </Button>
             </div>
           ) : (
-            episodes
-              .sort((a, b) => a.episode_number - b.episode_number)
-              .map((episode) => (
-                <article class="episode-row">
-                  <div class="episode-number">Episode #{episode.episode_number}</div>
-                  <div class="episode-status">
+            episodes.map((episode) => {
+              const airedAt = formatAiredAt(episode.aired_at ?? null);
+              return (
+                <details class="episode-row" data-status={episode.status}>
+                  <summary class="episode-row-head">
+                    <span class="episode-number">Ep. {episode.episode_number}</span>
                     <StatusBadge status={episode.status as "canon" | "filler" | "mixed"} />
-                  </div>
-                  <div class="episode-citation">
+                    {airedAt && <span class="air-date">{airedAt}</span>}
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9" /></svg>
+                  </summary>
+                  <div class="episode-detail">
                     {episode.citation.url ? (
-                      <a href={episode.citation.url} target="_blank" rel="noopener noreferrer">
+                      <a class="citation-text" href={episode.citation.url} target="_blank" rel="noopener noreferrer">
                         {episode.citation.description}
                       </a>
                     ) : (
-                      <span>{episode.citation.description}</span>
+                      <p class="citation-text">{episode.citation.description}</p>
                     )}
                     {episode.status_note && <p class="status-note">{episode.status_note}</p>}
+                    <div class="detail-actions">
+                      <Button href={`/episodes/${episode.id}/history`} variant="ghost">
+                        History &amp; votes
+                      </Button>
+                      <Button href={`/series/${seriesId}/episodes/${episode.episode_number}/submit`} variant="primary">
+                        Submit correction
+                      </Button>
+                    </div>
                   </div>
-                  <div class="episode-actions">
-                    <Button href={`/episodes/${episode.id}/history`} variant="ghost">
-                      History &amp; votes
-                    </Button>
-                    <Button href={`/series/${seriesId}/episodes/${episode.episode_number}/submit`} variant="primary">
-                      Submit correction
-                    </Button>
-                  </div>
-                </article>
-              ))
+                </details>
+              );
+            })
           )}
         </section>
+
+        <script>
+          // #51: click a stat card to filter the episode list to that
+          // status only; click the same card again (or "clear") to reset.
+          // Purely client-side — every episode is already in the fetched
+          // page, so this never issues a new request.
+          const cardsContainer = document.getElementById("stat-cards");
+          const chipRow = document.getElementById("filter-chip-row");
+          const chipLabel = document.getElementById("filter-chip-label");
+          const chipCount = document.getElementById("filter-chip-count");
+          const clearButton = document.getElementById("filter-clear");
+          const rows = Array.from(document.querySelectorAll<HTMLElement>(".episode-row"));
+
+          function applyFilter(status: string | null) {
+            for (const row of rows) {
+              row.hidden = status !== null && row.dataset.status !== status;
+            }
+            for (const card of cardsContainer?.querySelectorAll<HTMLElement>(".stat-card") ?? []) {
+              card.classList.toggle("is-active", card.dataset.status === status);
+            }
+            if (status === null) {
+              chipRow?.setAttribute("hidden", "");
+            } else {
+              chipRow?.removeAttribute("hidden");
+              if (chipLabel) chipLabel.textContent = status;
+              const activeCard = cardsContainer?.querySelector<HTMLElement>(`.stat-card[data-status="${status}"]`);
+              if (chipCount) chipCount.textContent = activeCard?.dataset.count ?? "0";
+            }
+          }
+
+          cardsContainer?.addEventListener("click", (event) => {
+            const card = (event.target as HTMLElement).closest<HTMLElement>(".stat-card");
+            if (!card) return;
+            const isActive = card.classList.contains("is-active");
+            applyFilter(isActive ? null : card.dataset.status ?? null);
+          });
+
+          clearButton?.addEventListener("click", () => applyFilter(null));
+        </script>
       </>
     )
   }
@@ -196,10 +297,6 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     margin-bottom: 20px;
     overflow: visible;
   }
-  /* #46: hero banner + poster — a real AniList cover (or its own coverImage
-     as a backdrop when no separate banner exists) fills this, blurred and
-     darkened so the title stays readable over any cover art; CoverFallback
-     fills it instead when there's nothing to fetch. */
   .banner {
     height: 190px;
     border-radius: var(--radius-panel) var(--radius-panel) 0 0;
@@ -216,11 +313,6 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     background-position: center;
     filter: blur(10px) brightness(0.45);
   }
-  /* Two layers, not one: a flat dark wash over the WHOLE banner so even a
-     bright/saturated fetched image (a real bug: a vivid red banner made
-     dark-plum title text unreadable) never relies on the gradient alone,
-     plus the taller bottom-heavy gradient so the hero-row text overlapping
-     the bottom ~58px always sits on the darkest part. */
   .banner-scrim {
     position: absolute;
     inset: 0;
@@ -229,14 +321,6 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
   .hero-row {
     display: flex;
     gap: 16px;
-    /* Real bug, found by actually looking at a rendered page: flex-end
-       bottom-aligned this against the POSTER's full height, which is
-       taller than the title block — that pushed the title/synonyms text
-       below the banner entirely, onto the plain cream background, where
-       the light banner-overlay text colors are invisible. flex-start
-       keeps the (shorter) text block anchored to the top of the overlap
-       zone, which is where the banner's dark scrim actually still covers
-       it, regardless of how tall the poster is. */
     align-items: flex-start;
     padding: 0 24px;
     margin-top: -58px;
@@ -260,11 +344,6 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
   .title-block {
     padding-bottom: 12px;
   }
-  /* #46 fix: this block always sits in the banner/scrim overlap zone (that's
-     the whole point of hero-row's negative margin), never on the plain
-     cream background — so it needs light text + a shadow for legibility
-     against ANY fetched cover art, not the dark heading color the rest of
-     the page uses on light backgrounds. */
   .title {
     font-size: 26px;
     font-weight: 800;
@@ -272,21 +351,148 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     line-height: 1.15;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
-  /* Back on the plain page background now (see the markup comment above) —
-     the normal muted-text color, no shadow needed. */
+
+  /* #51: collapsed by default — a 40+ entry synonym list used to run for
+     several unbroken lines under the title. Native <details> needs no JS
+     and no custom open/close state to wire up. */
   .synonyms {
+    margin: 12px 24px 0;
+  }
+  .synonyms summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border-radius: var(--radius-pill);
+    padding: 6px 14px;
+    box-shadow: var(--shadow-sticker);
+    cursor: pointer;
+    list-style: none;
+    width: fit-content;
+  }
+  .synonyms summary::-webkit-details-marker {
+    display: none;
+  }
+  .synonyms summary::after {
+    content: "▾";
+    font-size: 10px;
+  }
+  .synonyms[open] summary::after {
+    content: "▴";
+  }
+  .synonyms-list {
     font-size: 13px;
     font-weight: 600;
     color: var(--color-text-muted);
-    margin: 10px 0 0;
-    padding: 0 24px;
+    margin: 8px 4px 0;
+    line-height: 1.6;
   }
+
+  .stat-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 24px 0;
+  }
+  .stat-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sticker);
+    padding: 16px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    text-align: left;
+    font-family: var(--font-body);
+    transition: border-color 0.15s ease;
+  }
+  .stat-card.is-active {
+    border-color: var(--color-accent);
+    background: var(--color-surface-pending);
+  }
+  .stat-card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .stat-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .stat-icon--canon {
+    background: var(--color-status-canon);
+  }
+  .stat-icon--filler {
+    background: var(--color-status-filler);
+  }
+  .stat-icon--mixed {
+    background: var(--color-status-mixed);
+  }
+  .stat-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .stat-active-check {
+    display: none;
+    margin-left: auto;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .stat-card.is-active .stat-active-check {
+    display: block;
+  }
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-heading);
+    line-height: 1;
+  }
+  .stat-pct {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-faint);
+    margin-top: 2px;
+  }
+  .stat-mini-bar {
+    height: 5px;
+    border-radius: 3px;
+    background: var(--color-surface-pending);
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .stat-mini-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .stat-mini-fill--canon {
+    background: var(--color-status-canon);
+  }
+  .stat-mini-fill--filler {
+    background: var(--color-status-filler);
+  }
+  .stat-mini-fill--mixed {
+    background: var(--color-status-mixed);
+  }
+
   .stat-row {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 16px;
-    padding: 0 4px;
+    margin-top: 14px;
+    padding: 0 24px;
   }
   .stat-chip {
     display: inline-flex;
@@ -299,10 +505,30 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     color: var(--color-text-muted);
     box-shadow: var(--shadow-sticker);
   }
-  .stat-chip--accent {
-    color: #fff;
-    background: var(--color-accent);
-    box-shadow: none;
+
+  .filter-chip-row {
+    padding: 12px 24px 0;
+  }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff1e2;
+    color: #c96a12;
+    font-size: 12.5px;
+    font-weight: 800;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+  }
+  .filter-chip button {
+    background: none;
+    border: none;
+    color: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 0;
+    font-size: 12.5px;
+    font-family: var(--font-body);
   }
 
   .episode-list {
@@ -331,15 +557,25 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     margin: 0 0 18px;
   }
 
+  /* #51: each row is a <details> — collapsed to number/status/date by
+     default, expanding to citation/note/actions only on click. */
   .episode-row {
-    display: grid;
-    grid-template-columns: auto auto 1fr auto;
-    align-items: center;
-    gap: 16px;
     background: var(--color-surface);
     border-radius: var(--radius-card);
-    padding: 14px 18px;
     box-shadow: var(--shadow-sticker);
+    overflow: hidden;
+  }
+  .episode-row-head {
+    display: grid;
+    grid-template-columns: 70px auto 1fr 20px;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .episode-row-head::-webkit-details-marker {
+    display: none;
   }
   .episode-number {
     font-family: var(--font-display);
@@ -348,38 +584,67 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     color: var(--color-heading);
     white-space: nowrap;
   }
-  .episode-citation {
-    min-width: 0;
+  .air-date {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    justify-self: end;
+  }
+  .chevron {
+    color: var(--color-text-faint);
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+  .episode-row[open] .chevron {
+    transform: rotate(180deg);
+  }
+  .episode-row[open] .episode-row-head {
+    background: var(--color-surface-pending);
+  }
+  .episode-detail {
+    padding: 0 18px 16px 102px;
+    border-top: 1px solid var(--color-surface-pending);
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .citation-text {
     font-size: 13px;
     font-weight: 600;
     color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
   }
-  .episode-citation a {
+  a.citation-text {
     color: var(--color-accent);
     text-decoration: none;
   }
-  .episode-citation a:hover {
+  a.citation-text:hover {
     text-decoration: underline;
   }
   .status-note {
-    margin: 4px 0 0;
+    margin: 0;
     font-size: 12px;
     color: var(--color-text-faint);
   }
-  .episode-actions {
+  .detail-actions {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    justify-content: flex-end;
   }
 
   @media (max-width: 640px) {
-    .episode-row {
+    .stat-cards {
       grid-template-columns: 1fr;
-      gap: 8px;
     }
-    .episode-actions {
-      justify-content: flex-start;
+    .episode-row-head {
+      grid-template-columns: 60px auto 1fr 20px;
+      gap: 8px;
+      padding: 12px 14px;
+    }
+    .episode-detail {
+      padding-left: 14px;
     }
   }
 </style>

@@ -20,6 +20,7 @@ def _row_to_episode_out(row: Row) -> EpisodeOut:
             id=row.citation_id, url=row.citation_url, description=row.citation_description
         ),
         updated_at=row.updated_at,
+        aired_at=row.aired_at,
     )
 
 

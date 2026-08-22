@@ -19,6 +19,7 @@ async def test_privacy_policy_is_reachable() -> None:
     assert "14 days" in body
     assert "DATA_LICENSE" in body
     assert "DELETE /api/v1/users/me" in body  # #29 shipped — no longer "planned but not yet built"
+    assert "AniList" in body  # #46: cover art loads directly from AniList's CDN
 
 
 @pytest.mark.asyncio

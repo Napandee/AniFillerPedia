@@ -19,7 +19,7 @@ const authorizeHref = (provider: "github" | "discord") =>
   <a class="disp brand" href="/">AniFillerPedia</a>
   <nav>
     <a href="/">Browse</a>
-    <a href="/moderation">Review queue</a>
+    {user && ["moderator", "admin", "owner"].includes(user.role) && <a href="/moderation">Review queue</a>}
     {user && ["admin", "owner"].includes(user.role) && <a href="/admin/users">Manage users</a>}
     {
       user ? (

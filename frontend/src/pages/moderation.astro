@@ -1,0 +1,503 @@
+---
+// #39: moderation queue — pending contributions and series proposals, with
+// approve/reject actions. Backend already gates approve/reject/list via
+// require_moderator (core/deps.py) — this page's own job is only to hide
+// the route/nav entry for anyone below moderator, not to re-implement that
+// gate (see this issue's own scope note).
+import Layout from "../layouts/Layout.astro";
+import { createApiClient } from "../api/client";
+import type { components } from "../api/schema.d.ts";
+
+type ContributionOut = components["schemas"]["ContributionOut"];
+type SeriesProposalOut = components["schemas"]["SeriesProposalOut"];
+
+const MODERATOR_ROLES = ["moderator", "admin", "owner"];
+
+const user = Astro.locals.user;
+if (!user || !MODERATOR_ROLES.includes(user.role)) {
+  return Astro.redirect("/");
+}
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const cookie = Astro.request.headers.get("cookie") ?? "";
+const api = createApiClient(baseUrl);
+
+const [contributionsResult, proposalsResult] = await Promise.all([
+  api.GET("/api/v1/contributions", {
+    params: { query: { review_status: "pending" } },
+    headers: { cookie },
+  }),
+  api.GET("/api/v1/series-proposals", {
+    params: { query: { review_status: "pending" } },
+    headers: { cookie },
+  }),
+]);
+
+const contributions: ContributionOut[] = contributionsResult.data ?? [];
+const proposals: SeriesProposalOut[] = proposalsResult.data ?? [];
+const loadError = Boolean(contributionsResult.error || proposalsResult.error);
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
+---
+
+<Layout title="Review queue — AniFillerPedia">
+  <section class="queue">
+    <div class="disp heading">Review queue</div>
+    <p class="sub">
+      Pending community submissions. Approving promotes it live; rejecting requires a note so the
+      contributor (or a future reader of the audit trail) understands why.
+    </p>
+
+    {loadError && (
+      <div class="banner banner--error">
+        Could not load the full queue from the API. Some items may be missing — try reloading.
+      </div>
+    )}
+
+    <div id="toast" class="toast" hidden></div>
+
+    <div class="panel">
+      <div class="disp panel-title">Pending contributions <span class="count" id="contrib-count">{contributions.length}</span></div>
+      {contributions.length === 0 && (
+        <p class="empty" id="contrib-empty">Nothing pending right now.</p>
+      )}
+      <ul class="cards" id="contrib-list">
+        {contributions.map((c) => (
+          <li class="card" data-kind="contribution" data-id={c.id}>
+            <div class="card-top">
+              <span class="target">Series #{c.series_id} · Episode #{c.episode_number}</span>
+              <span class={`status-pill status-pill--${c.proposed_status}`}>{c.proposed_status}</span>
+            </div>
+            {c.proposed_note && <p class="note">{c.proposed_note}</p>}
+            <div class="citation">
+              <span class="label">Citation:</span>{" "}
+              {c.citation.url ? (
+                <a href={c.citation.url} target="_blank" rel="noopener noreferrer">
+                  {c.citation.description}
+                </a>
+              ) : (
+                <span>{c.citation.description}</span>
+              )}
+            </div>
+            <div class="meta-row">
+              <span>Submitted {formatDate(c.submitted_at)}</span>
+              <span class="muted-note">
+                Submitter not shown — this endpoint doesn't return identity (see #39 note)
+              </span>
+            </div>
+            <div class="actions">
+              <button type="button" class="btn btn--approve" data-action="approve">
+                Approve
+              </button>
+              <div class="reject-group">
+                <textarea
+                  class="review-note"
+                  placeholder="Review note (required to reject)"
+                  rows="2"
+                ></textarea>
+                <button type="button" class="btn btn--reject" data-action="reject" disabled>
+                  Reject
+                </button>
+              </div>
+            </div>
+            <p class="field-error" hidden>Reject requires a review note — add one above.</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="panel">
+      <div class="disp panel-title">Pending series proposals <span class="count" id="proposal-count">{proposals.length}</span></div>
+      {proposals.length === 0 && (
+        <p class="empty" id="proposal-empty">Nothing pending right now.</p>
+      )}
+      <ul class="cards" id="proposal-list">
+        {proposals.map((p) => (
+          <li class="card" data-kind="proposal" data-id={p.id}>
+            <div class="card-top">
+              <span class="target disp">{p.title}</span>
+            </div>
+            <div class="ids">
+              {p.anilist_id && <span class="id-chip">AniList #{p.anilist_id}</span>}
+              {p.mal_id && <span class="id-chip">MAL #{p.mal_id}</span>}
+              {p.anidb_id && <span class="id-chip">AniDB #{p.anidb_id}</span>}
+            </div>
+            <p class="note">{p.justification}</p>
+            <div class="meta-row">
+              <span>Submitted {formatDate(p.submitted_at)}</span>
+            </div>
+            <div class="actions">
+              <button type="button" class="btn btn--approve" data-action="approve">
+                Approve
+              </button>
+              <div class="reject-group">
+                <textarea
+                  class="review-note"
+                  placeholder="Review note (required to reject)"
+                  rows="2"
+                ></textarea>
+                <button type="button" class="btn btn--reject" data-action="reject" disabled>
+                  Reject
+                </button>
+              </div>
+            </div>
+            <p class="field-error" hidden>Reject requires a review note — add one above.</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Vanilla progressive enhancement — no client framework in this codebase
+  // yet (Astro islands are reserved for when one is actually needed).
+  // Approve/reject both call the backend directly from the browser; the
+  // session cookie is forwarded automatically (same-origin in production,
+  // Caddy fronts both frontend and backend under one domain).
+  const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+  const ENDPOINT: Record<string, (id: string) => { approve: string; reject: string }> = {
+    contribution: (id) => ({
+      approve: `${baseUrl}/api/v1/contributions/${id}/approve`,
+      reject: `${baseUrl}/api/v1/contributions/${id}/reject`,
+    }),
+    proposal: (id) => ({
+      approve: `${baseUrl}/api/v1/series-proposals/${id}/approve`,
+      reject: `${baseUrl}/api/v1/series-proposals/${id}/reject`,
+    }),
+  };
+
+  const toast = document.getElementById("toast") as HTMLDivElement | null;
+  let toastTimer: ReturnType<typeof setTimeout> | undefined;
+
+  function showToast(message: string, tone: "info" | "error" = "info") {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.toggle("toast--error", tone === "error");
+    toast.hidden = false;
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.hidden = true;
+    }, 5000);
+  }
+
+  function updateEmptyState(kind: "contrib" | "proposal") {
+    const list = document.getElementById(`${kind}-list`);
+    const empty = document.getElementById(`${kind}-empty`);
+    const count = document.getElementById(`${kind}-count`);
+    const remaining = list ? list.querySelectorAll("li.card").length : 0;
+    if (count) count.textContent = String(remaining);
+    if (remaining === 0 && list && !empty) {
+      const p = document.createElement("p");
+      p.className = "empty";
+      p.id = `${kind}-empty`;
+      p.textContent = "Nothing pending right now.";
+      list.after(p);
+    } else if (remaining > 0 && empty) {
+      empty.remove();
+    }
+  }
+
+  function removeCard(card: HTMLLIElement) {
+    const kind = card.dataset.kind === "contribution" ? "contrib" : "proposal";
+    card.remove();
+    updateEmptyState(kind);
+  }
+
+  async function handleAction(card: HTMLLIElement, action: "approve" | "reject", reviewNote?: string) {
+    const kind = card.dataset.kind as "contribution" | "proposal";
+    const id = card.dataset.id as string;
+    const endpoints = ENDPOINT[kind](id);
+    const url = action === "approve" ? endpoints.approve : endpoints.reject;
+
+    const buttons = card.querySelectorAll<HTMLButtonElement>("button");
+    buttons.forEach((b) => (b.disabled = true));
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: action === "reject" ? { "Content-Type": "application/json" } : undefined,
+        body: action === "reject" ? JSON.stringify({ review_note: reviewNote }) : undefined,
+      });
+
+      if (response.ok) {
+        showToast(action === "approve" ? "Approved." : "Rejected.");
+        removeCard(card);
+        return;
+      }
+
+      if (response.status === 409 || response.status === 404) {
+        // Someone else (a moderator, or a community vote crossing the
+        // auto-approval threshold) resolved this between page load and
+        // this click. Drop it from the queue rather than showing a raw
+        // error — the queue's job is to show what's still actionable.
+        showToast("Already resolved elsewhere — removed from your queue.", "error");
+        removeCard(card);
+        return;
+      }
+
+      let detail = `Request failed (${response.status}).`;
+      try {
+        const body = await response.json();
+        if (typeof body?.detail === "string") detail = body.detail;
+      } catch {
+        // ignore parse failure, keep generic message
+      }
+      showToast(detail, "error");
+      buttons.forEach((b) => (b.disabled = false));
+      // Re-enable reject button according to its own note-length rule.
+      const rejectBtn = card.querySelector<HTMLButtonElement>('[data-action="reject"]');
+      const noteField = card.querySelector<HTMLTextAreaElement>(".review-note");
+      if (rejectBtn && noteField) rejectBtn.disabled = noteField.value.trim().length === 0;
+    } catch (err) {
+      showToast("Network error — the action did not go through. Try again.", "error");
+      buttons.forEach((b) => (b.disabled = false));
+      const rejectBtn = card.querySelector<HTMLButtonElement>('[data-action="reject"]');
+      const noteField = card.querySelector<HTMLTextAreaElement>(".review-note");
+      if (rejectBtn && noteField) rejectBtn.disabled = noteField.value.trim().length === 0;
+    }
+  }
+
+  document.querySelectorAll<HTMLLIElement>("li.card").forEach((card) => {
+    const noteField = card.querySelector<HTMLTextAreaElement>(".review-note");
+    const rejectBtn = card.querySelector<HTMLButtonElement>('[data-action="reject"]');
+    const approveBtn = card.querySelector<HTMLButtonElement>('[data-action="approve"]');
+    const fieldError = card.querySelector<HTMLParagraphElement>(".field-error");
+
+    noteField?.addEventListener("input", () => {
+      if (rejectBtn) rejectBtn.disabled = noteField.value.trim().length === 0;
+      if (fieldError) fieldError.hidden = true;
+    });
+
+    approveBtn?.addEventListener("click", () => {
+      void handleAction(card, "approve");
+    });
+
+    rejectBtn?.addEventListener("click", () => {
+      const note = noteField?.value.trim() ?? "";
+      if (!note) {
+        // Client-side guard — the button is disabled while empty, but this
+        // covers any path that reaches here anyway (e.g. a stale disabled
+        // state) with a clear, specific message rather than letting a 422
+        // from the backend be the first the moderator hears of it.
+        if (fieldError) fieldError.hidden = false;
+        return;
+      }
+      void handleAction(card, "reject", note);
+    });
+  });
+</script>
+
+<style>
+  .queue {
+    padding-bottom: 24px;
+  }
+  .heading {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--color-heading);
+  }
+  .sub {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    max-width: 60ch;
+    margin: 6px 0 20px;
+  }
+  .banner {
+    border-radius: var(--radius-card);
+    padding: 10px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .banner--error {
+    background: #ffe1e6;
+    color: #9f1d3a;
+  }
+  .toast {
+    position: sticky;
+    top: 8px;
+    z-index: 5;
+    background: var(--color-surface-dark);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    width: fit-content;
+  }
+  .toast--error {
+    background: var(--color-dispute);
+  }
+  .panel {
+    margin-bottom: 32px;
+  }
+  .panel-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-heading);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .count {
+    font-family: var(--font-body);
+    background: var(--color-trust-chip-bg);
+    color: var(--color-accent);
+    border-radius: var(--radius-pill);
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .empty {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
+  .cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card {
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .target {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+  .status-pill {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    color: #fff;
+  }
+  .status-pill--canon {
+    background: var(--color-status-canon);
+  }
+  .status-pill--filler {
+    background: var(--color-status-filler);
+  }
+  .status-pill--mixed {
+    background: var(--color-status-mixed);
+  }
+  .ids {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .id-chip {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    background: #fff;
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-pill);
+    padding: 2px 8px;
+  }
+  .note {
+    font-size: 13px;
+    color: var(--color-text);
+    margin: 0 0 8px;
+  }
+  .citation {
+    font-size: 12.5px;
+    margin-bottom: 8px;
+  }
+  .citation .label {
+    color: var(--color-text-faint);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .citation a {
+    color: var(--color-accent);
+  }
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11.5px;
+    color: var(--color-text-faint);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .muted-note {
+    font-style: italic;
+  }
+  .actions {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: var(--radius-pill);
+    padding: 7px 16px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn--approve {
+    color: #fff;
+    background: var(--color-endorse);
+  }
+  .btn--reject {
+    color: #fff;
+    background: var(--color-dispute);
+  }
+  .reject-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 220px;
+  }
+  .review-note {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 6px 10px;
+    resize: vertical;
+  }
+  .field-error {
+    color: var(--color-dispute);
+    font-size: 11.5px;
+    font-weight: 700;
+    margin: 4px 0 0;
+  }
+</style>

@@ -102,6 +102,19 @@ CREATE TABLE series_synonyms (
     UNIQUE (series_id, synonym)
 );
 
+-- Lightweight "related series" links for shows split across multiple
+-- AniList catalog entries (e.g. Fairy Tail / Fairy Tail (2014) /
+-- Fairy Tail (2018)) — decided 2026-08-22 over a heavier "collection"
+-- grouping construct; see migration 005's own comment for the full
+-- reasoning. Directed pairs — linking two series means inserting both
+-- directions, so a plain lookup on either side finds the relation.
+CREATE TABLE series_relations (
+    series_id         INTEGER NOT NULL REFERENCES series(id) ON DELETE CASCADE,
+    related_series_id INTEGER NOT NULL REFERENCES series(id) ON DELETE CASCADE,
+    PRIMARY KEY (series_id, related_series_id),
+    CHECK (series_id != related_series_id)
+);
+
 -- A proposal to add a new series to the catalog. Mirrors the episode
 -- contributions/approval shape below, but for series-level identity rather
 -- than episode-level status. submitted_by is nullable purely to support

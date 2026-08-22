@@ -17,16 +17,31 @@ one link), so url is left NULL and every source's description (with its
 own url folded in, when it has one) is combined into one description
 instead.
 
-Idempotent: an episode_number already present in `episodes` for the target
-series is skipped, not overwritten — re-running this script after adding
-more researched episodes to the same JSON file only inserts what's new.
+Idempotent by default: an episode_number already present in `episodes` for
+the target series is skipped if its status already matches the JSON's, not
+overwritten — re-running this script after adding more researched episodes
+to the same JSON file only inserts what's new.
+
+An episode that already exists with a DIFFERENT status than the JSON
+proposes is a real disagreement, not something to silently skip or
+silently overwrite. Default behavior: report it and leave it untouched.
+Pass --allow-corrections to actually apply those corrections — done the
+same way a real moderator-approved correction would be: a NEW contribution
+row is inserted (preserving the old one, and the episode's full history,
+untouched) and the `episodes` row is updated to point at it as the new
+current approved state. This is a deliberate, explicit opt-in specifically
+because it rewrites already-published/live data, unlike a normal load.
+
 Every episode is loaded as an already-approved contribution
 (resolution_method='moderator', submitted_by=NULL) — this is a bootstrap
 import of research already vetted before being written into the JSON
 file, the same provenance model load_series.py already established for
 the series catalog's own bootstrap import.
 
-Usage: DATABASE_URL=postgresql://... python3 load_episodes.py <path-to-json>
+Usage:
+  DATABASE_URL=... python3 load_episodes.py <path-to-json>
+  DATABASE_URL=... python3 load_episodes.py <path-to-json> --allow-corrections
+
 (plain psycopg2 + sync connection, matching load_series.py's own
 precedent — a standalone data-ops script, not part of the backend/ app's
 async import graph, and doesn't need async for what's at most a few
@@ -71,27 +86,53 @@ def merge_citation(source_ids: tuple[str, ...], sources_by_id: dict) -> tuple[st
 def main() -> None:
     import psycopg2
 
-    if len(sys.argv) != 2:
-        print("Usage: DATABASE_URL=... python3 load_episodes.py <path-to-json>", file=sys.stderr)
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    allow_corrections = "--allow-corrections" in sys.argv[1:]
+    if len(args) != 1:
+        print(
+            "Usage: DATABASE_URL=... python3 load_episodes.py <path-to-json> [--allow-corrections]",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    json_path = Path(sys.argv[1])
+    json_path = Path(args[0])
     data = json.loads(json_path.read_text())
     series_title = data["series_title"]
     sources_by_id = {source["id"]: source for source in data["citation_sources"]}
     episodes = data["episodes"]
     print(f"Loaded {len(episodes)} episodes for {series_title!r} from {json_path.name}")
+    if allow_corrections:
+        print("--allow-corrections: episodes with a differing existing status WILL be updated")
 
     conn = psycopg2.connect(get_database_url())
     conn.autocommit = False
     inserted = 0
     already_present = 0
+    corrected = 0
+    needs_correction: list[tuple[int, str, str]] = []
     failures: list[tuple[int, str]] = []
     # combo (sorted tuple of source ids) -> citation_id. Populated as
     # combinations are encountered; each citation insert is committed
     # immediately (see below) so it survives even if a later episode using
     # the same combination fails.
     citation_id_by_combo: dict[tuple[str, ...], int] = {}
+
+    def get_or_create_citation(cur, combo: tuple[str, ...]) -> int:
+        citation_id = citation_id_by_combo.get(combo)
+        if citation_id is None:
+            url, description = merge_citation(combo, sources_by_id)
+            cur.execute(
+                "INSERT INTO citations (url, description) VALUES (%s, %s) RETURNING id",
+                (url, description),
+            )
+            citation_id = cur.fetchone()[0]
+            # Committed on its own, independent of the contribution/episode
+            # work below — so a later failure on THIS episode rolls back
+            # only its own rows, never a citation another already-loaded
+            # episode may also be using.
+            conn.commit()
+            citation_id_by_combo[combo] = citation_id
+        return citation_id
 
     try:
         with conn.cursor() as cur:
@@ -104,29 +145,21 @@ def main() -> None:
                 episode_number = episode["episode_number"]
                 try:
                     cur.execute(
-                        "SELECT 1 FROM episodes WHERE series_id = %s AND episode_number = %s",
+                        "SELECT status FROM episodes WHERE series_id = %s AND episode_number = %s",
                         (series_id, episode_number),
                     )
-                    if cur.fetchone():
+                    existing = cur.fetchone()
+
+                    if existing is not None and existing[0] == episode["status"]:
                         already_present += 1
                         continue
 
+                    if existing is not None and not allow_corrections:
+                        needs_correction.append((episode_number, existing[0], episode["status"]))
+                        continue
+
                     combo = tuple(sorted(episode["citation_ids"]))
-                    citation_id = citation_id_by_combo.get(combo)
-                    if citation_id is None:
-                        url, description = merge_citation(combo, sources_by_id)
-                        cur.execute(
-                            "INSERT INTO citations (url, description) VALUES (%s, %s) RETURNING id",
-                            (url, description),
-                        )
-                        citation_id = cur.fetchone()[0]
-                        # Committed on its own, independent of the
-                        # contribution/episode insert below — so a later
-                        # failure on THIS episode rolls back only its own
-                        # contribution/episode rows, never a citation
-                        # another already-loaded episode may also be using.
-                        conn.commit()
-                        citation_id_by_combo[combo] = citation_id
+                    citation_id = get_or_create_citation(cur, combo)
 
                     cur.execute(
                         """
@@ -148,12 +181,25 @@ def main() -> None:
                     )
                     contribution_id = cur.fetchone()[0]
 
+                    # A plain INSERT for a new episode row; ON CONFLICT DO
+                    # UPDATE for a correction (existing is not None here only
+                    # when --allow-corrections let us reach this point) —
+                    # the old contribution row is left exactly as it was,
+                    # so the episode's full history stays intact; only
+                    # `episodes` (the CURRENT approved state) changes,
+                    # exactly like a real moderator-approved correction.
                     cur.execute(
                         """
                         INSERT INTO episodes
                             (series_id, episode_number, status, status_note,
                              citation_id, approved_contribution_id)
                         VALUES (%s, %s, %s, %s, %s, %s)
+                        ON CONFLICT (series_id, episode_number) DO UPDATE SET
+                            status = EXCLUDED.status,
+                            status_note = EXCLUDED.status_note,
+                            citation_id = EXCLUDED.citation_id,
+                            approved_contribution_id = EXCLUDED.approved_contribution_id,
+                            updated_at = now()
                         """,
                         (
                             series_id,
@@ -164,7 +210,10 @@ def main() -> None:
                             contribution_id,
                         ),
                     )
-                    inserted += 1
+                    if existing is not None:
+                        corrected += 1
+                    else:
+                        inserted += 1
                 except Exception as exc:  # noqa: BLE001 - report, don't silently skip
                     conn.rollback()
                     failures.append((episode_number, str(exc)))
@@ -174,8 +223,13 @@ def main() -> None:
         conn.close()
 
     print(f"Inserted: {inserted}")
-    print(f"Already present (skipped): {already_present}")
+    print(f"Corrected (status changed): {corrected}")
+    print(f"Already present (unchanged, skipped): {already_present}")
     print(f"Citation rows created: {len(citation_id_by_combo)}")
+    if needs_correction:
+        print(f"Needs --allow-corrections ({len(needs_correction)} episodes differ from what's live):")
+        for episode_number, old_status, new_status in needs_correction:
+            print(f"  - episode {episode_number}: live={old_status} proposed={new_status}")
     print(f"Failures: {len(failures)}")
     for episode_number, err in failures:
         print(f"  - episode {episode_number}: {err}")

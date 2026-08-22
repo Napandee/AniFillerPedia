@@ -15,7 +15,6 @@ import StatusBadge from "../../components/StatusBadge.astro";
 import Button from "../../components/Button.astro";
 import CoverFallback from "../../components/CoverFallback.astro";
 import { createApiClient } from "../../api/client";
-import { fetchAniListCovers } from "../../lib/anilist";
 import type { components } from "../../api/schema";
 
 type SeriesDetailOut = components["schemas"]["SeriesDetailOut"];
@@ -74,12 +73,13 @@ const totalKnownEpisodes = series?.anilist_episode_count ?? null;
 
 const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not found — AniFillerPedia";
 
-// #46: cover art — single-id batch through the same shared helper the home
-// grid uses. A missing anilist_id, or AniList returning nothing for it,
-// both come back as an empty map entry; the CoverFallback branches below
-// handle that identically to a real lookup failure (never a broken image).
-const cover = series ? (await fetchAniListCovers([series.anilist_id])).get(series.anilist_id ?? -1) : undefined;
-const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
+// #46/#49: cover/banner art comes straight from our own API now — synced
+// by the backend worker on a daily cadence, not fetched live from AniList
+// on every page load (a real AniList outage previously took cover art down
+// site-wide, since it used to be a synchronous per-request dependency).
+// Null (never a broken image) whenever the sync hasn't reached this series
+// yet, same as before.
+const bannerUrl = series?.banner_image_url ?? series?.cover_image_url ?? null;
 
 // #51: aired_at is nullable (#49's AniList sync doesn't reach every
 // episode — notably not the earlier episodes of an already-finished long
@@ -150,8 +150,8 @@ const structuredData = series
           </div>
           <div class="hero-row">
             <div class="thumb">
-              {cover?.coverImageUrl ? (
-                <img src={cover.coverImageUrl} alt="" loading="lazy" />
+              {series!.cover_image_url ? (
+                <img src={series!.cover_image_url} alt="" loading="lazy" />
               ) : (
                 <CoverFallback title={series!.title} fontSize="28px" />
               )}

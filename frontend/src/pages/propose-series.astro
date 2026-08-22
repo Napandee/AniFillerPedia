@@ -16,6 +16,7 @@
 // can switch to the typed client at that point with no behavior change.
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
+import LicenseWhyDisclosure from "../components/LicenseWhyDisclosure.astro";
 
 const user = Astro.locals.user;
 const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
@@ -200,6 +201,7 @@ if (Astro.request.method === "POST") {
               <span>
                 I agree my contribution is released under the project's{" "}
                 <a href="/license">CC BY-NC-SA 4.0 data license</a>. *
+                <LicenseWhyDisclosure reason="a series proposal needs traceable proof it was released under this license — that's what keeps the catalog freely reusable, Wikipedia-style." />
               </span>
             </label>
             {fieldErrors.license_accepted && (

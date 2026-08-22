@@ -11,6 +11,7 @@
 // requests. A fresh GET of this page always renders the empty form again.
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
+import LicenseWhyDisclosure from "../components/LicenseWhyDisclosure.astro";
 import { createApiClient } from "../api/client";
 
 const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
@@ -90,6 +91,7 @@ if (Astro.request.method === "POST") {
             <span>
               I accept the <a href="/license">CC BY-NC-SA 4.0 dataset license</a> — non-commercial
               use only; contact us for a commercial license.
+              <LicenseWhyDisclosure reason="a silent bulk download has much weaker proof of agreement than a click-through does, so this records your acceptance explicitly, tied to the key you're issued." />
             </span>
           </label>
           <Button type="submit">Request an API key</Button>

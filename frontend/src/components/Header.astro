@@ -20,6 +20,7 @@ const authorizeHref = (provider: "github" | "discord") =>
   <nav>
     <a href="/">Browse</a>
     <a href="/moderation">Review queue</a>
+    {user && ["admin", "owner"].includes(user.role) && <a href="/admin/users">Manage users</a>}
     {
       user ? (
         <span class="identity">

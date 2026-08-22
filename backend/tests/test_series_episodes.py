@@ -306,6 +306,47 @@ async def test_episodes_list_includes_citation(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
+async def test_episodes_list_aired_at_null_when_not_scheduled(client: AsyncClient) -> None:
+    """#49's series_episode_schedule sync is independent of episode research
+    — most researched episodes won't have a matching schedule row yet
+    (either never synced, or AniList's own schedule data doesn't reach back
+    that far for an old finished show). aired_at must come back null, not
+    error or a missing key.
+    """
+    series_id = await _make_series("NoSchedule", anilist_id=900006)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["aired_at"] is None
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_includes_aired_at_when_scheduled(client: AsyncClient) -> None:
+    series_id = await _make_series("HasSchedule", anilist_id=900007)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "INSERT INTO series_episode_schedule (series_id, episode_number, aired_at) "
+                        "VALUES (:sid, 1, '2007-02-15T12:00:00Z')"
+                    ),
+                    {"sid": series_id},
+                )
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["aired_at"] == "2007-02-15T12:00:00Z"
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_episode_history_reflects_resolution_and_votes(client: AsyncClient) -> None:
     series_id = await _make_series("Delta", anilist_id=900004)
     citation_id = await _make_citation()

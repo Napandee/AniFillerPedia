@@ -251,6 +251,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/export/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Revoke Export Access
+         * @description Self-service revoke-and-forget for the email collected at
+         *     /export/request-access — see services/export.py for why possessing
+         *     the key is sufficient identity to act on this record.
+         */
+        post: operations["revoke_export_access_api_v1_export_revoke_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/contributions": {
         parameters: {
             query?: never;
@@ -676,6 +698,8 @@ export interface components {
              * Format: date-time
              */
             updated_at: string;
+            /** Aired At */
+            aired_at: string | null;
         };
         /** ExportAccessRequest */
         ExportAccessRequest: {
@@ -1431,6 +1455,35 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ExportOut"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    revoke_export_access_api_v1_export_revoke_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-api-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

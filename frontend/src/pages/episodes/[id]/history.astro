@@ -1,0 +1,431 @@
+---
+// #34: per-episode contribution history + community voting panel. Built as
+// its own dedicated route (keyed on the episode's internal `id`, not
+// series_id/episode_number) rather than an inline panel on #33's series
+// detail page — avoids a same-file conflict with #33, which the issue text
+// explicitly allows ("pick whichever the mockup's inline pattern translates
+// to better"). #33 should link here per-episode, e.g.
+// `/episodes/${episode.id}/history`.
+//
+// Out of scope (per #34): casting a NEW contribution (#35), and the
+// moderation queue's own approve/reject (#39) — this page only surfaces the
+// two existing approval paths (moderator review, already resolved; and
+// community endorse/dispute, live here).
+import Layout from "../../../layouts/Layout.astro";
+import Button from "../../../components/Button.astro";
+import { createApiClient } from "../../../api/client";
+import type { components } from "../../../api/schema";
+
+type HistoryEntry = components["schemas"]["ContributionHistoryEntry"];
+type UserRef = components["schemas"]["UserRef"];
+
+const AUTO_APPROVAL_THRESHOLD = 75; // mirrors backend/services/contributions.py's constant
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const api = createApiClient(baseUrl);
+const cookie = Astro.request.headers.get("cookie") ?? "";
+const currentUser = Astro.locals.user;
+
+const rawId = Astro.params.id;
+const episodeId = rawId ? Number(rawId) : NaN;
+
+// #34 acceptance: self-vote and already-resolved show a clear message, not
+// a raw error. Populated below when this request is itself a vote POST;
+// carried through to render alongside the entry it targeted.
+let voteBanner: { contributionId: number; ok: boolean; message: string } | null = null;
+
+if (Number.isFinite(episodeId) && Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const contributionIdRaw = form.get("contribution_id");
+  const vote = form.get("vote");
+  const contributionId = typeof contributionIdRaw === "string" ? Number(contributionIdRaw) : NaN;
+
+  if (!currentUser) {
+    voteBanner = {
+      contributionId: Number.isFinite(contributionId) ? contributionId : -1,
+      ok: false,
+      message: "Log in to endorse or dispute this contribution.",
+    };
+  } else if (!Number.isFinite(contributionId) || (vote !== "endorse" && vote !== "dispute")) {
+    voteBanner = { contributionId: -1, ok: false, message: "That vote couldn't be read — please try again." };
+  } else {
+    const { data, error, response } = await api.POST("/api/v1/contributions/{contribution_id}/vote", {
+      params: { path: { contribution_id: contributionId } },
+      body: { vote },
+      headers: { cookie },
+    });
+
+    if (data) {
+      const resolvedNote =
+        data.review_status !== "pending"
+          ? ` This contribution is now ${data.review_status}${
+              data.resolution_method ? ` (${data.resolution_method.replace("_", " ")})` : ""
+            }.`
+          : "";
+      voteBanner = {
+        contributionId,
+        ok: true,
+        message: `Your ${data.vote} was recorded (weight ${data.weight_at_vote}). Net score: ${data.net_score}/${data.auto_approval_threshold}.${resolvedNote}`,
+      };
+    } else {
+      // Undeclared error status codes (403/404/409) still return FastAPI's
+      // real {"detail": ...} body at runtime — openapi-fetch just can't type
+      // them precisely since the router only declares 200/422 responses.
+      const detail = (error as { detail?: unknown } | undefined)?.detail;
+      const detailText = typeof detail === "string" ? detail : "";
+
+      if (response.status === 403) {
+        voteBanner = { contributionId, ok: false, message: "You can't vote on your own submitted contribution." };
+      } else if (response.status === 404) {
+        voteBanner = { contributionId, ok: false, message: "That contribution no longer exists." };
+      } else if (response.status === 409) {
+        voteBanner = detailText.includes("already voted")
+          ? { contributionId, ok: false, message: "You've already voted on this contribution." }
+          : { contributionId, ok: false, message: "This contribution has already been resolved — no more votes needed." };
+      } else {
+        voteBanner = { contributionId, ok: false, message: "Something went wrong casting your vote — please try again." };
+      }
+    }
+  }
+}
+
+let history: HistoryEntry[] = [];
+let episodeLabel = "";
+let seriesId: number | null = null;
+let notFound = !Number.isFinite(episodeId);
+
+if (!notFound) {
+  const [episodeResult, historyResult] = await Promise.all([
+    api.GET("/api/v1/episodes/{episode_id}", { params: { path: { episode_id: episodeId } } }),
+    api.GET("/api/v1/episodes/{episode_id}/history", { params: { path: { episode_id: episodeId } } }),
+  ]);
+
+  if (episodeResult.error || historyResult.error) {
+    notFound = true;
+  } else {
+    seriesId = episodeResult.data.series_id;
+    episodeLabel = `Episode #${episodeResult.data.episode_number}`;
+    history = historyResult.data;
+  }
+}
+
+let seriesTitle: string | null = null;
+if (seriesId !== null) {
+  const { data } = await api.GET("/api/v1/series/{series_id}", { params: { path: { series_id: seriesId } } });
+  seriesTitle = data?.title ?? null;
+}
+
+function identity(ref: UserRef | null): string {
+  if (!ref) return "anonymous";
+  return ref.display_name ?? (ref.github_id ? `@${ref.github_id}` : `User #${ref.id}`);
+}
+
+function netScore(entry: HistoryEntry): number {
+  return entry.votes.reduce((sum, v) => sum + (v.vote === "endorse" ? v.weight_at_vote : -v.weight_at_vote), 0);
+}
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+}
+---
+
+<Layout title={notFound ? "Episode not found — AniFillerPedia" : `${episodeLabel} history — AniFillerPedia`}>
+  {
+    notFound ? (
+      <section class="panel">
+        <p class="disp not-found">Episode not found.</p>
+        <p class="muted">
+          Check the link, or <a href="/">browse series</a> to find the episode you're looking for.
+        </p>
+      </section>
+    ) : (
+      <section class="panel">
+        <p class="eyebrow">
+          {seriesId !== null && <a href={`/series/${seriesId}`}>{seriesTitle ?? `Series #${seriesId}`}</a>}
+        </p>
+        <h1 class="disp title">{episodeLabel} — contribution history</h1>
+
+        {history.length === 0 ? (
+          <p class="muted">No contributions have been submitted for this episode yet.</p>
+        ) : (
+          <ol class="history">
+            {history.map((entry) => {
+              const isPending = entry.review_status === "pending";
+              const score = netScore(entry);
+              const myVote = currentUser ? entry.votes.find((v) => v.voter?.id === currentUser.id) : undefined;
+              const isSelf = currentUser != null && entry.submitted_by?.id === currentUser.id;
+              const banner = voteBanner && voteBanner.contributionId === entry.id ? voteBanner : null;
+
+              return (
+                <li class="entry">
+                  <div class="entry-head">
+                    <span class:list={["status-pill", `status-pill--${entry.review_status}`]}>
+                      {entry.review_status}
+                    </span>
+                    <span class:list={["proposed-pill", `proposed-pill--${entry.proposed_status}`]}>
+                      proposes {entry.proposed_status}
+                    </span>
+                    <span class="muted small">submitted {formatDate(entry.submitted_at)}</span>
+                  </div>
+
+                  <p class="submitter">
+                    Submitted by <strong>{identity(entry.submitted_by)}</strong>
+                  </p>
+
+                  {entry.proposed_note && <p class="note">{entry.proposed_note}</p>}
+
+                  <p class="citation">
+                    Citation:{" "}
+                    {entry.citation.url ? (
+                      <a href={entry.citation.url} target="_blank" rel="noopener noreferrer">
+                        {entry.citation.description}
+                      </a>
+                    ) : (
+                      entry.citation.description
+                    )}
+                  </p>
+
+                  {!isPending && (
+                    <p class="resolution muted small">
+                      {entry.resolution_method === "community_vote" ? (
+                        <>Resolved by community vote{entry.reviewed_at ? ` on ${formatDate(entry.reviewed_at)}` : ""}.</>
+                      ) : entry.reviewed_by ? (
+                        <>
+                          Reviewed by <strong>{identity(entry.reviewed_by)}</strong>
+                          {entry.reviewed_at ? ` on ${formatDate(entry.reviewed_at)}` : ""}.
+                        </>
+                      ) : (
+                        <>Resolved{entry.reviewed_at ? ` on ${formatDate(entry.reviewed_at)}` : ""}.</>
+                      )}
+                      {entry.review_note && <> — "{entry.review_note}"</>}
+                    </p>
+                  )}
+
+                  {entry.votes.length > 0 && (
+                    <ul class="votes">
+                      {entry.votes.map((v) => (
+                        <li class:list={["vote", `vote--${v.vote}`]}>
+                          <span class="vote-kind">{v.vote}</span>
+                          <span class="vote-who">{identity(v.voter)}</span>
+                          <span class="vote-weight">weight {v.weight_at_vote}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {/* Rendered outside the isPending gate below: a vote that
+                      crosses the auto-approval threshold flips review_status
+                      away from "pending" in the very same response, so the
+                      confirmation banner must still show even though the
+                      voting controls themselves no longer apply. */}
+                  {banner && !isPending && (
+                    <p class:list={["banner", banner.ok ? "banner--ok" : "banner--error"]}>{banner.message}</p>
+                  )}
+
+                  {isPending && (
+                    <div class="voting">
+                      <p class="score">
+                        Net score: <strong>{score}</strong> / {AUTO_APPROVAL_THRESHOLD}
+                      </p>
+
+                      {banner && (
+                        <p class:list={["banner", banner.ok ? "banner--ok" : "banner--error"]}>{banner.message}</p>
+                      )}
+
+                      {myVote ? (
+                        <p class="muted small">
+                          You voted <strong>{myVote.vote}</strong> (weight {myVote.weight_at_vote}).
+                        </p>
+                      ) : isSelf ? (
+                        <p class="muted small">You can't vote on your own submission.</p>
+                      ) : currentUser ? (
+                        <div class="vote-actions">
+                          <form method="POST" class="vote-form">
+                            <input type="hidden" name="contribution_id" value={entry.id} />
+                            <input type="hidden" name="vote" value="endorse" />
+                            <Button type="submit" variant="endorse">
+                              Endorse
+                            </Button>
+                          </form>
+                          <form method="POST" class="vote-form">
+                            <input type="hidden" name="contribution_id" value={entry.id} />
+                            <input type="hidden" name="vote" value="dispute" />
+                            <Button type="submit" variant="dispute">
+                              Dispute
+                            </Button>
+                          </form>
+                        </div>
+                      ) : (
+                        <p class="muted small">Log in to endorse or dispute this contribution.</p>
+                      )}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        )}
+      </section>
+    )
+  }
+</Layout>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 28px 32px;
+  }
+  .eyebrow {
+    margin: 0 0 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+  .eyebrow a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin: 0 0 20px;
+  }
+  .not-found {
+    font-size: 20px;
+    color: var(--color-heading);
+  }
+  .muted {
+    color: var(--color-text-muted);
+  }
+  .small {
+    font-size: 12px;
+  }
+  .history {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .entry {
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    background: var(--color-surface);
+  }
+  .entry-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .status-pill,
+  .proposed-pill {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: capitalize;
+    color: #fff;
+  }
+  .status-pill--pending {
+    background: var(--color-status-pending);
+  }
+  .status-pill--approved {
+    background: var(--color-status-canon);
+  }
+  .status-pill--rejected {
+    background: var(--color-dispute);
+  }
+  .proposed-pill--canon {
+    background: var(--color-status-canon);
+  }
+  .proposed-pill--filler {
+    background: var(--color-status-filler);
+  }
+  .proposed-pill--mixed {
+    background: var(--color-status-mixed);
+  }
+  .submitter {
+    margin: 4px 0;
+    font-size: 13.5px;
+  }
+  .note {
+    margin: 4px 0;
+    font-size: 13.5px;
+  }
+  .citation {
+    margin: 4px 0 8px;
+    font-size: 13px;
+  }
+  .citation a {
+    color: var(--color-accent);
+  }
+  .resolution {
+    margin: 4px 0 8px;
+  }
+  .votes {
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .vote {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+  .vote-kind {
+    font-weight: 800;
+    text-transform: capitalize;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: var(--color-trust-chip-bg);
+  }
+  .vote--endorse .vote-kind {
+    color: var(--color-endorse);
+  }
+  .vote--dispute .vote-kind {
+    color: var(--color-dispute);
+  }
+  .voting {
+    border-top: 1px solid var(--color-border-divider);
+    padding-top: 10px;
+    margin-top: 6px;
+  }
+  .score {
+    margin: 0 0 8px;
+    font-size: 13px;
+  }
+  .vote-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .vote-form {
+    margin: 0;
+  }
+  .banner {
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: var(--radius-card);
+    margin: 0 0 10px;
+  }
+  .banner--ok {
+    background: #eafff1;
+    color: var(--color-endorse);
+  }
+  .banner--error {
+    background: #fff0f3;
+    color: var(--color-dispute);
+  }
+</style>

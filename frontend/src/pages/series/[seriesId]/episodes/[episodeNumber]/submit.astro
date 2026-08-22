@@ -13,6 +13,7 @@ import Button from "../../../../../components/Button.astro";
 import StatusBadge from "../../../../../components/StatusBadge.astro";
 import type { EpisodeStatus } from "../../../../../components/StatusBadge.astro";
 import { createApiClient } from "../../../../../api/client";
+import LicenseWhyDisclosure from "../../../../../components/LicenseWhyDisclosure.astro";
 
 const { seriesId, episodeNumber } = Astro.params;
 const seriesIdNum = Number(seriesId);
@@ -264,6 +265,7 @@ if (hasValidParams && Astro.request.method === "POST") {
             {" "}<a href="/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>, per
             AniFillerPedia's <a href="/data-license" target="_blank" rel="noopener">DATA_LICENSE</a>.
             <span class="required"> (required)</span>
+            <LicenseWhyDisclosure reason="every correction needs traceable proof it was released under this license — that's what keeps the dataset freely reusable, Wikipedia-style." />
           </span>
         </label>
 

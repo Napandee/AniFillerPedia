@@ -1,0 +1,58 @@
+---
+// #51 follow-up: a small "why we ask" affordance next to the license
+// checkbox on every submission form (submit-correction, propose-series,
+// export-access). Chosen over a floating tooltip or an always-visible
+// line (see the design canvas linked in CLAUDE.local.md) specifically to
+// match the disclosure pattern already used elsewhere on the site
+// (synonyms, episode rows) — a native <details>, no JS, works the same
+// on touch as it does with a mouse.
+interface Props {
+  reason: string;
+}
+
+const { reason } = Astro.props;
+---
+
+<details class="license-why">
+  <summary class="info-icon-btn" aria-label="Why we ask for this">i</summary>
+  <p class="why-block">
+    <strong>Why we ask:</strong> {reason} <a href="/license">Read the full license &rarr;</a>
+  </p>
+</details>
+
+<style>
+  .license-why {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .info-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-border-card);
+    color: var(--color-accent);
+    font-size: 10px;
+    font-weight: 800;
+    font-family: var(--font-body);
+    cursor: pointer;
+    list-style: none;
+  }
+  .info-icon-btn::-webkit-details-marker {
+    display: none;
+  }
+  .why-block {
+    margin: 8px 0 0;
+    padding: 10px 12px;
+    background: var(--color-surface-pending);
+    border: 1px dashed var(--color-border-card);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+</style>

@@ -1,32 +1,152 @@
 ---
-// Trivial scaffold page (#31) — proves the layout shell, design tokens, and
-// typed API client all wire together end-to-end. Real home/browse content
-// (series list, trending, pending count) is #32's scope, built on top of
-// this shell.
+// #32: home/browse page — series search (title+synonym), paginated
+// series grid, a "recently updated" teaser, and a moderator-only "needs
+// review" count. Replaces #31's trivial placeholder wholesale.
+//
+// Out of scope here (owned by parallel #33/#35/#36/#39 work): series
+// detail page, submission/proposal forms, the moderation queue page
+// itself. Links to those routes are plain hrefs even though the routes
+// don't exist in this isolated worktree yet.
 import Layout from "../layouts/Layout.astro";
 import SearchInput from "../components/SearchInput.astro";
-import StatusBadge from "../components/StatusBadge.astro";
 import { createApiClient } from "../api/client";
 
+const PAGE_SIZE = 20;
+const TEASER_SIZE = 6;
+
 const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
-const { data, error } = await api.GET("/api/v1/health");
-const backendOk = !error && data?.status === "ok";
+
+const q = Astro.url.searchParams.get("q")?.trim() || undefined;
+const requestedPage = Number.parseInt(Astro.url.searchParams.get("page") ?? "1", 10);
+const page = Number.isFinite(requestedPage) && requestedPage >= 1 ? requestedPage : 1;
+const offset = (page - 1) * PAGE_SIZE;
+
+// Main search/browse grid — plain title/synonym search, paginated.
+const { data: listData, error: listError } = await api.GET("/api/v1/series", {
+  params: { query: { q, limit: PAGE_SIZE, offset } },
+});
+const items = listData?.items ?? [];
+const total = listData?.total ?? 0;
+const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+// Recently-updated teaser — separate small query, not paginated.
+const { data: teaserData } = await api.GET("/api/v1/series", {
+  params: { query: { sort: "recently_updated", limit: TEASER_SIZE, offset: 0 } },
+});
+const recentlyUpdated = teaserData?.items ?? [];
+
+// "Needs review" count — moderator+ only (default per #32: skip the live
+// number for anonymous/contributor visitors rather than exposing a
+// public count-only variant that doesn't exist yet).
+const QUALIFYING_ROLES = new Set(["moderator", "admin", "owner"]);
+const user = Astro.locals.user;
+let pendingCount: number | null = null;
+if (user && QUALIFYING_ROLES.has(user.role)) {
+  const cookie = Astro.request.headers.get("cookie") ?? "";
+  const { data: pendingData } = await api.GET("/api/v1/contributions", {
+    params: { query: { review_status: "pending" } },
+    headers: { cookie },
+  });
+  if (pendingData) {
+    pendingCount = pendingData.length;
+  }
+}
+
+function pageHref(targetPage: number): string {
+  const params = new URLSearchParams();
+  if (q) params.set("q", q);
+  if (targetPage > 1) params.set("page", String(targetPage));
+  const qs = params.toString();
+  return qs ? `/?${qs}` : "/";
+}
 ---
 
-<Layout title="AniFillerPedia">
+<Layout title="AniFillerPedia — Browse anime filler & canon guides">
   <section class="hero">
     <div class="disp headline">Know what's canon<br />before you watch!</div>
     <p class="tagline">Built by fans, checked by fans — cited every step of the way.</p>
     <SearchInput />
-    <div class="status-row">
-      <span class:list={["dot", { ok: backendOk }]}></span>
-      <span>Backend: {backendOk ? "connected" : "unreachable"}</span>
+    <p class="propose">
+      Can't find a show? <a href="/propose-series">Propose a series</a>
+    </p>
+  </section>
+
+  {
+    pendingCount !== null && (
+      <a class="review-teaser" href="/moderation">
+        <span class="review-dot" />
+        <span>
+          <strong>{pendingCount}</strong> contribution{pendingCount === 1 ? "" : "s"} pending review
+        </span>
+        <span class="review-arrow">→</span>
+      </a>
+    )
+  }
+
+  {
+    recentlyUpdated.length > 0 && (
+      <section class="section">
+        <h2 class="disp section-title">Recently updated</h2>
+        <div class="teaser-row">
+          {recentlyUpdated.map((series) => (
+            <a class="teaser-card" href={`/series/${series.id}`}>
+              <div class="disp teaser-title">{series.title}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="browse-heading">
+      <h2 class="disp section-title">{q ? `Results for "${q}"` : "All series"}</h2>
+      <span class="result-count">{total} {total === 1 ? "series" : "series"} found</span>
     </div>
-    <div class="badges">
-      <StatusBadge status="canon" />
-      <StatusBadge status="filler" />
-      <StatusBadge status="mixed" />
-    </div>
+
+    {listError && <p class="error-note">Couldn't load series right now — try again shortly.</p>}
+
+    {
+      !listError && items.length === 0 && (
+        <p class="empty-note">
+          {q ? `No series match "${q}" yet — maybe propose it?` : "No series in the catalog yet."}
+        </p>
+      )
+    }
+
+    {
+      items.length > 0 && (
+        <div class="series-grid">
+          {items.map((series) => (
+            <a class="grid-card" href={`/series/${series.id}`}>
+              <div class="disp title">{series.title}</div>
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      total > 0 && totalPages > 1 && (
+        <nav class="pagination" aria-label="Series pagination">
+          <a
+            class:list={["page-link", { disabled: page <= 1 }]}
+            href={page > 1 ? pageHref(page - 1) : undefined}
+            aria-disabled={page <= 1}
+          >
+            ← Prev
+          </a>
+          <span class="page-status">Page {page} of {totalPages}</span>
+          <a
+            class:list={["page-link", { disabled: page >= totalPages }]}
+            href={page < totalPages ? pageHref(page + 1) : undefined}
+            aria-disabled={page >= totalPages}
+          >
+            Next →
+          </a>
+        </nav>
+      )
+    }
   </section>
 </Layout>
 
@@ -49,27 +169,140 @@ const backendOk = !error && data?.status === "ok";
     color: var(--color-text-muted);
     margin: 0 0 20px;
   }
-  .status-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
+  .propose {
+    margin: 14px 0 0;
     font-size: 12.5px;
     font-weight: 700;
     color: var(--color-text-muted);
   }
-  .dot {
+  .propose a {
+    color: var(--color-accent);
+  }
+
+  .review-teaser {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: var(--color-surface-pending);
+    border: 2px solid var(--color-status-pending);
+    border-radius: var(--radius-card);
+    text-decoration: none;
+    color: var(--color-heading);
+    font-weight: 700;
+    font-size: 13.5px;
+  }
+  .review-dot {
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: var(--color-dispute);
+    background: var(--color-status-pending);
+    flex-shrink: 0;
   }
-  .dot.ok {
-    background: var(--color-status-canon);
+  .review-arrow {
+    margin-left: auto;
+    color: var(--color-text-faint);
   }
-  .badges {
+
+  .section {
+    margin-top: 32px;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin: 0 0 12px;
+  }
+
+  .teaser-row {
     display: flex;
-    gap: 10px;
-    margin-top: 16px;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .teaser-card {
+    flex: 0 0 auto;
+    min-width: 160px;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sticker);
+    text-decoration: none;
+    color: inherit;
+  }
+  .teaser-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+
+  .browse-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .result-count {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-text-faint);
+  }
+
+  .error-note,
+  .empty-note {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 16px;
+  }
+
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .grid-card {
+    display: block;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sticker);
+    text-decoration: none;
+    color: inherit;
+  }
+  .grid-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .page-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sticker);
+  }
+  .page-link.disabled {
+    color: var(--color-text-faint);
+    pointer-events: none;
+    box-shadow: none;
+  }
+  .page-status {
+    color: var(--color-text-muted);
   }
 </style>

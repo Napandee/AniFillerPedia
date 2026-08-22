@@ -32,6 +32,17 @@ native-script titles — so `q=NARUTO疾風伝` and `q=naruto shippuden` can bot
 find the same series. You can also look up by external ID instead of text:
 `anilist_id`, `mal_id`, or `anidb_id`.
 
+**A plain call with no `q` and no external id excludes series with zero
+episode rows.** Most of the catalog was bootstrap-imported from an open
+dataset that carries no per-episode data at all — showing those alongside
+researched shows made the default browse list mostly empty pages. A
+*targeted* lookup (`q`, or any of the three external ids) still returns a
+zero-episode series if it matches, so you can find an existing catalog
+entry — and its real `series_id` — before proposing what would otherwise
+be a duplicate. `GET /series/{series_id}` and its `/episodes` are
+unaffected either way: a zero-episode series is still a normal 200 with an
+empty episode list if you already have its id.
+
 ```json
 {
   "items": [

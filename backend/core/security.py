@@ -36,13 +36,15 @@ def verify_session_token(token: str) -> int | None:
     return data.get("user_id")
 
 
-def create_oauth_state(*, link_user_id: int | None = None) -> str:
+def create_oauth_state(*, link_user_id: int | None = None, next: str | None = None) -> str:
     """Encodes CSRF protection plus, when set, which authenticated user is
     attempting a /settings/link/{provider} call — read back on the
     callback so login and linking share one code path but never get
-    confused about which one they're doing.
+    confused about which one they're doing. `next` (#37) is the frontend
+    page to redirect back to after the round trip completes; validated as
+    a same-site relative path by the caller before it ever reaches here.
     """
-    return _serializer("oauth-state").dumps({"link_user_id": link_user_id})
+    return _serializer("oauth-state").dumps({"link_user_id": link_user_id, "next": next})
 
 
 def verify_oauth_state(token: str) -> dict | None:

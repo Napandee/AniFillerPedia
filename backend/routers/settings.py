@@ -5,7 +5,7 @@ login purely via the signed state's link_user_id, not a different path,
 since the redirect back from the provider is identical either way.
 """
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from fastapi.responses import RedirectResponse
 from sqlalchemy.engine import Row
 
@@ -16,5 +16,7 @@ router = APIRouter(tags=["settings"])
 
 
 @router.get("/settings/link/{provider}")
-async def start_link(provider: str, current_user: Row = Depends(get_current_user)) -> RedirectResponse:
-    return _start_oauth_redirect(provider, link_user_id=current_user.id)
+async def start_link(
+    provider: str, current_user: Row = Depends(get_current_user), next: str | None = Query(default=None)
+) -> RedirectResponse:
+    return _start_oauth_redirect(provider, link_user_id=current_user.id, next=next)

@@ -29,10 +29,20 @@ def _require_valid_provider(provider: str) -> None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="unknown provider")
 
 
-def _start_oauth_redirect(provider: str, *, link_user_id: int | None) -> RedirectResponse:
+def _safe_next_path(next: str | None) -> str | None:
+    """Only ever a same-site relative path — never an open redirect. A
+    bare "/" is fine; "//evil.com" and "https://evil.com" are not (both
+    are browser-followed off-site redirects despite "starting with /").
+    """
+    if next and next.startswith("/") and not next.startswith("//"):
+        return next
+    return None
+
+
+def _start_oauth_redirect(provider: str, *, link_user_id: int | None, next: str | None = None) -> RedirectResponse:
     _require_valid_provider(provider)
     config = get_provider_config(provider)
-    state = create_oauth_state(link_user_id=link_user_id)
+    state = create_oauth_state(link_user_id=link_user_id, next=_safe_next_path(next))
     redirect = RedirectResponse(
         url=(
             f"{config.authorize_url}"
@@ -57,11 +67,11 @@ def _start_oauth_redirect(provider: str, *, link_user_id: int | None) -> Redirec
 
 
 @router.get("/auth/{provider}/authorize")
-async def authorize(provider: str) -> RedirectResponse:
-    return _start_oauth_redirect(provider, link_user_id=None)
+async def authorize(provider: str, next: str | None = Query(default=None)) -> RedirectResponse:
+    return _start_oauth_redirect(provider, link_user_id=None, next=next)
 
 
-@router.get("/auth/{provider}/callback")
+@router.get("/auth/{provider}/callback", response_model=None)
 async def callback(
     provider: str,
     response: Response,
@@ -69,7 +79,7 @@ async def callback(
     state: str = Query(...),
     afp_oauth_state: str | None = Cookie(default=None, alias=OAUTH_STATE_COOKIE_NAME),
     session: AsyncSession = Depends(get_session),
-) -> dict:
+) -> dict | RedirectResponse:
     _require_valid_provider(provider)
 
     # The state param must both (a) be validly signed by us and (b) match
@@ -95,6 +105,14 @@ async def callback(
     # test: the callback's own response looked correct because it read
     # the row back inside the same still-open transaction, but nothing
     # outside that one request would ever have seen it.
+    # #37: when the frontend's login/link link included a `next` (a real
+    # browser page to land on afterward), redirect there. When it's absent
+    # — the original contract, still exercised by
+    # test_full_login_round_trip_with_mocked_provider — keep returning the
+    # plain JSON body exactly as before. Purely additive: nothing that
+    # doesn't pass `next` observes any behavior change.
+    next_path = state_data.get("next")
+
     link_user_id = state_data.get("link_user_id")
     if link_user_id is not None:
         try:
@@ -104,6 +122,8 @@ async def callback(
                 )
         except AccountLinkConflict as exc:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+        if next_path:
+            return RedirectResponse(url=next_path, status_code=status.HTTP_303_SEE_OTHER)
         return {"linked": provider}
 
     async with session.begin():
@@ -121,6 +141,8 @@ async def callback(
         # site. Caught by the real end-to-end test, not by inspection.
         path="/",
     )
+    if next_path:
+        return RedirectResponse(url=next_path, status_code=status.HTTP_303_SEE_OTHER)
     return {"id": user.id, "display_name": user.display_name, "role": user.role}
 
 

@@ -1,17 +1,44 @@
 ---
-const links = [
-  { href: "/", label: "Browse" },
-  { href: "/moderation", label: "Review queue" },
-];
+// #37: identity/login state comes from Astro.locals.user (set by
+// src/middleware.ts on every request via the real session cookie) — never
+// held in client-only memory that would vanish or lie on refresh.
+const user = Astro.locals.user;
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const next = encodeURIComponent(Astro.url.pathname);
+
+// Same-origin in the real deploy (Caddy fronts both under one domain), so a
+// relative `next` correctly lands back on this app after the round trip.
+// Cross-port local dev (Astro on :4321, backend on :8000) is a known
+// exception — not fixed here, matches #37's own note that live end-to-end
+// verification waits on real OAuth credentials anyway.
+const authorizeHref = (provider: "github" | "discord") =>
+  `${baseUrl}/api/v1/auth/${provider}/authorize?next=${next}`;
 ---
 
 <header class="site-header">
   <a class="disp brand" href="/">AniFillerPedia</a>
   <nav>
-    {links.map((link) => (
-      <a href={link.href}>{link.label}</a>
-    ))}
-    <a href="/login">Log in</a>
+    <a href="/">Browse</a>
+    <a href="/moderation">Review queue</a>
+    {
+      user ? (
+        <span class="identity">
+          <a href="/account">
+            {user.display_name ?? "Account"} <span class="role">· {user.role}</span>
+          </a>
+          <form method="POST" action="/api/logout" class="logout-form">
+            <button type="submit" class="linklike">
+              Log out
+            </button>
+          </form>
+        </span>
+      ) : (
+        <span class="login-links">
+          <a href={authorizeHref("github")}>Log in with GitHub</a>
+          <a href={authorizeHref("discord")}>Discord</a>
+        </span>
+      )
+    }
   </nav>
 </header>
 
@@ -29,16 +56,42 @@ const links = [
   }
   nav {
     display: flex;
+    align-items: center;
     gap: 16px;
     font-family: var(--font-body);
     font-size: 13px;
     font-weight: 700;
   }
-  nav a {
+  nav > a {
     color: var(--color-text-muted);
     text-decoration: none;
   }
-  nav a:last-child {
+  .login-links,
+  .identity {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .login-links a,
+  .identity a {
     color: var(--color-accent);
+    text-decoration: none;
+  }
+  .role {
+    color: var(--color-text-faint);
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  .logout-form {
+    display: inline;
+    margin: 0;
+  }
+  .linklike {
+    font: inherit;
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
   }
 </style>

@@ -1,5 +1,15 @@
 anifillerpedia.wiki {
-	reverse_proxy app:8000
+	# Backend-owned paths (#45): the versioned API, plus FastAPI's own
+	# Swagger UI / ReDoc / schema — #41's docs page links out to /docs and
+	# /openapi.json directly rather than proxying them through the frontend.
+	# Everything else (the Astro app) falls through to the frontend handle.
+	@backend path /api/v1/* /docs /redoc /openapi.json
+	handle @backend {
+		reverse_proxy app:8000
+	}
+	handle {
+		reverse_proxy frontend:4321
+	}
 
 	encode gzip
 

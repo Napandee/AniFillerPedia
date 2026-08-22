@@ -8,3 +8,10 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare namespace App {
+  interface Locals {
+    /** Set by src/middleware.ts on every request; null when logged out. */
+    user: import("./api/client").CurrentUser | null;
+  }
+}

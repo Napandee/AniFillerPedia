@@ -8,10 +8,15 @@
 // before Astro (and its ambient env types) exists — Phase 5 call sites pass
 // import.meta.env.PUBLIC_API_BASE_URL in explicitly.
 import createClient from "openapi-fetch";
-import type { paths } from "./schema.d.ts";
+import type { components, paths } from "./schema.d.ts";
 
 export function createApiClient(baseUrl: string = "https://anifillerpedia.wiki") {
   return createClient<paths>({ baseUrl });
 }
 
 export const api = createApiClient();
+
+// #37: the shape of `GET /users/me` — used by src/middleware.ts to type
+// Astro.locals.user, and by anything downstream that needs "the logged-in
+// user" without re-deriving the type from the raw schema each time.
+export type CurrentUser = components["schemas"]["UserOut"];

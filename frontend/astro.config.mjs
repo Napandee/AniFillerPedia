@@ -9,4 +9,15 @@ import node from "@astrojs/node";
 export default defineConfig({
   output: "server",
   adapter: node({ mode: "standalone" }),
+  // Astro's CSRF origin-check middleware (on by default for every non-GET
+  // request) rejects the request's Host header entirely unless it appears
+  // here — with an empty list it silently falls back to a bare "localhost"
+  // with no port, which then never matches any real Origin header, so
+  // every form POST (e.g. #37's logout) 403s. Found by actually running the
+  // logout flow end to end, not by reading the docs; the domain list
+  // matches this app's two real hosts (dev, and the production domain from
+  // CLAUDE.local.md) rather than disabling the check.
+  security: {
+    allowedDomains: [{ hostname: "anifillerpedia.wiki" }, { hostname: "localhost" }],
+  },
 });

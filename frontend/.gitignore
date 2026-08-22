@@ -3,3 +3,7 @@ node_modules/
 # every run, not meant to be committed (schema.d.ts, the actual generated
 # output, IS committed — see README.md).
 src/api/openapi.json
+
+dist/
+.astro/
+.env

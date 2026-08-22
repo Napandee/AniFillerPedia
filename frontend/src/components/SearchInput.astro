@@ -1,0 +1,44 @@
+---
+interface Props {
+  placeholder?: string;
+  name?: string;
+}
+
+const { placeholder = "Search Naruto, Bleach, One Piece...", name = "q" } = Astro.props;
+---
+
+<form class="search" role="search">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+  <input type="search" {name} {placeholder} />
+</form>
+
+<style>
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--color-surface);
+    border: 3px solid var(--color-border-card);
+    border-radius: var(--radius-pill);
+    padding: 11px 18px;
+    box-shadow: var(--shadow-sticker);
+    color: var(--color-accent);
+  }
+  .search input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+  .search input::placeholder {
+    color: var(--color-text-faint);
+  }
+</style>

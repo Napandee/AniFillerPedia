@@ -1,0 +1,60 @@
+---
+// Three fixed episode statuses only (CLAUDE.md Decisions Made — no `recap`
+// value). Color/icon per status is part of the locked Playful Fandom design.
+export type EpisodeStatus = "canon" | "filler" | "mixed";
+
+interface Props {
+  status: EpisodeStatus;
+}
+
+const { status } = Astro.props;
+
+const COPY: Record<EpisodeStatus, string> = {
+  canon: "Canon",
+  filler: "Filler",
+  mixed: "Mixed",
+};
+---
+
+<span class={`badge badge--${status}`}>
+  {status === "canon" && (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="4 12 10 18 20 6"></polyline>
+    </svg>
+  )}
+  {status === "filler" && (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+      <polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2"></polygon>
+    </svg>
+  )}
+  {status === "mixed" && (
+    <svg width="12" height="12" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle>
+      <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"></path>
+    </svg>
+  )}
+  {COPY[status]}
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .badge--canon {
+    background: var(--color-status-canon);
+  }
+  .badge--filler {
+    background: var(--color-status-filler);
+  }
+  .badge--mixed {
+    background: var(--color-status-mixed);
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+// Trivial scaffold page (#31) — proves the layout shell, design tokens, and
+// typed API client all wire together end-to-end. Real home/browse content
+// (series list, trending, pending count) is #32's scope, built on top of
+// this shell.
+import Layout from "../layouts/Layout.astro";
+import SearchInput from "../components/SearchInput.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import { createApiClient } from "../api/client";
+
+const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
+const { data, error } = await api.GET("/api/v1/health");
+const backendOk = !error && data?.status === "ok";
+---
+
+<Layout title="AniFillerPedia">
+  <section class="hero">
+    <div class="disp headline">Know what's canon<br />before you watch!</div>
+    <p class="tagline">Built by fans, checked by fans — cited every step of the way.</p>
+    <SearchInput />
+    <div class="status-row">
+      <span class:list={["dot", { ok: backendOk }]}></span>
+      <span>Backend: {backendOk ? "connected" : "unreachable"}</span>
+    </div>
+    <div class="badges">
+      <StatusBadge status="canon" />
+      <StatusBadge status="filler" />
+      <StatusBadge status="mixed" />
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-bg-hero-start), var(--color-bg-hero-end));
+    border-radius: var(--radius-panel);
+    padding: 36px 32px;
+  }
+  .headline {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--color-heading);
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .tagline {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 20px;
+  }
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-dispute);
+  }
+  .dot.ok {
+    background: var(--color-status-canon);
+  }
+  .badges {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+</style>

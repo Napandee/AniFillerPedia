@@ -1,0 +1,47 @@
+---
+interface Props {
+  variant?: "primary" | "endorse" | "dispute" | "ghost";
+  type?: "button" | "submit" | "reset";
+  href?: string;
+}
+
+const { variant = "primary", type = "button", href } = Astro.props;
+const Tag = href ? "a" : "button";
+---
+
+<Tag class={`btn btn--${variant}`} {...(href ? { href } : { type })}>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: var(--radius-pill);
+    padding: 6px 12px;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1.4;
+  }
+  .btn--primary {
+    color: #fff;
+    background: var(--color-accent);
+  }
+  .btn--endorse {
+    color: #fff;
+    background: var(--color-endorse);
+  }
+  .btn--dispute {
+    color: #fff;
+    background: var(--color-dispute);
+  }
+  .btn--ghost {
+    color: var(--color-text-muted);
+    background: transparent;
+  }
+</style>

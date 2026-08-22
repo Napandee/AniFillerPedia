@@ -65,6 +65,13 @@ const fillerCount = episodes.filter((ep) => ep.status === "filler").length;
 const mixedCount = episodes.filter((ep) => ep.status === "mixed").length;
 const pct = (n: number) => (totalEpisodes > 0 ? Math.round((n / totalEpisodes) * 100) : 0);
 
+// #55: the real total episode count (#49's AniList sync) is independent of
+// how many episodes have actually been hand-researched — showing just
+// "100 episodes tracked" implied that was the whole show. Null until #49's
+// worker has synced this series at least once; falls back to the old
+// wording rather than showing a misleading "100 of null".
+const totalKnownEpisodes = series?.anilist_episode_count ?? null;
+
 const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not found — AniFillerPedia";
 
 // #46: cover art — single-id batch through the same shared helper the home
@@ -172,7 +179,11 @@ const formatAiredAt = (iso: string | null) =>
           )}
 
           <div class="stat-row">
-            <span class="stat-chip">{totalEpisodes} episode{totalEpisodes === 1 ? "" : "s"} tracked</span>
+            <span class="stat-chip">
+              {totalKnownEpisodes !== null && totalKnownEpisodes > totalEpisodes
+                ? `${totalEpisodes} of ${totalKnownEpisodes} episodes tracked`
+                : `${totalEpisodes} episode${totalEpisodes === 1 ? "" : "s"} tracked`}
+            </span>
           </div>
 
           {totalEpisodes > 0 && (
@@ -202,7 +213,14 @@ const formatAiredAt = (iso: string | null) =>
                   <summary class="episode-row-head">
                     <span class="episode-number">Ep. {episode.episode_number}</span>
                     <StatusBadge status={episode.status as "canon" | "filler" | "mixed"} />
-                    {airedAt && <span class="air-date">{airedAt}</span>}
+                    {/* #55: always rendered, even when empty — omitting this
+                        span entirely when aired_at is unknown left only 3
+                        grid children for a 4-column grid, so the chevron
+                        landed in the 3rd (1fr) column instead of the last
+                        one, right next to the badge instead of the far
+                        right edge. An empty cell keeps the column count
+                        stable without showing placeholder text. */}
+                    <span class="air-date">{airedAt}</span>
                     <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9" /></svg>
                   </summary>
                   <div class="episode-detail">

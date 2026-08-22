@@ -281,6 +281,30 @@ async def test_series_detail_includes_synonyms(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
+async def test_series_detail_includes_anilist_episode_count(client: AsyncClient) -> None:
+    """#49's real episode total, independent of how many episodes have
+    actually been hand-researched — null until the sync worker has
+    reached this series at least once.
+    """
+    series_id = await _make_series("Zeta", anilist_id=900008)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}")
+        assert response.status_code == 200
+        assert response.json()["anilist_episode_count"] is None
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET anilist_episode_count = 500 WHERE id = :sid"),
+                    {"sid": series_id},
+                )
+        response = await client.get(f"/api/v1/series/{series_id}")
+        assert response.json()["anilist_episode_count"] == 500
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_series_detail_404() -> None:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

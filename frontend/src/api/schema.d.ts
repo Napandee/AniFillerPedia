@@ -846,6 +846,8 @@ export interface components {
             synonyms: string[];
             /** Anilist Episode Count */
             anilist_episode_count: number | null;
+            /** Related Series */
+            related_series: components["schemas"]["SeriesOut"][];
         };
         /** SeriesListOut */
         SeriesListOut: {

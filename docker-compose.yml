@@ -1,17 +1,19 @@
-# Production stack for the DO Droplet. Five services: the FastAPI app, its
-# Postgres, the outbox-events worker, a self-hosted GitHub Actions runner
-# (so build-app.yml can deploy without a webhook/SSH hop — see
-# .github/workflows/build-app.yml), and Caddy for automatic TLS.
+# Production stack for the DO Droplet. Six services: the FastAPI app, its
+# Postgres, the outbox-events worker, the Astro frontend, a self-hosted
+# GitHub Actions runner (so build-app.yml/frontend-deploy.yml can deploy
+# without a webhook/SSH hop), and Caddy for automatic TLS.
 #
 # Unlike AniDex's pattern (raw `docker pull` + `docker run`, no Compose),
 # this project genuinely needs multi-container orchestration on one box —
-# app, Postgres, worker, and runner all coordinate here. Compose IS the
-# deploy mechanism for this project, not just a container-manager convenience
-# file. See CLAUDE.md Architecture / Decisions Made for why.
+# app, Postgres, worker, frontend, and runner all coordinate here. Compose IS
+# the deploy mechanism for this project, not just a container-manager
+# convenience file. See CLAUDE.md Architecture / Decisions Made for why.
 #
 # Backend image is built from ./backend (monorepo split — CLAUDE.md
-# Guardrails) — that Dockerfile doesn't exist in this worktree yet (issue #6
-# is being built in parallel), reference only, not buildable until it lands.
+# Guardrails). The frontend's build context is the repo root, not
+# ./frontend — the one deliberate exception, since #41's docs/contribute
+# pages bake in docs/API.md and CONTRIBUTING.md at build time (see
+# frontend/Dockerfile's own comment for why).
 
 services:
   app:
@@ -63,6 +65,25 @@ services:
     env_file:
       - .env
 
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        # Internal Docker network hostname, not the public domain — the
+        # frontend's SSR fetches go straight to `app` rather than round-
+        # tripping out through Caddy and back in. Baked in at build time
+        # (Vite inlines import.meta.env.PUBLIC_* — see frontend/src/
+        # middleware.ts), so this can't be a plain `environment:` entry.
+        PUBLIC_API_BASE_URL: http://app:8000
+    image: ghcr.io/napandee/anifillerpedia-frontend:latest
+    container_name: afp-frontend
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "127.0.0.1:4321:4321" # Caddy proxies to this; not exposed directly
+
   runner:
     image: myoung34/github-runner:latest
     container_name: afp-runner
@@ -101,6 +122,7 @@ services:
       - caddy-config:/config
     depends_on:
       - app
+      - frontend
 
 volumes:
   runner-work:

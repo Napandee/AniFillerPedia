@@ -1,0 +1,72 @@
+name: Build and deploy frontend
+
+# Path-filtered (CLAUDE.md Guardrails — monorepo split): must never fire on
+# a backend/-only change, matching build-app.yml's own filter in reverse.
+# docs/API.md and CONTRIBUTING.md are included deliberately — #41's
+# docs/contribute pages bake those two files into the image at build time
+# (see frontend/Dockerfile), so a change to either one genuinely needs a
+# frontend rebuild even though neither lives under frontend/.
+on:
+  push:
+    branches: [master]
+    paths:
+      - "frontend/**"
+      - "docs/API.md"
+      - "CONTRIBUTING.md"
+      - "docker-compose.yml"
+      - ".github/workflows/frontend-deploy.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set lowercase owner
+        run: echo "OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          # Repo root, not ./frontend — frontend/Dockerfile's own comment
+          # explains why (docs/API.md + CONTRIBUTING.md need to be in the
+          # build context).
+          context: .
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ghcr.io/${{ env.OWNER }}/anifillerpedia-frontend:latest
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, afp-droplet]
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # --no-deps keeps this from restarting postgres/caddy/app/worker/the
+      # runner itself on every frontend deploy — same pattern as
+      # build-app.yml's own deploy job.
+      - name: Pull new image and restart frontend
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          docker compose pull frontend
+          docker compose up -d --no-deps frontend

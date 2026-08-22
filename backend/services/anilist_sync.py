@@ -11,12 +11,19 @@ Shippuden) stops needing outbound calls at all once confirmed done.
 Runs as a second, independently-paced loop inside the existing worker
 container (see worker.py) — not a new container or new infrastructure.
 
-One series per HTTP round-trip, not one big batched query like the
-frontend's cover-art fetch (frontend/src/lib/anilist.ts) — a batched
-`Page(media(id_in: $ids))` query can't paginate each series' own
-airingSchedule independently, and a long-running show's complete air-date
-history can span multiple pages. This runs on a daily cadence, not a
-request path, so the extra round-trips cost nothing that matters.
+One series per HTTP round-trip, not one big batched `Page(media(id_in:
+$ids))` query — that shape can't paginate each series' own airingSchedule
+independently, and a long-running show's complete air-date history can
+span multiple pages. This runs on a daily cadence, not a request path, so
+the extra round-trips cost nothing that matters.
+
+Also syncs cover/banner art (2026-08-22 follow-up to #46): originally
+fetched live from AniList on every single frontend page load, which meant
+a real AniList outage took down cover art site-wide, all at once, since
+it was a synchronous per-request third-party dependency. Cover/banner
+URLs are effectively static per series, so they're synced here on the
+same cadence as everything else instead, and the frontend just reads them
+from our own API like any other field.
 """
 
 import asyncio
@@ -41,6 +48,8 @@ query ($id: Int, $page: Int) {
   Media(id: $id, type: ANIME) {
     status
     episodes
+    coverImage { extraLarge }
+    bannerImage
     airingSchedule(page: $page, perPage: 50) {
       pageInfo { hasNextPage }
       nodes { episode airingAt }
@@ -62,12 +71,13 @@ _RATE_LIMIT_MAX_RETRIES = 3
 
 async def _fetch_schedule(
     client: httpx.AsyncClient, anilist_id: int
-) -> tuple[str | None, int | None, list[dict]]:
-    """Returns (anilist_status, episode_count, [{"episode": int,
-    "airingAt": int}, ...]) for one series, paginating airingSchedule
-    fully. Never raises — a request failure or malformed response just
-    comes back as (None, None, []), the same "treat like no data"
-    convention the frontend's own AniList integration uses (anilist.ts).
+) -> tuple[str | None, int | None, str | None, str | None, list[dict]]:
+    """Returns (anilist_status, episode_count, cover_url, banner_url,
+    [{"episode": int, "airingAt": int}, ...]) for one series, paginating
+    airingSchedule fully. Never raises — a request failure or malformed
+    response just comes back as (None, None, None, None, []), the same
+    "treat like no data" convention this project uses throughout for a
+    failed AniList call.
 
     episode_count (Media.episodes) is captured separately from the
     schedule nodes because AniList's airingSchedule field only retains a
@@ -77,6 +87,8 @@ async def _fetch_schedule(
     """
     status: str | None = None
     episode_count: int | None = None
+    cover_url: str | None = None
+    banner_url: str | None = None
     nodes: list[dict] = []
     page = 1
     retries = 0
@@ -107,6 +119,8 @@ async def _fetch_schedule(
                 break
             status = media.get("status")
             episode_count = media.get("episodes")
+            cover_url = (media.get("coverImage") or {}).get("extraLarge")
+            banner_url = media.get("bannerImage")
             schedule = media.get("airingSchedule") or {}
             page_nodes = schedule.get("nodes") or []
             nodes.extend(page_nodes)
@@ -117,7 +131,7 @@ async def _fetch_schedule(
         except (httpx.HTTPError, ValueError):
             logger.exception("AniList schedule fetch failed for anilist_id=%s", anilist_id)
             break
-    return status, episode_count, nodes
+    return status, episode_count, cover_url, banner_url, nodes
 
 
 async def sync_episode_schedules() -> int:
@@ -137,7 +151,9 @@ async def sync_episode_schedules() -> int:
     synced = 0
     async with httpx.AsyncClient() as client:
         for series in candidates:
-            status, episode_count, nodes = await _fetch_schedule(client, series.anilist_id)
+            status, episode_count, cover_url, banner_url, nodes = await _fetch_schedule(
+                client, series.anilist_id
+            )
             if status is not None:
                 episodes = [
                     (node["episode"], node["airingAt"])
@@ -153,6 +169,8 @@ async def sync_episode_schedules() -> int:
                             series_id=series.id,
                             anilist_status=status,
                             anilist_episode_count=episode_count,
+                            anilist_cover_url=cover_url,
+                            anilist_banner_url=banner_url,
                         )
                 synced += 1
             await asyncio.sleep(_REQUEST_DELAY_SECONDS)

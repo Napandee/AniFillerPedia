@@ -842,6 +842,10 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /** Cover Image Url */
+            cover_image_url: string | null;
+            /** Banner Image Url */
+            banner_image_url: string | null;
             /** Synonyms */
             synonyms: string[];
             /** Anilist Episode Count */
@@ -879,6 +883,10 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /** Cover Image Url */
+            cover_image_url: string | null;
+            /** Banner Image Url */
+            banner_image_url: string | null;
         };
         /** SeriesProposalCreate */
         SeriesProposalCreate: {

@@ -17,6 +17,12 @@ class Settings(BaseSettings):
     worker_poll_interval_seconds: int = 5
     worker_batch_size: int = 10
 
+    # AniList episode/air-date sync (#49) — a second, independently-paced
+    # loop in the same worker container. Daily by default: this data only
+    # needs to notice a newly-aired episode for a still-RELEASING show, not
+    # react within seconds like the outbox poller above.
+    episode_schedule_sync_interval_seconds: int = 60 * 60 * 24
+
     # Auth (#8) — GitHub + Discord OAuth. Real values don't exist yet
     # (#25, still open) — routes work structurally without them, live
     # provider round-trips can't be verified until then.

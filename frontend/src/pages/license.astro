@@ -1,0 +1,95 @@
+---
+// #41: license/attribution page, sourced live from GET /api/v1/license
+// (backed by ExportManifest — the exact same model the bulk export payload
+// embeds) rather than hardcoding the license text here a second time.
+import Layout from "../layouts/Layout.astro";
+import { createApiClient } from "../api/client";
+
+const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
+const { data: manifest, error } = await api.GET("/api/v1/license");
+---
+
+<Layout title="License & Attribution — AniFillerPedia">
+  <h1 class="disp page-title">License &amp; attribution</h1>
+  {
+    error || !manifest ? (
+      <p class="error">Couldn't load license information from the API right now — try again shortly.</p>
+    ) : (
+      <div class="license-card">
+        <dl>
+          <dt>Dataset license</dt>
+          <dd>{manifest.license}</dd>
+
+          <dt>Attribution notice</dt>
+          <dd>{manifest.attribution_notice}</dd>
+
+          <dt>Commercial licensing</dt>
+          <dd>{manifest.commercial_licensing_contact}</dd>
+
+          <dt>Full license text</dt>
+          <dd>
+            <a href={manifest.dataset_license_url} target="_blank" rel="noopener">
+              {manifest.dataset_license_url}
+            </a>
+          </dd>
+        </dl>
+        <p class="note">
+          Code powering this site is separately licensed MIT — this page and the{" "}
+          <code>GET /api/v1/license</code> endpoint it reflects describe the <em>dataset's</em>{" "}
+          license only.
+        </p>
+      </div>
+    )
+  }
+</Layout>
+
+<style>
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 16px;
+  }
+  .license-card {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 24px 28px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .error {
+    color: var(--color-dispute);
+    font-weight: 700;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: minmax(140px, auto) 1fr;
+    gap: 12px 20px;
+    margin: 0;
+  }
+  dt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+  dd {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+  dd a {
+    color: var(--color-accent);
+    word-break: break-all;
+  }
+  .note {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--color-border-divider);
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+  }
+  code {
+    background: var(--color-surface-pending);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+</style>

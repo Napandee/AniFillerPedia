@@ -1,0 +1,87 @@
+---
+// #41: "How to contribute" page. Renders the repo's own CONTRIBUTING.md
+// verbatim (via a `?raw` import, same approach as docs.astro) rather than
+// hand-copying its prose. Links directly into #35 (submit a correction)
+// and #36 (propose a series) as calls to action — this worktree doesn't
+// have a concrete series/episode id to deep-link into #35's real route
+// (/series/[id]/episodes/[num]/submit), so that CTA points at the home
+// page to browse series first; #36's route (/propose-series) is linked
+// directly.
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import { marked } from "marked";
+import contributingMd from "../../../CONTRIBUTING.md?raw";
+
+const html = marked.parse(contributingMd) as string;
+---
+
+<Layout title="How to Contribute — AniFillerPedia">
+  <h1 class="disp page-title">How to contribute</h1>
+
+  <div class="cta-row">
+    <Button href="/" variant="primary">Browse series to submit a correction</Button>
+    <Button href="/propose-series" variant="ghost">Propose a new series</Button>
+  </div>
+
+  <div class="docs-content" set:html={html} />
+</Layout>
+
+<style>
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 4px;
+  }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .docs-content {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 24px 28px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .docs-content :global(h1) {
+    display: none; /* the fetched doc's own top-level heading duplicates our page-title */
+  }
+  .docs-content :global(h2) {
+    font-family: var(--font-display);
+    color: var(--color-heading);
+    font-size: 17px;
+    margin-top: 28px;
+  }
+  .docs-content :global(h3) {
+    font-family: var(--font-display);
+    color: var(--color-heading);
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .docs-content :global(p),
+  .docs-content :global(li) {
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+  .docs-content :global(a) {
+    color: var(--color-accent);
+  }
+  .docs-content :global(code) {
+    background: var(--color-surface-pending);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.92em;
+  }
+  .docs-content :global(pre) {
+    background: var(--color-surface-dark);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: var(--radius-card);
+    overflow-x: auto;
+  }
+  .docs-content :global(pre code) {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+</style>

@@ -11,7 +11,9 @@
 import Layout from "../../layouts/Layout.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import Button from "../../components/Button.astro";
+import CoverFallback from "../../components/CoverFallback.astro";
 import { createApiClient } from "../../api/client";
+import { fetchAniListCovers } from "../../lib/anilist";
 import type { components } from "../../api/schema";
 
 type SeriesDetailOut = components["schemas"]["SeriesDetailOut"];
@@ -62,6 +64,13 @@ const nonFillerCount = episodes.filter((ep) => ep.status !== "filler").length;
 const fillerFreePct = totalEpisodes > 0 ? Math.round((nonFillerCount / totalEpisodes) * 100) : null;
 
 const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not found — AniFillerPedia";
+
+// #46: cover art — single-id batch through the same shared helper the home
+// grid uses. A missing anilist_id, or AniList returning nothing for it,
+// both come back as an empty map entry; the CoverFallback branches below
+// handle that identically to a real lookup failure (never a broken image).
+const cover = series ? (await fetchAniListCovers([series.anilist_id])).get(series.anilist_id ?? -1) : undefined;
+const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
 ---
 
 <Layout title={pageTitle}>
@@ -77,8 +86,29 @@ const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not fo
     ) : (
       <>
         <section class="series-header">
-          <div class="disp title">{series!.title}</div>
-          {series!.synonyms.length > 0 && <p class="synonyms">Also known as: {series!.synonyms.join(", ")}</p>}
+          <div class:list={["banner", { "banner--photo": !!bannerUrl }]}>
+            {bannerUrl ? (
+              <>
+                <div class="banner-img" style={`background-image:url(${bannerUrl})`} />
+                <div class="banner-scrim" />
+              </>
+            ) : (
+              <CoverFallback title={series!.title} fontSize="56px" />
+            )}
+          </div>
+          <div class="hero-row">
+            <div class="thumb">
+              {cover?.coverImageUrl ? (
+                <img src={cover.coverImageUrl} alt="" loading="lazy" />
+              ) : (
+                <CoverFallback title={series!.title} fontSize="28px" />
+              )}
+            </div>
+            <div class="title-block">
+              <div class="disp title">{series!.title}</div>
+              {series!.synonyms.length > 0 && <p class="synonyms">Also known as: {series!.synonyms.join(", ")}</p>}
+            </div>
+          </div>
           <div class="stat-row">
             <span class="stat-chip">{totalEpisodes} episode{totalEpisodes === 1 ? "" : "s"} tracked</span>
             {fillerFreePct !== null && <span class="stat-chip stat-chip--accent">~{fillerFreePct}% filler-free</span>}
@@ -151,10 +181,60 @@ const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not fo
   }
 
   .series-header {
-    background: linear-gradient(135deg, var(--color-bg-hero-start), var(--color-bg-hero-end));
     border-radius: var(--radius-panel);
-    padding: 28px 28px 24px;
     margin-bottom: 20px;
+    overflow: visible;
+  }
+  /* #46: hero banner + poster — a real AniList cover (or its own coverImage
+     as a backdrop when no separate banner exists) fills this, blurred and
+     darkened so the title stays readable over any cover art; CoverFallback
+     fills it instead when there's nothing to fetch. */
+  .banner {
+    height: 190px;
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .banner:not(.banner--photo) {
+    background: linear-gradient(135deg, var(--color-bg-hero-start), var(--color-bg-hero-end));
+  }
+  .banner-img {
+    position: absolute;
+    inset: -12px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px) brightness(0.6) saturate(1.1);
+  }
+  .banner-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(20, 8, 16, 0.55), transparent 60%);
+  }
+  .hero-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    padding: 0 24px;
+    margin-top: -58px;
+    position: relative;
+  }
+  .thumb {
+    width: 104px;
+    flex-shrink: 0;
+    aspect-ratio: 2 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 3px solid var(--color-bg);
+    box-shadow: 0 6px 16px rgba(20, 10, 20, 0.35);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .title-block {
+    padding-bottom: 12px;
   }
   .title {
     font-size: 26px;
@@ -173,6 +253,7 @@ const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not fo
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 16px;
+    padding: 0 4px;
   }
   .stat-chip {
     display: inline-flex;

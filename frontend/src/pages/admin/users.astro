@@ -1,0 +1,298 @@
+---
+// #40: admin user management — user list with computed trust_score, and
+// role promote/demote controls.
+//
+// Two structural rules the backend already enforces (services/admin.py) and
+// this page must *also* reflect directly rather than let a viewer try and
+// hit a 403:
+//   1. Only the owner can grant the 'admin' role — a plain admin viewer
+//      never sees an enabled control that would do this.
+//   2. The owner's own row can never be changed via this endpoint, by
+//      anyone (including the owner) — rendered as fixed/non-editable text,
+//      not a dropdown that looks like it might work.
+//
+// This page itself is admin/owner-only. Astro.locals.user (src/middleware.ts)
+// is re-derived from the real session cookie on every request — checking it
+// here is this page's own responsibility; the backend's require_admin gate
+// on GET/PATCH /api/v1/admin/users is a separate, already-enforced layer,
+// not a substitute for hiding the UI from a moderator/contributor/logged-out
+// visitor.
+import Layout from "../../layouts/Layout.astro";
+import Button from "../../components/Button.astro";
+import { createApiClient } from "../../api/client";
+
+const user = Astro.locals.user;
+if (!user || !["admin", "owner"].includes(user.role)) {
+  return Astro.redirect("/");
+}
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const cookie = Astro.request.headers.get("cookie") ?? "";
+const api = createApiClient(baseUrl);
+
+const isOwner = user.role === "owner";
+// Roles this control can ever submit. 'admin' is present in the markup for
+// every viewer (so the select's layout doesn't jump around depending on
+// viewer role) but only ever enabled when the viewer is owner — the
+// disabled attribute is what actually enforces "hide the enabled control
+// from a plain admin," per the issue's own "disable/hide" wording.
+const ROLE_OPTIONS = ["contributor", "moderator", "admin"] as const;
+
+let actionError: string | null = null;
+
+// Astro's SSR frontmatter runs for every method; form submissions post back
+// to this same page (see the form's explicit `action` below) rather than a
+// separate API route, since the only thing this page needs a POST for is
+// this one role-change action.
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const targetUserId = form.get("user_id");
+  const newRole = form.get("role");
+
+  if (typeof targetUserId === "string" && typeof newRole === "string") {
+    const { error } = await api.PATCH("/api/v1/admin/users/{user_id}/role", {
+      params: { path: { user_id: Number(targetUserId) } },
+      headers: { cookie },
+      body: { role: newRole },
+    });
+    if (error) {
+      // Covers both a legitimate backend 403 (e.g. a stale page a plain
+      // admin never should have been able to submit from, or a race where
+      // the owner row changed underneath) and any other rejection —
+      // surfaced as a plain message rather than a raw error dump.
+      actionError = "That role change was rejected by the server.";
+    } else {
+      // Redirect (not just fall through to the GET render below) so a
+      // refresh of this page doesn't re-submit the same PATCH.
+      return Astro.redirect(`${Astro.url.pathname}${Astro.url.search}`);
+    }
+  }
+}
+
+const limit = 20;
+const offsetParam = Astro.url.searchParams.get("offset");
+const offset = offsetParam ? Math.max(0, Number.parseInt(offsetParam, 10) || 0) : 0;
+
+const { data, error: listError } = await api.GET("/api/v1/admin/users", {
+  params: { query: { limit, offset } },
+  headers: { cookie },
+});
+
+const items = data?.items ?? [];
+const total = data?.total ?? 0;
+const hasPrev = offset > 0;
+const hasNext = offset + limit < total;
+const prevOffset = Math.max(0, offset - limit);
+const nextOffset = offset + limit;
+
+function identityFor(row: (typeof items)[number]): string {
+  return row.display_name ?? row.github_id ?? row.discord_id ?? row.google_id ?? `User #${row.id}`;
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "numeric" });
+}
+---
+
+<Layout title="Manage users — AniFillerPedia">
+  <section class="panel">
+    <h1 class="disp">Manage users</h1>
+    <p class="sub">
+      {isOwner
+        ? "You're signed in as owner — you can grant the admin role."
+        : "You're signed in as admin — granting the admin role requires the owner."}
+    </p>
+
+    {actionError && <p class="error">{actionError}</p>}
+    {listError && <p class="error">Could not load the user list from the backend.</p>}
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Approved</th>
+            <th>Rejected</th>
+            <th>Trust score</th>
+            <th>Joined</th>
+            <th>Change role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((row) => (
+            <tr class:list={{ "is-owner-row": row.role === "owner", "is-you": row.id === user.id }}>
+              <td>
+                {identityFor(row)}
+                {row.id === user.id && <span class="you-tag">you</span>}
+              </td>
+              <td>
+                <span class:list={["role-chip", `role-${row.role}`]}>{row.role}</span>
+              </td>
+              <td>{row.approved_count}</td>
+              <td>{row.rejected_count}</td>
+              <td>{row.trust_score}</td>
+              <td>{formatDate(row.created_at)}</td>
+              <td>
+                {row.role === "owner" ? (
+                  <span class="fixed-note">Owner · fixed, not editable here</span>
+                ) : (
+                  <form method="POST" action={`${Astro.url.pathname}${Astro.url.search}`} class="role-form">
+                    <input type="hidden" name="user_id" value={row.id} />
+                    <select name="role">
+                      {ROLE_OPTIONS.map((r) => (
+                        <option value={r} selected={r === row.role} disabled={r === "admin" && !isOwner}>
+                          {r}
+                          {r === "admin" && !isOwner ? " (owner only)" : ""}
+                        </option>
+                      ))}
+                    </select>
+                    <Button type="submit" variant="ghost">Save</Button>
+                  </form>
+                )}
+              </td>
+            </tr>
+          ))}
+          {items.length === 0 && !listError && (
+            <tr>
+              <td colspan="7" class="empty">No users found.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pager">
+      {hasPrev ? <a href={`?offset=${prevOffset}`}>&larr; Previous</a> : <span class="disabled-link">&larr; Previous</span>}
+      <span class="pager-count">{offset + 1}&ndash;{Math.min(offset + limit, total)} of {total}</span>
+      {hasNext ? <a href={`?offset=${nextOffset}`}>Next &rarr;</a> : <span class="disabled-link">Next &rarr;</span>}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 28px 32px;
+  }
+  h1 {
+    font-size: 22px;
+    color: var(--color-heading);
+    margin: 0 0 4px;
+  }
+  .sub {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 0 0 20px;
+  }
+  .error {
+    background: var(--color-surface-pending);
+    color: var(--color-dispute);
+    border: 1px solid var(--color-dispute);
+    border-radius: var(--radius-card);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .table-wrap {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    color: var(--color-text-faint);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 800;
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--color-border-divider);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px;
+    border-bottom: 1px solid var(--color-border-divider);
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+  tr.is-owner-row td {
+    background: var(--color-surface-pending);
+  }
+  .you-tag {
+    margin-left: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--color-accent);
+    text-transform: uppercase;
+  }
+  .role-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: capitalize;
+    background: var(--color-trust-chip-bg);
+    color: var(--color-text-muted);
+  }
+  .role-owner {
+    background: var(--color-accent-gold);
+    color: var(--color-heading);
+  }
+  .role-admin {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .fixed-note {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-faint);
+    font-style: italic;
+  }
+  .role-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  select {
+    font: inherit;
+    font-size: 12.5px;
+    border: 1px solid var(--color-border-card);
+    border-radius: 8px;
+    padding: 4px 6px;
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+  .empty {
+    text-align: center;
+    color: var(--color-text-faint);
+    padding: 24px;
+  }
+  .pager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 18px;
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+  .pager a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .disabled-link {
+    color: var(--color-text-faint);
+  }
+  .pager-count {
+    color: var(--color-text-muted);
+  }
+</style>

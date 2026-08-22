@@ -1,0 +1,99 @@
+---
+// #41: API docs page. Renders the repo's own docs/API.md verbatim (via a
+// Vite `?raw` import, resolved at build time — see astro.config.mjs's
+// `vite.server.fs.allow` addition) rather than hand-copying its prose, so
+// this page can never drift from the real guide. Links out to the
+// FastAPI-generated interactive docs and raw schema for anything this
+// prose doesn't cover.
+import Layout from "../layouts/Layout.astro";
+import { marked } from "marked";
+import apiGuideMd from "../../../docs/API.md?raw";
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const html = marked.parse(apiGuideMd) as string;
+---
+
+<Layout title="API Guide — AniFillerPedia">
+  <h1 class="disp page-title">API guide</h1>
+
+  <p class="links">
+    <a href={`${baseUrl}/docs`} target="_blank" rel="noopener">Interactive docs (Swagger UI)</a>
+    <span aria-hidden="true"> · </span>
+    <a href={`${baseUrl}/openapi.json`} target="_blank" rel="noopener">Raw OpenAPI schema</a>
+  </p>
+
+  <div class="docs-content" set:html={html} />
+</Layout>
+
+<style>
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 4px;
+  }
+  .links {
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .links a {
+    color: var(--color-accent);
+  }
+  .docs-content {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 24px 28px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .docs-content :global(h1) {
+    display: none; /* the fetched doc's own top-level heading duplicates our page-title */
+  }
+  .docs-content :global(h2) {
+    font-family: var(--font-display);
+    color: var(--color-heading);
+    font-size: 17px;
+    margin-top: 28px;
+  }
+  .docs-content :global(h3) {
+    font-family: var(--font-display);
+    color: var(--color-heading);
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .docs-content :global(p),
+  .docs-content :global(li) {
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+  .docs-content :global(a) {
+    color: var(--color-accent);
+  }
+  .docs-content :global(code) {
+    background: var(--color-surface-pending);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.92em;
+  }
+  .docs-content :global(pre) {
+    background: var(--color-surface-dark);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: var(--radius-card);
+    overflow-x: auto;
+  }
+  .docs-content :global(pre code) {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+  .docs-content :global(table) {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+  }
+  .docs-content :global(th),
+  .docs-content :global(td) {
+    border: 1px solid var(--color-border-divider);
+    padding: 6px 10px;
+    text-align: left;
+  }
+</style>

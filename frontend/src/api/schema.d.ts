@@ -202,16 +202,347 @@ export interface paths {
         get: operations["read_current_user_api_v1_users_me_get"];
         put?: never;
         post?: never;
+        /**
+         * Delete Current User
+         * @description #29/#18: self-service account deletion, no admin approval gate.
+         *     Every FK referencing users is ON DELETE SET NULL (schema.sql) — past
+         *     contributions/votes/citations anonymize automatically, nothing else to
+         *     clean up here. NOT `async with session.begin():` — get_current_user's
+         *     SELECT already autobegan a transaction on this session (the same fix
+         *     noted throughout this codebase, e.g. routers/contributions.py).
+         */
+        delete: operations["delete_current_user_api_v1_users_me_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/export/request-access": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Export Access */
+        post: operations["request_export_access_api_v1_export_request_access_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
+    "/api/v1/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Export */
+        get: operations["get_export_api_v1_export_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Pending Contributions */
+        get: operations["list_pending_contributions_api_v1_contributions_get"];
+        put?: never;
+        /** Submit Contribution */
+        post: operations["submit_contribution_api_v1_contributions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions/mine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My Contributions */
+        get: operations["my_contributions_api_v1_contributions_mine_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions/mine/votes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My Votes */
+        get: operations["my_votes_api_v1_contributions_mine_votes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions/{contribution_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve Contribution */
+        post: operations["approve_contribution_api_v1_contributions__contribution_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions/{contribution_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reject Contribution */
+        post: operations["reject_contribution_api_v1_contributions__contribution_id__reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions/{contribution_id}/vote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Vote On Contribution */
+        post: operations["vote_on_contribution_api_v1_contributions__contribution_id__vote_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series-proposals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Pending Series Proposals */
+        get: operations["list_pending_series_proposals_api_v1_series_proposals_get"];
+        put?: never;
+        /** Submit Series Proposal */
+        post: operations["submit_series_proposal_api_v1_series_proposals_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series-proposals/mine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My Series Proposals */
+        get: operations["my_series_proposals_api_v1_series_proposals_mine_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series-proposals/{series_proposal_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve Series Proposal */
+        post: operations["approve_series_proposal_api_v1_series_proposals__series_proposal_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series-proposals/{series_proposal_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reject Series Proposal */
+        post: operations["reject_series_proposal_api_v1_series_proposals__series_proposal_id__reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/privacy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Privacy Policy */
+        get: operations["privacy_policy_api_v1_privacy_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/license": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * License Info
+         * @description #21's dedicated attribution endpoint — was decided but never
+         *     actually built until now (found while writing #16's API docs).
+         *     Reuses ExportManifest as-is: the bulk export payload (#22) and this
+         *     endpoint describe the exact same license/attribution facts, so one
+         *     model backs both rather than maintaining the text twice.
+         */
+        get: operations["license_info_api_v1_license_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Users */
+        get: operations["list_users_api_v1_admin_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update User Role */
+        patch: operations["update_user_role_api_v1_admin_users__user_id__role_patch"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AdminUserListOut */
+        AdminUserListOut: {
+            /** Items */
+            items: components["schemas"]["AdminUserOut"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+        };
+        /** AdminUserOut */
+        AdminUserOut: {
+            /** Id */
+            id: number;
+            /** Role */
+            role: string;
+            /** Github Id */
+            github_id: string | null;
+            /** Discord Id */
+            discord_id: string | null;
+            /** Google Id */
+            google_id: string | null;
+            /** Display Name */
+            display_name: string | null;
+            /** Approved Count */
+            approved_count: number;
+            /** Rejected Count */
+            rejected_count: number;
+            /** Trust Score */
+            trust_score: number;
+            /** Created At */
+            created_at: string;
+        };
+        /** CitationIn */
+        CitationIn: {
+            /** Url */
+            url?: string | null;
+            /** Description */
+            description: string;
+        };
         /** CitationOut */
         CitationOut: {
             /** Id */
@@ -220,6 +551,22 @@ export interface components {
             url: string | null;
             /** Description */
             description: string;
+        };
+        /** ContributionCreate */
+        ContributionCreate: {
+            /** Series Id */
+            series_id: number;
+            /** Episode Number */
+            episode_number: number;
+            /** Proposed Status */
+            proposed_status: string;
+            /** Proposed Note */
+            proposed_note?: string | null;
+            citation: components["schemas"]["CitationIn"];
+            /** License Accepted */
+            license_accepted: boolean;
+            /** Turnstile Token */
+            turnstile_token?: string | null;
         };
         /** ContributionHistoryEntry */
         ContributionHistoryEntry: {
@@ -248,6 +595,69 @@ export interface components {
             /** Votes */
             votes: components["schemas"]["VoteOut"][];
         };
+        /** ContributionOut */
+        ContributionOut: {
+            /** Id */
+            id: number;
+            /** Series Id */
+            series_id: number;
+            /** Episode Number */
+            episode_number: number;
+            /** Proposed Status */
+            proposed_status: string;
+            /** Proposed Note */
+            proposed_note: string | null;
+            citation: components["schemas"]["CitationOut"];
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+            /** Review Status */
+            review_status: string;
+            /** Resolution Method */
+            resolution_method: string | null;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Review Note */
+            review_note: string | null;
+        };
+        /** ContributionReject */
+        ContributionReject: {
+            /** Review Note */
+            review_note: string;
+        };
+        /** ContributionReviewOut */
+        ContributionReviewOut: {
+            /** Id */
+            id: number;
+            /** Review Status */
+            review_status: string;
+            /** Resolution Method */
+            resolution_method: string | null;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Review Note */
+            review_note: string | null;
+        };
+        /**
+         * DuplicatePendingContribution
+         * @description 409 response body when #20's one-pending-per-episode rule rejects a
+         *     submission — points the caller at the existing pending contribution so
+         *     a client can offer "endorse/dispute this instead" rather than a dead
+         *     end. Nested under `detail` to match what FastAPI's HTTPException
+         *     actually produces, not a guessed flat shape.
+         */
+        DuplicatePendingContribution: {
+            detail: components["schemas"]["DuplicatePendingContributionDetail"];
+        };
+        /** DuplicatePendingContributionDetail */
+        DuplicatePendingContributionDetail: {
+            /** Message */
+            message: string;
+            /** Existing Contribution Id */
+            existing_contribution_id: number;
+        };
         /** EpisodeOut */
         EpisodeOut: {
             /** Id */
@@ -267,10 +677,127 @@ export interface components {
              */
             updated_at: string;
         };
+        /** ExportAccessRequest */
+        ExportAccessRequest: {
+            /** Email */
+            email: string;
+            /** License Accepted */
+            license_accepted: boolean;
+        };
+        /** ExportAccessResponse */
+        ExportAccessResponse: {
+            /** Api Key */
+            api_key: string;
+            /**
+             * Note
+             * @default This key is shown once and cannot be retrieved again. Store it securely; request a new one via /export/request-access if lost.
+             */
+            note: string;
+        };
+        /** ExportEpisodeOut */
+        ExportEpisodeOut: {
+            /** Episode Id */
+            episode_id: number | null;
+            /** Episode Number */
+            episode_number: number | null;
+            /** Status */
+            status: string | null;
+            /** Status Note */
+            status_note: string | null;
+            /** Citation Url */
+            citation_url: string | null;
+            /** Citation Description */
+            citation_description: string | null;
+        };
+        /** ExportManifest */
+        ExportManifest: {
+            /**
+             * License
+             * @default CC BY-NC-SA 4.0
+             */
+            license: string;
+            /**
+             * Attribution Notice
+             * @default Contains information from AniFillerPedia, which is made available here under CC BY-NC-SA 4.0 (non-commercial use; contact us for a commercial license).
+             */
+            attribution_notice: string;
+            /**
+             * Commercial Licensing Contact
+             * @default See https://github.com/Napandee/AniFillerPedia DATA_LICENSE for the current commercial-licensing contact channel.
+             */
+            commercial_licensing_contact: string;
+            /**
+             * Dataset License Url
+             * @default https://github.com/Napandee/AniFillerPedia/blob/master/DATA_LICENSE
+             */
+            dataset_license_url: string;
+        };
+        /** ExportOut */
+        ExportOut: {
+            manifest: components["schemas"]["ExportManifest"];
+            /** Series */
+            series: components["schemas"]["ExportSeriesOut"][];
+        };
+        /** ExportSeriesOut */
+        ExportSeriesOut: {
+            /** Series Id */
+            series_id: number;
+            /** Anilist Id */
+            anilist_id: number | null;
+            /** Mal Id */
+            mal_id: number | null;
+            /** Anidb Id */
+            anidb_id: number | null;
+            /** Title */
+            title: string;
+            /** Provenance */
+            provenance: string;
+            /** Episodes */
+            episodes: components["schemas"]["ExportEpisodeOut"][];
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /**
+         * MyVoteOut
+         * @description #30: one entry per vote the caller has cast, enough context
+         *     (series title, episode, current resolution) to render without a
+         *     follow-up request per row.
+         */
+        MyVoteOut: {
+            /** Contribution Id */
+            contribution_id: number;
+            /** Series Id */
+            series_id: number;
+            /** Series Title */
+            series_title: string;
+            /** Episode Number */
+            episode_number: number;
+            /** Proposed Status */
+            proposed_status: string;
+            /** Vote */
+            vote: string;
+            /** Weight At Vote */
+            weight_at_vote: number;
+            /** Review Status */
+            review_status: string;
+            /** Resolution Method */
+            resolution_method: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** RoleUpdateIn */
+        RoleUpdateIn: {
+            /**
+             * Role
+             * @description One of: contributor, moderator, admin. 'owner' is deliberately not a valid value here — it is set once at bootstrap and is never assignable through this endpoint. Setting 'admin' requires the caller to be the owner.
+             */
+            role: string;
         };
         /** SeriesDetailOut */
         SeriesDetailOut: {
@@ -325,6 +852,65 @@ export interface components {
              */
             created_at: string;
         };
+        /** SeriesProposalCreate */
+        SeriesProposalCreate: {
+            /** Title */
+            title: string;
+            /** Anilist Id */
+            anilist_id?: number | null;
+            /** Mal Id */
+            mal_id?: number | null;
+            /** Anidb Id */
+            anidb_id?: number | null;
+            /** Justification */
+            justification: string;
+            /** License Accepted */
+            license_accepted: boolean;
+            /** Turnstile Token */
+            turnstile_token?: string | null;
+        };
+        /** SeriesProposalOut */
+        SeriesProposalOut: {
+            /** Id */
+            id: number;
+            /** Title */
+            title: string;
+            /** Anilist Id */
+            anilist_id: number | null;
+            /** Mal Id */
+            mal_id: number | null;
+            /** Anidb Id */
+            anidb_id: number | null;
+            /** Justification */
+            justification: string;
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+            /** Review Status */
+            review_status: string;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Review Note */
+            review_note: string | null;
+        };
+        /** SeriesProposalReject */
+        SeriesProposalReject: {
+            /** Review Note */
+            review_note: string;
+        };
+        /** SeriesProposalReviewOut */
+        SeriesProposalReviewOut: {
+            /** Id */
+            id: number;
+            /** Review Status */
+            review_status: string;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Review Note */
+            review_note: string | null;
+        };
         /** UserOut */
         UserOut: {
             /** Id */
@@ -335,6 +921,12 @@ export interface components {
             avatar_url: string | null;
             /** Role */
             role: string;
+            /** Approved Count */
+            approved_count: number;
+            /** Rejected Count */
+            rejected_count: number;
+            /** Trust Score */
+            trust_score: number;
         };
         /**
          * UserRef
@@ -365,6 +957,37 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /**
+         * VoteCastOut
+         * @description Response for POST /contributions/{id}/vote — reports the outcome of
+         *     THIS vote (weight_at_vote, the vote's own contribution to net_score) as
+         *     well as the contribution's resulting state, which may reflect a
+         *     different concurrent voter's promotion rather than this one (see
+         *     repositories/contributions.py's promote_via_vote race note) — always
+         *     re-read from the row after voting rather than assumed from this
+         *     request alone.
+         */
+        VoteCastOut: {
+            /** Contribution Id */
+            contribution_id: number;
+            /** Vote */
+            vote: string;
+            /** Weight At Vote */
+            weight_at_vote: number;
+            /** Net Score */
+            net_score: number;
+            /** Auto Approval Threshold */
+            auto_approval_threshold: number;
+            /** Review Status */
+            review_status: string;
+            /** Resolution Method */
+            resolution_method: string | null;
+        };
+        /** VoteCreate */
+        VoteCreate: {
+            /** Vote */
+            vote: string;
         };
         /** VoteOut */
         VoteOut: {
@@ -442,6 +1065,7 @@ export interface operations {
                 anidb_id?: number | null;
                 limit?: number;
                 offset?: number;
+                sort?: string | null;
             };
             header?: never;
             path?: never;
@@ -595,7 +1219,9 @@ export interface operations {
     };
     authorize_api_v1_auth__provider__authorize_get: {
         parameters: {
-            query?: never;
+            query?: {
+                next?: string | null;
+            };
             header?: never;
             path: {
                 provider: string;
@@ -646,9 +1272,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */
@@ -686,7 +1310,9 @@ export interface operations {
     };
     start_link_api_v1_settings_link__provider__get: {
         parameters: {
-            query?: never;
+            query?: {
+                next?: string | null;
+            };
             header?: never;
             path: {
                 provider: string;
@@ -731,6 +1357,561 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UserOut"];
+                };
+            };
+        };
+    };
+    delete_current_user_api_v1_users_me_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    request_export_access_api_v1_export_request_access_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExportAccessRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExportAccessResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_export_api_v1_export_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-api-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExportOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_pending_contributions_api_v1_contributions_get: {
+        parameters: {
+            query?: {
+                review_status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContributionOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_contribution_api_v1_contributions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContributionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContributionOut"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DuplicatePendingContribution"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    my_contributions_api_v1_contributions_mine_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContributionOut"][];
+                };
+            };
+        };
+    };
+    my_votes_api_v1_contributions_mine_votes_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyVoteOut"][];
+                };
+            };
+        };
+    };
+    approve_contribution_api_v1_contributions__contribution_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contribution_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContributionReviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reject_contribution_api_v1_contributions__contribution_id__reject_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contribution_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContributionReject"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContributionReviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    vote_on_contribution_api_v1_contributions__contribution_id__vote_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contribution_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VoteCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VoteCastOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_pending_series_proposals_api_v1_series_proposals_get: {
+        parameters: {
+            query?: {
+                review_status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeriesProposalOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_series_proposal_api_v1_series_proposals_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SeriesProposalCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeriesProposalOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    my_series_proposals_api_v1_series_proposals_mine_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeriesProposalOut"][];
+                };
+            };
+        };
+    };
+    approve_series_proposal_api_v1_series_proposals__series_proposal_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                series_proposal_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeriesProposalReviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reject_series_proposal_api_v1_series_proposals__series_proposal_id__reject_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                series_proposal_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SeriesProposalReject"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SeriesProposalReviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    privacy_policy_api_v1_privacy_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/html": string;
+                };
+            };
+        };
+    };
+    license_info_api_v1_license_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExportManifest"];
+                };
+            };
+        };
+    };
+    list_users_api_v1_admin_users_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserListOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_user_role_api_v1_admin_users__user_id__role_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleUpdateIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

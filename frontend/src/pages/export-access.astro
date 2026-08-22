@@ -1,0 +1,211 @@
+---
+// #41: "Get API access" page. The public read API (series/episodes/
+// citations/history) needs no key at all — this page exists for the one
+// gated exception, the bulk GET /api/v1/export endpoint, which requires an
+// API key obtained via POST /api/v1/export/request-access.
+//
+// The returned key is shown exactly once, in this same response, and is
+// never persisted anywhere this page could re-display it on a later visit
+// — there is no server-side storage of the key here at all, only whatever
+// the backend itself records (a hash, per #22's design) to validate future
+// requests. A fresh GET of this page always renders the empty form again.
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import { createApiClient } from "../api/client";
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const api = createApiClient(baseUrl);
+
+let apiKey: string | null = null;
+let submittedEmail: string | null = null;
+let errorMessage: string | null = null;
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const email = String(form.get("email") ?? "").trim();
+  const licenseAccepted = form.get("license_accepted") === "on";
+
+  if (!email || !licenseAccepted) {
+    errorMessage = "Enter an email address and accept the dataset license to continue.";
+  } else {
+    const { data, error } = await api.POST("/api/v1/export/request-access", {
+      body: { email, license_accepted: licenseAccepted },
+    });
+    if (error || !data) {
+      errorMessage = "Couldn't issue an API key right now — try again shortly.";
+    } else {
+      apiKey = data.api_key;
+      submittedEmail = email;
+    }
+  }
+}
+---
+
+<Layout title="Get API Access — AniFillerPedia">
+  <h1 class="disp page-title">Get API access</h1>
+
+  <section class="block">
+    <h2 class="disp">The public read API needs no key</h2>
+    <p>
+      Everything under <code>GET /api/v1/series</code>, <code>GET /api/v1/episodes</code>, and
+      the rest of the public read surface is open right now — no account, no API key, no
+      rate-limit wall for reasonable use. See the <a href="/docs">API guide</a> for the full
+      endpoint list.
+    </p>
+  </section>
+
+  <section class="block">
+    <h2 class="disp">The one gated endpoint: bulk export</h2>
+    <p>
+      <code>GET /api/v1/export</code> returns the entire dataset in one call, with an embedded
+      attribution manifest. Because a silent anonymous bulk download has much weaker "they agreed
+      to the license" standing than a click-through does, that one endpoint requires an API key
+      sent as an <code>X-API-Key</code> header. Request one below — it costs nothing and requires
+      only an email address and accepting the dataset's{" "}
+      <a href="/license">CC BY-NC-SA 4.0 license</a>.
+    </p>
+
+    {
+      apiKey ? (
+        <div class="key-box">
+          <p class="key-label">
+            Your API key{submittedEmail ? <> for {submittedEmail}</> : null}:
+          </p>
+          <code class="key-value">{apiKey}</code>
+          <p class="warning">
+            <strong>Store this now — it can't be retrieved again.</strong> This page (and the
+            API) will never show it a second time, even if you reload or come back to this form
+            later. If you lose it, request a new one below.
+          </p>
+        </div>
+      ) : (
+        <form method="POST" class="access-form">
+          {errorMessage && <p class="error">{errorMessage}</p>}
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" required placeholder="you@example.com" />
+          </label>
+          <label class="checkbox-field">
+            <input type="checkbox" name="license_accepted" required />
+            <span>
+              I accept the <a href="/license">CC BY-NC-SA 4.0 dataset license</a> — non-commercial
+              use only; contact us for a commercial license.
+            </span>
+          </label>
+          <Button type="submit">Request an API key</Button>
+        </form>
+      )
+    }
+  </section>
+
+  <section class="block">
+    <h2 class="disp">Using the key</h2>
+    <p>Send it as a header on the export request:</p>
+    <pre><code>curl {baseUrl}/api/v1/export -H "X-API-Key: &lt;your key&gt;"</code></pre>
+  </section>
+</Layout>
+
+<style>
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 4px;
+  }
+  .block {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sticker);
+    margin-bottom: 20px;
+  }
+  .block h2 {
+    color: var(--color-heading);
+    font-size: 16px;
+    margin-top: 0;
+  }
+  .block p {
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+  code {
+    background: var(--color-surface-pending);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  pre {
+    background: var(--color-surface-dark);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: var(--radius-card);
+    overflow-x: auto;
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+  .access-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 420px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+  .field input {
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: var(--radius-card);
+    border: 2px solid var(--color-border-card);
+  }
+  .checkbox-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+  }
+  .checkbox-field input {
+    margin-top: 3px;
+  }
+  .checkbox-field a {
+    color: var(--color-accent);
+  }
+  .error {
+    color: var(--color-dispute);
+    font-weight: 700;
+  }
+  .key-box {
+    margin-top: 12px;
+    background: var(--color-surface-pending);
+    border: 2px dashed var(--color-accent);
+    border-radius: var(--radius-card);
+    padding: 16px 20px;
+  }
+  .key-label {
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .key-value {
+    display: block;
+    word-break: break-all;
+    background: var(--color-surface-dark);
+    color: var(--color-accent-gold);
+    padding: 10px 14px;
+    border-radius: var(--radius-card);
+    font-size: 13px;
+  }
+  .warning {
+    color: var(--color-dispute);
+    font-weight: 700;
+    margin-top: 12px;
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+// #41: privacy policy page. The backend already serves the real,
+// canonical policy text at GET /api/v1/privacy as a full standalone HTML
+// document (its own <html>/<head>/<body>) — this page fetches that live
+// and re-renders just the <body> contents inside our own Layout, rather
+// than hand-copying the policy prose into the frontend (the whole point
+// being one source of truth for the legal text).
+import Layout from "../layouts/Layout.astro";
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+let bodyHtml = "";
+let loadFailed = false;
+
+try {
+  const res = await fetch(`${baseUrl}/api/v1/privacy`);
+  if (res.ok) {
+    const html = await res.text();
+    const match = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    bodyHtml = match ? match[1] : html;
+  } else {
+    loadFailed = true;
+  }
+} catch {
+  loadFailed = true;
+}
+---
+
+<Layout title="Privacy Policy — AniFillerPedia">
+  <h1 class="disp page-title">Privacy Policy</h1>
+  {
+    loadFailed ? (
+      <p class="error">
+        Couldn't load the privacy policy from the API right now — try again shortly, or read it
+        directly at <a href={`${baseUrl}/api/v1/privacy`}>{baseUrl}/api/v1/privacy</a>.
+      </p>
+    ) : (
+      <div class="policy-content" set:html={bodyHtml} />
+    )
+  }
+</Layout>
+
+<style>
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 4px;
+  }
+  .error {
+    color: var(--color-dispute);
+    font-weight: 700;
+  }
+  .policy-content {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 24px 28px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .policy-content :global(h1) {
+    display: none; /* the fetched doc's own <h1> duplicates our page-title above */
+  }
+  .policy-content :global(h2) {
+    font-family: var(--font-display);
+    color: var(--color-heading);
+    font-size: 16px;
+    margin-top: 24px;
+  }
+  .policy-content :global(p),
+  .policy-content :global(li) {
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+  .policy-content :global(a) {
+    color: var(--color-accent);
+  }
+  .policy-content :global(code) {
+    background: var(--color-surface-pending);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+</style>

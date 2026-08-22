@@ -1,0 +1,271 @@
+---
+// #33: the series detail page — episode list with canon/filler/mixed status
+// badges and citations. Backed by GET /api/v1/series/{id} (header data) and
+// GET /api/v1/series/{id}/episodes (the list itself). Per CLAUDE.md, episode
+// numbering is absolute and there's no episode-title field (decided in #33's
+// own planning pass — "Episode #N" only), and status is one of exactly three
+// values (no `recap`).
+//
+// output: "server" means this route is resolved per-request — no
+// getStaticPaths() needed, Astro.params.id is read directly.
+import Layout from "../../layouts/Layout.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import Button from "../../components/Button.astro";
+import { createApiClient } from "../../api/client";
+import type { components } from "../../api/schema";
+
+type SeriesDetailOut = components["schemas"]["SeriesDetailOut"];
+type EpisodeOut = components["schemas"]["EpisodeOut"];
+
+const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
+
+const rawId = Astro.params.id ?? "";
+const seriesId = Number(rawId);
+const idLooksValid = rawId !== "" && Number.isInteger(seriesId) && seriesId > 0;
+
+let notFound = !idLooksValid;
+let series: SeriesDetailOut | null = null;
+let episodes: EpisodeOut[] = [];
+
+if (idLooksValid) {
+  const { data: seriesData, response: seriesResponse } = await api.GET("/api/v1/series/{series_id}", {
+    params: { path: { series_id: seriesId } },
+  });
+
+  if (seriesResponse.status === 404 || !seriesData) {
+    // Covers both the real 404 the backend raises for an unknown id and any
+    // other non-success response — either way there's nothing to render.
+    notFound = true;
+  } else {
+    series = seriesData;
+    const { data: episodesData } = await api.GET("/api/v1/series/{series_id}/episodes", {
+      params: { path: { series_id: seriesId } },
+    });
+    // An empty array is a normal, valid response (zero-episode series) —
+    // `?? []` only guards against a genuinely failed/undefined fetch.
+    episodes = episodesData ?? [];
+  }
+}
+
+if (notFound) {
+  Astro.response.status = 404;
+}
+
+// Rough "% filler-free" stat, computed client-side from the fetched episode
+// list per #33's scope — no dedicated backend field for this. Defined as the
+// share of episodes that aren't pure filler (canon + mixed both carry real
+// source-manga content, unlike filler), so it reads as "% you shouldn't
+// skip." Not shown at all when there's no episode data yet to compute it
+// from.
+const totalEpisodes = episodes.length;
+const nonFillerCount = episodes.filter((ep) => ep.status !== "filler").length;
+const fillerFreePct = totalEpisodes > 0 ? Math.round((nonFillerCount / totalEpisodes) * 100) : null;
+
+const pageTitle = series ? `${series.title} — AniFillerPedia` : "Series not found — AniFillerPedia";
+---
+
+<Layout title={pageTitle}>
+  {
+    notFound ? (
+      <section class="not-found">
+        <div class="disp not-found-title">Series not found</div>
+        <p>There's no series with that id in AniFillerPedia yet.</p>
+        <Button href="/" variant="ghost">
+          &larr; Back to browse
+        </Button>
+      </section>
+    ) : (
+      <>
+        <section class="series-header">
+          <div class="disp title">{series!.title}</div>
+          {series!.synonyms.length > 0 && <p class="synonyms">Also known as: {series!.synonyms.join(", ")}</p>}
+          <div class="stat-row">
+            <span class="stat-chip">{totalEpisodes} episode{totalEpisodes === 1 ? "" : "s"} tracked</span>
+            {fillerFreePct !== null && <span class="stat-chip stat-chip--accent">~{fillerFreePct}% filler-free</span>}
+          </div>
+        </section>
+
+        <section class="episode-list">
+          {episodes.length === 0 ? (
+            <div class="empty-state">
+              <p class="disp empty-title">No episodes researched yet</p>
+              <p>Nobody has submitted filler/canon data for this series yet — be the first.</p>
+              <Button href={`/series/${seriesId}/episodes/1/submit`} variant="primary">
+                Submit episode 1
+              </Button>
+            </div>
+          ) : (
+            episodes
+              .sort((a, b) => a.episode_number - b.episode_number)
+              .map((episode) => (
+                <article class="episode-row">
+                  <div class="episode-number">Episode #{episode.episode_number}</div>
+                  <div class="episode-status">
+                    <StatusBadge status={episode.status as "canon" | "filler" | "mixed"} />
+                  </div>
+                  <div class="episode-citation">
+                    {episode.citation.url ? (
+                      <a href={episode.citation.url} target="_blank" rel="noopener noreferrer">
+                        {episode.citation.description}
+                      </a>
+                    ) : (
+                      <span>{episode.citation.description}</span>
+                    )}
+                    {episode.status_note && <p class="status-note">{episode.status_note}</p>}
+                  </div>
+                  <div class="episode-actions">
+                    <Button href={`/episodes/${episode.id}/history`} variant="ghost">
+                      History &amp; votes
+                    </Button>
+                    <Button href={`/series/${seriesId}/episodes/${episode.episode_number}/submit`} variant="primary">
+                      Submit correction
+                    </Button>
+                  </div>
+                </article>
+              ))
+          )}
+        </section>
+      </>
+    )
+  }
+</Layout>
+
+<style>
+  .not-found {
+    background: var(--color-surface);
+    border-radius: var(--radius-panel);
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .not-found-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin-bottom: 8px;
+  }
+  .not-found p {
+    color: var(--color-text-muted);
+    font-size: 13.5px;
+    font-weight: 600;
+    margin: 0 0 20px;
+  }
+
+  .series-header {
+    background: linear-gradient(135deg, var(--color-bg-hero-start), var(--color-bg-hero-end));
+    border-radius: var(--radius-panel);
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+  }
+  .title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-heading);
+    line-height: 1.15;
+  }
+  .synonyms {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 6px 0 0;
+  }
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .stat-chip {
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-surface);
+    border-radius: var(--radius-pill);
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--color-text-muted);
+    box-shadow: var(--shadow-sticker);
+  }
+  .stat-chip--accent {
+    color: #fff;
+    background: var(--color-accent);
+    box-shadow: none;
+  }
+
+  .episode-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .empty-state {
+    background: var(--color-surface);
+    border: 3px dashed var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .empty-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin: 0 0 6px;
+  }
+  .empty-state p {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 18px;
+  }
+
+  .episode-row {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 14px 18px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .episode-number {
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+    white-space: nowrap;
+  }
+  .episode-citation {
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+  .episode-citation a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .episode-citation a:hover {
+    text-decoration: underline;
+  }
+  .status-note {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--color-text-faint);
+  }
+  .episode-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 640px) {
+    .episode-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .episode-actions {
+      justify-content: flex-start;
+    }
+  }
+</style>

@@ -129,7 +129,10 @@ function formatDate(iso: string): string {
 }
 ---
 
-<Layout title={notFound ? "Episode not found — AniFillerPedia" : `${episodeLabel} history — AniFillerPedia`}>
+<Layout
+  title={notFound ? "Episode not found — AniFillerPedia" : `${episodeLabel} history — AniFillerPedia`}
+  noindex
+>
   {
     notFound ? (
       <section class="panel">

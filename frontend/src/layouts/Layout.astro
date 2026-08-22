@@ -3,11 +3,31 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/tokens.css";
 
+// #63: SEO basics. description/image are per-page and data-driven (a series
+// page builds its own from real episode counts, never generic boilerplate)
+// — DEFAULT_DESCRIPTION only covers pages that don't have anything more
+// specific to say. noindex is for auth-gated/thin pages (account, admin,
+// moderation, the submission forms) that shouldn't show up in search
+// results at all, on top of robots.txt's crawl-budget Disallow for the
+// same paths. structuredData is an optional schema.org object, stringified
+// as JSON-LD — only series pages use this today.
 interface Props {
   title: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown>;
 }
 
-const { title } = Astro.props;
+const DEFAULT_DESCRIPTION =
+  "AniFillerPedia is an open, community-editable database of anime filler and canon episodes — find out which episodes you can skip, and which you can't.";
+
+const { title, description = DEFAULT_DESCRIPTION, image, noindex = false, structuredData } = Astro.props;
+
+// Astro.site comes from astro.config.mjs's `site` — the one place the real
+// production origin is written down.
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = image ? new URL(image, Astro.site).toString() : undefined;
 ---
 
 <!doctype html>
@@ -24,6 +44,23 @@ const { title } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap"
     />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AniFillerPedia" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    {structuredData && <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />}
   </head>
   <body>
     <div class="shell">

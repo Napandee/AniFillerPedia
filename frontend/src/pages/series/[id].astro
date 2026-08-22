@@ -104,11 +104,22 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
                 <CoverFallback title={series!.title} fontSize="28px" />
               )}
             </div>
+            {/* Only the title lives in the banner-overlap zone — it's
+                reliably short (one line). Synonym lists aren't: some series
+                have a dozen+ localized names that wrap for several lines,
+                which overflowed the fixed-height dark scrim and went
+                illegible on the plain page background below it (a real bug,
+                reported with a screenshot on Boku no Hero Academia). Synonyms
+                now render below, in normal flow, on the page's own
+                background — never on top of an image, so no amount of text
+                can break it. */}
             <div class="title-block">
               <div class="disp title">{series!.title}</div>
-              {series!.synonyms.length > 0 && <p class="synonyms">Also known as: {series!.synonyms.join(", ")}</p>}
             </div>
           </div>
+          {series!.synonyms.length > 0 && (
+            <p class="synonyms">Also known as: {series!.synonyms.join(", ")}</p>
+          )}
           <div class="stat-row">
             <span class="stat-chip">{totalEpisodes} episode{totalEpisodes === 1 ? "" : "s"} tracked</span>
             {fillerFreePct !== null && <span class="stat-chip stat-chip--accent">~{fillerFreePct}% filler-free</span>}
@@ -261,12 +272,14 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     line-height: 1.15;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
+  /* Back on the plain page background now (see the markup comment above) —
+     the normal muted-text color, no shadow needed. */
   .synonyms {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255, 248, 242, 0.82);
-    margin: 6px 0 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    color: var(--color-text-muted);
+    margin: 10px 0 0;
+    padding: 0 24px;
   }
   .stat-row {
     display: flex;

@@ -1,0 +1,34 @@
+---
+// #46: stylized stand-in for a missing cover — a series with no
+// anilist_id, or one AniList's lookup didn't return anything for. Deliberately
+// NOT a broken-image icon or blank space: a diagonal two-tone stripe in the
+// existing Playful Fandom accent palette, with the series' own initial
+// letter, so a missing cover still reads as intentional design.
+interface Props {
+  title: string;
+  fontSize?: string;
+}
+
+const { title, fontSize = "32px" } = Astro.props;
+const initial = title.trim().charAt(0).toUpperCase() || "?";
+---
+
+<div class="cover-fallback" aria-hidden="true">
+  <span class="disp initial" style={`font-size:${fontSize}`}>{initial}</span>
+</div>
+
+<style>
+  .cover-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-linear-gradient(135deg, var(--color-accent) 0 12px, #a166e0 12px 24px);
+  }
+  .initial {
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+</style>

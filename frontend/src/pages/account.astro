@@ -1,0 +1,380 @@
+---
+// #38: "My account" — a logged-in user's own contributions, series
+// proposals, and votes cast, plus account settings (linked providers,
+// delete account). Out of scope: any moderation-facing view of OTHER
+// users' activity (see #39 for that) — every fetch below is scoped to
+// `/mine` endpoints that are inherently caller-only server-side.
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import type { EpisodeStatus } from "../components/StatusBadge.astro";
+import LinkProviderButton from "../components/LinkProviderButton.astro";
+import { createApiClient } from "../api/client";
+
+// Redirect to login rather than rendering a 401 error page — must happen
+// before any data fetching below.
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/");
+}
+
+const cookie = Astro.request.headers.get("cookie") ?? "";
+const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
+
+const [contributionsRes, proposalsRes, votesRes] = await Promise.all([
+  api.GET("/api/v1/contributions/mine", { headers: { cookie } }),
+  api.GET("/api/v1/series-proposals/mine", { headers: { cookie } }),
+  api.GET("/api/v1/contributions/mine/votes", { headers: { cookie } }),
+]);
+
+const myContributions = contributionsRes.data ?? [];
+const myProposals = proposalsRes.data ?? [];
+const myVotes = votesRes.data ?? [];
+
+const dateFmt = (iso: string) =>
+  new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+
+const resolutionLabel = (method: string | null) => {
+  if (method === "moderator") return "moderator approval";
+  if (method === "community_vote") return "community vote";
+  return null;
+};
+---
+
+<Layout title="My Account — AniFillerPedia">
+  <section class="account-head">
+    <div>
+      <div class="disp headline">Hey, {user.display_name ?? "there"}</div>
+      <div class="sub">
+        <span class="role-chip">{user.role}</span>
+        <span class="trust-chip">Trust score: {user.trust_score}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="disp panel-title">Account settings</div>
+
+    <div class="settings-block">
+      <div class="settings-label">Linked sign-in providers</div>
+      <p class="settings-note">
+        Link another provider to sign in with either one. Linking a provider
+        already attached to your account is safely rejected by the server.
+      </p>
+      <div class="provider-row">
+        <LinkProviderButton provider="github" next="/account" />
+        <LinkProviderButton provider="discord" next="/account" />
+      </div>
+    </div>
+
+    <div class="settings-block danger">
+      <div class="settings-label">Delete account</div>
+      <p class="settings-note">
+        Deleting your account removes your personal data (email, display
+        name, avatar, linked sign-in identifiers) immediately. Your past
+        contributions and votes are preserved but anonymized — they remain
+        part of the public record and audit trail, but are no longer linked
+        to your identity. This action cannot be undone.
+      </p>
+      <form method="POST" action="/api/delete-account" id="delete-account-form">
+        <label class="confirm-row">
+          <input type="checkbox" name="confirm" required />
+          I understand this permanently deletes my account and cannot be undone.
+        </label>
+        <Button type="submit" variant="dispute">Delete my account</Button>
+      </form>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="disp panel-title">My contributions</div>
+    {
+      myContributions.length === 0 ? (
+        <p class="empty">You haven't submitted any episode corrections yet.</p>
+      ) : (
+        <ul class="item-list">
+          {myContributions.map((c) => (
+            <li class="item-card">
+              <div class="item-top">
+                <StatusBadge status={c.proposed_status as EpisodeStatus} />
+                <span class="item-target">Series #{c.series_id} · Episode {c.episode_number}</span>
+              </div>
+              {c.proposed_note && <p class="item-note">{c.proposed_note}</p>}
+              <p class="item-citation">
+                Citation:{" "}
+                {c.citation.url ? (
+                  <a href={c.citation.url} target="_blank" rel="noopener noreferrer">
+                    {c.citation.description}
+                  </a>
+                ) : (
+                  c.citation.description
+                )}
+              </p>
+              <div class="item-meta">
+                <span class={`status-chip status-chip--${c.review_status}`}>{c.review_status}</span>
+                {resolutionLabel(c.resolution_method) && (
+                  <span class="meta-note">via {resolutionLabel(c.resolution_method)}</span>
+                )}
+                <span class="meta-note">submitted {dateFmt(c.submitted_at)}</span>
+              </div>
+              {c.review_note && <p class="review-note">Reviewer note: {c.review_note}</p>}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+
+  <section class="panel">
+    <div class="disp panel-title">My series proposals</div>
+    {
+      myProposals.length === 0 ? (
+        <p class="empty">You haven't proposed any new series yet.</p>
+      ) : (
+        <ul class="item-list">
+          {myProposals.map((p) => (
+            <li class="item-card">
+              <div class="item-top">
+                <span class="item-target disp">{p.title}</span>
+              </div>
+              <p class="item-note">{p.justification}</p>
+              <div class="item-meta">
+                <span class={`status-chip status-chip--${p.review_status}`}>{p.review_status}</span>
+                <span class="meta-note">submitted {dateFmt(p.submitted_at)}</span>
+              </div>
+              {p.review_note && <p class="review-note">Reviewer note: {p.review_note}</p>}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+
+  <section class="panel">
+    <div class="disp panel-title">My votes</div>
+    {
+      myVotes.length === 0 ? (
+        <p class="empty">You haven't endorsed or disputed any contributions yet.</p>
+      ) : (
+        <ul class="item-list">
+          {myVotes.map((v) => (
+            <li class="item-card">
+              <div class="item-top">
+                <span class={`vote-chip vote-chip--${v.vote}`}>{v.vote}</span>
+                <StatusBadge status={v.proposed_status as EpisodeStatus} />
+                <span class="item-target">{v.series_title} · Episode {v.episode_number}</span>
+              </div>
+              <div class="item-meta">
+                <span class={`status-chip status-chip--${v.review_status}`}>{v.review_status}</span>
+                {resolutionLabel(v.resolution_method) && (
+                  <span class="meta-note">via {resolutionLabel(v.resolution_method)}</span>
+                )}
+                <span class="meta-note">weight at vote: {v.weight_at_vote}</span>
+                <span class="meta-note">cast {dateFmt(v.created_at)}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Layout>
+
+<script>
+  // Progressive-enhancement second confirmation on top of the required
+  // checkbox above (which alone already blocks accidental/no-JS submission)
+  // — this is an irreversible action, so a real browser confirm() dialog is
+  // a cheap extra guardrail for JS-enabled visitors.
+  document.getElementById("delete-account-form")?.addEventListener("submit", (event) => {
+    const sure = window.confirm(
+      "This will permanently delete your account and cannot be undone. Continue?"
+    );
+    if (!sure) {
+      event.preventDefault();
+    }
+  });
+</script>
+
+<style>
+  .account-head {
+    padding: 8px 0 20px;
+  }
+  .headline {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-heading);
+  }
+  .sub {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .role-chip,
+  .trust-chip {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 800;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+  }
+  .role-chip {
+    color: #fff;
+    background: var(--color-accent);
+    text-transform: capitalize;
+  }
+  .trust-chip {
+    color: var(--color-text-muted);
+    background: var(--color-trust-chip-bg);
+  }
+
+  .panel {
+    background: var(--color-surface);
+    border-radius: var(--radius-panel);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .panel-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-heading);
+    margin-bottom: 14px;
+  }
+
+  .settings-block {
+    padding: 14px 0;
+    border-top: 2px dashed var(--color-border-divider);
+  }
+  .settings-block:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+  .settings-label {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin-bottom: 4px;
+  }
+  .settings-note {
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    margin: 0 0 10px;
+    max-width: 60ch;
+  }
+  .provider-row {
+    display: flex;
+    gap: 18px;
+  }
+  .danger .settings-label {
+    color: var(--color-dispute);
+  }
+  .confirm-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 12px;
+  }
+
+  .empty {
+    font-size: 13px;
+    color: var(--color-text-faint);
+  }
+
+  .item-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .item-card {
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+  }
+  .item-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .item-target {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+  .item-note {
+    font-size: 12.5px;
+    color: var(--color-text);
+    margin: 8px 0 4px;
+  }
+  .item-citation {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin: 4px 0;
+  }
+  .item-citation a {
+    color: var(--color-accent);
+  }
+  .item-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .meta-note {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
+  .review-note {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--color-text-muted);
+    margin: 8px 0 0;
+  }
+
+  .status-chip {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: capitalize;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    color: #fff;
+    background: var(--color-text-faint);
+  }
+  .status-chip--pending {
+    background: var(--color-status-pending);
+  }
+  .status-chip--approved {
+    background: var(--color-status-canon);
+  }
+  .status-chip--rejected {
+    background: var(--color-dispute);
+  }
+
+  .vote-chip {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: capitalize;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    color: #fff;
+  }
+  .vote-chip--endorse {
+    background: var(--color-endorse);
+  }
+  .vote-chip--dispute {
+    background: var(--color-dispute);
+  }
+</style>

@@ -305,6 +305,39 @@ async def test_series_detail_includes_anilist_episode_count(client: AsyncClient)
 
 
 @pytest.mark.asyncio
+async def test_series_detail_includes_related_series(client: AsyncClient) -> None:
+    """Lightweight cross-links for shows split across multiple AniList
+    entries (e.g. Fairy Tail / Fairy Tail (2014) / Fairy Tail (2018)) —
+    empty for the vast majority of series, populated only when
+    series_relations rows exist.
+    """
+    a_id = await _make_series("RelatedA", anilist_id=900009)
+    b_id = await _make_series("RelatedB", anilist_id=900010)
+    try:
+        response = await client.get(f"/api/v1/series/{a_id}")
+        assert response.json()["related_series"] == []
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "INSERT INTO series_relations (series_id, related_series_id) "
+                        "VALUES (:a, :b), (:b, :a)"
+                    ),
+                    {"a": a_id, "b": b_id},
+                )
+
+        response = await client.get(f"/api/v1/series/{a_id}")
+        related = response.json()["related_series"]
+        assert len(related) == 1
+        assert related[0]["id"] == b_id
+        assert related[0]["title"] == f"{TEST_PREFIX}RelatedB"
+    finally:
+        await _cleanup_series(a_id)
+        await _cleanup_series(b_id)
+
+
+@pytest.mark.asyncio
 async def test_series_detail_404() -> None:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

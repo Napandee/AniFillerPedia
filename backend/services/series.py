@@ -31,4 +31,6 @@ async def get_series(session: AsyncSession, series_id: int) -> SeriesDetailOut:
     if row is None:
         raise HTTPException(status_code=404, detail="Series not found")
     synonyms = await series_repo.get_synonyms(session, series_id)
-    return SeriesDetailOut(**row._mapping, synonyms=synonyms)
+    related_rows = await series_repo.get_related_series(session, series_id)
+    related_series = [SeriesOut(**r._mapping) for r in related_rows]
+    return SeriesDetailOut(**row._mapping, synonyms=synonyms, related_series=related_series)

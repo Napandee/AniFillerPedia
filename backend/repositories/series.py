@@ -127,6 +127,23 @@ async def get_synonyms(session: AsyncSession, series_id: int) -> list[str]:
     return [row.synonym for row in result.fetchall()]
 
 
+async def get_related_series(session: AsyncSession, series_id: int) -> list[Row]:
+    result = await session.execute(
+        text(
+            """
+            SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
+                   s.provenance, s.created_at
+            FROM series_relations r
+            JOIN series s ON s.id = r.related_series_id
+            WHERE r.series_id = :id
+            ORDER BY s.id
+            """
+        ),
+        {"id": series_id},
+    )
+    return list(result.fetchall())
+
+
 async def create(
     session: AsyncSession,
     *,

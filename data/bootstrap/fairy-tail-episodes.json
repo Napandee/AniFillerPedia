@@ -1,0 +1,1418 @@
+{
+  "series_title": "Fairy Tail",
+  "research_status": "COMPLETE — all 175 episodes classified canon/filler/mixed. Part of a single Reddit breakdown covering all three real Fairy Tail TV series continuously (1-328); split here to match this series' own AniList entry (original episodes 1-175).",
+  "citation_sources": [
+    {
+      "id": "reddit-canon-mixed-filler-breakdown",
+      "url": null,
+      "description": "Community-compiled Reddit breakdown of Fairy Tail's manga-canon/mixed/filler episodes (including a distinct 'anime canon' category, mapped to canon here per project decision 2026-08-22), corroborated by a second independent Reddit thread with an identical breakdown. Numbers episodes continuously across all three real Fairy Tail TV series (2009/2014/2018) as one 1-328 run, per common filler-guide convention; this project splits it back into each series' own absolute numbering to match its real AniList catalog entries. Exact thread URLs not recorded at compile time."
+    },
+    {
+      "id": "radio-times-filler-guide",
+      "url": null,
+      "description": "Radio Times filler/optional-viewing guide for Fairy Tail, used as an independent cross-reference against the Reddit breakdown above for the original 2009 series (episodes 1-175). Agreed on every episode it covered except two (49, 151 — Radio Times doesn't mention either; resolved in favor of the two-source Reddit agreement, same as Bleach episode 227). Didn't cover the 2014/2018 continuations at all. Exact article URL not recorded at compile time."
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 9,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 19,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 20,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 49,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 50,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 69,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 70,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 71,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 72,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 73,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 74,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 75,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 76,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 89,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 93,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 95,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 100,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 101,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 102,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 103,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 104,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 105,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 106,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 107,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 108,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 109,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 110,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 111,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 112,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 113,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 114,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 115,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 116,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 117,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 118,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 119,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 120,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 121,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 122,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 123,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 124,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 125,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 126,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 127,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 128,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 129,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 130,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 131,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 132,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 133,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 134,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 135,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 136,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 137,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 138,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 139,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 140,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 141,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 142,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 143,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 144,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 145,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 146,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 147,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 148,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 149,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 150,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 151,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 152,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 153,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 154,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 155,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 156,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 157,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 158,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 159,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 160,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 161,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 162,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 163,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 164,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 165,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 166,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 167,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 168,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 169,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 170,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 171,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 172,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 173,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 174,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    },
+    {
+      "episode_number": 175,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown",
+        "radio-times-filler-guide"
+      ]
+    }
+  ]
+}

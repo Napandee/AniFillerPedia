@@ -1,0 +1,727 @@
+{
+  "series_title": "Fairy Tail (2014)",
+  "research_status": "COMPLETE — all 102 episodes classified canon/filler/mixed. Part of a single Reddit breakdown covering all three real Fairy Tail TV series continuously (1-328); split here to match this series' own AniList entry (original episodes 176-277).",
+  "citation_sources": [
+    {
+      "id": "reddit-canon-mixed-filler-breakdown",
+      "url": null,
+      "description": "Community-compiled Reddit breakdown of Fairy Tail's manga-canon/mixed/filler episodes (including a distinct 'anime canon' category, mapped to canon here per project decision 2026-08-22), corroborated by a second independent Reddit thread with an identical breakdown. Numbers episodes continuously across all three real Fairy Tail TV series (2009/2014/2018) as one 1-328 run, per common filler-guide convention; this project splits it back into each series' own absolute numbering to match its real AniList catalog entries. Exact thread URLs not recorded at compile time."
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 7,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 8,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 26,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 27,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 28,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 29,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 30,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 31,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 32,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 33,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 34,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 35,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 36,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 37,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 38,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 39,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 40,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 41,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 42,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 43,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 44,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 45,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 46,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 47,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 48,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 49,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 50,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 51,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 75,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 76,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 80,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 85,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 89,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 93,
+      "status": "filler",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 95,
+      "status": "mixed",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 100,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 101,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    },
+    {
+      "episode_number": 102,
+      "status": "canon",
+      "citation_ids": [
+        "reddit-canon-mixed-filler-breakdown"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+---
+const links = [
+  { href: "/", label: "Browse" },
+  { href: "/moderation", label: "Review queue" },
+];
+---
+
+<header class="site-header">
+  <a class="disp brand" href="/">AniFillerPedia</a>
+  <nav>
+    {links.map((link) => (
+      <a href={link.href}>{link.label}</a>
+    ))}
+    <a href="/login">Log in</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-weight: 800;
+    font-size: 19px;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  nav {
+    display: flex;
+    gap: 16px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  nav a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  nav a:last-child {
+    color: var(--color-accent);
+  }
+</style>

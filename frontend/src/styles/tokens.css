@@ -1,0 +1,51 @@
+/*
+  Playful Fandom design tokens — locked visual direction, decided 2026-08-21
+  (see CLAUDE.local.md "Visual direction"). Values lifted directly from the
+  approved design canvas artboard (PlayfulFandom.dc.html), not reinvented.
+*/
+:root {
+  /* Type */
+  --font-display: "Baloo 2", sans-serif;
+  --font-body: "Nunito", sans-serif;
+
+  /* Surface */
+  --color-bg: #fff8f2;
+  --color-bg-hero-start: #fff0e0;
+  --color-bg-hero-end: #ffe4f1;
+  --color-surface: #ffffff;
+  --color-surface-dark: #3b1830;
+  --color-surface-pending: #fef6fb;
+
+  /* Text */
+  --color-text: #2b1b2e;
+  --color-heading: #3b1830;
+  --color-text-muted: #7c3a56;
+  --color-text-faint: #b06090;
+  --color-text-label: #c9a0b8;
+
+  /* Accent */
+  --color-accent: #d6337a;
+  --color-accent-gold: #ffc93c;
+
+  /* Borders / dividers */
+  --color-border-card: #ffd6ea;
+  --color-border-divider: #ffe1cc;
+  --shadow-accent: #ffd6ea;
+
+  /* Status */
+  --color-status-canon: #22c55e;
+  --color-status-filler: #ff9f43;
+  --color-status-mixed: #a78bfa;
+  --color-status-pending: #38bdf8;
+  --color-endorse: #22c55e;
+  --color-dispute: #f43f5e;
+  --color-trust-chip-bg: #ffe1f0;
+
+  /* Shape */
+  --radius-pill: 999px;
+  --radius-card: 16px;
+  --radius-panel: 20px;
+
+  /* "Sticker" shadow — flat offset, no blur, gives the playful/comic look */
+  --shadow-sticker: 0 3px 0 var(--shadow-accent);
+}

@@ -1,8 +1,25 @@
 # frontend/
 
-Empty besides the typed API client codegen pipeline (#11) — the Astro app
-itself lands here in Phase 5, once the roadmap board's "Frontend & UX" Theme
-option exists to track that work.
+Astro app (SSR/on-demand, `@astrojs/node` standalone adapter — see
+`astro.config.mjs`), the Playful Fandom design system (`src/styles/tokens.css`,
+`src/components/`), and the typed API client codegen pipeline (#11). Scaffolded
+in #31; every other Phase 5 page/flow issue builds on top of this shell.
+
+## Running locally
+
+```sh
+npm install
+cp .env.example .env   # points PUBLIC_API_BASE_URL at your local backend
+npm run dev
+```
+
+## Design system
+
+Tokens in `src/styles/tokens.css` are lifted directly from the locked
+Playful Fandom design canvas (see CLAUDE.local.md "Visual direction") — don't
+hand-tune colors/radii here without checking that reference first. Base
+components (`Header`, `Footer`, `SearchInput`, `SeriesCard`, `StatusBadge`,
+`Button`) live in `src/components/`; the page shell is `src/layouts/Layout.astro`.
 
 ## Typed API client
 

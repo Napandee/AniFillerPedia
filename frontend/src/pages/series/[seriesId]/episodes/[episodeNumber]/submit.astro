@@ -1,0 +1,417 @@
+---
+// #35: submit-a-correction form — POST /api/v1/contributions. Anonymous or
+// logged in (Astro.locals.user, set by src/middleware.ts). Anonymous
+// submissions are Turnstile-gated per CLAUDE.md's 2026-08-21 decision, but
+// the real Cloudflare site key isn't provisioned yet (#25) — the widget
+// below is a structural stand-in (see the TURNSTILE STUB note) so this page
+// doesn't block on that separate piece of infra.
+//
+// This route only needs seriesId/episodeNumber from the URL — it doesn't
+// yet receive real link-in context from a series/episode page (#33's job).
+import Layout from "../../../../../layouts/Layout.astro";
+import Button from "../../../../../components/Button.astro";
+import StatusBadge from "../../../../../components/StatusBadge.astro";
+import type { EpisodeStatus } from "../../../../../components/StatusBadge.astro";
+import { createApiClient } from "../../../../../api/client";
+
+const { seriesId, episodeNumber } = Astro.params;
+const seriesIdNum = Number(seriesId);
+const episodeNumberNum = Number(episodeNumber);
+const hasValidParams = Number.isFinite(seriesIdNum) && Number.isFinite(episodeNumberNum);
+
+const user = Astro.locals.user;
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+const STATUSES: EpisodeStatus[] = ["canon", "filler", "mixed"];
+
+type Stage = "form" | "success";
+
+let stage: Stage = "form";
+let errorMessage: string | null = null;
+let duplicateContributionId: number | null = null;
+let successContributionId: number | null = null;
+
+// Repopulated from the submitted form on a validation/duplicate failure so
+// the contributor doesn't have to retype everything.
+let values = {
+  proposed_status: "canon" as string,
+  proposed_note: "",
+  citation_url: "",
+  citation_description: "",
+  license_accepted: false,
+};
+
+// --- 422 body shapes vary at runtime ---------------------------------------
+// FastAPI's own request-validation 422s use the standard
+// {"detail": [{"loc": [...], "msg": "...", ...}, ...]} array shape. But the
+// license_accepted business-rule check in services/contributions.py raises
+// its 422 with a plain string detail ("license_accepted must be true") —
+// same status code, different detail shape. Handle both rather than
+// assuming the array shape always holds.
+function formatValidationError(body: unknown): string {
+  if (body && typeof body === "object" && "detail" in body) {
+    const detail = (body as { detail: unknown }).detail;
+    if (typeof detail === "string") {
+      return detail;
+    }
+    if (Array.isArray(detail)) {
+      return detail
+        .map((item) => {
+          if (item && typeof item === "object" && "msg" in item) {
+            const loc = "loc" in item && Array.isArray((item as { loc: unknown }).loc)
+              ? (item as { loc: (string | number)[] }).loc
+              : [];
+            const field = loc.length > 0 ? String(loc[loc.length - 1]) : "field";
+            return `${field}: ${(item as { msg: string }).msg}`;
+          }
+          return "Invalid value.";
+        })
+        .join("; ");
+    }
+  }
+  return "Please check your submission and try again.";
+}
+
+function isDuplicateBody(
+  body: unknown
+): body is { detail: { message: string; existing_contribution_id: number } } {
+  if (!body || typeof body !== "object" || !("detail" in body)) return false;
+  const detail = (body as { detail: unknown }).detail;
+  return (
+    !!detail &&
+    typeof detail === "object" &&
+    "existing_contribution_id" in detail &&
+    "message" in detail
+  );
+}
+
+if (hasValidParams && Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  values = {
+    proposed_status: String(form.get("proposed_status") ?? "canon"),
+    proposed_note: String(form.get("proposed_note") ?? ""),
+    citation_url: String(form.get("citation_url") ?? ""),
+    citation_description: String(form.get("citation_description") ?? ""),
+    license_accepted: form.get("license_accepted") === "yes",
+  };
+
+  const api = createApiClient(baseUrl);
+  const { data, error, response } = await api.POST("/api/v1/contributions", {
+    body: {
+      series_id: seriesIdNum,
+      episode_number: episodeNumberNum,
+      proposed_status: values.proposed_status as "canon" | "filler" | "mixed",
+      proposed_note: values.proposed_note.trim() ? values.proposed_note.trim() : undefined,
+      citation: {
+        url: values.citation_url.trim() ? values.citation_url.trim() : undefined,
+        description: values.citation_description,
+      },
+      license_accepted: values.license_accepted,
+      // TURNSTILE STUB: no real Cloudflare Turnstile site key is
+      // provisioned yet (see #25 / CLAUDE.local.md's external-account
+      // checklist). The backend's turnstile_service.verify() already
+      // short-circuits to allowed=True while unconfigured, so this value is
+      // never actually checked today — it exists so the request shape
+      // matches the real contract (turnstile_token sent for anonymous
+      // submitters) rather than omitting the field outright. Replace with
+      // the real widget's response token once #25 lands.
+      turnstile_token: user ? undefined : "stub-turnstile-token-pending-25",
+    },
+    // Forward the session cookie so an authenticated submission is
+    // attributed to the logged-in user (and so the backend correctly skips
+    // Turnstile server-side, matching what's shown here).
+    headers: user ? { cookie: Astro.request.headers.get("cookie") ?? "" } : undefined,
+  });
+
+  if (!error) {
+    stage = "success";
+    successContributionId = data.id;
+  } else if (response.status === 409 && isDuplicateBody(error)) {
+    errorMessage = error.detail.message;
+    duplicateContributionId = error.detail.existing_contribution_id;
+  } else if (response.status === 422) {
+    errorMessage = formatValidationError(error);
+  } else {
+    errorMessage = "Something went wrong submitting your correction — please try again.";
+  }
+}
+---
+
+<Layout title="Submit a correction — AniFillerPedia">
+  {!hasValidParams && (
+    <section class="panel">
+      <p class="lead">This correction link is missing a valid series/episode reference.</p>
+      <Button href="/" variant="ghost">Back to home</Button>
+    </section>
+  )}
+
+  {hasValidParams && stage === "success" && (
+    <section class="panel success">
+      <div class="success-icon">✓</div>
+      <h1 class="disp">Thanks — pending review!</h1>
+      <p class="lead">
+        Your correction for Series #{seriesIdNum}, Episode {episodeNumberNum} (contribution
+        #{successContributionId}) has been submitted. It'll go live once a moderator approves
+        it or the community's trust-weighted vote crosses the auto-approval threshold.
+      </p>
+      <Button href="/" variant="primary">Back to home</Button>
+    </section>
+  )}
+
+  {hasValidParams && stage === "form" && (
+    <section class="panel">
+      <h1 class="disp">Submit a correction</h1>
+      <p class="subhead">
+        Series #{seriesIdNum} · Episode {episodeNumberNum}
+      </p>
+
+      {errorMessage && duplicateContributionId !== null && (
+        <div class="notice notice--duplicate">
+          <p>{errorMessage}</p>
+          <p>
+            <a href={`/contributions/${duplicateContributionId}`}>
+              View pending contribution #{duplicateContributionId} to endorse or dispute it
+            </a>
+            {" "}instead of submitting a competing one.
+          </p>
+        </div>
+      )}
+
+      {errorMessage && duplicateContributionId === null && (
+        <div class="notice notice--error">
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
+      <form method="POST">
+        <fieldset>
+          <legend>Proposed status</legend>
+          <div class="status-options">
+            {STATUSES.map((status) => (
+              <label class:list={["status-option", { checked: values.proposed_status === status }]}>
+                <input
+                  type="radio"
+                  name="proposed_status"
+                  value={status}
+                  checked={values.proposed_status === status}
+                  required
+                />
+                <StatusBadge status={status} />
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <label class="field">
+          <span>Note <span class="optional">(optional)</span></span>
+          <textarea name="proposed_note" rows="2" set:text={values.proposed_note} />
+        </label>
+
+        <label class="field">
+          <span>Citation URL <span class="optional">(optional)</span></span>
+          <input type="url" name="citation_url" value={values.citation_url} placeholder="https://..." />
+        </label>
+
+        <label class="field">
+          <span>Citation description <span class="required">(required)</span></span>
+          <textarea
+            name="citation_description"
+            rows="3"
+            required
+            minlength="1"
+            placeholder="e.g. Forum thread cross-referencing the manga chapter this episode adapts..."
+            set:text={values.citation_description}
+          />
+        </label>
+
+        {!user && (
+          <div class="turnstile-slot">
+            <p class="turnstile-note">
+              Verification widget (Cloudflare Turnstile) will appear here once configured — see
+              issue #25. Anonymous submissions are still accepted in the meantime.
+            </p>
+          </div>
+        )}
+
+        {user && (
+          <p class="login-note">
+            Submitting as <strong>{user.display_name ?? "you"}</strong> — no verification widget
+            needed while logged in.
+          </p>
+        )}
+
+        <label class="field field--checkbox">
+          <input type="checkbox" name="license_accepted" value="yes" required checked={values.license_accepted} />
+          <span>
+            I agree this contribution is licensed under
+            {" "}<a href="/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>, per
+            AniFillerPedia's <a href="/data-license" target="_blank" rel="noopener">DATA_LICENSE</a>.
+            <span class="required"> (required)</span>
+          </span>
+        </label>
+
+        <Button type="submit" variant="primary">Submit correction</Button>
+      </form>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 28px 32px;
+    margin: 24px 0;
+  }
+  .success {
+    text-align: center;
+  }
+  .success-icon {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 50%;
+    background: var(--color-status-canon);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 auto 16px;
+  }
+  h1 {
+    color: var(--color-heading);
+    font-size: 22px;
+    margin: 0 0 6px;
+  }
+  .subhead {
+    color: var(--color-text-muted);
+    font-weight: 700;
+    font-size: 13px;
+    margin: 0 0 20px;
+  }
+  .lead {
+    color: var(--color-text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .notice {
+    border-radius: var(--radius-card);
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .notice p {
+    margin: 0 0 6px;
+  }
+  .notice p:last-child {
+    margin-bottom: 0;
+  }
+  .notice--error {
+    background: #fde8ec;
+    color: var(--color-dispute);
+  }
+  .notice--duplicate {
+    background: var(--color-surface-pending);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-status-pending);
+  }
+  .notice--duplicate a {
+    color: var(--color-accent);
+    font-weight: 800;
+  }
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 18px;
+  }
+  legend {
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--color-heading);
+    padding: 0 0 8px;
+  }
+  .status-options {
+    display: flex;
+    gap: 10px;
+  }
+  .status-option {
+    position: relative;
+    cursor: pointer;
+    opacity: 0.55;
+  }
+  .status-option.checked {
+    opacity: 1;
+  }
+  .status-option input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .field {
+    display: block;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+  .field span:first-child {
+    display: block;
+    margin-bottom: 6px;
+  }
+  .optional {
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
+  .required {
+    font-weight: 700;
+    color: var(--color-dispute);
+  }
+  input[type="text"],
+  input[type="url"],
+  textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: var(--color-text);
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 9px 12px;
+    resize: vertical;
+  }
+  .turnstile-slot {
+    border: 1px dashed var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+  }
+  .turnstile-note {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
+  .login-note {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 16px;
+  }
+  .field--checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .field--checkbox input {
+    margin-top: 3px;
+  }
+  .field--checkbox span:first-child {
+    margin-bottom: 0;
+  }
+  .field--checkbox a {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+</style>

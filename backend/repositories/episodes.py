@@ -11,9 +11,12 @@ _SELECT_WITH_CITATION = """
     SELECT e.id, e.series_id, e.episode_number, e.status, e.status_note,
            e.updated_at,
            c.id AS citation_id, c.url AS citation_url,
-           c.description AS citation_description
+           c.description AS citation_description,
+           ses.aired_at
     FROM episodes e
     JOIN citations c ON c.id = e.citation_id
+    LEFT JOIN series_episode_schedule ses
+        ON ses.series_id = e.series_id AND ses.episode_number = e.episode_number
 """
 
 

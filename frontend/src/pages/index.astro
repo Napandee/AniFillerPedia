@@ -72,9 +72,18 @@ function pageHref(targetPage: number): string {
     <div class="disp headline">Know what's canon<br />before you watch!</div>
     <p class="tagline">Built by fans, checked by fans — cited every step of the way.</p>
     <SearchInput />
-    <p class="propose">
-      Can't find a show? <a href="/propose-series">Propose a series</a>
-    </p>
+    <!-- #47: a prominent CTA, not a small text link — most of the catalog
+         is unresearched stubs now hidden from this grid entirely, so the
+         path to "this show isn't here, please add it" needs to be obvious,
+         not incidental. Links straight to #36's existing form, which
+         already captures a name and an AniList/MAL/AniDB id. -->
+    <a class="propose-cta" href="/propose-series">
+      <span class="propose-icon" aria-hidden="true">+</span>
+      <span class="propose-text">
+        <strong>Something's missing?</strong> Add it here — just a name, and an AniList ID if you have one.
+      </span>
+      <span class="propose-arrow" aria-hidden="true">→</span>
+    </a>
   </section>
 
   {
@@ -191,14 +200,47 @@ function pageHref(targetPage: number): string {
     color: var(--color-text-muted);
     margin: 0 0 20px;
   }
-  .propose {
-    margin: 14px 0 0;
-    font-size: 12.5px;
-    font-weight: 700;
+  .propose-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sticker);
+    text-decoration: none;
+    color: var(--color-heading);
+  }
+  .propose-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .propose-text {
+    font-size: 13px;
+    font-weight: 600;
     color: var(--color-text-muted);
   }
-  .propose a {
+  .propose-text strong {
+    color: var(--color-heading);
+    font-weight: 800;
+  }
+  .propose-arrow {
+    margin-left: auto;
     color: var(--color-accent);
+    font-weight: 800;
+    flex-shrink: 0;
   }
 
   .review-teaser {

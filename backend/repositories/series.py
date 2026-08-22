@@ -39,6 +39,23 @@ async def search_series(
         where.append("s.anidb_id = :anidb_id")
         params["anidb_id"] = anidb_id
 
+    # #47: a plain browse (no q/anilist_id/mal_id/anidb_id) excludes series
+    # with zero episode rows — most of the 180 manami-bootstrap catalog
+    # entries have never been researched, and showing an empty "no episodes
+    # yet" page for the majority of results made the site look broken
+    # rather than sparse. A TARGETED lookup (q, or any external id) still
+    # returns them: hiding a catalog entry a visitor is specifically
+    # searching for would just make them file a duplicate series proposal
+    # for something that already exists, unresearched — the actual goal is
+    # decluttering the default grid, not making these entries unfindable.
+    is_targeted_lookup = bool(where)
+    if not is_targeted_lookup:
+        # Aliased `ep`, not `e` — the recently_updated branch below already
+        # LEFT JOINs episodes as `e`; this WHERE clause is shared by both
+        # branches, and a distinct alias avoids relying on subquery scoping
+        # to keep the two apart.
+        where.append("EXISTS (SELECT 1 FROM episodes ep WHERE ep.series_id = s.id)")
+
     where_sql = f"WHERE {' AND '.join(where)}" if where else ""
 
     # Total count is unaffected by sort mode — same WHERE, no join/group.

@@ -126,8 +126,12 @@ async def client():
 
 @pytest.mark.asyncio
 async def test_series_sort_recently_updated_orders_by_latest_episode(client: AsyncClient) -> None:
-    """#42: a series with a more recently-approved episode sorts first; a
-    series with no episodes at all sorts last (NULLS LAST), not dropped.
+    """#42: a series with a more recently-approved episode sorts first.
+    #47 changed the second half of this test's own original claim: a
+    zero-episode series used to sort last (NULLS LAST) rather than being
+    dropped — now a plain browse (no q/id) excludes it entirely, so it
+    must not appear in the results at all, not just sort after everything
+    else.
     """
     older_series_id = await _make_series("Older", anilist_id=900101)
     newer_series_id = await _make_series("Newer", anilist_id=900102)
@@ -153,10 +157,77 @@ async def test_series_sort_recently_updated_orders_by_latest_episode(client: Asy
 
         test_ids = {older_series_id, newer_series_id, empty_series_id}
         ordered_test_ids = [i for i in ids_in_order if i in test_ids]
-        assert ordered_test_ids == [newer_series_id, older_series_id, empty_series_id]
+        assert ordered_test_ids == [newer_series_id, older_series_id]
     finally:
         await _cleanup_series(older_series_id)
         await _cleanup_series(newer_series_id)
+        await _cleanup_series(empty_series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_default_browse_excludes_zero_episode_series(client: AsyncClient) -> None:
+    """#47: a plain browse (no q, no external id) excludes series with no
+    episode data at all — most of the bootstrap-imported catalog, which
+    made the default grid mostly empty "no episodes yet" pages.
+    """
+    empty_series_id = await _make_series("NoEpisodesAtAll", anilist_id=900201)
+    researched_series_id = await _make_series("HasEpisodes", anilist_id=900202)
+    try:
+        citation_id = await _make_citation()
+        await _make_approved_episode(researched_series_id, 1, citation_id)
+
+        response = await client.get("/api/v1/series", params={"limit": 100})
+        assert response.status_code == 200
+        ids = {item["id"] for item in response.json()["items"]}
+        assert empty_series_id not in ids
+        assert researched_series_id in ids
+    finally:
+        await _cleanup_series(empty_series_id)
+        await _cleanup_series(researched_series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_targeted_lookup_still_returns_zero_episode_series(
+    client: AsyncClient,
+) -> None:
+    """#47: the exclusion above is for the default browse grid only — a
+    contributor specifically searching for a show (by title or by external
+    id) must still find an unresearched catalog entry, or they'd have no
+    way to tell it apart from "doesn't exist yet" and would file a
+    duplicate series proposal.
+    """
+    empty_series_id = await _make_series("FindableStub", anilist_id=900203)
+    try:
+        by_title = await client.get(
+            "/api/v1/series", params={"q": f"{TEST_PREFIX}FindableStub"}
+        )
+        assert any(item["id"] == empty_series_id for item in by_title.json()["items"])
+
+        by_anilist = await client.get("/api/v1/series", params={"anilist_id": 900203})
+        assert any(item["id"] == empty_series_id for item in by_anilist.json()["items"])
+    finally:
+        await _cleanup_series(empty_series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_detail_and_episodes_unaffected_by_zero_episode_hiding(
+    client: AsyncClient,
+) -> None:
+    """#47 explicitly does NOT change GET /series/{id} or its /episodes —
+    only the browse/search list hides zero-episode series. Direct access
+    (e.g. from a search result, or a moderator's own record) must keep
+    working exactly as before: 200, empty episode list.
+    """
+    empty_series_id = await _make_series("DirectAccessStillWorks", anilist_id=900204)
+    try:
+        detail = await client.get(f"/api/v1/series/{empty_series_id}")
+        assert detail.status_code == 200
+        assert detail.json()["id"] == empty_series_id
+
+        episodes = await client.get(f"/api/v1/series/{empty_series_id}/episodes")
+        assert episodes.status_code == 200
+        assert episodes.json() == []
+    finally:
         await _cleanup_series(empty_series_id)
 
 

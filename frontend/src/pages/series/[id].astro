@@ -135,6 +135,17 @@ const formatAiredAt = (iso: string | null) =>
             </details>
           )}
 
+          {series!.related_series.length > 0 && (
+            <div class="related-series">
+              <span class="related-series-label">Also on this site:</span>
+              {series!.related_series.map((related) => (
+                <a class="related-series-link" href={`/series/${related.id}`}>
+                  {related.title}
+                </a>
+              ))}
+            </div>
+          )}
+
           {totalEpisodes > 0 && (
             <div class="stat-cards" id="stat-cards">
               <button class="stat-card" data-status="canon" data-count={canonCount} type="button">
@@ -407,6 +418,34 @@ const formatAiredAt = (iso: string | null) =>
     color: var(--color-text-muted);
     margin: 8px 4px 0;
     line-height: 1.6;
+  }
+
+  /* A show split across multiple real AniList entries (e.g. Fairy Tail /
+     Fairy Tail (2014) / Fairy Tail (2018)) — see series_relations in
+     schema.sql. Empty for the vast majority of series. */
+  .related-series {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 24px 0;
+    font-size: 12.5px;
+  }
+  .related-series-label {
+    font-weight: 700;
+    color: var(--color-text-faint);
+  }
+  .related-series-link {
+    font-weight: 800;
+    color: var(--color-accent);
+    background: var(--color-surface);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+    box-shadow: var(--shadow-sticker);
+    text-decoration: none;
+  }
+  .related-series-link:hover {
+    text-decoration: underline;
   }
 
   .stat-cards {

@@ -49,11 +49,15 @@ query ($id: Int, $page: Int) {
 }
 """
 
-# Polite spacing against AniList's shared rate limit (90 req/min) — this
-# worker isn't time-sensitive (daily cadence), so a small delay between
-# requests costs nothing and avoids ever tripping it during a large first
-# backfill across every series in the catalog.
-_REQUEST_DELAY_SECONDS = 0.7
+# Polite spacing against AniList's shared rate limit (nominally 90 req/min,
+# but confirmed live 2026-08-22 that a large first backfill across the
+# whole 180-series catalog still tripped 429s at 0.7s spacing — AniList's
+# real in-practice ceiling runs lower than its documented limit under
+# load). This worker isn't time-sensitive (daily cadence), so a slower
+# pace and a real retry-with-backoff on 429 (below) cost nothing.
+_REQUEST_DELAY_SECONDS = 1.5
+_RATE_LIMIT_RETRY_DELAY_SECONDS = 10.0
+_RATE_LIMIT_MAX_RETRIES = 3
 
 
 async def _fetch_schedule(
@@ -75,6 +79,7 @@ async def _fetch_schedule(
     episode_count: int | None = None
     nodes: list[dict] = []
     page = 1
+    retries = 0
     while True:
         try:
             response = await client.post(
@@ -82,8 +87,20 @@ async def _fetch_schedule(
                 json={"query": _QUERY, "variables": {"id": anilist_id, "page": page}},
                 timeout=10.0,
             )
+            if response.status_code == 429 and retries < _RATE_LIMIT_MAX_RETRIES:
+                retries += 1
+                logger.warning(
+                    "AniList rate-limited (anilist_id=%s, attempt %s/%s) — backing off %ss",
+                    anilist_id,
+                    retries,
+                    _RATE_LIMIT_MAX_RETRIES,
+                    _RATE_LIMIT_RETRY_DELAY_SECONDS,
+                )
+                await asyncio.sleep(_RATE_LIMIT_RETRY_DELAY_SECONDS)
+                continue
             if response.status_code != 200:
                 break
+            retries = 0
             body = response.json()
             media = (body or {}).get("data", {}).get("Media")
             if not media:

@@ -29,6 +29,13 @@ type Stage = "form" | "success";
 let stage: Stage = "form";
 let errorMessage: string | null = null;
 let duplicateContributionId: number | null = null;
+// #34's history/voting page is keyed on the episode's internal id, not
+// (series_id, episode_number) — POST /contributions's 409 only gives us the
+// latter plus a contribution id, so on a duplicate we look the episode id up
+// via the series' own episode list rather than linking to a route that
+// doesn't exist (`/contributions/{id}` was never built — #34 shipped at
+// `/episodes/{id}/history`).
+let duplicateEpisodeId: number | null = null;
 let successContributionId: number | null = null;
 
 // Repopulated from the submitted form on a validation/duplicate failure so
@@ -129,6 +136,12 @@ if (hasValidParams && Astro.request.method === "POST") {
   } else if (response.status === 409 && isDuplicateBody(error)) {
     errorMessage = error.detail.message;
     duplicateContributionId = error.detail.existing_contribution_id;
+    const api2 = createApiClient(baseUrl);
+    const { data: episodesData } = await api2.GET("/api/v1/series/{series_id}/episodes", {
+      params: { path: { series_id: seriesIdNum } },
+    });
+    duplicateEpisodeId =
+      episodesData?.find((ep) => ep.episode_number === episodeNumberNum)?.id ?? null;
   } else if (response.status === 422) {
     errorMessage = formatValidationError(error);
   } else {
@@ -169,9 +182,13 @@ if (hasValidParams && Astro.request.method === "POST") {
         <div class="notice notice--duplicate">
           <p>{errorMessage}</p>
           <p>
-            <a href={`/contributions/${duplicateContributionId}`}>
-              View pending contribution #{duplicateContributionId} to endorse or dispute it
-            </a>
+            {duplicateEpisodeId !== null ? (
+              <a href={`/episodes/${duplicateEpisodeId}/history`}>
+                View the pending contribution to endorse or dispute it
+              </a>
+            ) : (
+              "View the pending contribution to endorse or dispute it"
+            )}
             {" "}instead of submitting a competing one.
           </p>
         </div>

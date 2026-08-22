@@ -61,6 +61,23 @@ other 6 shows entirely — Naruto original, Bleach, DBZ/Super, Fairy Tail,
 Black Clover, Boruto, and both FMA series — none of that was started
 across either pass).
 
+## #5 — bleach-episodes.json
+
+**Complete — all 366 episodes of the original Bleach TV series (2004–2012,
+pre-Thousand-Year Blood War).** Sourced from a community-compiled Reddit
+canon/mixed/filler breakdown, independently corroborated by a second Reddit
+thread with an identical episode-by-episode breakdown, cross-checked
+against a Radio Times filler-only guide. All three sources agreed on every
+episode except one (227 — two Reddit threads call it canon, Radio Times
+calls it the start of a filler run; resolved in favor of canon, 2 sources
+vs 1 — see that episode's `status_note` for the full reasoning). Complete,
+gap-free, non-overlapping coverage of 1–366 confirmed before writing the
+file. Live in production 2026-08-22: `load_episodes.py` ran clean (366/366,
+162 canon / 163 filler / 41 mixed).
+
+Bleach: Sennen Kessen-hen (the 2022+ continuation) is a separate AniList/MAL
+catalog entry, not covered by this file.
+
 ## Format note for whoever builds the loader
 
 Both files are plain JSON, not SQL, and don't yet match `episodes`/

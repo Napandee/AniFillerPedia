@@ -24,42 +24,37 @@ exists.
 
 ## #5 — naruto-shippuden-episodes.json
 
-**Honest status: partial, not complete — updated 2026-08-21 (second pass).**
-100 of Naruto: Shippuden's ~500 episodes now have real citations: episodes
-1–44, 57–112. Two ranges are deliberately excluded rather than guessed:
+**Complete — all 500 episodes, updated 2026-08-22 (third pass).** Replaces
+the prior 100-episode partial dataset (episodes 1–44, 57–112 only, with
+45–56 deliberately excluded — see git history for that dataset's own
+reasoning) with a comprehensive breakdown sourced from a community Reddit
+compilation, corroborated by several other closely-matching Reddit
+threads. This resolved the previously-excluded 45–56 gap outright.
 
-- **Episodes 45–56**: two independent filler guides
-  (narutoshippudenfillerguide.com, Yahoo Entertainment) agree episodes
-  33–53ish are "canon/mixed" at the arc level, but only one of them gives
-  single-episode-level mixed-status boundaries within that range (e.g.
-  flagging ep 45 specifically as mixed, 46–48 as canon, etc.) — the second
-  source doesn't confirm that exact granularity, so rather than assert one
-  source's precision alone, this range was left out. Worth a dedicated pass
-  later specifically to find a second source with matching per-episode
-  detail, rather than treating it as unresearchable.
-- **Episodes 113+**: not yet researched at all.
+Cross-checked against what was already loaded before replacing it: 79/100
+episodes agreed exactly with the prior Wikipedia + filler-guide sourced
+data. 21 (episodes 1–19, 24–25) disagreed — this source calls them
+`mixed`, the prior data called them `canon` — corrected after explicit
+confirmation to treat this newer, multiply-corroborated source as
+authoritative. One "Anime Canon" episode (28) needed no change, since the
+decided mapping (anime-original content later confirmed canon → `canon`)
+matched what was already there.
 
-This pass's new citations: episodes 33–44 (Tenchi Bridge Reconnaissance
-Mission, canon), 72–88 (Akatsuki Suppression Mission — Hidan and Kakuzu
-arc, canon, includes Asuma's death), 89–90 (mixed transition), 91–112
-(Three-Tails' Appearance arc, filler) — all cross-referenced across two
-independent guides plus Wikipedia's episode list for exact titles.
+`load_episodes.py` gained `--allow-corrections` for this: an episode that
+already exists with a different status than a file proposes is reported
+(never silently touched) unless the flag is passed, in which case a real
+correction is applied via a new contribution row — the prior contribution
+and the episode's full history stay intact, only the current approved
+state changes.
 
-Why it stopped at 112: same discipline as the first pass — a smaller,
-genuinely well-cited dataset beats a larger rushed one for a citation-based
-project. 113 onward is a fresh arc (Itachi Pursuit Mission) not yet
-cross-checked.
+**Which show got researched first, and why**: Naruto: Shippuuden
+specifically (the seven-show list in #5 names it first, and it's the most
+heavily publicly documented of the seven, which mattered for finding
+independently corroborated sources quickly).
 
-**Which show got researched, and why**: Naruto: Shippuden specifically
-(the seven-show list in #5 names it first, and it's the most heavily
-publicly documented of the seven, which mattered for finding independently
-corroborated sources quickly).
-
-**Remaining work for full #5 completion**: episodes 45–56 (the disputed
-gap above), 113–500 of Shippuden (this issue's Scope also still needs the
-other 6 shows entirely — Naruto original, Bleach, DBZ/Super, Fairy Tail,
-Black Clover, Boruto, and both FMA series — none of that was started
-across either pass).
+**Remaining work for full #5 completion**: the other 6 shows in scope
+(Naruto original, Bleach — done, see below — DBZ/Super, Fairy Tail, Black
+Clover, Boruto, and both FMA series).
 
 ## #5 — bleach-episodes.json
 

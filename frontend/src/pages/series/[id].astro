@@ -203,17 +203,30 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
     inset: -12px;
     background-size: cover;
     background-position: center;
-    filter: blur(10px) brightness(0.6) saturate(1.1);
+    filter: blur(10px) brightness(0.45);
   }
+  /* Two layers, not one: a flat dark wash over the WHOLE banner so even a
+     bright/saturated fetched image (a real bug: a vivid red banner made
+     dark-plum title text unreadable) never relies on the gradient alone,
+     plus the taller bottom-heavy gradient so the hero-row text overlapping
+     the bottom ~58px always sits on the darkest part. */
   .banner-scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(20, 8, 16, 0.55), transparent 60%);
+    background: linear-gradient(to top, rgba(15, 6, 12, 0.85), rgba(15, 6, 12, 0.35) 75%, rgba(15, 6, 12, 0.15));
   }
   .hero-row {
     display: flex;
     gap: 16px;
-    align-items: flex-end;
+    /* Real bug, found by actually looking at a rendered page: flex-end
+       bottom-aligned this against the POSTER's full height, which is
+       taller than the title block — that pushed the title/synonyms text
+       below the banner entirely, onto the plain cream background, where
+       the light banner-overlay text colors are invisible. flex-start
+       keeps the (shorter) text block anchored to the top of the overlap
+       zone, which is where the banner's dark scrim actually still covers
+       it, regardless of how tall the poster is. */
+    align-items: flex-start;
     padding: 0 24px;
     margin-top: -58px;
     position: relative;
@@ -236,17 +249,24 @@ const bannerUrl = cover?.bannerImageUrl ?? cover?.coverImageUrl ?? null;
   .title-block {
     padding-bottom: 12px;
   }
+  /* #46 fix: this block always sits in the banner/scrim overlap zone (that's
+     the whole point of hero-row's negative margin), never on the plain
+     cream background — so it needs light text + a shadow for legibility
+     against ANY fetched cover art, not the dark heading color the rest of
+     the page uses on light backgrounds. */
   .title {
     font-size: 26px;
     font-weight: 800;
-    color: var(--color-heading);
+    color: #fff8f2;
     line-height: 1.15;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
   .synonyms {
     font-size: 13px;
     font-weight: 600;
-    color: var(--color-text-muted);
+    color: rgba(255, 248, 242, 0.82);
     margin: 6px 0 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   }
   .stat-row {
     display: flex;

@@ -15,6 +15,10 @@ class SeriesOut(BaseModel):
 
 class SeriesDetailOut(SeriesOut):
     synonyms: list[str]
+    # #49's AniList sync — the real total episode count, independent of how
+    # many of them have actually been hand-researched (episodes.py's own
+    # count). Null until #49's worker has synced this series at least once.
+    anilist_episode_count: int | None
 
 
 class SeriesListOut(BaseModel):

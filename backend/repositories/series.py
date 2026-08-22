@@ -110,7 +110,8 @@ async def search_series(
 async def get_series_by_id(session: AsyncSession, series_id: int) -> Row | None:
     result = await session.execute(
         text(
-            "SELECT id, anilist_id, mal_id, anidb_id, title, provenance, created_at "
+            "SELECT id, anilist_id, mal_id, anidb_id, title, provenance, created_at, "
+            "anilist_episode_count "
             "FROM series WHERE id = :id"
         ),
         {"id": series_id},

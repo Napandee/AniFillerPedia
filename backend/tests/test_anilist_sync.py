@@ -69,7 +69,8 @@ async def _cleanup(series_id: int, created_by_this_test: bool) -> None:
                 await session.execute(
                     text(
                         "UPDATE series SET anilist_status = NULL, "
-                        "anilist_episode_count = NULL, episode_schedule_synced_at = NULL "
+                        "anilist_episode_count = NULL, anilist_cover_url = NULL, "
+                        "anilist_banner_url = NULL, episode_schedule_synced_at = NULL "
                         "WHERE id = :sid"
                     ),
                     {"sid": series_id},
@@ -103,7 +104,8 @@ async def test_sync_populates_status_episode_count_and_schedule() -> None:
             row = (
                 await session.execute(
                     text(
-                        "SELECT anilist_status, anilist_episode_count, episode_schedule_synced_at "
+                        "SELECT anilist_status, anilist_episode_count, anilist_cover_url, "
+                        "anilist_banner_url, episode_schedule_synced_at "
                         "FROM series WHERE id = :sid"
                     ),
                     {"sid": series_id},
@@ -115,6 +117,10 @@ async def test_sync_populates_status_episode_count_and_schedule() -> None:
             # docstring).
             assert row.anilist_episode_count == 500
             assert row.episode_schedule_synced_at is not None
+            # 2026-08-22 follow-up: cover/banner art synced here instead of
+            # fetched live by the frontend on every page load.
+            assert row.anilist_cover_url is not None
+            assert row.anilist_banner_url is not None
 
             schedule_rows = (
                 await session.execute(

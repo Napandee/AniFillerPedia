@@ -53,6 +53,8 @@ async def mark_synced(
     series_id: int,
     anilist_status: str,
     anilist_episode_count: int | None,
+    anilist_cover_url: str | None,
+    anilist_banner_url: str | None,
 ) -> None:
     await session.execute(
         text(
@@ -60,9 +62,17 @@ async def mark_synced(
             UPDATE series
             SET anilist_status = :status,
                 anilist_episode_count = :episode_count,
+                anilist_cover_url = :cover_url,
+                anilist_banner_url = :banner_url,
                 episode_schedule_synced_at = now()
             WHERE id = :series_id
             """
         ),
-        {"status": anilist_status, "episode_count": anilist_episode_count, "series_id": series_id},
+        {
+            "status": anilist_status,
+            "episode_count": anilist_episode_count,
+            "cover_url": anilist_cover_url,
+            "banner_url": anilist_banner_url,
+            "series_id": series_id,
+        },
     )

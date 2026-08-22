@@ -86,7 +86,13 @@ CREATE TABLE series (
     -- regardless.
     anilist_status               TEXT,
     anilist_episode_count        INTEGER,
-    episode_schedule_synced_at   TIMESTAMPTZ
+    episode_schedule_synced_at   TIMESTAMPTZ,
+    -- #46 follow-up (2026-08-22): cover/banner art, synced here on the same
+    -- cadence as the fields above rather than fetched live from AniList on
+    -- every page load — a real AniList outage previously took down cover
+    -- art site-wide since it was a synchronous per-request dependency.
+    anilist_cover_url            TEXT,
+    anilist_banner_url           TEXT
 );
 
 -- Alternate/romanized/native-script titles, captured during the one-time

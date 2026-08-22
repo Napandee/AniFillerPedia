@@ -52,9 +52,9 @@ specifically (the seven-show list in #5 names it first, and it's the most
 heavily publicly documented of the seven, which mattered for finding
 independently corroborated sources quickly).
 
-**Remaining work for full #5 completion**: the other 6 shows in scope
-(Naruto original, Bleach — done, see below — DBZ/Super, Fairy Tail, Black
-Clover, Boruto, and both FMA series).
+**Remaining work for full #5 completion**: DBZ/Super, Black Clover,
+Boruto, and both FMA series (Naruto original, Bleach, and Fairy Tail —
+all done, see below).
 
 ## #5 — bleach-episodes.json
 
@@ -72,6 +72,47 @@ file. Live in production 2026-08-22: `load_episodes.py` ran clean (366/366,
 
 Bleach: Sennen Kessen-hen (the 2022+ continuation) is a separate AniList/MAL
 catalog entry, not covered by this file.
+
+## #5 — naruto-episodes.json
+
+**Complete — all 220 episodes of the original Naruto TV series
+(2002–2007, pre-Shippuuden).** Sourced from a community Reddit
+canon/mixed/filler breakdown, independently corroborated by a second
+Reddit thread (different poster) with an identical episode-by-episode
+breakdown. Complete, gap-free, non-overlapping coverage of 1–220
+confirmed before writing the file. Live in production 2026-08-22
+(74 canon / 90 filler / 56 mixed).
+
+## #5/#59 — fairy-tail-episodes.json, fairy-tail-2014-episodes.json,
+fairy-tail-2018-episodes.json
+
+**Complete — all 328 episodes across Fairy Tail's three real AniList
+catalog entries.** A single community Reddit breakdown (canon/mixed/
+filler/"anime canon") numbers all three series continuously as 1–328,
+per common filler-guide convention, corroborated by a second independent
+Reddit thread with an identical breakdown. This project splits it back
+into each series' own absolute numbering to match its real catalog
+entries (see #59 for why two new entries — Fairy Tail (2014), Fairy Tail
+(2018) — were added rather than merging everything under one series):
+
+- `fairy-tail-episodes.json`: episodes 1–175 (original 2009 series),
+  additionally cross-checked against a Radio Times filler/optional-
+  viewing guide — agreed on every episode it covered except two (49,
+  151), resolved in favor of the two-source Reddit agreement, same
+  precedent as Bleach's episode 227.
+- `fairy-tail-2014-episodes.json`: original episodes 176–277, renumbered
+  1–102.
+- `fairy-tail-2018-episodes.json`: original episodes 278–328, renumbered
+  1–51.
+
+"Anime Canon" (episodes 246, 256 in the original 1–328 numbering) mapped
+to plain `canon` per the 2026-08-22 decision — the same mapping applied
+wherever this category has shown up (also seen in One Piece and Naruto:
+Shippuuden's sources, not yet loaded for the former).
+
+Live in production 2026-08-22: all three load clean (175+102+51 = 328
+episodes), linked via `series_relations` (#59) so each entry's page shows
+"Also on this site" links to the other two.
 
 ## Format note for whoever builds the loader
 

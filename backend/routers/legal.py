@@ -68,6 +68,14 @@ immediately, per the retention terms above.</p>
 request metadata (including IP addresses) as part of normal operation
 (security, DDoS protection, caching) &mdash; the same as any Cloudflare-fronted
 site. We don't separately collect or store this data ourselves.</p>
+<p>Series and episode pages display cover art sourced from
+<a href="https://anilist.co">AniList</a>'s public API. Those images are
+loaded directly by your browser from AniList's own servers, not proxied
+through ours &mdash; so AniList receives the same standard request metadata
+(including your IP address) that any image host receives when your
+browser loads an image from it. We don't send AniList anything about you
+beyond that, and we don't receive anything back from AniList about you
+either.</p>
 
 <h2>The dataset itself</h2>
 <p>This policy covers your personal account data only. The filler/canon

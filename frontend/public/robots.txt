@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /admin/
+Disallow: /moderation
+Disallow: /episodes/*/history
+Disallow: /*/submit
+
+Sitemap: https://anifillerpedia.wiki/sitemap.xml

@@ -9,7 +9,10 @@ const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://local
 const { data: manifest, error } = await api.GET("/api/v1/license");
 ---
 
-<Layout title="License & Attribution — AniFillerPedia">
+<Layout
+  title="License & Attribution — AniFillerPedia"
+  description="AniFillerPedia's dataset is CC BY-NC-SA 4.0 — free to read and reuse non-commercially with attribution. See the full license terms and commercial-licensing contact here."
+>
   <h1 class="disp page-title">License &amp; attribution</h1>
   {
     error || !manifest ? (

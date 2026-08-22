@@ -9,6 +9,10 @@ import node from "@astrojs/node";
 export default defineConfig({
   output: "server",
   adapter: node({ mode: "standalone" }),
+  // #63: the real production origin — Layout.astro uses Astro.site to build
+  // canonical/Open Graph URLs and sitemap.xml.ts uses it for every <loc>,
+  // so both stay correct without hardcoding the domain in two places.
+  site: "https://anifillerpedia.wiki",
   // Astro's CSRF origin-check middleware (on by default for every non-GET
   // request) rejects the request's Host header entirely unless it appears
   // here — with an empty list it silently falls back to a bare "localhost"

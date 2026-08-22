@@ -25,3 +25,15 @@ async def get_export(
 ) -> ExportOut:
     await export_service.validate_api_key(session, x_api_key)
     return await export_service.build_export(session)
+
+
+@router.post("/export/revoke", status_code=204)
+async def revoke_export_access(
+    x_api_key: str | None = Header(default=None),
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    """Self-service revoke-and-forget for the email collected at
+    /export/request-access — see services/export.py for why possessing
+    the key is sufficient identity to act on this record.
+    """
+    await export_service.revoke_and_forget(session, x_api_key)

@@ -171,13 +171,27 @@ retrieved again**, store it. Then:
 
 ```
 GET /export
-Authorization: Bearer <your key>
+X-API-Key: <your key>
 ```
 
 Returns every series and episode, plus an embedded attribution manifest
 (license name, attribution notice, commercial-licensing contact) baked
 into the payload — a downloaded file is disconnected from these live docs,
 so it carries its own copy of that information.
+
+Done with the key, or want the email behind it forgotten? Revoke it
+yourself, no approval step:
+
+```
+POST /export/revoke
+X-API-Key: <your key>
+```
+
+204 on success. Possessing the key is the only proof of identity this
+needs — the same as using it to call `/export` at all. This also deletes
+the email address you provided at `/export/request-access` (see the
+[privacy policy](/api/v1/privacy) for why that's collected and how long
+it's normally kept).
 
 ## License
 

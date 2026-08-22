@@ -45,6 +45,22 @@ async def validate_api_key(session: AsyncSession, key: str | None) -> None:
         raise HTTPException(status_code=401, detail="Invalid or revoked API key")
 
 
+async def revoke_and_forget(session: AsyncSession, key: str | None) -> None:
+    """Self-service counterpart to #29's account deletion, for the one
+    other place this project stores an email: possessing the key is the
+    only proof of identity needed, same as using it to call /export at
+    all. Revoking an already-revoked key succeeds again (the caller's
+    actual goal — key dead, email gone — is already true); only a key
+    that never existed 404s.
+    """
+    if not key:
+        raise HTTPException(status_code=401, detail="Missing X-API-Key header")
+    found = await export_repo.revoke_and_forget(session, hash_api_key(key))
+    if not found:
+        raise HTTPException(status_code=404, detail="Unknown API key")
+    await session.commit()
+
+
 async def build_export(session: AsyncSession) -> ExportOut:
     rows = await export_repo.fetch_full_dataset(session)
 

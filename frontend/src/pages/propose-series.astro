@@ -1,0 +1,359 @@
+---
+// #36: "Propose a new series" form for shows not yet in the catalog.
+// Backed by POST /api/v1/series-proposals — same shape as #35's
+// contribution-submission flow, smaller surface (no episode/status fields).
+//
+// schema.d.ts (the generated typed client, #11) is stale relative to the
+// real backend — it doesn't yet include /series-proposals at all (only
+// health/version/series/episodes/auth/users routes are present). Rather
+// than regenerating that shared generated file from this single-page
+// worktree (real risk of clobbering whatever other Phase 5 branches
+// regenerate it with, per the parallel-agent lessons in CLAUDE.local.md),
+// this page calls the backend directly with `fetch` using the exact
+// request/response shape confirmed straight from
+// backend/schemas/series_proposals.py. Whoever next runs
+// `npm run generate:api-client` picks this route up for free; this page
+// can switch to the typed client at that point with no behavior change.
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+
+const user = Astro.locals.user;
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+// Not yet in env.d.ts's ImportMetaEnv (Turnstile site key isn't provisioned
+// yet — see #25) — cast rather than declare, so this page doesn't need to
+// touch env.d.ts for a key that has no real value to put there yet.
+const turnstileSiteKey = (import.meta.env as Record<string, string | undefined>)
+  .PUBLIC_TURNSTILE_SITE_KEY;
+
+interface FormValues {
+  title: string;
+  anilist_id: string;
+  mal_id: string;
+  anidb_id: string;
+  justification: string;
+}
+
+const emptyValues: FormValues = {
+  title: "",
+  anilist_id: "",
+  mal_id: "",
+  anidb_id: "",
+  justification: "",
+};
+
+let values: FormValues = emptyValues;
+let licenseAccepted = false;
+let fieldErrors: Record<string, string> = {};
+let formError: string | null = null;
+let success: { id: number; title: string } | null = null;
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+
+  values = {
+    title: String(form.get("title") ?? ""),
+    anilist_id: String(form.get("anilist_id") ?? ""),
+    mal_id: String(form.get("mal_id") ?? ""),
+    anidb_id: String(form.get("anidb_id") ?? ""),
+    justification: String(form.get("justification") ?? ""),
+  };
+  licenseAccepted = form.get("license_accepted") === "on";
+  const turnstileToken = String(form.get("turnstile_token") ?? "").trim();
+
+  const toOptionalInt = (raw: string): number | undefined => {
+    const trimmed = raw.trim();
+    if (!trimmed) return undefined;
+    const parsed = Number(trimmed);
+    return Number.isFinite(parsed) ? Math.trunc(parsed) : undefined;
+  };
+
+  const body: Record<string, unknown> = {
+    title: values.title,
+    justification: values.justification,
+    license_accepted: licenseAccepted,
+  };
+  const anilistId = toOptionalInt(values.anilist_id);
+  const malId = toOptionalInt(values.mal_id);
+  const anidbId = toOptionalInt(values.anidb_id);
+  if (anilistId !== undefined) body.anilist_id = anilistId;
+  if (malId !== undefined) body.mal_id = malId;
+  if (anidbId !== undefined) body.anidb_id = anidbId;
+  // Turnstile is only enforced server-side when the caller is anonymous
+  // (matches #35's pattern exactly) — still forwarded either way, harmless
+  // when logged in since the backend never checks it in that case.
+  if (turnstileToken) body.turnstile_token = turnstileToken;
+
+  const cookie = Astro.request.headers.get("cookie");
+
+  try {
+    const response = await fetch(`${baseUrl}/api/v1/series-proposals`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        ...(cookie ? { cookie } : {}),
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (response.status === 201) {
+      const data = await response.json();
+      success = { id: data.id, title: data.title };
+      values = emptyValues;
+      licenseAccepted = false;
+    } else if (response.status === 422) {
+      const data = await response.json();
+      if (Array.isArray(data.detail)) {
+        for (const err of data.detail) {
+          const loc = Array.isArray(err?.loc) ? err.loc : [];
+          const field = loc[loc.length - 1];
+          if (typeof field === "string" && typeof err?.msg === "string") {
+            fieldErrors[field] = err.msg;
+          }
+        }
+        if (Object.keys(fieldErrors).length === 0) {
+          formError = "Please check the form and try again.";
+        }
+      } else if (typeof data.detail === "string") {
+        // e.g. "Turnstile verification failed"
+        formError = data.detail;
+      } else {
+        formError = "Please check the form and try again.";
+      }
+    } else {
+      formError = `Something went wrong (status ${response.status}). Please try again.`;
+    }
+  } catch {
+    formError = "Could not reach the server. Please try again.";
+  }
+}
+---
+
+<Layout title="Propose a series — AniFillerPedia">
+  <section class="panel">
+    {
+      success ? (
+        <div class="success">
+          <div class="success-badge">Submitted</div>
+          <h1 class="disp">Thanks for the proposal!</h1>
+          <p>
+            <strong>{success.title}</strong> has been submitted for review. A moderator (or enough
+            trusted community votes) will need to approve it before it appears in the catalog —
+            we'll take it from here.
+          </p>
+          <div class="actions">
+            <Button href="/">Back to browse</Button>
+            <Button variant="ghost" href="/propose-series">
+              Propose another
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <h1 class="disp">Propose a new series</h1>
+          <p class="lede">
+            Can't find a show in the catalog? Tell us about it — a moderator or the community will
+            review it before it's added.
+          </p>
+
+          {formError && <div class="form-error">{formError}</div>}
+
+          <form method="POST" novalidate>
+            <label class="field">
+              <span class="field-label">Title *</span>
+              <input type="text" name="title" required value={values.title} maxlength="300" />
+              {fieldErrors.title && <span class="field-error">{fieldErrors.title}</span>}
+            </label>
+
+            <div class="id-row">
+              <label class="field">
+                <span class="field-label">AniList ID</span>
+                <input type="number" name="anilist_id" min="1" step="1" value={values.anilist_id} />
+                {fieldErrors.anilist_id && <span class="field-error">{fieldErrors.anilist_id}</span>}
+              </label>
+              <label class="field">
+                <span class="field-label">MyAnimeList ID</span>
+                <input type="number" name="mal_id" min="1" step="1" value={values.mal_id} />
+                {fieldErrors.mal_id && <span class="field-error">{fieldErrors.mal_id}</span>}
+              </label>
+              <label class="field">
+                <span class="field-label">AniDB ID</span>
+                <input type="number" name="anidb_id" min="1" step="1" value={values.anidb_id} />
+                {fieldErrors.anidb_id && <span class="field-error">{fieldErrors.anidb_id}</span>}
+              </label>
+            </div>
+            <p class="hint">
+              Optional — plug in whichever IDs you happen to know. No lookup/autocomplete yet, just
+              plain numbers.
+            </p>
+
+            <label class="field">
+              <span class="field-label">Why should this be added? *</span>
+              <textarea name="justification" required rows="5">{values.justification}</textarea>
+              {fieldErrors.justification && (
+                <span class="field-error">{fieldErrors.justification}</span>
+              )}
+            </label>
+
+            <label class="checkbox-field">
+              <input type="checkbox" name="license_accepted" required checked={licenseAccepted} />
+              <span>
+                I agree my contribution is released under the project's{" "}
+                <a href="/license">CC BY-NC-SA 4.0 data license</a>. *
+              </span>
+            </label>
+            {fieldErrors.license_accepted && (
+              <span class="field-error">{fieldErrors.license_accepted}</span>
+            )}
+
+            {!user && (
+              <div class="turnstile-block">
+                {turnstileSiteKey ? (
+                  <>
+                    <div class="cf-turnstile" data-sitekey={turnstileSiteKey} />
+                    <script
+                      is:inline
+                      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                      async
+                      defer
+                    />
+                  </>
+                ) : (
+                  // Turnstile site key not provisioned yet (issue #25) — the
+                  // backend's verify() short-circuits to allowed=True while
+                  // no secret key is configured (backend/services/turnstile.py),
+                  // so a stub token doesn't block submission. Swap this block
+                  // for the real widget once #25's site key exists.
+                  <input
+                    type="hidden"
+                    name="turnstile_token"
+                    value="stub-pending-turnstile-provisioning"
+                  />
+                )}
+              </div>
+            )}
+
+            <div class="actions">
+              <Button type="submit">Submit proposal</Button>
+            </div>
+          </form>
+        </>
+      )
+    }
+  </section>
+</Layout>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    box-shadow: var(--shadow-sticker);
+    padding: 28px 32px 32px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  h1 {
+    color: var(--color-heading);
+    font-size: 24px;
+    margin: 0 0 6px;
+  }
+  .lede {
+    color: var(--color-text-muted);
+    font-size: 13.5px;
+    font-weight: 600;
+    margin: 0 0 20px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .field-label {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--color-heading);
+  }
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-text);
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 9px 11px;
+    background: #fff;
+  }
+  textarea {
+    resize: vertical;
+  }
+  .id-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .hint {
+    margin: -8px 0 0;
+    font-size: 12px;
+    color: var(--color-text-faint);
+  }
+  .checkbox-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-text);
+  }
+  .checkbox-field input {
+    margin-top: 3px;
+  }
+  .checkbox-field a {
+    color: var(--color-accent);
+  }
+  .field-error {
+    color: var(--color-dispute);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .form-error {
+    background: #fff0f3;
+    border: 1px solid var(--color-dispute);
+    color: var(--color-dispute);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .success {
+    text-align: left;
+  }
+  .success-badge {
+    display: inline-block;
+    background: var(--color-status-canon);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 10px;
+  }
+  .success p {
+    color: var(--color-text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+</style>

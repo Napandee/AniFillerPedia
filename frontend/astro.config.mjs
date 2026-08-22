@@ -20,4 +20,17 @@ export default defineConfig({
   security: {
     allowedDomains: [{ hostname: "anifillerpedia.wiki" }, { hostname: "localhost" }],
   },
+  // #41: the API docs / contribute pages render the repo's own docs/API.md
+  // and CONTRIBUTING.md (one directory above `frontend/`) via a `?raw`
+  // import rather than hand-copying their prose — Vite restricts fs access
+  // to the project root by default, so reaching one level up needs this
+  // explicit allow. Additive to the existing output/adapter/security keys
+  // above (owned by #31/#37) — nothing else here changed.
+  vite: {
+    server: {
+      fs: {
+        allow: [".."],
+      },
+    },
+  },
 });

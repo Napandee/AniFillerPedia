@@ -32,6 +32,20 @@ untouched) and the `episodes` row is updated to point at it as the new
 current approved state. This is a deliberate, explicit opt-in specifically
 because it rewrites already-published/live data, unlike a normal load.
 
+#73/#74: each episode entry may also carry an optional "title" (episode
+title, most won't have one) and "source_count" (how many independent
+sources agree with this episode's status — 1 if omitted, matching the
+schema default). Unlike status, these are non-contentious metadata, not a
+moderation-sensitive claim, so they're synced even when the episode
+already exists with a matching status (no --allow-corrections needed) —
+this is what lets a show loaded before #73/#74 existed get titles/
+source_count backfilled by just re-running the same JSON file. A citation
+shared by several episodes (the merge_citation combo case) takes its
+source_count from whichever episode first creates that combo's row; a
+later episode citing the same combo with a *different* source_count is
+reported, not silently overwritten, since that'd indicate the JSON itself
+disagrees with itself about how many sources back a shared citation.
+
 Every episode is loaded as an already-approved contribution
 (resolution_method='moderator', submitted_by=NULL) — this is a bootstrap
 import of research already vetted before being written into the JSON
@@ -109,21 +123,23 @@ def main() -> None:
     inserted = 0
     already_present = 0
     corrected = 0
+    metadata_synced = 0
     needs_correction: list[tuple[int, str, str]] = []
+    source_count_conflicts: list[tuple[int, tuple[str, ...], int, int]] = []
     failures: list[tuple[int, str]] = []
-    # combo (sorted tuple of source ids) -> citation_id. Populated as
-    # combinations are encountered; each citation insert is committed
-    # immediately (see below) so it survives even if a later episode using
-    # the same combination fails.
-    citation_id_by_combo: dict[tuple[str, ...], int] = {}
+    # combo (sorted tuple of source ids) -> (citation_id, source_count).
+    # Populated as combinations are encountered; each citation insert is
+    # committed immediately (see below) so it survives even if a later
+    # episode using the same combination fails.
+    citation_by_combo: dict[tuple[str, ...], tuple[int, int]] = {}
 
-    def get_or_create_citation(cur, combo: tuple[str, ...]) -> int:
-        citation_id = citation_id_by_combo.get(combo)
-        if citation_id is None:
+    def get_or_create_citation(cur, combo: tuple[str, ...], source_count: int, episode_number: int) -> int:
+        cached = citation_by_combo.get(combo)
+        if cached is None:
             url, description = merge_citation(combo, sources_by_id)
             cur.execute(
-                "INSERT INTO citations (url, description) VALUES (%s, %s) RETURNING id",
-                (url, description),
+                "INSERT INTO citations (url, description, source_count) VALUES (%s, %s, %s) RETURNING id",
+                (url, description, source_count),
             )
             citation_id = cur.fetchone()[0]
             # Committed on its own, independent of the contribution/episode
@@ -131,7 +147,11 @@ def main() -> None:
             # only its own rows, never a citation another already-loaded
             # episode may also be using.
             conn.commit()
-            citation_id_by_combo[combo] = citation_id
+            citation_by_combo[combo] = (citation_id, source_count)
+            return citation_id
+        citation_id, existing_source_count = cached
+        if existing_source_count != source_count:
+            source_count_conflicts.append((episode_number, combo, existing_source_count, source_count))
         return citation_id
 
     try:
@@ -143,15 +163,39 @@ def main() -> None:
 
             for episode in episodes:
                 episode_number = episode["episode_number"]
+                title = episode.get("title")
+                source_count = episode.get("source_count", 1)
                 try:
                     cur.execute(
-                        "SELECT status FROM episodes WHERE series_id = %s AND episode_number = %s",
+                        "SELECT e.status, e.title, c.source_count, e.citation_id "
+                        "FROM episodes e JOIN citations c ON c.id = e.citation_id "
+                        "WHERE e.series_id = %s AND e.episode_number = %s",
                         (series_id, episode_number),
                     )
                     existing = cur.fetchone()
 
                     if existing is not None and existing[0] == episode["status"]:
                         already_present += 1
+                        # #73/#74: non-contentious metadata syncs even
+                        # without --allow-corrections — status is unchanged,
+                        # so this isn't a moderation-sensitive rewrite.
+                        existing_title, existing_source_count, existing_citation_id = existing[1], existing[2], existing[3]
+                        synced = False
+                        if title is not None and title != existing_title:
+                            cur.execute(
+                                "UPDATE episodes SET title = %s WHERE series_id = %s AND episode_number = %s",
+                                (title, series_id, episode_number),
+                            )
+                            synced = True
+                        if source_count != 1 and source_count != existing_source_count:
+                            cur.execute(
+                                "UPDATE citations SET source_count = %s WHERE id = %s",
+                                (source_count, existing_citation_id),
+                            )
+                            synced = True
+                        if synced:
+                            metadata_synced += 1
+                            conn.commit()
                         continue
 
                     if existing is not None and not allow_corrections:
@@ -159,7 +203,7 @@ def main() -> None:
                         continue
 
                     combo = tuple(sorted(episode["citation_ids"]))
-                    citation_id = get_or_create_citation(cur, combo)
+                    citation_id = get_or_create_citation(cur, combo, source_count, episode_number)
 
                     cur.execute(
                         """
@@ -192,11 +236,15 @@ def main() -> None:
                         """
                         INSERT INTO episodes
                             (series_id, episode_number, status, status_note,
-                             citation_id, approved_contribution_id)
-                        VALUES (%s, %s, %s, %s, %s, %s)
+                             title, citation_id, approved_contribution_id)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (series_id, episode_number) DO UPDATE SET
                             status = EXCLUDED.status,
                             status_note = EXCLUDED.status_note,
+                            -- A correction shouldn't blank out a title set by
+                            -- an earlier load — only overwrite when this run
+                            -- actually specifies one.
+                            title = COALESCE(EXCLUDED.title, episodes.title),
                             citation_id = EXCLUDED.citation_id,
                             approved_contribution_id = EXCLUDED.approved_contribution_id,
                             updated_at = now()
@@ -206,6 +254,7 @@ def main() -> None:
                             episode_number,
                             episode["status"],
                             episode.get("status_note"),
+                            title,
                             citation_id,
                             contribution_id,
                         ),
@@ -224,12 +273,16 @@ def main() -> None:
 
     print(f"Inserted: {inserted}")
     print(f"Corrected (status changed): {corrected}")
-    print(f"Already present (unchanged, skipped): {already_present}")
-    print(f"Citation rows created: {len(citation_id_by_combo)}")
+    print(f"Already present, unchanged status ({metadata_synced} had title/source_count backfilled): {already_present}")
+    print(f"Citation rows created: {len(citation_by_combo)}")
     if needs_correction:
         print(f"Needs --allow-corrections ({len(needs_correction)} episodes differ from what's live):")
         for episode_number, old_status, new_status in needs_correction:
             print(f"  - episode {episode_number}: live={old_status} proposed={new_status}")
+    if source_count_conflicts:
+        print(f"Source-count conflicts within this file ({len(source_count_conflicts)} — NOT applied, first value wins):")
+        for episode_number, combo, existing_sc, new_sc in source_count_conflicts:
+            print(f"  - episode {episode_number}, combo {combo}: citation already has source_count={existing_sc}, this episode specifies {new_sc}")
     print(f"Failures: {len(failures)}")
     for episode_number, err in failures:
         print(f"  - episode {episode_number}: {err}")

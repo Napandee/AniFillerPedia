@@ -16,8 +16,12 @@ def _row_to_episode_out(row: Row) -> EpisodeOut:
         episode_number=row.episode_number,
         status=row.status,
         status_note=row.status_note,
+        title=row.title,
         citation=CitationOut(
-            id=row.citation_id, url=row.citation_url, description=row.citation_description
+            id=row.citation_id,
+            url=row.citation_url,
+            description=row.citation_description,
+            source_count=row.citation_source_count,
         ),
         updated_at=row.updated_at,
         aired_at=row.aired_at,

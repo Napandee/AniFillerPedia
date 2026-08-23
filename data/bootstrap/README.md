@@ -114,6 +114,28 @@ Live in production 2026-08-22: all three load clean (175+102+51 = 328
 episodes), linked via `series_relations` (#59) so each entry's page shows
 "Also on this site" links to the other two.
 
+## #5 — one-piece-episodes.json
+
+**Complete — all 1168 episodes.** Sourced from a community-compiled Reddit
+manga-canon/mixed/filler breakdown, independently corroborated by a second
+Reddit thread with an identical episode-by-episode breakdown, cross-checked
+against a Crunchyroll/Anime Filler List skippable-filler guide. The two
+cross-referenced sources agreed on every episode except one (807 — the two
+Reddit threads call it mixed, the cross-reference guide doesn't list it in
+either non-canon category, implying canon; resolved in favor of mixed, 2
+sources vs 1 — same precedent as Bleach episode 227, see that episode's
+`status_note`). "Anime Canon" (episodes 50-51, 93, 213-216, 418-420,
+453-456, 497-499, 506, 737, 775, 1084) mapped to plain `canon`, same
+mapping as Fairy Tail/Shippuuden. One transcription slip caught and fixed
+before writing this file: the pasted "Anime Canon" list ended in a stray
+"10" rather than a real episode number — confirmed as "1084", the exact
+single gap between 1083 and 1085 in the manga-canon range, once the full
+1-1168 coverage check came back non-empty. Complete, gap-free,
+non-overlapping coverage of 1-1168 confirmed before writing the file.
+Written directly in #77's split citation shape (`description` +
+`methodology_note`) rather than the old single-field format, since #77
+shipped first.
+
 ## Format note for whoever builds the loader
 
 Both files are plain JSON, not SQL, and don't yet match `episodes`/

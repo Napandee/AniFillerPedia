@@ -127,6 +127,42 @@ async def test_bulk_submission_creates_one_contribution_per_episode(authed_clien
 
 
 @pytest.mark.asyncio
+async def test_bulk_submission_methodology_note_is_optional_and_shared(authed_client: AsyncClient) -> None:
+    """#83: the whole batch shares one citation, so its methodology_note
+    (like its description) is shared too, not per-episode.
+    """
+    series_id = await _make_test_series("MethodologyNote")
+    try:
+        response = await authed_client.post(
+            f"/api/v1/series/{series_id}/contributions/bulk",
+            json={
+                "canon_ranges": "1-2",
+                "citation": {
+                    "description": "__test_80__ short claim",
+                    "methodology_note": "__test_80__ fuller research trail",
+                },
+                "license_accepted": True,
+            },
+        )
+        assert response.status_code == 200, response.text
+
+        async with async_session_factory() as session:
+            rows = (
+                await session.execute(
+                    text(
+                        "SELECT c.methodology_note FROM contributions co "
+                        "JOIN citations c ON c.id = co.citation_id WHERE co.series_id = :sid"
+                    ),
+                    {"sid": series_id},
+                )
+            ).all()
+            assert len(rows) == 2
+            assert all(r.methodology_note == "__test_80__ fuller research trail" for r in rows)
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_bulk_submission_requires_authentication() -> None:
     series_id = await _make_test_series("Anon")
     try:

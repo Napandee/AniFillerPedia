@@ -81,16 +81,24 @@ an episode nobody's looked into yet, so absence means "no data," not
 ```json
 {
   "id": 501, "series_id": 42, "episode_number": 15,
-  "status": "filler", "status_note": null,
+  "status": "filler", "status_note": null, "title": "The Rain of Konoha",
   "citation": { "id": 88, "url": null,
-    "description": "Anime-original arc, per animenewsnetwork.com episode guide" },
-  "updated_at": "2026-08-21T09:00:00Z"
+    "description": "Community-compiled breakdown, corroborated by a second independent thread",
+    "source_count": 2,
+    "methodology_note": "Anime-original arc, per animenewsnetwork.com episode guide" },
+  "updated_at": "2026-08-21T09:00:00Z", "aired_at": "2007-04-12T00:00:00Z"
 }
 ```
 
 `status` is always one of `canon`, `filler`, or `mixed`. `citation` is
 never null — nothing in this dataset is live without a source (see
 [DATA_LICENSE](../DATA_LICENSE) and the project's own guardrails on this).
+`citation.source_count` is how many independent sources agree (1 when
+nothing corroborates it beyond the citation itself); `methodology_note` is
+the fuller research trail behind that citation and is often null. `title`
+and `aired_at` are both frequently null — most episodes don't have a
+title yet, and `aired_at` depends on an AniList sync that doesn't reach
+every episode of an older, already-finished show.
 
 ## Episodes
 

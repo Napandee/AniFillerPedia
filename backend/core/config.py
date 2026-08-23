@@ -72,6 +72,25 @@ class Settings(BaseSettings):
     public_site_base_url: str = "https://anifillerpedia.wiki"
 
 
+_INSECURE_DEFAULT_SESSION_SECRET_KEY = "dev-insecure-change-me"
+
+
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    settings = Settings()
+    # Security review (#89): this default is committed in this repo's own
+    # source — publicly readable — so running production with it means
+    # anyone can forge a valid session cookie (itsdangerous signature) for
+    # any user_id, including admin/owner. Refuse to start rather than rely
+    # on remembering to set a real one in .env.
+    if (
+        settings.environment != "development"
+        and settings.session_secret_key == _INSECURE_DEFAULT_SESSION_SECRET_KEY
+    ):
+        raise RuntimeError(
+            "SESSION_SECRET_KEY is unset or still the insecure default while "
+            f"ENVIRONMENT={settings.environment!r} — refusing to start. Set a "
+            "real SESSION_SECRET_KEY in .env (e.g. `python3 -c \"import secrets; "
+            "print(secrets.token_urlsafe(48))\"`)."
+        )
+    return settings

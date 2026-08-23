@@ -42,6 +42,17 @@ def parse_ranges(raw: str) -> set[int]:
         end = int(match.group(2)) if match.group(2) else start
         if start < 1 or end < start:
             raise RangeParseError(f"Invalid range {part!r}")
+        # Security review (#89): reject an oversized segment BEFORE
+        # materializing it — "1-999999999999" would otherwise build a
+        # billion-plus-entry set right here, well before parse_and_
+        # validate's own combined MAX_BATCH_SIZE check ever runs. No
+        # single segment can legitimately need to exceed the whole
+        # batch's own cap, so bounding here is exact, not approximate.
+        if end - start + 1 > MAX_BATCH_SIZE:
+            raise RangeParseError(
+                f"Range {part!r} spans {end - start + 1} episodes, "
+                f"more than the {MAX_BATCH_SIZE}-episode batch limit"
+            )
         result.update(range(start, end + 1))
     return result
 

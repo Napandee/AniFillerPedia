@@ -136,6 +136,40 @@ Written directly in #77's split citation shape (`description` +
 `methodology_note`) rather than the old single-field format, since #77
 shipped first.
 
+## #5 — meitantei-conan-episodes.json
+
+**Complete — all 1212 episodes, canon/filler only (no mixed episodes found
+in this show's sourcing).** Sourced from two independent Reddit threads
+with an identical manga-canon breakdown, cross-checked directly against
+animefillerlist.com's own Manga Canon Episodes list — the two sources
+agreed on every single episode, no disputes to resolve (unlike Bleach/One
+Piece). "Anime Canon" (episode 1187) mapped to plain `canon`, same
+convention as every other show. Complete, gap-free, non-overlapping
+coverage of 1-1212 confirmed before writing the file. Note: the bootstrap
+catalog's own `anilist_episode_count` shows 1205 — a few behind this
+breakdown's 1212, almost certainly AniList being a few episodes stale on
+an ongoing series rather than an error in this data.
+
+## #5 — boruto-episodes.json
+
+**Complete — all 293 episodes.** Same two-Reddit-threads-plus-
+animefillerlist.com-cross-reference sourcing as Conan above, again zero
+disagreements between the two sources. Complete, gap-free, non-overlapping
+coverage of 1-293 confirmed before writing the file. Notably large "Anime
+Canon" share (179 of 293 episodes, mapped to `canon`) — Boruto's anime
+ran well ahead of its source manga for long stretches, with those
+anime-original arcs later folded back into manga canon, which the
+source's own categorization reflects directly.
+
+## #5 — gintama-episodes.json
+
+**Complete — all 369 episodes.** Sourced from a community-compiled Reddit
+breakdown, corroborated by a second independent thread — same
+corroboration bar as every other show, but no separate cross-reference
+source was checked for this one (unlike Conan/Boruto/Bleach/Fairy Tail).
+Complete, gap-free, non-overlapping coverage of 1-369 confirmed before
+writing the file.
+
 ## Format note for whoever builds the loader
 
 Both files are plain JSON, not SQL, and don't yet match `episodes`/

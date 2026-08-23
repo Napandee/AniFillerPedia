@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import repositories.outbox as outbox_repo
 import repositories.series as series_repo
 import repositories.series_proposals as series_proposals_repo
+from schemas.moderation import BulkModerationEntry, BulkModerationResult
 from schemas.series_proposals import (
     SeriesProposalCreate,
     SeriesProposalOut,
@@ -124,6 +125,40 @@ async def reject_series_proposal(
         reviewed_at=rejected_row.reviewed_at,
         review_note=rejected_row.review_note,
     )
+
+
+async def bulk_approve_series_proposals(
+    session: AsyncSession, ids: list[int], moderator_id: int
+) -> BulkModerationResult:
+    """#3: same per-id-savepoint pattern as services/contributions.py's
+    bulk_approve_contributions — one id already resolved by someone else
+    (or a bad id) is reported for that id alone, never fatal to the rest.
+    """
+    results: list[BulkModerationEntry] = []
+    for proposal_id in ids:
+        try:
+            async with session.begin_nested():
+                await approve_series_proposal(session, proposal_id, moderator_id)
+            results.append(BulkModerationEntry(id=proposal_id, ok=True))
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, str) else str(exc.detail)
+            results.append(BulkModerationEntry(id=proposal_id, ok=False, detail=detail))
+    return BulkModerationResult(results=results)
+
+
+async def bulk_reject_series_proposals(
+    session: AsyncSession, ids: list[int], moderator_id: int, review_note: str
+) -> BulkModerationResult:
+    results: list[BulkModerationEntry] = []
+    for proposal_id in ids:
+        try:
+            async with session.begin_nested():
+                await reject_series_proposal(session, proposal_id, moderator_id, review_note)
+            results.append(BulkModerationEntry(id=proposal_id, ok=True))
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, str) else str(exc.detail)
+            results.append(BulkModerationEntry(id=proposal_id, ok=False, detail=detail))
+    return BulkModerationResult(results=results)
 
 
 def _row_to_out(row: Row) -> SeriesProposalOut:

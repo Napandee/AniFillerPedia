@@ -14,6 +14,12 @@ async def list_series_needing_sync(session: AsyncSession) -> list[Row]:
     need re-checking every run — only RELEASING (or never-synced, NULL)
     series are re-fetched, so a finished show's schedule stops costing
     outbound AniList calls entirely once it's confirmed done.
+
+    Exception: a FINISHED series still missing cover/banner art (#67 —
+    added after some series were already marked FINISHED by an earlier
+    sync, so they'd otherwise never be reconsidered by the check above)
+    remains a candidate for exactly one more pass, purely to backfill
+    that field. Once populated it drops out again like anything else.
     """
     result = await session.execute(
         text(
@@ -21,7 +27,11 @@ async def list_series_needing_sync(session: AsyncSession) -> list[Row]:
             SELECT id, anilist_id
             FROM series
             WHERE anilist_id IS NOT NULL
-              AND (anilist_status IS NULL OR anilist_status != 'FINISHED')
+              AND (
+                anilist_status IS NULL
+                OR anilist_status != 'FINISHED'
+                OR anilist_cover_url IS NULL
+              )
             ORDER BY id
             """
         )

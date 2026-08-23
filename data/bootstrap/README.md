@@ -122,3 +122,31 @@ landed a real `schema.sql` when this work started. Field names were chosen
 to map onto the schema discussed in `CLAUDE.md` (`status`, `episode_number`,
 citation `url`/`description`) but expect to need a real transform step, not
 a direct `COPY`.
+
+(Superseded by `load_episodes.py`, which does exactly this transform —
+kept above for the historical trail, not because the loader doesn't exist.)
+
+## #73/#74 (2026-08-23): title + source_count, both optional per episode
+
+Each episode entry may now carry two more optional keys, both non-
+contentious metadata rather than a filler/canon claim, so `load_episodes.py`
+applies them even on a re-run where the status is unchanged (no
+`--allow-corrections` needed — see the script's own docstring):
+
+- `"title"` — the episode's title. Not hand-typed here; see
+  `backfill_episode_titles_from_anilist.py` for the (partial — AniList's
+  own `streamingEpisodes` field is a rolling/incomplete list, not a full
+  archive) automated backfill instead.
+- `"source_count"` — how many independent sources agree with this
+  episode's status, backing the episode detail page's "N independent
+  sources agree" badge. All six already-loaded datasets (Naruto, Naruto:
+  Shippuuden, Bleach, Fairy Tail × 3) were backfilled to `2` uniformly —
+  every one of their citation descriptions claims at least "a second
+  independent thread" corroborating the first; Shippuuden's own citation
+  says "several," but 2 is the honest, defensible floor rather than
+  inventing a more specific number with no real citation behind it. A
+  single shared citation can't hold two different source_counts for
+  different episodes that cite it (e.g. Fairy Tail's original-series
+  citation covers episodes 49/151 too, where Radio Times was silent
+  rather than agreeing) — 2 was picked as the value that's true for every
+  episode sharing that citation, not the maximum true for any of them.

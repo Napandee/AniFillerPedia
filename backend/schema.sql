@@ -158,7 +158,13 @@ CREATE TABLE citations (
     url           TEXT,
     description   TEXT NOT NULL,
     submitted_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
-    created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+    -- #74: how many independent sources were cross-referenced for this
+    -- citation, backing the "N independent sources agree" badge. Authored
+    -- explicitly per episode rather than derived from counting merged
+    -- citation_ids — a combo can legitimately cite a source that was
+    -- considered and then overridden, which isn't the same as agreement.
+    source_count  INTEGER NOT NULL DEFAULT 1
 );
 
 -- Every proposed episode status change, ever. This table IS the audit
@@ -250,6 +256,11 @@ CREATE TABLE episodes (
     episode_number             INTEGER NOT NULL,
     status                     TEXT NOT NULL CHECK (status IN ('canon', 'filler', 'mixed')),
     status_note                TEXT,   -- freeform for v1 regardless of issue #2's outcome
+    -- #73: reopens #33's original "skip for v1" decision. Nullable — most
+    -- episodes, including on researched shows, won't have one for a long
+    -- time (AniList's own per-episode title data is itself partial, see
+    -- data/bootstrap/backfill_episode_titles_from_anilist.py).
+    title                      TEXT,
     citation_id                INTEGER NOT NULL REFERENCES citations(id),
     approved_contribution_id   INTEGER NOT NULL REFERENCES contributions(id),   -- the specific contribution that made this row live — full history lives in contributions, not duplicated here
     updated_at                 TIMESTAMPTZ NOT NULL DEFAULT now(),

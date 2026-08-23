@@ -66,10 +66,33 @@ function formatDate(iso: string): string {
       {contributions.length === 0 && (
         <p class="empty" id="contrib-empty">Nothing pending right now.</p>
       )}
+      {/* #3: bulk action bar — hidden until at least one checkbox in this
+          panel is checked. Approve/reject both hit the new bulk-approve/
+          bulk-reject endpoints once; the existing per-card buttons below
+          are unchanged, for when only one item needs a decision. */}
+      <div class="bulk-bar" id="contrib-bulk-bar" hidden>
+        <label class="select-all">
+          <input type="checkbox" id="contrib-select-all" />
+          <span id="contrib-selected-count">0 selected</span>
+        </label>
+        <button type="button" class="btn btn--approve" id="contrib-bulk-approve">Approve selected</button>
+        <div class="reject-group">
+          <textarea
+            class="review-note"
+            id="contrib-bulk-note"
+            placeholder="Review note (required — applied to every rejected item)"
+            rows="2"
+          ></textarea>
+          <button type="button" class="btn btn--reject" id="contrib-bulk-reject" disabled>Reject selected</button>
+        </div>
+      </div>
       <ul class="cards" id="contrib-list">
         {contributions.map((c) => (
           <li class="card" data-kind="contribution" data-id={c.id}>
             <div class="card-top">
+              <label class="select-one">
+                <input type="checkbox" class="select-checkbox" />
+              </label>
               <span class="target">Series #{c.series_id} · Episode #{c.episode_number}</span>
               <span class={`status-pill status-pill--${c.proposed_status}`}>{c.proposed_status}</span>
             </div>
@@ -116,10 +139,29 @@ function formatDate(iso: string): string {
       {proposals.length === 0 && (
         <p class="empty" id="proposal-empty">Nothing pending right now.</p>
       )}
+      <div class="bulk-bar" id="proposal-bulk-bar" hidden>
+        <label class="select-all">
+          <input type="checkbox" id="proposal-select-all" />
+          <span id="proposal-selected-count">0 selected</span>
+        </label>
+        <button type="button" class="btn btn--approve" id="proposal-bulk-approve">Approve selected</button>
+        <div class="reject-group">
+          <textarea
+            class="review-note"
+            id="proposal-bulk-note"
+            placeholder="Review note (required — applied to every rejected item)"
+            rows="2"
+          ></textarea>
+          <button type="button" class="btn btn--reject" id="proposal-bulk-reject" disabled>Reject selected</button>
+        </div>
+      </div>
       <ul class="cards" id="proposal-list">
         {proposals.map((p) => (
           <li class="card" data-kind="proposal" data-id={p.id}>
             <div class="card-top">
+              <label class="select-one">
+                <input type="checkbox" class="select-checkbox" />
+              </label>
               <span class="target disp">{p.title}</span>
             </div>
             <div class="ids">
@@ -173,6 +215,18 @@ function formatDate(iso: string): string {
     }),
   };
 
+  // #3: bulk counterparts — one call per action instead of one per item.
+  const BULK_ENDPOINT: Record<string, { approve: string; reject: string }> = {
+    contribution: {
+      approve: `${baseUrl}/api/v1/contributions/bulk-approve`,
+      reject: `${baseUrl}/api/v1/contributions/bulk-reject`,
+    },
+    proposal: {
+      approve: `${baseUrl}/api/v1/series-proposals/bulk-approve`,
+      reject: `${baseUrl}/api/v1/series-proposals/bulk-reject`,
+    },
+  };
+
   const toast = document.getElementById("toast") as HTMLDivElement | null;
   let toastTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -186,6 +240,13 @@ function formatDate(iso: string): string {
       toast.hidden = true;
     }, 5000);
   }
+
+  // #3: populated once wireBulkPanel runs for each kind — lets
+  // updateEmptyState (used by the pre-existing single-item approve/reject
+  // path too) keep each panel's bulk-bar count/visibility in sync even
+  // when an item is removed via its own individual button, not just via
+  // a bulk action.
+  const bulkRefresh: Partial<Record<"contrib" | "proposal", () => void>> = {};
 
   function updateEmptyState(kind: "contrib" | "proposal") {
     const list = document.getElementById(`${kind}-list`);
@@ -202,6 +263,7 @@ function formatDate(iso: string): string {
     } else if (remaining > 0 && empty) {
       empty.remove();
     }
+    bulkRefresh[kind]?.();
   }
 
   function removeCard(card: HTMLLIElement) {
@@ -293,6 +355,123 @@ function formatDate(iso: string): string {
       void handleAction(card, "reject", note);
     });
   });
+
+  // #3: bulk approve/reject. Each panel (contributions, proposals) tracks
+  // its own selection independently — a checkbox on one panel's cards
+  // never affects the other's bulk bar.
+  type BulkKind = "contrib" | "proposal";
+  type ItemKind = "contribution" | "proposal";
+
+  function wireBulkPanel(kind: BulkKind, itemKind: ItemKind) {
+    const list = document.getElementById(`${kind}-list`);
+    const bar = document.getElementById(`${kind}-bulk-bar`);
+    const selectAll = document.getElementById(`${kind}-select-all`) as HTMLInputElement | null;
+    const countLabel = document.getElementById(`${kind}-selected-count`);
+    const approveBtn = document.getElementById(`${kind}-bulk-approve`) as HTMLButtonElement | null;
+    const rejectBtn = document.getElementById(`${kind}-bulk-reject`) as HTMLButtonElement | null;
+    const noteField = document.getElementById(`${kind}-bulk-note`) as HTMLTextAreaElement | null;
+    if (!list || !bar || !selectAll || !countLabel || !approveBtn || !rejectBtn || !noteField) return;
+
+    function selectedCards(): HTMLLIElement[] {
+      return Array.from(list!.querySelectorAll<HTMLLIElement>("li.card")).filter(
+        (card) => card.querySelector<HTMLInputElement>(".select-checkbox")?.checked
+      );
+    }
+
+    function refresh() {
+      const cards = Array.from(list!.querySelectorAll<HTMLLIElement>("li.card"));
+      const selected = selectedCards();
+      bar!.hidden = cards.length === 0;
+      countLabel!.textContent = `${selected.length} selected`;
+      approveBtn!.disabled = selected.length === 0;
+      rejectBtn!.disabled = selected.length === 0 || noteField!.value.trim().length === 0;
+      selectAll!.checked = cards.length > 0 && selected.length === cards.length;
+      selectAll!.indeterminate = selected.length > 0 && selected.length < cards.length;
+    }
+    bulkRefresh[kind] = refresh;
+
+    list.addEventListener("change", (e) => {
+      if ((e.target as HTMLElement)?.classList.contains("select-checkbox")) refresh();
+    });
+
+    selectAll.addEventListener("change", () => {
+      list!
+        .querySelectorAll<HTMLInputElement>(".select-checkbox")
+        .forEach((cb) => (cb.checked = selectAll!.checked));
+      refresh();
+    });
+
+    noteField.addEventListener("input", refresh);
+
+    async function runBulk(action: "approve" | "reject") {
+      const cards = selectedCards();
+      const ids = cards.map((c) => Number(c.dataset.id));
+      if (ids.length === 0) return;
+
+      approveBtn!.disabled = true;
+      rejectBtn!.disabled = true;
+      const url = BULK_ENDPOINT[itemKind][action];
+      const body =
+        action === "approve"
+          ? { ids }
+          : { ids, review_note: noteField!.value.trim() };
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+
+        if (!response.ok) {
+          let detail = `Bulk request failed (${response.status}).`;
+          try {
+            const errBody = await response.json();
+            if (typeof errBody?.detail === "string") detail = errBody.detail;
+          } catch {
+            // ignore parse failure, keep generic message
+          }
+          showToast(detail, "error");
+          refresh();
+          return;
+        }
+
+        const { results } = (await response.json()) as {
+          results: { id: number; ok: boolean; detail: string | null }[];
+        };
+        const okIds = new Set(results.filter((r) => r.ok).map((r) => r.id));
+        const failed = results.filter((r) => !r.ok);
+
+        for (const card of cards) {
+          if (okIds.has(Number(card.dataset.id))) removeCard(card);
+        }
+
+        if (failed.length === 0) {
+          showToast(action === "approve" ? "Approved." : "Rejected.");
+        } else {
+          showToast(
+            `${okIds.size} ${action === "approve" ? "approved" : "rejected"}, ` +
+              `${failed.length} failed (already resolved elsewhere, or removed) — check the queue.`,
+            "error"
+          );
+        }
+        if (action === "reject") noteField!.value = "";
+        refresh();
+      } catch {
+        showToast("Network error — the bulk action did not go through. Try again.", "error");
+        refresh();
+      }
+    }
+
+    approveBtn.addEventListener("click", () => void runBulk("approve"));
+    rejectBtn.addEventListener("click", () => void runBulk("reject"));
+
+    refresh();
+  }
+
+  wireBulkPanel("contrib", "contribution");
+  wireBulkPanel("proposal", "proposal");
 </script>
 
 <style>
@@ -349,6 +528,38 @@ function formatDate(iso: string): string {
     align-items: center;
     gap: 8px;
     margin-bottom: 12px;
+  }
+  .bulk-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+  .select-all {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    padding-top: 7px;
+  }
+  .select-one {
+    display: flex;
+    align-items: center;
+  }
+  .select-checkbox,
+  .select-all input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-accent);
+    cursor: pointer;
   }
   .count {
     font-family: var(--font-body);

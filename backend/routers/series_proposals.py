@@ -5,6 +5,7 @@ import services.series_proposals as series_proposals_service
 import services.turnstile as turnstile_service
 from core.db import get_session
 from core.deps import get_current_user, get_current_user_optional, require_moderator
+from schemas.moderation import BulkApproveRequest, BulkModerationResult, BulkRejectRequest
 from schemas.series_proposals import (
     SeriesProposalCreate,
     SeriesProposalOut,
@@ -52,6 +53,37 @@ async def list_pending_series_proposals(
     if review_status != "pending":
         raise HTTPException(status_code=404, detail="only review_status=pending is supported")
     return await series_proposals_service.list_pending_series_proposals(session)
+
+
+@router.post("/series-proposals/bulk-approve", response_model=BulkModerationResult)
+async def bulk_approve_series_proposals(
+    payload: BulkApproveRequest,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> BulkModerationResult:
+    # #3: flat "bulk-approve" path (not /series-proposals/bulk/approve) is
+    # deliberate — a 3-segment shape would structurally collide with
+    # /series-proposals/{series_proposal_id}/approve below, since "bulk"
+    # would attempt (and fail) int coercion as the id rather than falling
+    # through to this route.
+    result = await series_proposals_service.bulk_approve_series_proposals(
+        session, payload.ids, current_user.id
+    )
+    await session.commit()
+    return result
+
+
+@router.post("/series-proposals/bulk-reject", response_model=BulkModerationResult)
+async def bulk_reject_series_proposals(
+    payload: BulkRejectRequest,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> BulkModerationResult:
+    result = await series_proposals_service.bulk_reject_series_proposals(
+        session, payload.ids, current_user.id, payload.review_note
+    )
+    await session.commit()
+    return result
 
 
 @router.post("/series-proposals/{series_proposal_id}/approve", response_model=SeriesProposalReviewOut)

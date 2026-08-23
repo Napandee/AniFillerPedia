@@ -342,6 +342,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/contributions/bulk-approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bulk Approve Contributions */
+        post: operations["bulk_approve_contributions_api_v1_contributions_bulk_approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions/bulk-reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bulk Reject Contributions */
+        post: operations["bulk_reject_contributions_api_v1_contributions_bulk_reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/contributions/{contribution_id}/approve": {
         parameters: {
             query?: never;
@@ -422,6 +456,40 @@ export interface paths {
         get: operations["my_series_proposals_api_v1_series_proposals_mine_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series-proposals/bulk-approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bulk Approve Series Proposals */
+        post: operations["bulk_approve_series_proposals_api_v1_series_proposals_bulk_approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series-proposals/bulk-reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bulk Reject Series Proposals */
+        post: operations["bulk_reject_series_proposals_api_v1_series_proposals_bulk_reject_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -575,6 +643,11 @@ export interface components {
             /** Created At */
             created_at: string;
         };
+        /** BulkApproveRequest */
+        BulkApproveRequest: {
+            /** Ids */
+            ids: number[];
+        };
         /**
          * BulkContributionCreate
          * @description #80: reuses the community's own existing range-notation shorthand
@@ -628,6 +701,27 @@ export interface components {
             contribution_id: number | null;
             /** Proposed Status */
             proposed_status: string;
+        };
+        /** BulkModerationEntry */
+        BulkModerationEntry: {
+            /** Id */
+            id: number;
+            /** Ok */
+            ok: boolean;
+            /** Detail */
+            detail?: string | null;
+        };
+        /** BulkModerationResult */
+        BulkModerationResult: {
+            /** Results */
+            results: components["schemas"]["BulkModerationEntry"][];
+        };
+        /** BulkRejectRequest */
+        BulkRejectRequest: {
+            /** Ids */
+            ids: number[];
+            /** Review Note */
+            review_note: string;
         };
         /**
          * BulkSkippedEntry
@@ -1750,6 +1844,72 @@ export interface operations {
             };
         };
     };
+    bulk_approve_contributions_api_v1_contributions_bulk_approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkApproveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bulk_reject_contributions_api_v1_contributions_bulk_reject_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkRejectRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     approve_contribution_api_v1_contributions__contribution_id__approve_post: {
         parameters: {
             query?: never;
@@ -1931,6 +2091,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SeriesProposalOut"][];
+                };
+            };
+        };
+    };
+    bulk_approve_series_proposals_api_v1_series_proposals_bulk_approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkApproveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bulk_reject_series_proposals_api_v1_series_proposals_bulk_reject_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkRejectRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

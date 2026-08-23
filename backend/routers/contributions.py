@@ -17,6 +17,7 @@ from schemas.contributions import (
     VoteCastOut,
     VoteCreate,
 )
+from schemas.moderation import BulkApproveRequest, BulkModerationResult, BulkRejectRequest
 
 router = APIRouter(tags=["contributions"])
 
@@ -98,6 +99,35 @@ async def list_pending_contributions(
     if review_status != "pending":
         raise HTTPException(status_code=404, detail="only review_status=pending is supported")
     return await contributions_service.list_pending_contributions(session)
+
+
+@router.post("/contributions/bulk-approve", response_model=BulkModerationResult)
+async def bulk_approve_contributions(
+    payload: BulkApproveRequest,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> BulkModerationResult:
+    # #3: flat "bulk-approve" path (not /contributions/bulk/approve) is
+    # deliberate — a 3-segment shape would structurally collide with
+    # /contributions/{contribution_id}/approve below, since "bulk" would
+    # attempt (and fail) int coercion as the id rather than falling
+    # through to this route.
+    result = await contributions_service.bulk_approve_contributions(session, payload.ids, current_user.id)
+    await session.commit()
+    return result
+
+
+@router.post("/contributions/bulk-reject", response_model=BulkModerationResult)
+async def bulk_reject_contributions(
+    payload: BulkRejectRequest,
+    current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
+    session: AsyncSession = Depends(get_session),
+) -> BulkModerationResult:
+    result = await contributions_service.bulk_reject_contributions(
+        session, payload.ids, current_user.id, payload.review_note
+    )
+    await session.commit()
+    return result
 
 
 @router.post("/contributions/{contribution_id}/approve", response_model=ContributionReviewOut)

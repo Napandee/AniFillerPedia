@@ -1,3 +1,5 @@
+from collections.abc import Awaitable, Callable
+
 from fastapi import HTTPException
 from sqlalchemy.engine import Row
 from sqlalchemy.exc import IntegrityError
@@ -22,6 +24,7 @@ from schemas.contributions import (
     MyVoteOut,
     VoteCastOut,
 )
+from schemas.moderation import BulkModerationEntry, BulkModerationResult
 from services.admin import compute_trust_score
 
 # NOTE ON TRANSACTIONS: this module assumes the caller (the router) has
@@ -409,6 +412,48 @@ async def reject_contribution(
         reviewed_at=rejected_row.reviewed_at,
         review_note=rejected_row.review_note,
     )
+
+
+async def _bulk_moderate(
+    session: AsyncSession,
+    ids: list[int],
+    action: Callable[[AsyncSession, int], Awaitable[object]],
+) -> BulkModerationResult:
+    """#3: shared loop for bulk approve/reject — one id's failure (already
+    resolved by someone else, a stale/bad id) is reported for that id
+    alone, never fatal to the rest of the batch. A SAVEPOINT per id (same
+    pattern as #80/#89's bulk-submission fix) means a raised HTTPException
+    only rolls back that one id's own attempted writes, not anything
+    already committed earlier in this same batch.
+    """
+    results: list[BulkModerationEntry] = []
+    for item_id in ids:
+        try:
+            async with session.begin_nested():
+                await action(session, item_id)
+            results.append(BulkModerationEntry(id=item_id, ok=True))
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, str) else str(exc.detail)
+            results.append(BulkModerationEntry(id=item_id, ok=False, detail=detail))
+    return BulkModerationResult(results=results)
+
+
+async def bulk_approve_contributions(
+    session: AsyncSession, ids: list[int], moderator_id: int
+) -> BulkModerationResult:
+    async def _approve_one(session: AsyncSession, contribution_id: int) -> None:
+        await approve_contribution(session, contribution_id, moderator_id)
+
+    return await _bulk_moderate(session, ids, _approve_one)
+
+
+async def bulk_reject_contributions(
+    session: AsyncSession, ids: list[int], moderator_id: int, review_note: str
+) -> BulkModerationResult:
+    async def _reject_one(session: AsyncSession, contribution_id: int) -> None:
+        await reject_contribution(session, contribution_id, moderator_id, review_note)
+
+    return await _bulk_moderate(session, ids, _reject_one)
 
 
 async def list_my_votes(session: AsyncSession, user_id: int) -> list[MyVoteOut]:

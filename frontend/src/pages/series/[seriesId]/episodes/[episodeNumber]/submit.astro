@@ -46,6 +46,9 @@ let values = {
   proposed_note: "",
   citation_url: "",
   citation_description: "",
+  // #83: optional — the same short-description/fuller-research-trail
+  // split #77 built for hand-compiled data, now available here too.
+  citation_methodology_note: "",
   license_accepted: false,
 };
 
@@ -100,6 +103,7 @@ if (hasValidParams && Astro.request.method === "POST") {
     proposed_note: String(form.get("proposed_note") ?? ""),
     citation_url: String(form.get("citation_url") ?? ""),
     citation_description: String(form.get("citation_description") ?? ""),
+    citation_methodology_note: String(form.get("citation_methodology_note") ?? ""),
     license_accepted: form.get("license_accepted") === "yes",
   };
 
@@ -113,6 +117,9 @@ if (hasValidParams && Astro.request.method === "POST") {
       citation: {
         url: values.citation_url.trim() ? values.citation_url.trim() : undefined,
         description: values.citation_description,
+        methodology_note: values.citation_methodology_note.trim()
+          ? values.citation_methodology_note.trim()
+          : undefined,
       },
       license_accepted: values.license_accepted,
       // TURNSTILE STUB: no real Cloudflare Turnstile site key is
@@ -239,6 +246,16 @@ if (hasValidParams && Astro.request.method === "POST") {
             minlength="1"
             placeholder="e.g. Forum thread cross-referencing the manga chapter this episode adapts..."
             set:text={values.citation_description}
+          />
+        </label>
+
+        <label class="field">
+          <span>More detail on how you verified this <span class="optional">(optional)</span></span>
+          <textarea
+            name="citation_methodology_note"
+            rows="3"
+            placeholder="e.g. cross-referenced against a second independent thread, noted any disagreement and how it was resolved..."
+            set:text={values.citation_methodology_note}
           />
         </label>
 

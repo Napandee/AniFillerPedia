@@ -9,16 +9,26 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def create(
-    session: AsyncSession, *, url: str | None, description: str, submitted_by: int | None
+    session: AsyncSession,
+    *,
+    url: str | None,
+    description: str,
+    submitted_by: int | None,
+    methodology_note: str | None = None,
 ) -> Row:
     result = await session.execute(
         text(
             """
-            INSERT INTO citations (url, description, submitted_by)
-            VALUES (:url, :description, :submitted_by)
+            INSERT INTO citations (url, description, submitted_by, methodology_note)
+            VALUES (:url, :description, :submitted_by, :methodology_note)
             RETURNING *
             """
         ),
-        {"url": url, "description": description, "submitted_by": submitted_by},
+        {
+            "url": url,
+            "description": description,
+            "submitted_by": submitted_by,
+            "methodology_note": methodology_note,
+        },
     )
     return result.one()

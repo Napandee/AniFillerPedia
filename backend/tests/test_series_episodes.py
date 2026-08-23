@@ -404,6 +404,79 @@ async def test_episodes_list_includes_aired_at_when_scheduled(client: AsyncClien
 
 
 @pytest.mark.asyncio
+async def test_episodes_list_title_null_by_default(client: AsyncClient) -> None:
+    """#73: most episodes, including researched ones, won't have a title
+    for a long time — must come back null, not error or a missing key.
+    """
+    series_id = await _make_series("NoTitle", anilist_id=900301)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["title"] is None
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_includes_title_when_set(client: AsyncClient) -> None:
+    series_id = await _make_series("HasTitle", anilist_id=900302)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE episodes SET title = :t WHERE series_id = :sid AND episode_number = 1"),
+                    {"sid": series_id, "t": f"{TEST_PREFIX}Enter: Naruto Uzumaki!"},
+                )
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["title"] == f"{TEST_PREFIX}Enter: Naruto Uzumaki!"
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_citation_source_count_defaults_to_one(client: AsyncClient) -> None:
+    """#74: a plain single-source citation (the common case, and what
+    every existing pre-#74 citation row implicitly is) must not imply a
+    corroboration claim that was never made.
+    """
+    series_id = await _make_series("SingleSource", anilist_id=900303)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["citation"]["source_count"] == 1
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_citation_source_count_reflects_corroboration(
+    client: AsyncClient,
+) -> None:
+    series_id = await _make_series("Corroborated", anilist_id=900304)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE citations SET source_count = 2 WHERE id = :cid"),
+                    {"cid": citation_id},
+                )
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["citation"]["source_count"] == 2
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_episode_history_reflects_resolution_and_votes(client: AsyncClient) -> None:
     series_id = await _make_series("Delta", anilist_id=900004)
     citation_id = await _make_citation()

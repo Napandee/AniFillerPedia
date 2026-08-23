@@ -202,3 +202,51 @@ async def test_releasing_series_remains_a_sync_candidate() -> None:
         assert any(c.id == series_id for c in candidates)
     finally:
         await _cleanup(series_id, created)
+
+
+@pytest.mark.asyncio
+async def test_finished_series_missing_cover_art_remains_a_sync_candidate() -> None:
+    """#67: a series marked FINISHED before cover/banner art existed as a
+    concept (anilist_cover_url still NULL) must remain a candidate for one
+    more pass to backfill it — otherwise it would never be reconsidered by
+    the FINISHED-skip rule above, permanently missing cover art.
+    """
+    series_id, created = await _ensure_test_series(999999002, f"{TEST_PREFIX} Finished No Cover Art")
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "UPDATE series SET anilist_status = 'FINISHED', "
+                        "anilist_cover_url = NULL, episode_schedule_synced_at = now() "
+                        "WHERE id = :sid"
+                    ),
+                    {"sid": series_id},
+                )
+                candidates = await list_series_needing_sync(session)
+        assert any(c.id == series_id for c in candidates)
+    finally:
+        await _cleanup(series_id, created)
+
+
+@pytest.mark.asyncio
+async def test_finished_series_with_cover_art_is_not_a_sync_candidate() -> None:
+    """The counterpart to the above — once cover_url is actually populated,
+    a FINISHED series drops out of the candidate list normally again.
+    """
+    series_id, created = await _ensure_test_series(999999003, f"{TEST_PREFIX} Finished With Cover Art")
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "UPDATE series SET anilist_status = 'FINISHED', "
+                        "anilist_cover_url = 'https://example.com/cover.jpg', "
+                        "episode_schedule_synced_at = now() WHERE id = :sid"
+                    ),
+                    {"sid": series_id},
+                )
+                candidates = await list_series_needing_sync(session)
+        assert not any(c.id == series_id for c in candidates)
+    finally:
+        await _cleanup(series_id, created)

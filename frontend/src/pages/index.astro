@@ -101,19 +101,34 @@ function pageHref(targetPage: number): string {
     recentlyUpdated.length > 0 && (
       <section class="section">
         <h2 class="disp section-title">Recently updated</h2>
-        <div class="teaser-row">
-          {recentlyUpdated.map((series) => (
-            <a class="teaser-card" href={`/series/${series.id}`}>
-              <div class="teaser-poster">
-                {series.cover_image_url ? (
-                  <img src={series.cover_image_url} alt="" loading="lazy" />
-                ) : (
-                  <CoverFallback title={series.title} fontSize="22px" />
-                )}
-              </div>
-              <div class="disp teaser-title">{series.title}</div>
-            </a>
-          ))}
+        {/* A passive, continuously-scrolling gallery, not a manually
+            scrollable strip — no scrollbar, no drag-to-scroll, nothing to
+            click back and forth. The item list is rendered twice back to
+            back and the track animates exactly one set-width of
+            translateX, so the loop point is seamless; the second copy is
+            aria-hidden/untabbable since it's a visual duplicate, not new
+            content. prefers-reduced-motion just freezes it on the first
+            set instead of trying to fake a paused marquee. */}
+        <div class="teaser-viewport">
+          <div class="teaser-track">
+            {[...recentlyUpdated, ...recentlyUpdated].map((series, i) => (
+              <a
+                class="teaser-card"
+                href={`/series/${series.id}`}
+                aria-hidden={i >= recentlyUpdated.length ? "true" : undefined}
+                tabindex={i >= recentlyUpdated.length ? -1 : undefined}
+              >
+                <div class="teaser-poster">
+                  {series.cover_image_url ? (
+                    <img src={series.cover_image_url} alt="" loading="lazy" />
+                  ) : (
+                    <CoverFallback title={series.title} fontSize="22px" />
+                  )}
+                </div>
+                <div class="disp teaser-title">{series.title}</div>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     )
@@ -278,11 +293,32 @@ function pageHref(targetPage: number): string {
     margin: 0 0 12px;
   }
 
-  .teaser-row {
+  .teaser-viewport {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+  }
+  .teaser-track {
     display: flex;
     gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 4px;
+    width: max-content;
+    animation: teaser-scroll 32s linear infinite;
+  }
+  @keyframes teaser-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* Exactly one full (un-duplicated) set width — the track holds two
+         copies back to back, so this lands the second copy precisely
+         where the first one started, and the loop repeats invisibly. */
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .teaser-track {
+      animation: none;
+    }
   }
   .teaser-card {
     flex: 0 0 auto;

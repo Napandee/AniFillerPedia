@@ -573,6 +573,11 @@ export interface components {
             url: string | null;
             /** Description */
             description: string;
+            /**
+             * Source Count
+             * @default 1
+             */
+            source_count: number;
         };
         /** ContributionCreate */
         ContributionCreate: {
@@ -692,6 +697,8 @@ export interface components {
             status: string;
             /** Status Note */
             status_note: string | null;
+            /** Title */
+            title: string | null;
             citation: components["schemas"]["CitationOut"];
             /**
              * Updated At

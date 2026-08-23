@@ -4,9 +4,9 @@
 // decluttered episode list with per-row disclosure for citation/actions.
 // Backed by GET /api/v1/series/{id} (header data) and
 // GET /api/v1/series/{id}/episodes (the list itself, now including a
-// nullable aired_at per #49/#51). Per CLAUDE.md, episode numbering is
-// absolute and there's no episode-title field, and status is one of
-// exactly three values (no `recap`).
+// nullable aired_at per #49/#51, a nullable title per #73, and citation.
+// source_count per #74). Per CLAUDE.md, episode numbering is absolute and
+// status is one of exactly three values (no `recap`).
 //
 // output: "server" means this route is resolved per-request — no
 // getStaticPaths() needed, Astro.params.id is read directly.
@@ -252,10 +252,16 @@ const structuredData = series
           ) : (
             episodes.map((episode) => {
               const airedAt = formatAiredAt(episode.aired_at ?? null);
+              const lastVerified = formatAiredAt(episode.updated_at);
               return (
                 <details class="episode-row" data-status={episode.status}>
                   <summary class="episode-row-head">
                     <span class="episode-number">Ep. {episode.episode_number}</span>
+                    {/* #73: reopens #33's "skip for v1" call — empty when
+                        untitled (most episodes, for a long time), same
+                        stable-grid-column convention #55 established for
+                        air-date below. */}
+                    <span class="episode-title-inline">{episode.title}</span>
                     <StatusBadge status={episode.status as "canon" | "filler" | "mixed"} />
                     {/* #55: always rendered, even when empty — omitting this
                         span entirely when aired_at is unknown left only 3
@@ -275,7 +281,20 @@ const structuredData = series
                     ) : (
                       <p class="citation-text">{episode.citation.description}</p>
                     )}
+                    {/* #74: omitted entirely at the default of 1 — a single-
+                        source citation isn't a corroboration claim, don't
+                        imply one. */}
+                    {episode.citation.source_count > 1 && (
+                      <div class="trust-badge">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /><polyline points="9 12 11 14 15 10" /></svg>
+                        {episode.citation.source_count} independent sources agree
+                      </div>
+                    )}
                     {episode.status_note && <p class="status-note">{episode.status_note}</p>}
+                    <p class="verified-line">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                      Last verified {lastVerified}
+                    </p>
                     <div class="detail-actions">
                       <Button href={`/episodes/${episode.id}/history`} variant="ghost">
                         History &amp; votes
@@ -657,7 +676,7 @@ const structuredData = series
   }
   .episode-row-head {
     display: grid;
-    grid-template-columns: 70px auto 1fr 20px;
+    grid-template-columns: 70px minmax(0, 1fr) auto auto 20px;
     align-items: center;
     gap: 14px;
     padding: 14px 18px;
@@ -674,11 +693,22 @@ const structuredData = series
     color: var(--color-heading);
     white-space: nowrap;
   }
+  /* #73: truncates rather than wrapping — most titles are long, and this
+     row is meant to stay a single compact line even when one is present. */
+  .episode-title-inline {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
   .air-date {
     font-size: 12.5px;
     font-weight: 700;
     color: var(--color-text-muted);
-    justify-self: end;
+    white-space: nowrap;
   }
   .chevron {
     color: var(--color-text-faint);
@@ -718,6 +748,30 @@ const structuredData = series
     font-size: 12px;
     color: var(--color-text-faint);
   }
+  /* #74: shown only when citation.source_count > 1 (see the template) —
+     green, matching this design system's canon-status color, since it's
+     a positive trust signal rather than a neutral metadata line. */
+  .trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    align-self: flex-start;
+    background: #ecfdf3;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 7px 13px;
+    border-radius: var(--radius-pill);
+  }
+  .verified-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-faint);
+  }
   .detail-actions {
     display: flex;
     gap: 8px;
@@ -729,7 +783,7 @@ const structuredData = series
       grid-template-columns: 1fr;
     }
     .episode-row-head {
-      grid-template-columns: 60px auto 1fr 20px;
+      grid-template-columns: 56px minmax(0, 1fr) auto auto 18px;
       gap: 8px;
       padding: 12px 14px;
     }

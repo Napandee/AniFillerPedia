@@ -9,9 +9,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 _SELECT_WITH_CITATION = """
     SELECT e.id, e.series_id, e.episode_number, e.status, e.status_note,
-           e.updated_at,
+           e.title, e.updated_at,
            c.id AS citation_id, c.url AS citation_url,
-           c.description AS citation_description,
+           c.description AS citation_description, c.source_count AS citation_source_count,
            ses.aired_at
     FROM episodes e
     JOIN citations c ON c.id = e.citation_id

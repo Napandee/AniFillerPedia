@@ -137,6 +137,8 @@ def main() -> None:
     already_present = 0
     corrected = 0
     metadata_synced = 0
+    citations_inserted = 0
+    citations_reused_from_db = 0
     needs_correction: list[tuple[int, str, str]] = []
     source_count_conflicts: list[tuple[int, tuple[str, ...], int, int]] = []
     failures: list[tuple[int, str]] = []
@@ -148,24 +150,58 @@ def main() -> None:
 
     def get_or_create_citation(cur, combo: tuple[str, ...], source_count: int, episode_number: int) -> int:
         cached = citation_by_combo.get(combo)
-        if cached is None:
-            url, description, methodology_note = merge_citation(combo, sources_by_id)
-            cur.execute(
-                "INSERT INTO citations (url, description, source_count, methodology_note) "
-                "VALUES (%s, %s, %s, %s) RETURNING id",
-                (url, description, source_count, methodology_note),
-            )
-            citation_id = cur.fetchone()[0]
-            # Committed on its own, independent of the contribution/episode
-            # work below — so a later failure on THIS episode rolls back
-            # only its own rows, never a citation another already-loaded
-            # episode may also be using.
-            conn.commit()
-            citation_by_combo[combo] = (citation_id, source_count)
+        if cached is not None:
+            citation_id, existing_source_count = cached
+            if existing_source_count != source_count:
+                source_count_conflicts.append((episode_number, combo, existing_source_count, source_count))
             return citation_id
-        citation_id, existing_source_count = cached
-        if existing_source_count != source_count:
-            source_count_conflicts.append((episode_number, combo, existing_source_count, source_count))
+
+        url, description, methodology_note = merge_citation(combo, sources_by_id)
+
+        # #76: this in-run cache alone isn't enough — a SEPARATE script
+        # invocation (e.g. a later --allow-corrections pass) starts with an
+        # empty cache and would otherwise INSERT a brand-new citation row
+        # for a combo this series already has one for, rather than finding
+        # and reusing it. Scoped to this series specifically (via a real
+        # contribution already using it), not globally — two unrelated
+        # shows coincidentally sharing identical citation text shouldn't
+        # get silently merged. IS NOT DISTINCT FROM for a NULL-safe match on
+        # url/methodology_note (both legitimately NULL for many citations).
+        cur.execute(
+            """
+            SELECT DISTINCT c.id, c.source_count
+            FROM citations c
+            JOIN contributions co ON co.citation_id = c.id
+            WHERE co.series_id = %s
+              AND c.description = %s
+              AND c.url IS NOT DISTINCT FROM %s
+              AND c.methodology_note IS NOT DISTINCT FROM %s
+            """,
+            (series_id, description, url, methodology_note),
+        )
+        nonlocal citations_inserted, citations_reused_from_db
+        existing_rows = cur.fetchall()
+        if existing_rows:
+            citation_id, existing_source_count = existing_rows[0]
+            if existing_source_count != source_count:
+                source_count_conflicts.append((episode_number, combo, existing_source_count, source_count))
+            citation_by_combo[combo] = (citation_id, existing_source_count)
+            citations_reused_from_db += 1
+            return citation_id
+
+        cur.execute(
+            "INSERT INTO citations (url, description, source_count, methodology_note) "
+            "VALUES (%s, %s, %s, %s) RETURNING id",
+            (url, description, source_count, methodology_note),
+        )
+        citation_id = cur.fetchone()[0]
+        # Committed on its own, independent of the contribution/episode
+        # work below — so a later failure on THIS episode rolls back
+        # only its own rows, never a citation another already-loaded
+        # episode may also be using.
+        conn.commit()
+        citation_by_combo[combo] = (citation_id, source_count)
+        citations_inserted += 1
         return citation_id
 
     try:
@@ -314,7 +350,11 @@ def main() -> None:
     print(f"Inserted: {inserted}")
     print(f"Corrected (status changed): {corrected}")
     print(f"Already present, unchanged status ({metadata_synced} had title/source_count backfilled): {already_present}")
-    print(f"Citation rows created: {len(citation_by_combo)}")
+    # #76: split "new row inserted" from "found and reused an existing one"
+    # — the old combined count didn't distinguish these, which is exactly
+    # what made the duplicate-row bug invisible in the loader's own output
+    # for as long as it went unnoticed.
+    print(f"Citation rows inserted: {citations_inserted} (reused an existing row: {citations_reused_from_db})")
     if needs_correction:
         print(f"Needs --allow-corrections ({len(needs_correction)} episodes differ from what's live):")
         for episode_number, old_status, new_status in needs_correction:

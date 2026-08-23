@@ -19,17 +19,24 @@ day one — closer to Wikipedia's model than a commercial tracker's.
 
 ## Status
 
-Backend is live and feature-complete: public read API, GitHub/Discord auth,
-anonymous or signed-in submissions, moderator review, community
+Both the API and the public frontend are live and feature-complete: public
+read API, GitHub/Discord auth, anonymous or signed-in submissions
+(single-episode or, for a logged-in contributor with a full breakdown in
+hand, a whole range of episodes at once), moderator review, community
 trust-weighted voting with auto-approval, bulk export, and full test
-coverage against a real Postgres instance. The dataset itself is still
-early — episode-level research is ongoing for an initial cluster of
-well-known long-running shows, hand-compiled and cited (not scraped from
-any single restricted source), targeted using the open-licensed "has
+coverage against a real Postgres instance. The Astro frontend covers
+browsing/search, a per-series canon/filler/mixed dashboard, every
+contribution/proposal flow, a moderation queue, and admin user management —
+the API isn't the only way in.
+
+The dataset itself is real, cited, hand-compiled research (not scraped
+from any single restricted source), targeted using the open-licensed "has
 fillers" tag from
 [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database).
-The frontend (a public browsing/contribution UI) hasn't started yet — until
-it does, the API above is the only way to read or contribute.
+Fully loaded so far: Naruto, Naruto: Shippuuden, Bleach, One Piece, and
+Fairy Tail (spanning its three real, separately-numbered AniList catalog
+entries). More shows are queued behind these — the catalog itself also
+grows through community series proposals, not just this initial batch.
 
 ## Features
 
@@ -41,14 +48,17 @@ it does, the API above is the only way to read or contribute.
   signed in; changes go live via moderator approval or community
   trust-weighted voting. See [CONTRIBUTING.md](CONTRIBUTING.md).
 - **Source citations per entry** — every filler/canon claim traceable to
-  where it came from, so the dataset stays auditable.
+  where it came from, so the dataset stays auditable. A citation also
+  carries how many independent sources agree, surfaced as a corroboration
+  badge, with the fuller research trail available behind a disclosure
+  rather than cluttering the main claim.
 
 ## Repo layout
 
 Monorepo, hard split between `backend/` (FastAPI/Python) and `frontend/`
-(Astro/Node, not yet built beyond its typed API client) — kept genuinely
-separate (no shared config/tooling) so either side can be worked on and
-deployed independently.
+(Astro/Node) — kept genuinely separate (no shared config/tooling, path-
+filtered CI) so either side can be worked on and deployed independently.
+See each directory's own `README.md` for local setup.
 
 ## License
 

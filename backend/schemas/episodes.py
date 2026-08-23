@@ -13,6 +13,11 @@ class CitationOut(BaseModel):
     # history views) don't need touching; only the episode endpoints below
     # populate the real value from the `citations` row.
     source_count: int = 1
+    # #77: the full research/methodology trail, split out of `description`
+    # (which stays short and reader-facing). Defaulted to None for the same
+    # reason as source_count above — only the episode endpoints populate
+    # the real value.
+    methodology_note: str | None = None
 
 
 class EpisodeOut(BaseModel):

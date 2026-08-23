@@ -164,7 +164,12 @@ CREATE TABLE citations (
     -- explicitly per episode rather than derived from counting merged
     -- citation_ids — a combo can legitimately cite a source that was
     -- considered and then overridden, which isn't the same as agreement.
-    source_count  INTEGER NOT NULL DEFAULT 1
+    source_count  INTEGER NOT NULL DEFAULT 1,
+    -- #77: the full compiled research/methodology trail, split out of
+    -- `description` — which stays short and reader-facing. Nullable; a
+    -- citation with nothing more to say than its short description just
+    -- omits this, no disclosure rendered.
+    methodology_note TEXT
 );
 
 -- Every proposed episode status change, ever. This table IS the audit

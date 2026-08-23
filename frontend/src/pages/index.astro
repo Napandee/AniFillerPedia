@@ -294,12 +294,20 @@ function pageHref(targetPage: number): string {
   }
 
   .teaser-viewport {
-    overflow: hidden;
+    /* Only the horizontal axis should ever clip — `overflow: hidden`
+       (the shorthand) clips both axes, which silently cut the bottom off
+       every card the moment its real content height came in even a
+       fraction of a pixel taller than the container's computed height
+       (font-loading rounding, line-height quirks, etc.). Explicit
+       overflow-y: visible; is the fix, not a width/height tweak. */
+    overflow-x: hidden;
+    overflow-y: visible;
     -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
     mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
   }
   .teaser-track {
     display: flex;
+    align-items: flex-start;
     gap: 12px;
     width: max-content;
     animation: teaser-scroll 32s linear infinite;

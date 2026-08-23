@@ -3,7 +3,9 @@
 Astro app (SSR/on-demand, `@astrojs/node` standalone adapter — see
 `astro.config.mjs`), the Playful Fandom design system (`src/styles/tokens.css`,
 `src/components/`), and the typed API client codegen pipeline (#11). Scaffolded
-in #31; every other Phase 5 page/flow issue builds on top of this shell.
+in #31; every other page/flow (browse, series detail, submission forms,
+moderation queue, admin user management, account/privacy/license pages)
+builds on top of this shell — see `src/pages/` for the full list.
 
 ## Running locally
 
@@ -48,9 +50,14 @@ API_SCHEMA_URL=https://anifillerpedia.wiki/openapi.json npm run generate:api-cli
 
 ### Using the client
 
-```ts
-import { api } from "./src/api/client.js";
+Every real page creates its own client from the runtime base URL, rather
+than importing a shared pre-built instance — this is what lets the same
+build work against a local backend in dev and the live one in production:
 
+```ts
+import { createApiClient } from "../api/client";
+
+const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
 const { data, error } = await api.GET("/api/v1/series", {
   params: { query: { q: "naruto", limit: 5 } },
 });

@@ -10,12 +10,19 @@ see [docs/API.md](docs/API.md) instead.
 
 - **Correct an episode's status** — propose that episode N of some series
   is canon, filler, or mixed (partly both), backed by a citation.
+- **Submit a whole range at once** — if you already have a full (or
+  partial) breakdown for an untouched or partially-researched show, submit
+  canon/filler/mixed ranges for many episodes in one go instead of one at a
+  time. Requires being logged in — see **Bulk submission** below.
 - **Propose a series** that isn't in the catalog yet.
 - **Endorse or dispute** someone else's pending proposal, if you're
   logged in.
 
-None of these require an account. Submitting anonymously is a deliberate,
-supported path, not a limitation — see **Anonymous vs. signed in** below.
+None of the single-episode paths above require an account — submitting
+anonymously is a deliberate, supported path, not a limitation (see
+**Anonymous vs. signed in** below). Everything here works through the raw
+API directly; the site itself also has web forms for each of these under
+a series' own page, if you'd rather not call the API by hand.
 
 ## Submitting a correction
 
@@ -60,6 +67,51 @@ specific episode guide, a forum post cross-referencing manga chapters, an
 official chronology guide. "I remember watching it" isn't a citation.
 Prefer sources that state *why* an episode is filler/canon/mixed, not just
 that it is — the reasoning is what makes a claim checkable later.
+
+## Bulk submission
+
+For a series where you have a real breakdown covering many episodes — the
+same kind of Reddit/community range list this project's own hand-compiled
+data is sourced from — submit it in one call instead of one episode at a
+time:
+
+```
+POST /api/v1/series/{series_id}/contributions/bulk
+Content-Type: application/json
+
+{
+  "canon_ranges": "1-44, 48-49, 52-53",
+  "mixed_ranges": "45-47, 61",
+  "filler_ranges": "54-60, 98-99",
+  "citation": {
+    "description": "Community-compiled breakdown, corroborated by a second independent thread"
+  },
+  "license_accepted": true,
+  "dry_run": true
+}
+```
+
+- Ranges use the same comma-separated, hyphen-range notation as any
+  filler-guide breakdown you'd already have in hand. Any of the three
+  fields may be empty, but at least one episode must be declared across
+  all three combined.
+- **Requires a logged-in account** — unlike the single-episode path above,
+  one call here can create hundreds of pending contributions at once, so
+  an anonymous submission isn't offered for this endpoint.
+- The whole batch shares **one citation** — if different parts of your
+  breakdown need different sources, submit them as separate smaller
+  batches instead.
+- An episode number that appears in more than one of the three ranges is
+  rejected outright (`422`, before anything is written) — that's a
+  self-contradiction in the submission, not something to guess past.
+- Set `"dry_run": true` to see exactly what would happen — parsed episode
+  counts per status, and which episodes (if any) would be skipped because
+  someone else already has a pending contribution on them — without
+  writing anything. Drop it (or set it `false`) to actually submit; every
+  resulting contribution then goes through the exact same review process
+  (moderator approval or community vote) as a normal single-episode one.
+- A batch larger than 2000 episodes is rejected rather than partially
+  processed — comfortably above the largest show loaded so far.
 
 ## Proposing a new series
 
@@ -118,12 +170,15 @@ way.
 
 ## Anonymous vs. signed in
 
-You can submit corrections and series proposals without an account —
-that's intentional, not a gap. What requires being signed in:
+You can submit single-episode corrections and series proposals without an
+account — that's intentional, not a gap. What requires being signed in:
 
 - **Voting** (endorse/dispute) — a vote's value comes from being tied to
   an accountable track record, which an anonymous submission structurally
   can't have.
+- **Bulk submission** — one call can create hundreds of pending
+  contributions, a materially bigger surface than a single anonymous
+  correction; see **Bulk submission** above.
 - **Seeing your own history** — `GET /api/v1/contributions/mine`,
   `/api/v1/series-proposals/mine`, and `/api/v1/contributions/mine/votes`
   only make sense for an identifiable account.

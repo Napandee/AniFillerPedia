@@ -168,16 +168,40 @@ async def submit_bulk_contributions(
             submitted_by=current_user.id,
         )
         for episode_number, status in sorted(to_create.items()):
-            contribution_row = await contributions_repo.create(
-                session,
-                series_id=series_id,
-                episode_number=episode_number,
-                proposed_status=status,
-                proposed_note=None,
-                citation_id=citation_row.id,
-                submitted_by=current_user.id,
-                license_accepted=payload.license_accepted,
-            )
+            # Security review (#89): the pre-check above has a real TOCTOU
+            # gap — a concurrent submission could create a pending
+            # contribution for this exact episode between that check and
+            # this insert. schema.sql's partial unique index is the real
+            # backstop and correctly prevents a duplicate pending row, but
+            # without a savepoint here the resulting IntegrityError would
+            # poison this whole request's transaction, silently discarding
+            # every other episode already inserted in this same batch —
+            # a reliability bug, not a data-integrity one, but a bad
+            # failure mode for a batch that could be hundreds of episodes.
+            # A nested transaction (SAVEPOINT) scopes the rollback to just
+            # this one episode on conflict.
+            try:
+                async with session.begin_nested():
+                    contribution_row = await contributions_repo.create(
+                        session,
+                        series_id=series_id,
+                        episode_number=episode_number,
+                        proposed_status=status,
+                        proposed_note=None,
+                        citation_id=citation_row.id,
+                        submitted_by=current_user.id,
+                        license_accepted=payload.license_accepted,
+                    )
+            except IntegrityError:
+                existing = await contributions_repo.find_pending_for_episode(session, series_id, episode_number)
+                skipped.append(
+                    BulkSkippedEntry(
+                        episode_number=episode_number,
+                        existing_contribution_id=existing.id if existing else -1,
+                    )
+                )
+                continue
+
             # Same transaction as the insert above (CLAUDE.md Architecture)
             # — identical event shape to the single-submission path, so
             # #15's outbox consumers need no changes for bulk.

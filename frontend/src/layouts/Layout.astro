@@ -24,6 +24,20 @@ const DEFAULT_DESCRIPTION =
 
 const { title, description = DEFAULT_DESCRIPTION, image, noindex = false, structuredData } = Astro.props;
 
+// Security review (#89): structuredData's own fields (series.title,
+// synonyms) are reachable from the public series-proposal form
+// (services/series_proposals.py, no sanitization there or anywhere else
+// in that path) all the way to this JSON-LD script tag. JSON.stringify
+// alone does NOT escape "</script>", so a series titled
+// `Foo</script><script>...` would break out of this tag and execute on
+// every visitor of that series page. <-escaping every "<" is valid
+// inside a JSON string (doesn't change what JSON.parse produces) and
+// makes that breakout impossible — the standard safe pattern for
+// injecting JSON into an inline <script> tag.
+const structuredDataJson = structuredData
+  ? JSON.stringify(structuredData).replace(/</g, "\\u003c")
+  : undefined;
+
 // Astro.site comes from astro.config.mjs's `site` — the one place the real
 // production origin is written down.
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
@@ -60,7 +74,7 @@ const ogImage = image ? new URL(image, Astro.site).toString() : undefined;
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-    {structuredData && <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />}
+    {structuredDataJson && <script type="application/ld+json" is:inline set:html={structuredDataJson} />}
   </head>
   <body>
     <div class="shell">

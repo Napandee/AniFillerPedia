@@ -69,6 +69,7 @@ async def submit_contribution(
         url=payload.citation.url,
         description=payload.citation.description,
         submitted_by=current_user.id if current_user else None,
+        methodology_note=payload.citation.methodology_note,
     )
 
     contribution_row = await contributions_repo.create(
@@ -102,7 +103,11 @@ async def submit_contribution(
         proposed_status=contribution_row.proposed_status,
         proposed_note=contribution_row.proposed_note,
         citation=CitationOut(
-            id=citation_row.id, url=citation_row.url, description=citation_row.description
+            id=citation_row.id,
+            url=citation_row.url,
+            description=citation_row.description,
+            source_count=citation_row.source_count,
+            methodology_note=citation_row.methodology_note,
         ),
         submitted_at=contribution_row.submitted_at,
         review_status=contribution_row.review_status,
@@ -169,6 +174,7 @@ async def submit_bulk_contributions(
             url=payload.citation.url,
             description=payload.citation.description,
             submitted_by=current_user.id,
+            methodology_note=payload.citation.methodology_note,
         )
         for episode_number, status in sorted(to_create.items()):
             # Security review (#89): the pre-check above has a real TOCTOU

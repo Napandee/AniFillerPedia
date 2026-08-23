@@ -1,9 +1,10 @@
 """#49: general-purpose (not series-specific) loader for hand-compiled
 episode-data JSON files in the shape documented by data/bootstrap/README.md
-— `series_title`, `citation_sources` (list of {id, url, description}), and
-`episodes` (list of {episode_number, status, citation_ids, status_note?}).
-Looks up the target series by title and inserts pre-approved contributions
-+ episodes rows for anything not already loaded.
+— `series_title`, `citation_sources` (list of {id, url, description,
+methodology_note?}), and `episodes` (list of {episode_number, status,
+citation_ids, status_note?}). Looks up the target series by title and
+inserts pre-approved contributions + episodes rows for anything not
+already loaded.
 
 Citation merging: schema.sql's contributions/episodes tables take exactly
 ONE citation_id each, not a list, but the source JSON's episodes each cite
@@ -84,17 +85,29 @@ def find_series_id(cur, title: str) -> int | None:
     return row[0] if row else None
 
 
-def merge_citation(source_ids: tuple[str, ...], sources_by_id: dict) -> tuple[str | None, str]:
+def merge_citation(
+    source_ids: tuple[str, ...], sources_by_id: dict
+) -> tuple[str | None, str, str | None]:
+    """Returns (url, description, methodology_note). #77: methodology_note
+    is optional per source — a source with nothing more to say than its
+    short description just omits the key, same as the episodes' own
+    optional status_note.
+    """
     sources = [sources_by_id[sid] for sid in source_ids]
     if len(sources) == 1:
-        return sources[0].get("url"), sources[0]["description"]
-    parts = []
+        source = sources[0]
+        return source.get("url"), source["description"], source.get("methodology_note")
+    desc_parts = []
+    note_parts = []
     for source in sources:
         if source.get("url"):
-            parts.append(f"{source['description']} ({source['url']})")
+            desc_parts.append(f"{source['description']} ({source['url']})")
         else:
-            parts.append(source["description"])
-    return None, " / ".join(parts)
+            desc_parts.append(source["description"])
+        if source.get("methodology_note"):
+            note_parts.append(source["methodology_note"])
+    combined_note = " / ".join(note_parts) if note_parts else None
+    return None, " / ".join(desc_parts), combined_note
 
 
 def main() -> None:
@@ -136,10 +149,11 @@ def main() -> None:
     def get_or_create_citation(cur, combo: tuple[str, ...], source_count: int, episode_number: int) -> int:
         cached = citation_by_combo.get(combo)
         if cached is None:
-            url, description = merge_citation(combo, sources_by_id)
+            url, description, methodology_note = merge_citation(combo, sources_by_id)
             cur.execute(
-                "INSERT INTO citations (url, description, source_count) VALUES (%s, %s, %s) RETURNING id",
-                (url, description, source_count),
+                "INSERT INTO citations (url, description, source_count, methodology_note) "
+                "VALUES (%s, %s, %s, %s) RETURNING id",
+                (url, description, source_count, methodology_note),
             )
             citation_id = cur.fetchone()[0]
             # Committed on its own, independent of the contribution/episode
@@ -167,7 +181,8 @@ def main() -> None:
                 source_count = episode.get("source_count", 1)
                 try:
                     cur.execute(
-                        "SELECT e.status, e.title, c.source_count, e.citation_id "
+                        "SELECT e.status, e.title, c.source_count, e.citation_id, "
+                        "c.url, c.description, c.methodology_note "
                         "FROM episodes e JOIN citations c ON c.id = e.citation_id "
                         "WHERE e.series_id = %s AND e.episode_number = %s",
                         (series_id, episode_number),
@@ -176,10 +191,17 @@ def main() -> None:
 
                     if existing is not None and existing[0] == episode["status"]:
                         already_present += 1
-                        # #73/#74: non-contentious metadata syncs even
+                        # #73/#74/#77: non-contentious metadata syncs even
                         # without --allow-corrections — status is unchanged,
                         # so this isn't a moderation-sensitive rewrite.
-                        existing_title, existing_source_count, existing_citation_id = existing[1], existing[2], existing[3]
+                        (
+                            existing_title,
+                            existing_source_count,
+                            existing_citation_id,
+                            existing_url,
+                            existing_description,
+                            existing_methodology_note,
+                        ) = existing[1], existing[2], existing[3], existing[4], existing[5], existing[6]
                         synced = False
                         if title is not None and title != existing_title:
                             cur.execute(
@@ -191,6 +213,24 @@ def main() -> None:
                             cur.execute(
                                 "UPDATE citations SET source_count = %s WHERE id = %s",
                                 (source_count, existing_citation_id),
+                            )
+                            synced = True
+                        # #77: re-derive this episode's citation text from
+                        # the (possibly rewritten) citation_sources and sync
+                        # if it's drifted — this is what backfills the
+                        # description/methodology_note split for a show
+                        # loaded before #77 existed, just by re-running its
+                        # JSON file.
+                        combo = tuple(sorted(episode["citation_ids"]))
+                        new_url, new_description, new_methodology_note = merge_citation(combo, sources_by_id)
+                        if (new_url, new_description, new_methodology_note) != (
+                            existing_url,
+                            existing_description,
+                            existing_methodology_note,
+                        ):
+                            cur.execute(
+                                "UPDATE citations SET url = %s, description = %s, methodology_note = %s WHERE id = %s",
+                                (new_url, new_description, new_methodology_note, existing_citation_id),
                             )
                             synced = True
                         if synced:

@@ -5,12 +5,14 @@
     {
       "id": "reddit-canon-mixed-filler-breakdown",
       "url": null,
-      "description": "Community-compiled Reddit breakdown of Bleach's manga-canon/mixed/filler episodes, corroborated by a second independent Reddit thread with an identical episode-by-episode breakdown. Exact thread URLs not recorded at compile time."
+      "description": "Community-compiled Reddit breakdown of Bleach's manga-canon/mixed/filler episodes, corroborated by a second independent Reddit thread with an identical episode-by-episode breakdown.",
+      "methodology_note": "Exact thread URLs not recorded at compile time."
     },
     {
       "id": "radio-times-filler-guide",
       "url": null,
-      "description": "Radio Times filler-only episode guide for Bleach, used as an independent cross-reference against the Reddit breakdown above. Agreed on every episode except 227 (see that episode's status_note). Exact article URL not recorded at compile time."
+      "description": "Radio Times filler-only episode guide for Bleach, used as an independent cross-reference against the Reddit breakdown above.",
+      "methodology_note": "Agreed on every episode except 227 (see that episode's status_note). Exact article URL not recorded at compile time."
     }
   ],
   "episodes": [

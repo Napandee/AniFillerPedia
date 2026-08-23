@@ -150,3 +150,20 @@ applies them even on a re-run where the status is unchanged (no
   citation covers episodes 49/151 too, where Radio Times was silent
   rather than agreeing) — 2 was picked as the value that's true for every
   episode sharing that citation, not the maximum true for any of them.
+
+## #77 (2026-08-23): citation_sources gains an optional methodology_note
+
+Each `citation_sources` entry may now carry an optional `"methodology_note"`
+key alongside `"description"` — splitting what used to be one long paragraph
+mixing a reader-facing source claim with internal research notes ("per
+project decision 2026-08-22", "not recorded at compile time") into two:
+`description` stays short and reader-facing, `methodology_note` holds
+everything else, shown behind a "How was this verified?" disclosure on the
+episode detail panel rather than inline with the main citation text.
+
+All six already-loaded datasets' `citation_sources` were rewritten into
+this shape — no content dropped, just relocated. `load_episodes.py` syncs
+the split into already-loaded episodes' citation rows on a plain re-run
+(same non-contentious-metadata treatment as `title`/`source_count` above),
+which is how the six existing shows got backfilled without a separate
+one-off script.

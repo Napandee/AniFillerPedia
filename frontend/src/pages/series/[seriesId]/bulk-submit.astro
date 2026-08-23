@@ -1,0 +1,433 @@
+---
+// #80: bulk episode-data submission — reuses the community's own existing
+// range-notation shorthand ("1-44, 48-49") rather than a new format
+// contributors would have to learn. POST /api/v1/series/{id}/contributions/
+// bulk. Requires login (unlike the single-episode form) — one call here
+// can create hundreds of pending contributions at once, a materially
+// bigger abuse surface than #12's anonymous single-episode path was
+// scoped for.
+//
+// Three-stage flow, one route, no client-side JS: form -> review (a
+// dry_run=true call to the same endpoint, showing exactly what WOULD
+// happen) -> confirm (the real dry_run=false call). Reusing the endpoint
+// for the preview means the parsing/validation logic exists in exactly one
+// place, not duplicated in a second language for a live client-side check.
+import Layout from "../../../layouts/Layout.astro";
+import Button from "../../../components/Button.astro";
+import { createApiClient } from "../../../api/client";
+import LicenseWhyDisclosure from "../../../components/LicenseWhyDisclosure.astro";
+
+const { seriesId } = Astro.params;
+const seriesIdNum = Number(seriesId);
+const hasValidParams = Number.isFinite(seriesIdNum) && seriesIdNum > 0;
+
+const user = Astro.locals.user;
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+type Stage = "form" | "review" | "success";
+let stage: Stage = "form";
+let errorMessage: string | null = null;
+let overlapDetail: Record<string, number[]> | null = null;
+
+type BulkEntry = { episode_number: number; contribution_id: number | null; proposed_status: string };
+type SkippedEntry = { episode_number: number; existing_contribution_id: number };
+type BulkResult = { declared_count: number; created: BulkEntry[]; skipped_conflicts: SkippedEntry[] };
+let reviewResult: BulkResult | null = null;
+let successResult: BulkResult | null = null;
+
+let values = {
+  canon_ranges: "",
+  mixed_ranges: "",
+  filler_ranges: "",
+  citation_url: "",
+  citation_description: "",
+  license_accepted: false,
+};
+
+// Same "422 body shape varies at runtime" reality as submit.astro's own
+// helper — FastAPI's own request-validation 422 uses the standard array
+// shape, but every business-rule 422 raised in episode_ranges.py/services/
+// contributions.py uses a plain dict detail (message, plus one of
+// overlaps/declared_count+max_batch_size). Handle both.
+function formatValidationError(body: unknown): string {
+  if (body && typeof body === "object" && "detail" in body) {
+    const detail = (body as { detail: unknown }).detail;
+    if (typeof detail === "string") {
+      return detail;
+    }
+    if (Array.isArray(detail)) {
+      return detail
+        .map((item) => {
+          if (item && typeof item === "object" && "msg" in item) {
+            return String((item as { msg: string }).msg);
+          }
+          return "Invalid value.";
+        })
+        .join("; ");
+    }
+    if (detail && typeof detail === "object" && "message" in detail) {
+      const d = detail as { message: string; overlaps?: Record<string, number[]> };
+      if (d.overlaps) {
+        overlapDetail = d.overlaps;
+      }
+      return d.message;
+    }
+  }
+  return "Please check your submission and try again.";
+}
+
+if (hasValidParams && user && Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const formStage = String(form.get("stage") ?? "review");
+  values = {
+    canon_ranges: String(form.get("canon_ranges") ?? ""),
+    mixed_ranges: String(form.get("mixed_ranges") ?? ""),
+    filler_ranges: String(form.get("filler_ranges") ?? ""),
+    citation_url: String(form.get("citation_url") ?? ""),
+    citation_description: String(form.get("citation_description") ?? ""),
+    license_accepted: form.get("license_accepted") === "yes",
+  };
+
+  const isConfirm = formStage === "confirm";
+  const api = createApiClient(baseUrl);
+  const { data, error, response } = await api.POST("/api/v1/series/{series_id}/contributions/bulk", {
+    params: { path: { series_id: seriesIdNum } },
+    body: {
+      canon_ranges: values.canon_ranges,
+      mixed_ranges: values.mixed_ranges,
+      filler_ranges: values.filler_ranges,
+      citation: {
+        url: values.citation_url.trim() ? values.citation_url.trim() : undefined,
+        description: values.citation_description,
+      },
+      license_accepted: values.license_accepted,
+      dry_run: !isConfirm,
+    },
+    headers: { cookie: Astro.request.headers.get("cookie") ?? "" },
+  });
+
+  if (!error) {
+    if (isConfirm) {
+      stage = "success";
+      successResult = data;
+    } else {
+      stage = "review";
+      reviewResult = data;
+    }
+  } else if (response.status === 422) {
+    errorMessage = formatValidationError(error);
+  } else if (response.status === 404) {
+    errorMessage = "Series not found.";
+  } else {
+    errorMessage = "Something went wrong — please try again.";
+  }
+}
+
+const countsByStatus = (entries: BulkEntry[]) => {
+  const counts: Record<string, number> = { canon: 0, mixed: 0, filler: 0 };
+  for (const entry of entries) {
+    counts[entry.proposed_status] = (counts[entry.proposed_status] ?? 0) + 1;
+  }
+  return counts;
+};
+---
+
+<Layout title="Bulk-submit episode data — AniFillerPedia" noindex>
+  {!hasValidParams && (
+    <section class="panel">
+      <p class="lead">This link is missing a valid series reference.</p>
+      <Button href="/" variant="ghost">Back to home</Button>
+    </section>
+  )}
+
+  {hasValidParams && !user && (
+    <section class="panel">
+      <h1 class="disp">Bulk-submit episode data</h1>
+      <p class="lead">
+        Submitting canon/filler/mixed data for many episodes at once requires being logged in —
+        one submission here can create hundreds of pending contributions, so we ask for an
+        accountable identity behind it, unlike a single-episode correction.
+      </p>
+      <Button href="/login" variant="primary">Log in to continue</Button>
+    </section>
+  )}
+
+  {hasValidParams && user && stage === "success" && successResult && (
+    <section class="panel success">
+      <div class="success-icon">✓</div>
+      <h1 class="disp">Submitted!</h1>
+      <p class="lead">
+        {successResult.created.length} contribution{successResult.created.length === 1 ? "" : "s"} submitted
+        for review{successResult.skipped_conflicts.length > 0 && (
+          <>, {successResult.skipped_conflicts.length} skipped (already had a pending contribution
+          from someone else)</>
+        )}. Each will go live once a moderator approves it or the community's trust-weighted vote
+        crosses the auto-approval threshold.
+      </p>
+      <Button href={`/series/${seriesIdNum}`} variant="primary">Back to series</Button>
+    </section>
+  )}
+
+  {hasValidParams && user && stage === "review" && reviewResult && (
+    <section class="panel">
+      <h1 class="disp">Review before submitting</h1>
+      <p class="subhead">Series #{seriesIdNum}</p>
+
+      <div class="review-summary">
+        <p class="review-line">
+          <strong>{reviewResult.declared_count}</strong> episode{reviewResult.declared_count === 1 ? "" : "s"} declared —{" "}
+          {Object.entries(countsByStatus(reviewResult.created)).map(([status, count], i) => (
+            <>{i > 0 && ", "}<strong>{count}</strong> {status}</>
+          ))}
+        </p>
+        {reviewResult.skipped_conflicts.length > 0 && (
+          <div class="notice notice--duplicate">
+            <p>
+              <strong>{reviewResult.skipped_conflicts.length}</strong> episode
+              {reviewResult.skipped_conflicts.length === 1 ? "" : "s"} already {reviewResult.skipped_conflicts.length === 1 ? "has" : "have"} a
+              pending contribution from someone else and will be skipped:{" "}
+              {reviewResult.skipped_conflicts.map((s) => `#${s.episode_number}`).join(", ")}.
+              Endorse or dispute those directly instead.
+            </p>
+          </div>
+        )}
+        {reviewResult.created.length === 0 && (
+          <div class="notice notice--error">
+            <p>Every declared episode already has a pending contribution — nothing new would be created.</p>
+          </div>
+        )}
+      </div>
+
+      <form method="POST">
+        <input type="hidden" name="canon_ranges" value={values.canon_ranges} />
+        <input type="hidden" name="mixed_ranges" value={values.mixed_ranges} />
+        <input type="hidden" name="filler_ranges" value={values.filler_ranges} />
+        <input type="hidden" name="citation_url" value={values.citation_url} />
+        <input type="hidden" name="citation_description" value={values.citation_description} />
+        {values.license_accepted && <input type="hidden" name="license_accepted" value="yes" />}
+        <div class="review-actions">
+          <Button type="submit" name="stage" value="form" variant="ghost">Edit</Button>
+          <Button
+            type="submit"
+            name="stage"
+            value="confirm"
+            variant="primary"
+            disabled={reviewResult.created.length === 0}
+          >
+            Confirm and submit {reviewResult.created.length} contribution{reviewResult.created.length === 1 ? "" : "s"}
+          </Button>
+        </div>
+      </form>
+    </section>
+  )}
+
+  {hasValidParams && user && stage === "form" && (
+    <section class="panel">
+      <h1 class="disp">Bulk-submit episode data</h1>
+      <p class="subhead">Series #{seriesIdNum}</p>
+      <p class="lead">
+        Paste episode ranges the same way you'd write them out by hand — e.g. <code>1-44, 48-49, 52-53</code>.
+        Any of the three may be left blank; at least one is required.
+      </p>
+
+      {errorMessage && (
+        <div class="notice notice--error">
+          <p>{errorMessage}</p>
+          {overlapDetail && (
+            <ul class="overlap-list">
+              {Object.entries(overlapDetail).map(([pair, episodes]) => (
+                <li>{pair.replace("_", " / ")}: {(episodes as number[]).join(", ")}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      <form method="POST">
+        <label class="field">
+          <span>Canon episodes</span>
+          <textarea name="canon_ranges" rows="2" placeholder="1-44, 48-49, 52-53" set:text={values.canon_ranges} />
+        </label>
+        <label class="field">
+          <span>Mixed canon/filler episodes</span>
+          <textarea name="mixed_ranges" rows="2" placeholder="45-47, 61" set:text={values.mixed_ranges} />
+        </label>
+        <label class="field">
+          <span>Filler episodes</span>
+          <textarea name="filler_ranges" rows="2" placeholder="54-60, 98-99" set:text={values.filler_ranges} />
+        </label>
+
+        <label class="field">
+          <span>Citation URL <span class="optional">(optional)</span></span>
+          <input type="url" name="citation_url" value={values.citation_url} placeholder="https://..." />
+        </label>
+
+        <label class="field">
+          <span>Citation description <span class="required">(required)</span></span>
+          <textarea
+            name="citation_description"
+            rows="3"
+            required
+            minlength="1"
+            placeholder="e.g. Community-compiled Reddit breakdown, corroborated by a second independent thread..."
+            set:text={values.citation_description}
+          />
+        </label>
+
+        <p class="login-note">
+          Submitting as <strong>{user.display_name ?? "you"}</strong> — every episode in this batch
+          will cite the same source above.
+        </p>
+
+        <label class="field field--checkbox">
+          <input type="checkbox" name="license_accepted" value="yes" required checked={values.license_accepted} />
+          <span>
+            I agree this contribution is licensed under
+            {" "}<a href="/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>, per
+            AniFillerPedia's <a href="/data-license" target="_blank" rel="noopener">DATA_LICENSE</a>.
+            <span class="required"> (required)</span>
+            <LicenseWhyDisclosure reason="every contribution needs traceable proof it was released under this license — that's what keeps the dataset freely reusable, Wikipedia-style." />
+          </span>
+        </label>
+
+        <Button type="submit" name="stage" value="review" variant="primary">Review submission</Button>
+      </form>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 28px 32px;
+    margin: 24px 0;
+  }
+  .success {
+    text-align: center;
+  }
+  .success-icon {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 50%;
+    background: var(--color-status-canon);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 auto 16px;
+  }
+  h1 {
+    color: var(--color-heading);
+    font-size: 22px;
+    margin: 0 0 6px;
+  }
+  .subhead {
+    color: var(--color-text-muted);
+    font-weight: 700;
+    font-size: 13px;
+    margin: 0 0 20px;
+  }
+  .lead {
+    color: var(--color-text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  code {
+    background: var(--color-surface-pending);
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-size: 13px;
+  }
+  .notice {
+    border-radius: var(--radius-card);
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin: 0 0 18px;
+  }
+  .notice p {
+    margin: 0 0 6px;
+  }
+  .notice p:last-child {
+    margin-bottom: 0;
+  }
+  .notice--error {
+    background: #fde8ec;
+    color: var(--color-dispute);
+  }
+  .notice--duplicate {
+    background: var(--color-surface-pending);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-status-pending);
+  }
+  .overlap-list {
+    margin: 6px 0 0;
+    padding-left: 18px;
+  }
+  .review-summary {
+    margin-bottom: 20px;
+  }
+  .review-line {
+    font-size: 14px;
+    color: var(--color-text);
+    margin: 0 0 14px;
+  }
+  .review-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .field {
+    display: block;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+  .field span:first-child {
+    display: block;
+    margin-bottom: 6px;
+  }
+  .optional {
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
+  .required {
+    font-weight: 700;
+    color: var(--color-dispute);
+  }
+  input[type="url"],
+  textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: var(--color-text);
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 9px 12px;
+    resize: vertical;
+  }
+  .login-note {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 16px;
+  }
+  .field--checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .field--checkbox input {
+    margin-top: 3px;
+  }
+  .field--checkbox span:first-child {
+    margin-bottom: 0;
+  }
+  .field--checkbox a {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+</style>

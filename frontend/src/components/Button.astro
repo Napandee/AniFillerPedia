@@ -3,13 +3,20 @@ interface Props {
   variant?: "primary" | "endorse" | "dispute" | "ghost";
   type?: "button" | "submit" | "reset";
   href?: string;
+  // #80: a submit button's own name/value distinguishes which of several
+  // buttons in one <form> triggered the POST (e.g. "Edit" vs "Confirm and
+  // submit") — plain HTML form-submission behavior, not custom to this
+  // component, but it needs forwarding or it's silently dropped.
+  name?: string;
+  value?: string;
+  disabled?: boolean;
 }
 
-const { variant = "primary", type = "button", href } = Astro.props;
+const { variant = "primary", type = "button", href, name, value, disabled } = Astro.props;
 const Tag = href ? "a" : "button";
 ---
 
-<Tag class={`btn btn--${variant}`} {...(href ? { href } : { type })}>
+<Tag class={`btn btn--${variant}`} {...(href ? { href } : { type, name, value, disabled })}>
   <slot />
 </Tag>
 
@@ -43,5 +50,9 @@ const Tag = href ? "a" : "button";
   .btn--ghost {
     color: var(--color-text-muted);
     background: transparent;
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 </style>

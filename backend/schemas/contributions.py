@@ -133,6 +133,63 @@ class MyVoteOut(BaseModel):
     created_at: datetime
 
 
+class BulkContributionCreate(BaseModel):
+    """#80: reuses the community's own existing range-notation shorthand
+    ("1-44, 48-49, 52-53") rather than a new format contributors would
+    have to learn — the exact style already used to hand-compile every
+    dataset in data/bootstrap/. Any of the three may be empty (a
+    submission doesn't need all three categories), but at least one
+    episode must be declared across all three combined.
+    """
+
+    canon_ranges: str = ""
+    mixed_ranges: str = ""
+    filler_ranges: str = ""
+    citation: CitationIn
+    license_accepted: bool
+    # When true, parses/validates (including the #20 pending-conflict
+    # check) and reports exactly what WOULD happen, but writes nothing —
+    # the frontend's "review before you submit" step reuses this same
+    # endpoint rather than duplicating the parsing/validation logic in
+    # two languages.
+    dry_run: bool = False
+
+
+class BulkCreatedEntry(BaseModel):
+    episode_number: int
+    # None only when dry_run=True — nothing has actually been created yet
+    # to have a real id.
+    contribution_id: int | None
+    proposed_status: str
+
+
+class BulkSkippedEntry(BaseModel):
+    """#20's one-pending-per-episode rule, applied per episode within a
+    batch rather than failing the whole submission — the rest of the
+    batch still goes through; this just tells the submitter which numbers
+    didn't, and points at the existing contribution so they can endorse/
+    dispute it directly instead.
+    """
+
+    episode_number: int
+    existing_contribution_id: int
+
+
+class BulkContributionResult(BaseModel):
+    dry_run: bool
+    declared_count: int
+    created: list[BulkCreatedEntry]
+    skipped_conflicts: list[BulkSkippedEntry]
+
+
+class BulkRangeError(BaseModel):
+    """422 response body for a malformed/self-contradictory/oversized
+    range submission — caught before any database write happens.
+    """
+
+    detail: dict
+
+
 class ContributionHistoryEntry(BaseModel):
     id: int
     proposed_status: str

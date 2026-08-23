@@ -5,12 +5,14 @@
     {
       "id": "reddit-canon-mixed-filler-breakdown",
       "url": null,
-      "description": "Community-compiled Reddit breakdown of Fairy Tail's manga-canon/mixed/filler episodes (including a distinct 'anime canon' category, mapped to canon here per project decision 2026-08-22), corroborated by a second independent Reddit thread with an identical breakdown. Numbers episodes continuously across all three real Fairy Tail TV series (2009/2014/2018) as one 1-328 run, per common filler-guide convention; this project splits it back into each series' own absolute numbering to match its real AniList catalog entries. Exact thread URLs not recorded at compile time."
+      "description": "Community-compiled Reddit breakdown of Fairy Tail's manga-canon/mixed/filler episodes, corroborated by a second independent Reddit thread with an identical breakdown.",
+      "methodology_note": "Includes a distinct 'anime canon' category, mapped to canon here per project decision 2026-08-22. Numbers episodes continuously across all three real Fairy Tail TV series (2009/2014/2018) as one 1-328 run, per common filler-guide convention; this project splits it back into each series' own absolute numbering to match its real AniList catalog entries. Exact thread URLs not recorded at compile time."
     },
     {
       "id": "radio-times-filler-guide",
       "url": null,
-      "description": "Radio Times filler/optional-viewing guide for Fairy Tail, used as an independent cross-reference against the Reddit breakdown above for the original 2009 series (episodes 1-175). Agreed on every episode it covered except two (49, 151 — Radio Times doesn't mention either; resolved in favor of the two-source Reddit agreement, same as Bleach episode 227). Didn't cover the 2014/2018 continuations at all. Exact article URL not recorded at compile time."
+      "description": "Radio Times filler/optional-viewing guide for Fairy Tail, used as an independent cross-reference against the Reddit breakdown above for the original 2009 series (episodes 1-175).",
+      "methodology_note": "Agreed on every episode it covered except two (49, 151 — Radio Times doesn't mention either; resolved in favor of the two-source Reddit agreement, same as Bleach episode 227). Didn't cover the 2014/2018 continuations at all. Exact article URL not recorded at compile time."
     }
   ],
   "episodes": [

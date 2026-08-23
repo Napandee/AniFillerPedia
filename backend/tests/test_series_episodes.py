@@ -477,6 +477,42 @@ async def test_episodes_list_citation_source_count_reflects_corroboration(
 
 
 @pytest.mark.asyncio
+async def test_episodes_list_methodology_note_null_by_default(client: AsyncClient) -> None:
+    """#77: a citation with nothing more to say than its short description
+    must come back null, not error or a missing key — the frontend renders
+    no disclosure at all in that case.
+    """
+    series_id = await _make_series("NoMethodologyNote", anilist_id=900305)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["citation"]["methodology_note"] is None
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_includes_methodology_note_when_set(client: AsyncClient) -> None:
+    series_id = await _make_series("HasMethodologyNote", anilist_id=900306)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE citations SET methodology_note = :m WHERE id = :cid"),
+                    {"cid": citation_id, "m": f"{TEST_PREFIX}full research trail"},
+                )
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["citation"]["methodology_note"] == f"{TEST_PREFIX}full research trail"
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_episode_history_reflects_resolution_and_votes(client: AsyncClient) -> None:
     series_id = await _make_series("Delta", anilist_id=900004)
     citation_id = await _make_citation()

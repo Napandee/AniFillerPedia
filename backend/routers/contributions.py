@@ -6,6 +6,8 @@ import services.turnstile as turnstile_service
 from core.db import get_session
 from core.deps import get_current_user, get_current_user_optional, require_moderator
 from schemas.contributions import (
+    BulkContributionCreate,
+    BulkContributionResult,
     ContributionCreate,
     ContributionOut,
     ContributionReject,
@@ -50,6 +52,18 @@ async def submit_contribution(
     # still doesn't auto-commit (#8's own fix note, core/db.py), so the
     # explicit commit below is still required either way.
     result = await contributions_service.submit_contribution(session, payload, current_user)
+    await session.commit()
+    return result
+
+
+@router.post("/series/{series_id}/contributions/bulk", response_model=BulkContributionResult)
+async def submit_bulk_contributions(
+    series_id: int,
+    payload: BulkContributionCreate,
+    current_user=Depends(get_current_user),  # noqa: ANN001 - Row, auth required (#80, unlike single-episode submission)
+    session: AsyncSession = Depends(get_session),
+) -> BulkContributionResult:
+    result = await contributions_service.submit_bulk_contributions(session, series_id, payload, current_user)
     await session.commit()
     return result
 

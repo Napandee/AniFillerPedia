@@ -291,6 +291,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/series/{series_id}/contributions/bulk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Bulk Contributions */
+        post: operations["submit_bulk_contributions_api_v1_series__series_id__contributions_bulk_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/contributions/mine": {
         parameters: {
             query?: never;
@@ -557,6 +574,74 @@ export interface components {
             trust_score: number;
             /** Created At */
             created_at: string;
+        };
+        /**
+         * BulkContributionCreate
+         * @description #80: reuses the community's own existing range-notation shorthand
+         *     ("1-44, 48-49, 52-53") rather than a new format contributors would
+         *     have to learn — the exact style already used to hand-compile every
+         *     dataset in data/bootstrap/. Any of the three may be empty (a
+         *     submission doesn't need all three categories), but at least one
+         *     episode must be declared across all three combined.
+         */
+        BulkContributionCreate: {
+            /**
+             * Canon Ranges
+             * @default
+             */
+            canon_ranges: string;
+            /**
+             * Mixed Ranges
+             * @default
+             */
+            mixed_ranges: string;
+            /**
+             * Filler Ranges
+             * @default
+             */
+            filler_ranges: string;
+            citation: components["schemas"]["CitationIn"];
+            /** License Accepted */
+            license_accepted: boolean;
+            /**
+             * Dry Run
+             * @default false
+             */
+            dry_run: boolean;
+        };
+        /** BulkContributionResult */
+        BulkContributionResult: {
+            /** Dry Run */
+            dry_run: boolean;
+            /** Declared Count */
+            declared_count: number;
+            /** Created */
+            created: components["schemas"]["BulkCreatedEntry"][];
+            /** Skipped Conflicts */
+            skipped_conflicts: components["schemas"]["BulkSkippedEntry"][];
+        };
+        /** BulkCreatedEntry */
+        BulkCreatedEntry: {
+            /** Episode Number */
+            episode_number: number;
+            /** Contribution Id */
+            contribution_id: number | null;
+            /** Proposed Status */
+            proposed_status: string;
+        };
+        /**
+         * BulkSkippedEntry
+         * @description #20's one-pending-per-episode rule, applied per episode within a
+         *     batch rather than failing the whole submission — the rest of the
+         *     batch still goes through; this just tells the submitter which numbers
+         *     didn't, and points at the existing contribution so they can endorse/
+         *     dispute it directly instead.
+         */
+        BulkSkippedEntry: {
+            /** Episode Number */
+            episode_number: number;
+            /** Existing Contribution Id */
+            existing_contribution_id: number;
         };
         /** CitationIn */
         CitationIn: {
@@ -1577,6 +1662,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DuplicatePendingContribution"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_bulk_contributions_api_v1_series__series_id__contributions_bulk_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                series_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkContributionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkContributionResult"];
                 };
             };
             /** @description Validation Error */

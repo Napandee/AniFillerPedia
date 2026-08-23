@@ -41,6 +41,31 @@ async def find_pending_for_episode(
     return result.first()
 
 
+async def find_pending_for_episodes(
+    session: AsyncSession, series_id: int, episode_numbers: list[int]
+) -> dict[int, int]:
+    """#80's batched counterpart to find_pending_for_episode above — one
+    query for a whole bulk-submission batch instead of one round trip per
+    episode number. Returns {episode_number: existing_contribution_id} for
+    whichever of the given numbers already has a pending contribution;
+    numbers with none simply aren't keys in the result.
+    """
+    if not episode_numbers:
+        return {}
+    result = await session.execute(
+        text(
+            """
+            SELECT episode_number, id FROM contributions
+            WHERE series_id = :series_id
+              AND episode_number = ANY(:episode_numbers)
+              AND review_status = 'pending'
+            """
+        ),
+        {"series_id": series_id, "episode_numbers": episode_numbers},
+    )
+    return {row.episode_number: row.id for row in result.fetchall()}
+
+
 async def create(
     session: AsyncSession,
     *,

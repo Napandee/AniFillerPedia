@@ -1,0 +1,111 @@
+"""#80: parses the community's own existing shorthand for episode ranges
+("1-44, 48-49, 52-53") into episode-number sets — the exact notation
+already used throughout this project's hand-compiled research (see
+data/bootstrap/*.json's own sourcing) and the natural format a contributor
+pasting a Reddit/AniList-community breakdown already has in hand.
+
+Kept as pure functions, no DB access — easy to unit-test and reusable from
+a dry-run preview without touching the database.
+"""
+
+import re
+
+_RANGE_PART = re.compile(r"^(\d+)(?:-(\d+))?$")
+
+MAX_BATCH_SIZE = 2000
+
+
+class RangeParseError(Exception):
+    """Raised for malformed input the caller couldn't have produced by
+    accident from a real range list — a genuinely wrong paste, not just an
+    empty field."""
+
+
+def parse_ranges(raw: str) -> set[int]:
+    """"1-5, 8, 10-12" -> {1,2,3,4,5,8,10,11,12}. Empty/whitespace-only
+    input is a valid "nothing in this category" and returns an empty set,
+    not an error — not every submission has all three categories.
+    """
+    raw = raw.strip()
+    if not raw:
+        return set()
+
+    result: set[int] = set()
+    for part in raw.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        match = _RANGE_PART.match(part)
+        if not match:
+            raise RangeParseError(f"Could not parse {part!r} as an episode number or range")
+        start = int(match.group(1))
+        end = int(match.group(2)) if match.group(2) else start
+        if start < 1 or end < start:
+            raise RangeParseError(f"Invalid range {part!r}")
+        result.update(range(start, end + 1))
+    return result
+
+
+class BulkRangeValidationError(Exception):
+    """Carries a structured detail dict, same shape the router turns
+    straight into a 422 response body."""
+
+    def __init__(self, detail: dict):
+        self.detail = detail
+        super().__init__(str(detail))
+
+
+def parse_and_validate(
+    canon_ranges: str, mixed_ranges: str, filler_ranges: str
+) -> dict[int, str]:
+    """Returns {episode_number: status}. Raises BulkRangeValidationError
+    (never silently drops or guesses) for:
+    - malformed input in any of the three fields
+    - an episode number declared in more than one category — a genuine
+      self-contradiction, not a moderation decision
+    - a combined batch bigger than MAX_BATCH_SIZE
+    - nothing declared at all across all three fields
+    """
+    try:
+        canon = parse_ranges(canon_ranges)
+        mixed = parse_ranges(mixed_ranges)
+        filler = parse_ranges(filler_ranges)
+    except RangeParseError as exc:
+        raise BulkRangeValidationError({"message": str(exc)}) from exc
+
+    overlaps = {
+        "canon_mixed": sorted(canon & mixed),
+        "canon_filler": sorted(canon & filler),
+        "mixed_filler": sorted(mixed & filler),
+    }
+    real_overlaps = {k: v for k, v in overlaps.items() if v}
+    if real_overlaps:
+        raise BulkRangeValidationError(
+            {
+                "message": (
+                    "The same episode number appears in more than one category — "
+                    "fix the overlap before submitting."
+                ),
+                "overlaps": real_overlaps,
+            }
+        )
+
+    by_episode = {ep: "canon" for ep in canon}
+    by_episode.update({ep: "mixed" for ep in mixed})
+    by_episode.update({ep: "filler" for ep in filler})
+
+    if not by_episode:
+        raise BulkRangeValidationError(
+            {"message": "No episodes declared — fill in at least one of canon/mixed/filler."}
+        )
+
+    if len(by_episode) > MAX_BATCH_SIZE:
+        raise BulkRangeValidationError(
+            {
+                "message": f"Batch too large: {len(by_episode)} episodes declared, max is {MAX_BATCH_SIZE}.",
+                "declared_count": len(by_episode),
+                "max_batch_size": MAX_BATCH_SIZE,
+            }
+        )
+
+    return by_episode

@@ -5,7 +5,8 @@
     {
       "id": "reddit-500ep-breakdown",
       "url": null,
-      "description": "Community-compiled Reddit breakdown covering all 500 episodes of Naruto: Shippuuden (manga canon / mixed canon-filler / filler, plus one 'anime canon' episode mapped to canon here), corroborated by several other closely-matching Reddit threads. Exact thread URLs not recorded at compile time."
+      "description": "Community-compiled Reddit breakdown covering all 500 episodes of Naruto: Shippuuden, corroborated by several other closely-matching Reddit threads.",
+      "methodology_note": "Covers manga canon / mixed canon-filler / filler, plus one 'anime canon' episode mapped to canon here. Exact thread URLs not recorded at compile time."
     }
   ],
   "episodes": [

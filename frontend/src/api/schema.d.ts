@@ -578,6 +578,8 @@ export interface components {
              * @default 1
              */
             source_count: number;
+            /** Methodology Note */
+            methodology_note?: string | null;
         };
         /** ContributionCreate */
         ContributionCreate: {

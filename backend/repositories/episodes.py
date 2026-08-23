@@ -12,6 +12,7 @@ _SELECT_WITH_CITATION = """
            e.title, e.updated_at,
            c.id AS citation_id, c.url AS citation_url,
            c.description AS citation_description, c.source_count AS citation_source_count,
+           c.methodology_note AS citation_methodology_note,
            ses.aired_at
     FROM episodes e
     JOIN citations c ON c.id = e.citation_id

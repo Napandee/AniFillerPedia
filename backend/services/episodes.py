@@ -22,6 +22,7 @@ def _row_to_episode_out(row: Row) -> EpisodeOut:
             url=row.citation_url,
             description=row.citation_description,
             source_count=row.citation_source_count,
+            methodology_note=row.citation_methodology_note,
         ),
         updated_at=row.updated_at,
         aired_at=row.aired_at,

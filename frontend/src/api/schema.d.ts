@@ -743,6 +743,8 @@ export interface components {
             url?: string | null;
             /** Description */
             description: string;
+            /** Methodology Note */
+            methodology_note?: string | null;
         };
         /** CitationOut */
         CitationOut: {

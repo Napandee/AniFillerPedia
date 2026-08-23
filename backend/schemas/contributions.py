@@ -8,6 +8,13 @@ from schemas.episodes import CitationOut
 class CitationIn(BaseModel):
     url: str | None = None
     description: str = Field(min_length=1)
+    # #83: the field already exists on every citation row (#77) and is
+    # already returned to every reader via CitationOut — withholding it
+    # from public submissions would be an arbitrary asymmetry, not a
+    # deliberate simplification, since the schema already treats every
+    # citation identically regardless of who authored it. Optional, same
+    # as proposed_note/status_note elsewhere in this form.
+    methodology_note: str | None = None
 
 
 class ContributionCreate(BaseModel):

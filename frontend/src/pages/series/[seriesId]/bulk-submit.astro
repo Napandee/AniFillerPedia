@@ -41,6 +41,9 @@ let values = {
   filler_ranges: "",
   citation_url: "",
   citation_description: "",
+  // #83: optional — shared across the whole batch, same as citation_url/
+  // citation_description.
+  citation_methodology_note: "",
   license_accepted: false,
 };
 
@@ -85,6 +88,7 @@ if (hasValidParams && user && Astro.request.method === "POST") {
     filler_ranges: String(form.get("filler_ranges") ?? ""),
     citation_url: String(form.get("citation_url") ?? ""),
     citation_description: String(form.get("citation_description") ?? ""),
+    citation_methodology_note: String(form.get("citation_methodology_note") ?? ""),
     license_accepted: form.get("license_accepted") === "yes",
   };
 
@@ -99,6 +103,9 @@ if (hasValidParams && user && Astro.request.method === "POST") {
       citation: {
         url: values.citation_url.trim() ? values.citation_url.trim() : undefined,
         description: values.citation_description,
+        methodology_note: values.citation_methodology_note.trim()
+          ? values.citation_methodology_note.trim()
+          : undefined,
       },
       license_accepted: values.license_accepted,
       dry_run: !isConfirm,
@@ -204,6 +211,7 @@ const countsByStatus = (entries: BulkEntry[]) => {
         <input type="hidden" name="filler_ranges" value={values.filler_ranges} />
         <input type="hidden" name="citation_url" value={values.citation_url} />
         <input type="hidden" name="citation_description" value={values.citation_description} />
+        <input type="hidden" name="citation_methodology_note" value={values.citation_methodology_note} />
         {values.license_accepted && <input type="hidden" name="license_accepted" value="yes" />}
         <div class="review-actions">
           <Button type="submit" name="stage" value="form" variant="ghost">Edit</Button>
@@ -271,6 +279,16 @@ const countsByStatus = (entries: BulkEntry[]) => {
             minlength="1"
             placeholder="e.g. Community-compiled Reddit breakdown, corroborated by a second independent thread..."
             set:text={values.citation_description}
+          />
+        </label>
+
+        <label class="field">
+          <span>More detail on how you verified this <span class="optional">(optional)</span></span>
+          <textarea
+            name="citation_methodology_note"
+            rows="3"
+            placeholder="e.g. cross-referenced against a second independent thread, noted any disagreement and how it was resolved..."
+            set:text={values.citation_methodology_note}
           />
         </label>
 

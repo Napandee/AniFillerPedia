@@ -126,6 +126,45 @@ async def test_anonymous_submission_stores_null_submitted_by(test_series_id: int
 
 
 @pytest.mark.asyncio
+async def test_submission_methodology_note_is_optional_and_stored(test_series_id: int) -> None:
+    """#83: exposed on CitationIn so a public contributor can use the same
+    split #77 built for hand-compiled data — description stays short,
+    methodology_note carries the fuller research trail. Omitting it must
+    still work (it's optional, not a new required field).
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        with_note = await client.post(
+            "/api/v1/contributions",
+            json={
+                "series_id": test_series_id,
+                "episode_number": 8,
+                "proposed_status": "canon",
+                "citation": {
+                    "description": "__test_12__ short claim",
+                    "methodology_note": "__test_12__ the fuller research trail",
+                },
+                "license_accepted": True,
+            },
+        )
+        assert with_note.status_code == 201, with_note.text
+        assert with_note.json()["citation"]["methodology_note"] == "__test_12__ the fuller research trail"
+
+        without_note = await client.post(
+            "/api/v1/contributions",
+            json={
+                "series_id": test_series_id,
+                "episode_number": 9,
+                "proposed_status": "canon",
+                "citation": {"description": "__test_12__ no methodology note"},
+                "license_accepted": True,
+            },
+        )
+        assert without_note.status_code == 201, without_note.text
+        assert without_note.json()["citation"]["methodology_note"] is None
+
+
+@pytest.mark.asyncio
 async def test_submission_missing_license_acceptance_rejected(test_series_id: int) -> None:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

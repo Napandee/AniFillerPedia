@@ -8,7 +8,13 @@ import repositories.citations as citations_repo
 import repositories.contributions as contributions_repo
 import repositories.episodes as episodes_repo
 import repositories.outbox as outbox_repo
+import repositories.series as series_repo
+import services.episode_ranges as episode_ranges
 from schemas.contributions import (
+    BulkContributionCreate,
+    BulkContributionResult,
+    BulkCreatedEntry,
+    BulkSkippedEntry,
     CitationOut,
     ContributionCreate,
     ContributionOut,
@@ -100,6 +106,103 @@ async def submit_contribution(
         resolution_method=contribution_row.resolution_method,
         reviewed_at=contribution_row.reviewed_at,
         review_note=contribution_row.review_note,
+    )
+
+
+async def submit_bulk_contributions(
+    session: AsyncSession, series_id: int, payload: BulkContributionCreate, current_user: Row
+) -> BulkContributionResult:
+    """#80: the bulk counterpart to submit_contribution above — one shared
+    citation, many per-episode contributions. Requires an authenticated
+    caller (router-enforced via get_current_user, not get_current_user_
+    optional) — a deliberate departure from the single-episode path's
+    anonymous option, since one call here can create hundreds of rows at
+    once. Every resulting contribution is otherwise indistinguishable from
+    a normal single-episode submission to every downstream consumer
+    (moderation queue, voting, outbox) — bulk only batches the submission,
+    never the review.
+    """
+    if not payload.license_accepted:
+        raise HTTPException(status_code=422, detail="license_accepted must be true")
+
+    series_row = await series_repo.get_series_by_id(session, series_id)
+    if series_row is None:
+        raise HTTPException(status_code=404, detail="Series not found")
+
+    try:
+        by_episode = episode_ranges.parse_and_validate(
+            payload.canon_ranges, payload.mixed_ranges, payload.filler_ranges
+        )
+    except episode_ranges.BulkRangeValidationError as exc:
+        raise HTTPException(status_code=422, detail=exc.detail) from exc
+
+    # #20 applied per-episode within the batch: conflicts are determined
+    # BEFORE any write, so a citation row is never created for a batch
+    # that turns out to be entirely conflicts.
+    pending_by_episode = await contributions_repo.find_pending_for_episodes(
+        session, series_id, sorted(by_episode.keys())
+    )
+    skipped = [
+        BulkSkippedEntry(episode_number=ep, existing_contribution_id=cid)
+        for ep, cid in sorted(pending_by_episode.items())
+    ]
+    to_create = {ep: status for ep, status in by_episode.items() if ep not in pending_by_episode}
+
+    if payload.dry_run:
+        return BulkContributionResult(
+            dry_run=True,
+            declared_count=len(by_episode),
+            created=[
+                BulkCreatedEntry(episode_number=ep, contribution_id=None, proposed_status=status)
+                for ep, status in sorted(to_create.items())
+            ],
+            skipped_conflicts=skipped,
+        )
+
+    created: list[BulkCreatedEntry] = []
+    if to_create:
+        citation_row = await citations_repo.create(
+            session,
+            url=payload.citation.url,
+            description=payload.citation.description,
+            submitted_by=current_user.id,
+        )
+        for episode_number, status in sorted(to_create.items()):
+            contribution_row = await contributions_repo.create(
+                session,
+                series_id=series_id,
+                episode_number=episode_number,
+                proposed_status=status,
+                proposed_note=None,
+                citation_id=citation_row.id,
+                submitted_by=current_user.id,
+                license_accepted=payload.license_accepted,
+            )
+            # Same transaction as the insert above (CLAUDE.md Architecture)
+            # — identical event shape to the single-submission path, so
+            # #15's outbox consumers need no changes for bulk.
+            await outbox_repo.write(
+                session,
+                event_type="contribution.submitted",
+                payload={
+                    "contribution_id": contribution_row.id,
+                    "series_id": series_id,
+                    "episode_number": episode_number,
+                },
+            )
+            created.append(
+                BulkCreatedEntry(
+                    episode_number=episode_number,
+                    contribution_id=contribution_row.id,
+                    proposed_status=status,
+                )
+            )
+
+    return BulkContributionResult(
+        dry_run=False,
+        declared_count=len(by_episode),
+        created=created,
+        skipped_conflicts=skipped,
     )
 
 

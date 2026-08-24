@@ -38,3 +38,9 @@ class EpisodeOut(BaseModel):
     # a rolling window, not a full historical archive — see #49). Frontend
     # must render this as "unknown," never assume it's always present.
     aired_at: datetime | None
+    # #87: a visibility affordance for browsing, not a new approval path —
+    # true when this episode currently has a pending contribution (#20's
+    # one-pending-per-episode rule means this is always 0 or 1, never a
+    # count). Never true for an episode nobody has ever proposed a
+    # correction for.
+    has_pending_contribution: bool

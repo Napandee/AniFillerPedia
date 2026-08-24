@@ -1,0 +1,31 @@
+name: Sync droplet checkout
+
+# #96: build-app.yml and frontend-deploy.yml each sync ${{ vars.APPDATA_PATH }}
+# to master as part of their own deploy jobs now, but only fire on pushes that
+# touch backend/** or frontend/** respectively. A push to master that touches
+# neither (e.g. a root-level docs or workflow-only change) would fire neither
+# job, leaving the droplet's checkout to lag until something else happens to
+# trigger a deploy. This workflow has no path filter specifically to close
+# that gap — its only job is keeping the checkout current, decoupled from
+# whether anything actually needs rebuilding/restarting.
+# On a backend/ or frontend/ push, this runs alongside the relevant deploy
+# job too — redundant but harmless (the second sync to run just finds
+# nothing to fast-forward) and simpler than trying to exclude one from the
+# other. The single afp-droplet runner processes jobs one at a time, so
+# there's no concurrent-git-command race between them either way.
+on:
+  push:
+    branches: [master]
+
+jobs:
+  sync:
+    runs-on: [self-hosted, afp-droplet]
+    steps:
+      # Same --ff-only reasoning as the other two workflows' identical step:
+      # fails loudly rather than silently discarding a hand-edit made
+      # outside git (against this project's own rule, CLAUDE.local.md).
+      - name: Fast-forward the droplet's checkout to this commit
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          git fetch origin master
+          git merge --ff-only origin/master

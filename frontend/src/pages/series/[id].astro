@@ -277,12 +277,12 @@ const structuredData = series
               a complementary detail view under the stat cards above, not a
               replacement for them. */}
           {rangeGroups.length > 0 && (
-            <div class="range-summary">
+            <div class="range-summary" id="range-summary">
               {rangeGroups.map((group) => {
                 const visible = group.ranges.slice(0, RANGE_SUMMARY_VISIBLE_COUNT);
                 const remainder = group.ranges.slice(RANGE_SUMMARY_VISIBLE_COUNT);
                 return (
-                  <div class="range-group">
+                  <div class="range-group" data-status={group.status}>
                     <span class={`range-label range-label--${group.status}`}>
                       <span class="range-dot" />
                       {STATUS_LABELS[group.status]}
@@ -417,7 +417,17 @@ const structuredData = series
           const chipLabel = document.getElementById("filter-chip-label");
           const chipCount = document.getElementById("filter-chip-count");
           const clearButton = document.getElementById("filter-clear");
+          const rangeSummary = document.getElementById("range-summary");
           const rows = Array.from(document.querySelectorAll<HTMLElement>(".episode-row"));
+
+          // #100: which status's range-summary "+N more" this code opened,
+          // if any — so deselecting closes only that one back down, never
+          // a different status's group a visitor opened by hand themselves
+          // (known/accepted edge case: if a visitor manually opens a
+          // group's own "+N more" and THEN selects, then deselects, that
+          // same card, this will close it too — selecting a card always
+          // forces its own group open, deselecting always forces it shut).
+          let autoOpenedStatus: string | null = null;
 
           function applyFilter(status: string | null) {
             for (const row of rows) {
@@ -434,6 +444,20 @@ const structuredData = series
               const activeCard = cardsContainer?.querySelector<HTMLElement>(`.stat-card[data-status="${status}"]`);
               if (chipCount) chipCount.textContent = activeCard?.dataset.count ?? "0";
             }
+
+            if (autoOpenedStatus !== null) {
+              const previous = rangeSummary?.querySelector<HTMLDetailsElement>(
+                `.range-group[data-status="${autoOpenedStatus}"] details.range-more`
+              );
+              if (previous) previous.open = false;
+            }
+            if (status !== null) {
+              const current = rangeSummary?.querySelector<HTMLDetailsElement>(
+                `.range-group[data-status="${status}"] details.range-more`
+              );
+              if (current) current.open = true;
+            }
+            autoOpenedStatus = status;
           }
 
           cardsContainer?.addEventListener("click", (event) => {

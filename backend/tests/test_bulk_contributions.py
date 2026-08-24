@@ -461,3 +461,105 @@ async def test_bulk_submission_survives_a_mid_batch_race_on_one_episode(authed_c
             assert count == 3  # 1, 2, 4 really committed, not rolled back
     finally:
         await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_bulk_submission_records_rate_limit_event_but_dry_run_does_not(
+    authed_client: AsyncClient,
+) -> None:
+    """#84: a real submission logs one bulk_submission_events row; dry_run
+    is exempt, matching its role as free, uncounted preview.
+    """
+    series_id = await _make_test_series("RateLimitEvent")
+    try:
+        dry_response = await authed_client.post(
+            f"/api/v1/series/{series_id}/contributions/bulk",
+            json={
+                "canon_ranges": "1",
+                "citation": {"description": "__test_84__ citation"},
+                "license_accepted": True,
+                "dry_run": True,
+            },
+        )
+        assert dry_response.status_code == 200, dry_response.text
+
+        real_response = await authed_client.post(
+            f"/api/v1/series/{series_id}/contributions/bulk",
+            json={
+                "canon_ranges": "2",
+                "citation": {"description": "__test_84__ citation"},
+                "license_accepted": True,
+            },
+        )
+        assert real_response.status_code == 200, real_response.text
+
+        async with async_session_factory() as session:
+            count = (
+                await session.execute(
+                    text(
+                        "SELECT count(*) FROM bulk_submission_events "
+                        "WHERE submitted_by = "
+                        "(SELECT submitted_by FROM contributions WHERE series_id = :sid LIMIT 1)"
+                    ),
+                    {"sid": series_id},
+                )
+            ).scalar_one()
+            assert count == 1  # only the real call recorded, not the dry_run
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_bulk_submission_rate_limit_blocks_after_threshold() -> None:
+    """#84: caps bulk-submission *calls* per account per rolling 24h,
+    separate from #80's per-batch size cap tested above.
+    """
+    user_id = await _make_authenticated_user()
+    series_id = await _make_test_series("RateLimit")
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                for _ in range(10):
+                    await session.execute(
+                        text("INSERT INTO bulk_submission_events (submitted_by) VALUES (:uid)"),
+                        {"uid": user_id},
+                    )
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+
+            response = await client.post(
+                f"/api/v1/series/{series_id}/contributions/bulk",
+                json={
+                    "canon_ranges": "1",
+                    "citation": {"description": "__test_84__ citation"},
+                    "license_accepted": True,
+                },
+            )
+            assert response.status_code == 429, response.text
+            assert "10 bulk submissions" in response.json()["detail"]
+
+            async with async_session_factory() as session:
+                count = (
+                    await session.execute(
+                        text("SELECT count(*) FROM contributions WHERE series_id = :sid"),
+                        {"sid": series_id},
+                    )
+                ).scalar_one()
+                assert count == 0  # rejected before any write
+
+            # dry_run stays exempt even while already at the cap
+            dry_response = await client.post(
+                f"/api/v1/series/{series_id}/contributions/bulk",
+                json={
+                    "canon_ranges": "1",
+                    "citation": {"description": "__test_84__ citation"},
+                    "license_accepted": True,
+                    "dry_run": True,
+                },
+            )
+            assert dry_response.status_code == 200, dry_response.text
+    finally:
+        await _cleanup_series(series_id)
+        await _delete_user(user_id)  # cascades bulk_submission_events too

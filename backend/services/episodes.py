@@ -26,6 +26,7 @@ def _row_to_episode_out(row: Row) -> EpisodeOut:
         ),
         updated_at=row.updated_at,
         aired_at=row.aired_at,
+        has_pending_contribution=row.has_pending_contribution,
     )
 
 

@@ -737,6 +737,18 @@ export interface components {
             /** Existing Contribution Id */
             existing_contribution_id: number;
         };
+        /**
+         * BulkSubmissionRateLimited
+         * @description 429 response body when #84's per-account rolling-window bulk-
+         *     submission limit is exceeded. `detail` is a plain message (unlike
+         *     DuplicatePendingContribution's structured detail) since there's no
+         *     specific resource to point the caller at — just "wait" or "use
+         *     dry_run."
+         */
+        BulkSubmissionRateLimited: {
+            /** Detail */
+            detail: string;
+        };
         /** CitationIn */
         CitationIn: {
             /** Url */
@@ -890,6 +902,8 @@ export interface components {
             updated_at: string;
             /** Aired At */
             aired_at: string | null;
+            /** Has Pending Contribution */
+            has_pending_contribution: boolean;
         };
         /** ExportAccessRequest */
         ExportAccessRequest: {
@@ -1802,6 +1816,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkSubmissionRateLimited"];
                 };
             };
         };

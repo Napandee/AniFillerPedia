@@ -13,11 +13,20 @@ _SELECT_WITH_CITATION = """
            c.id AS citation_id, c.url AS citation_url,
            c.description AS citation_description, c.source_count AS citation_source_count,
            c.methodology_note AS citation_methodology_note,
-           ses.aired_at
+           ses.aired_at,
+           (pc.id IS NOT NULL) AS has_pending_contribution
     FROM episodes e
     JOIN citations c ON c.id = e.citation_id
     LEFT JOIN series_episode_schedule ses
         ON ses.series_id = e.series_id AND ses.episode_number = e.episode_number
+    -- #87: at most one match per episode — schema.sql's own
+    -- contributions_one_pending_per_episode partial unique index
+    -- (series_id, episode_number) WHERE review_status = 'pending' is
+    -- exactly this join condition, so this is an indexed lookup per row,
+    -- not a table scan, even on a 1000+ episode show.
+    LEFT JOIN contributions pc
+        ON pc.series_id = e.series_id AND pc.episode_number = e.episode_number
+        AND pc.review_status = 'pending'
 """
 
 

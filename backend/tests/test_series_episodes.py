@@ -513,6 +513,53 @@ async def test_episodes_list_includes_methodology_note_when_set(client: AsyncCli
 
 
 @pytest.mark.asyncio
+async def test_episodes_list_has_pending_contribution_false_by_default(client: AsyncClient) -> None:
+    """#87: an episode with no pending contribution at all — the common
+    case — must come back false, not null or a missing key.
+    """
+    series_id = await _make_series("NoPending", anilist_id=900307)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.json()[0]["has_pending_contribution"] is False
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_has_pending_contribution_true_when_pending_exists(
+    client: AsyncClient,
+) -> None:
+    """#87: a second, unrelated episode in the same series stays false —
+    proves the LEFT JOIN is scoped per (series_id, episode_number), not
+    leaking a pending flag across every episode in the series.
+    """
+    series_id = await _make_series("HasPending", anilist_id=900308)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    await _make_approved_episode(series_id, 2, citation_id)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "INSERT INTO contributions "
+                        "(series_id, episode_number, proposed_status, citation_id, license_accepted) "
+                        "VALUES (:sid, 1, 'filler', :cid, true)"
+                    ),
+                    {"sid": series_id, "cid": citation_id},
+                )
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        by_episode = {row["episode_number"]: row["has_pending_contribution"] for row in response.json()}
+        assert by_episode == {1: True, 2: False}
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_episode_history_reflects_resolution_and_votes(client: AsyncClient) -> None:
     series_id = await _make_series("Delta", anilist_id=900004)
     citation_id = await _make_citation()

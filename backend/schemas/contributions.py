@@ -197,6 +197,17 @@ class BulkRangeError(BaseModel):
     detail: dict
 
 
+class BulkSubmissionRateLimited(BaseModel):
+    """429 response body when #84's per-account rolling-window bulk-
+    submission limit is exceeded. `detail` is a plain message (unlike
+    DuplicatePendingContribution's structured detail) since there's no
+    specific resource to point the caller at — just "wait" or "use
+    dry_run."
+    """
+
+    detail: str
+
+
 class ContributionHistoryEntry(BaseModel):
     id: int
     proposed_status: str

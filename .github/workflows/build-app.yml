@@ -47,12 +47,23 @@ jobs:
       packages: read
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            docker-compose.yml
-            Caddyfile
-          sparse-checkout-cone-mode: false
+      # #96: this used to be a sparse `actions/checkout@v4` of
+      # docker-compose.yml + Caddyfile — but that checks files out into the
+      # runner's own ephemeral workdir (/tmp/afp-runner/...), not into
+      # ${{ vars.APPDATA_PATH }} below, which is what `docker compose`
+      # actually reads. That made it dead code: it fetched real files into
+      # a location nothing ever read, while APPDATA_PATH's checkout only
+      # ever advanced via someone manually SSHing in and running `git
+      # pull`. This step runs directly against APPDATA_PATH instead, right
+      # before the compose commands below (same job — no race). --ff-only,
+      # not `reset --hard`: if the checkout was ever hand-edited outside
+      # git (against this project's own rule, CLAUDE.local.md), this
+      # should fail loudly, not silently discard the edit.
+      - name: Fast-forward the droplet's checkout to this commit
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          git fetch origin master
+          git merge --ff-only origin/master
 
       # Fixed 2026-08-21 (real failure, caught by actually running this
       # workflow end to end): originally read a hand-managed GHCR_TOKEN

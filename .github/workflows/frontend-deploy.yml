@@ -55,6 +55,18 @@ jobs:
       packages: read
 
     steps:
+      # #96: keeps ${{ vars.APPDATA_PATH }}'s checkout (what `docker
+      # compose` below actually reads docker-compose.yml/Caddyfile from)
+      # in sync with what just got pushed — see build-app.yml's identical
+      # step for the full root-cause writeup. --ff-only, not `reset
+      # --hard`: fails loudly instead of silently discarding a hand-edit
+      # made outside git.
+      - name: Fast-forward the droplet's checkout to this commit
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          git fetch origin master
+          git merge --ff-only origin/master
+
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:

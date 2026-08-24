@@ -64,6 +64,49 @@ const fillerCount = episodes.filter((ep) => ep.status === "filler").length;
 const mixedCount = episodes.filter((ep) => ep.status === "mixed").length;
 const pct = (n: number) => (totalEpisodes > 0 ? Math.round((n / totalEpisodes) * 100) : 0);
 
+// #94: range-notation summary — the literal filler-guide shorthand
+// ("Canon: 1-44, 48-49...") grouped by status, computed from the same
+// already-fetched episode list the stat cards above use (no new API
+// surface). `episodes` is sorted by episode_number but may have GAPS
+// (only researched episodes exist) — a gap always breaks a run, same as
+// a status change, so e.g. episodes 1-5 then 7-10 canon (6 unresearched)
+// renders as two separate ranges, never a false "1-10".
+type EpisodeStatus = "canon" | "filler" | "mixed";
+const STATUS_LABELS: Record<EpisodeStatus, string> = { canon: "Canon", filler: "Filler", mixed: "Mixed" };
+const STATUS_ORDER: EpisodeStatus[] = ["canon", "filler", "mixed"];
+
+function computeRangeGroups(eps: EpisodeOut[]): { status: EpisodeStatus; ranges: string[] }[] {
+  const byStatus: Record<EpisodeStatus, string[]> = { canon: [], filler: [], mixed: [] };
+  let curStatus: EpisodeStatus | null = null;
+  let start = 0;
+  let prev = 0;
+  for (const ep of eps) {
+    const n = ep.episode_number;
+    const status = ep.status as EpisodeStatus;
+    if (status !== curStatus || n !== prev + 1) {
+      if (curStatus !== null) {
+        byStatus[curStatus].push(start === prev ? `${start}` : `${start}–${prev}`);
+      }
+      curStatus = status;
+      start = n;
+    }
+    prev = n;
+  }
+  if (curStatus !== null) {
+    byStatus[curStatus].push(start === prev ? `${start}` : `${start}–${prev}`);
+  }
+  return STATUS_ORDER.map((status) => ({ status, ranges: byStatus[status] })).filter((g) => g.ranges.length > 0);
+}
+
+// First 10 ranges per status show inline; the rest sit behind a "+N more"
+// <details> toggle so a heavily-fragmented show (e.g. Meitantei Conan:
+// ~195 canon ranges alone) doesn't dump as a wall of numbers by default —
+// verified against real data for both a moderately fragmented show
+// (Naruto: Shippuuden, 85 runs) and a highly fragmented one (Conan, 390
+// runs) during the #94 design pass before settling on this shape.
+const RANGE_SUMMARY_VISIBLE_COUNT = 10;
+const rangeGroups = computeRangeGroups(episodes);
+
 // #55: the real total episode count (#49's AniList sync) is independent of
 // how many episodes have actually been hand-researched — showing just
 // "100 episodes tracked" implied that was the whole show. Null until #49's
@@ -229,6 +272,35 @@ const structuredData = series
                 : `${totalEpisodes} episode${totalEpisodes === 1 ? "" : "s"} tracked`}
             </span>
           </div>
+
+          {/* #94: the literal range-notation summary, grouped by status —
+              a complementary detail view under the stat cards above, not a
+              replacement for them. */}
+          {rangeGroups.length > 0 && (
+            <div class="range-summary">
+              {rangeGroups.map((group) => {
+                const visible = group.ranges.slice(0, RANGE_SUMMARY_VISIBLE_COUNT);
+                const remainder = group.ranges.slice(RANGE_SUMMARY_VISIBLE_COUNT);
+                return (
+                  <div class="range-group">
+                    <span class={`range-label range-label--${group.status}`}>
+                      <span class="range-dot" />
+                      {STATUS_LABELS[group.status]}
+                    </span>
+                    <span class="range-text">
+                      {visible.join(", ")}
+                      {remainder.length > 0 && (
+                        <details class="range-more">
+                          <summary><span class="range-more-count">+{remainder.length} more</span></summary>
+                          <span class="range-more-text">{remainder.join(", ")}</span>
+                        </details>
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {totalEpisodes > 0 && (
             <div class="filter-chip-row" id="filter-chip-row" hidden>
@@ -647,6 +719,110 @@ const structuredData = series
     padding: 0;
     font-size: 12.5px;
     font-family: var(--font-body);
+  }
+
+  /* #94: range-notation summary — settled on this over a proportional
+     timeline strip and a fixed-min-width block row after stress-testing
+     all three against real data (Naruto: Shippuuden's 85 runs and
+     Meitantei Conan's 390); see the issue for the full design-pass
+     writeup. Reuses .stat-row's 24px side padding, sits between it and
+     .filter-chip-row. */
+  .range-summary {
+    margin: 14px 24px 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sticker);
+    padding: 6px 18px;
+  }
+  .range-group {
+    display: flex;
+    gap: 14px;
+    padding: 13px 0;
+    align-items: baseline;
+    border-bottom: 1px solid var(--color-border-card);
+  }
+  .range-group:last-child {
+    border-bottom: none;
+  }
+  .range-label {
+    flex-shrink: 0;
+    width: 84px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding-top: 2px;
+  }
+  .range-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .range-label--canon {
+    color: #178a4c;
+  }
+  .range-label--canon .range-dot {
+    background: var(--color-status-canon);
+  }
+  .range-label--filler {
+    color: #c96a12;
+  }
+  .range-label--filler .range-dot {
+    background: var(--color-status-filler);
+  }
+  .range-label--mixed {
+    color: #6d4fb8;
+  }
+  .range-label--mixed .range-dot {
+    background: var(--color-status-mixed);
+  }
+  .range-text {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.7;
+  }
+  .range-more {
+    display: inline;
+  }
+  .range-more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    color: var(--color-accent);
+    font-weight: 800;
+    font-size: 12.5px;
+    list-style: none;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: #ffe1f0;
+  }
+  .range-more summary:hover {
+    background: #ffd0e6;
+  }
+  .range-more summary::-webkit-details-marker {
+    display: none;
+  }
+  .range-more-text {
+    display: block;
+    margin-top: 6px;
+    color: var(--color-text-muted);
+  }
+  .range-more[open] summary {
+    background: transparent;
+    padding: 2px 0;
+  }
+  .range-more[open] summary .range-more-count {
+    display: none;
+  }
+  .range-more[open] summary::before {
+    content: "\2212\00a0hide";
   }
 
   .episode-list {

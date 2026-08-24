@@ -8,6 +8,7 @@ from core.deps import get_current_user, get_current_user_optional, require_moder
 from schemas.contributions import (
     BulkContributionCreate,
     BulkContributionResult,
+    BulkSubmissionRateLimited,
     ContributionCreate,
     ContributionOut,
     ContributionReject,
@@ -57,7 +58,11 @@ async def submit_contribution(
     return result
 
 
-@router.post("/series/{series_id}/contributions/bulk", response_model=BulkContributionResult)
+@router.post(
+    "/series/{series_id}/contributions/bulk",
+    response_model=BulkContributionResult,
+    responses={429: {"model": BulkSubmissionRateLimited}},
+)
 async def submit_bulk_contributions(
     series_id: int,
     payload: BulkContributionCreate,

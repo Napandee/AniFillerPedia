@@ -40,6 +40,22 @@ from services.admin import compute_trust_score
 # the code start from the same number rather than two invented ones.
 AUTO_APPROVAL_THRESHOLD = 75
 
+# #84: cap on bulk-submission *calls* per account per rolling window —
+# separate concern from #80's own per-batch *size* cap (2000 episodes),
+# which bounds one call's blast radius but never limited how many such
+# calls one account could make back-to-back. 10 per rolling 24h: #84's own
+# text flags "3-5 batches in one sitting" as a legitimate pattern to leave
+# headroom for; roughly doubled so a contributor correcting a mistake or
+# splitting research across two sessions the same day isn't blocked by
+# their own earlier good-faith submissions. Not a tuned number — same
+# "no real abuse data yet" stance already taken for #14's Sybil-resistance
+# question and #23's canary-detection approach; revisit once #80 has real
+# usage. dry_run calls are exempt from both the check and the count — they
+# write nothing, and unlimited free preview is the whole reason dry_run
+# exists.
+BULK_SUBMISSION_RATE_LIMIT = 10
+BULK_SUBMISSION_RATE_LIMIT_WINDOW_HOURS = 24
+
 
 async def submit_contribution(
     session: AsyncSession, payload: ContributionCreate, current_user: Row | None
@@ -132,6 +148,26 @@ async def submit_bulk_contributions(
     """
     if not payload.license_accepted:
         raise HTTPException(status_code=422, detail="license_accepted must be true")
+
+    if not payload.dry_run:
+        # #84: checked before any lookup/validation work — a
+        # rate-limited caller shouldn't spend this endpoint's effort
+        # either, and mirrors license_accepted's own fail-fast placement
+        # above.
+        recent_count = await contributions_repo.count_recent_bulk_submissions(
+            session, current_user.id, BULK_SUBMISSION_RATE_LIMIT_WINDOW_HOURS
+        )
+        if recent_count >= BULK_SUBMISSION_RATE_LIMIT:
+            raise HTTPException(
+                status_code=429,
+                detail=(
+                    f"You've made {recent_count} bulk submissions in the last "
+                    f"{BULK_SUBMISSION_RATE_LIMIT_WINDOW_HOURS}h (limit "
+                    f"{BULK_SUBMISSION_RATE_LIMIT}). Try again later — dry_run "
+                    "submissions don't count against this limit if you just "
+                    "want to keep validating."
+                ),
+            )
 
     series_row = await series_repo.get_series_by_id(session, series_id)
     if series_row is None:
@@ -230,6 +266,12 @@ async def submit_bulk_contributions(
                     proposed_status=status,
                 )
             )
+
+    # #84: logged once per real call, same transaction as everything above
+    # — regardless of how many episodes ended up created vs. skipped, this
+    # was still a real (non-dry-run) call and counts against the caller's
+    # rolling-window limit.
+    await contributions_repo.record_bulk_submission(session, current_user.id)
 
     return BulkContributionResult(
         dry_run=False,

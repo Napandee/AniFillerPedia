@@ -330,6 +330,36 @@ async def list_votes_by_voter(session: AsyncSession, voter_id: int) -> list[Row]
     return list(result.fetchall())
 
 
+async def count_recent_bulk_submissions(session: AsyncSession, user_id: int, window_hours: int) -> int:
+    """#84: how many real (non-dry-run) bulk-submission calls this account
+    has made in the trailing `window_hours` — the rolling-window count the
+    rate limit is checked against.
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT count(*) FROM bulk_submission_events
+            WHERE submitted_by = :user_id
+              AND submitted_at > now() - make_interval(hours => :window_hours)
+            """
+        ),
+        {"user_id": user_id, "window_hours": window_hours},
+    )
+    return result.scalar_one()
+
+
+async def record_bulk_submission(session: AsyncSession, user_id: int) -> None:
+    """#84: logs one real bulk-submission call for rate-limiting purposes.
+    Called once per non-dry-run request regardless of how many episodes it
+    actually created — the limit is on call frequency, not episode count
+    (#80's per-batch size cap already bounds that).
+    """
+    await session.execute(
+        text("INSERT INTO bulk_submission_events (submitted_by) VALUES (:user_id)"),
+        {"user_id": user_id},
+    )
+
+
 async def list_votes_for_contributions(
     session: AsyncSession, contribution_ids: list[int]
 ) -> list[Row]:

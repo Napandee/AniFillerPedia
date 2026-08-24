@@ -244,6 +244,23 @@ CREATE TABLE contribution_votes (
     UNIQUE (contribution_id, voter_id)
 );
 
+-- One row per POST /series/{id}/contributions/bulk call that actually wrote
+-- something (dry_run calls never insert here — see issue #84). Backs a
+-- per-account rolling-window rate limit on bulk-submission *frequency*,
+-- separate from #80's own per-batch *size* cap. ON DELETE CASCADE
+-- deliberately, unlike every users(id) FK above: this table has no
+-- audit-trail purpose (see the file header's ON DELETE SET NULL rationale)
+-- — it's transient rate-limiting bookkeeping only, so once an account is
+-- gone its old events serve no purpose either.
+CREATE TABLE bulk_submission_events (
+    id            BIGSERIAL PRIMARY KEY,
+    submitted_by  INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    submitted_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX bulk_submission_events_by_user_and_time
+    ON bulk_submission_events (submitted_by, submitted_at);
+
 -- =========================================================================
 -- EPISODES (the live, authoritative community layer)
 -- =========================================================================

@@ -9,7 +9,22 @@ import { createApiClient } from "../api/client";
 import type { components } from "../api/schema.d.ts";
 
 type ContributionOut = components["schemas"]["ContributionOut"];
-type SeriesProposalOut = components["schemas"]["SeriesProposalOut"];
+
+// #85: schema.d.ts (the generated typed client) doesn't yet know about
+// episode_data — same "not regenerating from a single-page worktree" call
+// propose-series.astro's own comment already made for series-proposals in
+// general (real risk of clobbering whatever else regenerates this shared
+// file). Augmented locally instead; drop this once schema.d.ts is
+// regenerated for real and picks up the field on its own.
+type SeriesProposalOut = components["schemas"]["SeriesProposalOut"] & {
+  episode_data?: {
+    canon_ranges: string;
+    mixed_ranges: string;
+    filler_ranges: string;
+    citation: { url?: string | null; description: string; methodology_note?: string | null };
+    declared_count: number;
+  } | null;
+};
 
 const MODERATOR_ROLES = ["moderator", "admin", "owner"];
 
@@ -170,6 +185,30 @@ function formatDate(iso: string): string {
               {p.anidb_id && <span class="id-chip">AniDB #{p.anidb_id}</span>}
             </div>
             <p class="note">{p.justification}</p>
+            {p.episode_data && (
+              <div class="episode-data-summary">
+                <p class="episode-data-line">
+                  <strong>+ {p.episode_data.declared_count} episode{p.episode_data.declared_count === 1 ? "" : "s"} attached</strong>{" "}
+                  — approving this also creates those as pending contributions in one step.
+                </p>
+                <details class="episode-data-detail">
+                  <summary>Show ranges + citation</summary>
+                  {p.episode_data.canon_ranges && (
+                    <p><span class="range-label range-label--canon">Canon</span> {p.episode_data.canon_ranges}</p>
+                  )}
+                  {p.episode_data.mixed_ranges && (
+                    <p><span class="range-label range-label--mixed">Mixed</span> {p.episode_data.mixed_ranges}</p>
+                  )}
+                  {p.episode_data.filler_ranges && (
+                    <p><span class="range-label range-label--filler">Filler</span> {p.episode_data.filler_ranges}</p>
+                  )}
+                  <p class="citation-line">{p.episode_data.citation.description}</p>
+                  {p.episode_data.citation.url && (
+                    <p><a href={p.episode_data.citation.url} target="_blank" rel="noopener">{p.episode_data.citation.url}</a></p>
+                  )}
+                </details>
+              </div>
+            )}
             <div class="meta-row">
               <span>Submitted {formatDate(p.submitted_at)}</span>
             </div>
@@ -650,6 +689,59 @@ function formatDate(iso: string): string {
   }
   .citation a {
     color: var(--color-accent);
+  }
+  .episode-data-summary {
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+  }
+  .episode-data-line {
+    font-size: 12.5px;
+    color: var(--color-text);
+    margin: 0;
+  }
+  .episode-data-detail {
+    margin-top: 6px;
+    font-size: 12px;
+  }
+  .episode-data-detail summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+  .episode-data-detail p {
+    margin: 6px 0 0;
+    color: var(--color-text-muted);
+  }
+  .episode-data-detail a {
+    color: var(--color-accent);
+  }
+  .range-label {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding: 1px 6px;
+    border-radius: 6px;
+    margin-right: 4px;
+  }
+  .range-label--canon {
+    background: var(--color-status-canon);
+    color: #fff;
+  }
+  .range-label--mixed {
+    background: var(--color-status-mixed);
+    color: #fff;
+  }
+  .range-label--filler {
+    background: var(--color-status-filler);
+    color: #fff;
+  }
+  .citation-line {
+    font-style: italic;
   }
   .meta-row {
     display: flex;

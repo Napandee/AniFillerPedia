@@ -6,8 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import repositories.outbox as outbox_repo
 import repositories.series as series_repo
 import repositories.series_proposals as series_proposals_repo
+import services.contributions as contributions_service
+import services.episode_ranges as episode_ranges
+from schemas.contributions import CitationIn
 from schemas.moderation import BulkModerationEntry, BulkModerationResult
 from schemas.series_proposals import (
+    EpisodeDataOut,
     SeriesProposalCreate,
     SeriesProposalOut,
     SeriesProposalReviewOut,
@@ -23,6 +27,22 @@ async def submit_series_proposal(
     if not payload.license_accepted:
         raise HTTPException(status_code=422, detail="license_accepted must be true")
 
+    episode_data_dict: dict | None = None
+    if payload.episode_data is not None:
+        # #85: validate ranges at submission time, not deferred to
+        # approval — a contributor gets feedback on a malformed range
+        # right away, rather than a moderator discovering it's unusable
+        # much later. Raises the same 422 shape #80's bulk endpoint does.
+        try:
+            episode_ranges.parse_and_validate(
+                payload.episode_data.canon_ranges,
+                payload.episode_data.mixed_ranges,
+                payload.episode_data.filler_ranges,
+            )
+        except episode_ranges.BulkRangeValidationError as exc:
+            raise HTTPException(status_code=422, detail=exc.detail) from exc
+        episode_data_dict = payload.episode_data.model_dump()
+
     row = await series_proposals_repo.create(
         session,
         title=payload.title,
@@ -32,6 +52,7 @@ async def submit_series_proposal(
         justification=payload.justification,
         submitted_by=current_user.id if current_user else None,
         license_accepted=payload.license_accepted,
+        episode_data=episode_data_dict,
     )
 
     await outbox_repo.write(
@@ -71,7 +92,7 @@ async def approve_series_proposal(
     # a collision with an already-bootstrapped series raises IntegrityError
     # here, which we turn into a clean 409 rather than a raw 500.
     try:
-        await series_repo.create(
+        new_series_row = await series_repo.create(
             session,
             title=approved_row.title,
             anilist_id=approved_row.anilist_id,
@@ -86,6 +107,28 @@ async def approve_series_proposal(
             detail="a series with one of these external IDs already exists",
         ) from exc
 
+    # #85: a proposal submitted with attached episode-range data creates
+    # its bulk contributions in this same step/transaction, targeting the
+    # series row just created above — reuses #80's own validation/creation
+    # core (services/contributions.py) rather than reimplementing it.
+    # submitted_by/license_accepted come from the ORIGINAL proposal, not
+    # the approving moderator — the moderator is approving the proposal,
+    # not authoring the episode data themselves.
+    episode_contributions_created: int | None = None
+    if approved_row.episode_data is not None:
+        ed = approved_row.episode_data
+        bulk_result = await contributions_service.create_bulk_contributions_for_series(
+            session,
+            series_id=new_series_row.id,
+            canon_ranges=ed.get("canon_ranges", ""),
+            mixed_ranges=ed.get("mixed_ranges", ""),
+            filler_ranges=ed.get("filler_ranges", ""),
+            citation=CitationIn(**ed["citation"]),
+            submitted_by=approved_row.submitted_by,
+            license_accepted=approved_row.license_accepted,
+        )
+        episode_contributions_created = len(bulk_result.created)
+
     await outbox_repo.write(
         session,
         event_type="series_proposal.approved",
@@ -97,6 +140,7 @@ async def approve_series_proposal(
         review_status=approved_row.review_status,
         reviewed_at=approved_row.reviewed_at,
         review_note=approved_row.review_note,
+        episode_contributions_created=episode_contributions_created,
     )
 
 
@@ -173,4 +217,31 @@ def _row_to_out(row: Row) -> SeriesProposalOut:
         review_status=row.review_status,
         reviewed_at=row.reviewed_at,
         review_note=row.review_note,
+        episode_data=_episode_data_out(row.episode_data),
+    )
+
+
+def _episode_data_out(episode_data: dict | None) -> EpisodeDataOut | None:
+    if episode_data is None:
+        return None
+    # Defensive, not assumed: these ranges were already validated at
+    # submission time (submit_series_proposal), so this should never raise
+    # — but one malformed row re-raising here would take down the whole
+    # list/moderation-queue endpoint for every OTHER proposal too, which is
+    # a worse failure mode than showing 0 for this one row's count.
+    try:
+        by_episode = episode_ranges.parse_and_validate(
+            episode_data.get("canon_ranges", ""),
+            episode_data.get("mixed_ranges", ""),
+            episode_data.get("filler_ranges", ""),
+        )
+        declared_count = len(by_episode)
+    except episode_ranges.BulkRangeValidationError:
+        declared_count = 0
+    return EpisodeDataOut(
+        canon_ranges=episode_data.get("canon_ranges", ""),
+        mixed_ranges=episode_data.get("mixed_ranges", ""),
+        filler_ranges=episode_data.get("filler_ranges", ""),
+        citation=CitationIn(**episode_data["citation"]),
+        declared_count=declared_count,
     )

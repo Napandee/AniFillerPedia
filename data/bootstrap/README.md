@@ -421,3 +421,29 @@ No episode titles included in any of the six files — left for #73's
 automated backfill pass (see #103, which tracks actually ensuring that
 backfill runs for every loaded series, this batch included). 161 manami
 candidates remain unresearched after this batch.
+
+**Corrections, 2026-08-25 (same day, post-load):** Andreas independently
+verified all six shows against his own re-reads of the same sources.
+Four (InuYasha, Rurouni Kenshin) matched exactly, no changes. Two had
+real corrections, applied via `load_episodes.py --allow-corrections`:
+
+- **Yuu☆Yuu☆Hakusho** — episodes 107 and 108 move from filler to canon
+  (QuoteTheAnime actually tags these "anime canon," which this project
+  treats as canon everywhere else — this project's own fetch of the page
+  had flattened that distinction into a plain filler list), and episodes
+  109 and 111 move from filler to mixed (also flattened the same way).
+  **The show now has zero pure-filler episodes** — every one of its
+  non-canon episodes is mixed, not filler, which actually matches an
+  alternate source found during initial research that claimed "no filler
+  episodes at all."
+- **Toriko** — episode 136 moves from filler to canon, episode 146 moves
+  from filler to mixed. Both were among this file's own disclosed
+  single-source, lower-confidence filler calls — resolved by Andreas's
+  independent check rather than left as flagged uncertainty.
+
+Same pattern as the Black Clover correction earlier this session: in
+both cases, this project's own automated fetch of a cited source
+flattened a more nuanced classification (a distinct "anime canon" or
+"mixed" sub-category) into a blunt filler/canon split, and a careful
+human re-read of the same already-cited page caught what the fetch
+missed — not a new source, a better reading of an existing one.

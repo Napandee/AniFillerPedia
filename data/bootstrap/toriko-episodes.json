@@ -1,6 +1,6 @@
 {
   "series_title": "Toriko",
-  "research_status": "COMPLETE — all 147 episodes of Toriko classified canon/filler (no mixed episodes found by any source checked). QuoteTheAnime's exhaustive 20-episode filler list is the primary source; the Toriko Fandom wiki's own filler-episode category independently confirms 14 of those 20 (the well-known standalone filler blocks: 42-43, 69-70, 80-82, 86, 112-113, 124-125, 130-131). The remaining 6 (episodes 1, 51, 99, 136, 146-147) are recorded as filler on QuoteTheAnime's authority alone — the wiki category doesn't dispute them, it just doesn't have them tagged, which reads as incomplete wiki coverage rather than active disagreement, but this is still a single-source call for those six specifically, flagged in each of their own status_notes. This show has thinner guide coverage than most of this project's other shows (a less mainstream, less-discussed title), worth knowing if this ever needs revisiting. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass. Complete, gap-free, non-overlapping coverage of 1-147 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 147 episodes of Toriko classified canon/filler/mixed. QuoteTheAnime's exhaustive filler list is the primary source; the Toriko Fandom wiki's own filler category independently confirms most of it. Corrected 2026-08-25: episode 136 was originally recorded as filler (single-source, QuoteTheAnime only) but Andreas independently confirmed it's actually canon; episode 146 was originally recorded as filler (also single-source) but is actually mixed, not pure filler. Both corrections resolve exactly the kind of single-source, lower-confidence calls this file originally flagged as less certain than the rest of the dataset. Remaining single-source filler calls (episodes 1, 51, 99, 147) are unchanged. This show has thinner guide coverage than most of this project's other shows (a less mainstream, less-discussed title), worth knowing if this ever needs revisiting. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass. Complete, gap-free, non-overlapping coverage of 1-147 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "quotetheanime-toriko-filler-list",
@@ -1233,12 +1233,13 @@
     },
     {
       "episode_number": 136,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
-        "quotetheanime-toriko-filler-list"
+        "quotetheanime-toriko-filler-list",
+        "toriko-fandom-wiki-filler-category"
       ],
-      "source_count": 1,
-      "status_note": "Only QuoteTheAnime's exhaustive list includes this episode as filler — the Toriko Fandom wiki's own filler category doesn't tag it, though it also doesn't claim it's canon (its category page reads incomplete rather than actively disputing this)."
+      "source_count": 2,
+      "status_note": "Corrected 2026-08-25: originally recorded as filler on QuoteTheAnime's authority alone (single-source, not corroborated by the Toriko Fandom wiki's filler category). Andreas independently checked and found this episode is actually canon."
     },
     {
       "episode_number": 137,
@@ -1323,12 +1324,12 @@
     },
     {
       "episode_number": 146,
-      "status": "filler",
+      "status": "mixed",
       "citation_ids": [
         "quotetheanime-toriko-filler-list"
       ],
       "source_count": 1,
-      "status_note": "Only QuoteTheAnime's exhaustive list includes this episode as filler — the Toriko Fandom wiki's own filler category doesn't tag it, though it also doesn't claim it's canon (its category page reads incomplete rather than actively disputing this)."
+      "status_note": "Corrected 2026-08-25: originally recorded as filler on QuoteTheAnime's authority alone (single-source). Andreas independently checked and found this episode is actually mixed, not pure filler."
     },
     {
       "episode_number": 147,

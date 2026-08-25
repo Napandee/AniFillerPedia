@@ -1,0 +1,1219 @@
+{
+  "series_title": "Dragon Ball Super",
+  "research_status": "COMPLETE — all 131 episodes of Dragon Ball Super classified canon/filler/mixed. The 14-episode filler list (4, 15, 42-46, 68-70, 73-76) is corroborated by three independently-fetched sources (ListFist, ComicBook.com, The Mary Sue) that agree exactly. A fourth guide (animefillerguide.com) was checked and discarded — it listed a substantially different, larger filler set (including episodes 16-17, 52, and 87-90, none of which appear in any of the three agreeing sources' lists), so it was treated as unreliable rather than a genuine data point, the same call made about aniyume.net's contradictory Fullmetal Alchemist: Brotherhood list earlier in this same research pass. Episodes 1-2 are recorded as mixed per ListFist (partial filler alongside real story content); episode 89 is also mixed per ListFist but flagged in its own status_note as the one call backed by only a single source. Dragon Ball Super's unusual production history (much of its story originates from Toriyama's own movie scripts and outlines adapted into anime before or alongside Toyotaro's manga, rather than the more typical anime-trails-manga pattern) means the canon/filler line here is fan-consensus-driven rather than a strict manga-publication-order check — consistent with how this project's other shows are compiled, but worth flagging given how different this show's production actually was. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass, same as Dragon Ball Z. Complete, gap-free, non-overlapping coverage of 1-131 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "listfist-dbs-filler-list",
+      "url": "https://listfist.com/list-of-dragon-ball-super-fillers",
+      "description": "ListFist's Dragon Ball Super filler list — classifies episodes into manga canon, anime canon, mixed, and filler; agrees with two further independently-fetched sources on the exact 14-episode filler list.",
+      "methodology_note": "The site's table only explicitly lists exceptions to plain manga canon (filler/mixed/anime-canon episodes), not every one of the 131 episodes individually — everything not listed is treated as manga canon here."
+    },
+    {
+      "id": "comicbook-dbs-filler-guide",
+      "url": "https://comicbook.com/anime/news/dragon-ball-super-filler-guide-anime/",
+      "description": "ComicBook.com's Dragon Ball Super filler guide — independently confirms the same 14 filler episodes (4, 15, 42-46, 68-70, 73-76) as ListFist.",
+      "methodology_note": null
+    },
+    {
+      "id": "themarysue-dbs-filler-list",
+      "url": "https://www.themarysue.com/heres-every-dragon-ball-super-filler-episode-in-order/",
+      "description": "The Mary Sue's rundown of Dragon Ball Super's filler episodes in order — a third independent source confirming the identical 14-episode filler list.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "listfist-dbs-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "ListFist classifies this episode as mixed (partial filler segments alongside real story content) rather than plain filler or plain canon. Only one directly-fetched source addresses this specific episode."
+    },
+    {
+      "episode_number": 2,
+      "status": "mixed",
+      "citation_ids": [
+        "listfist-dbs-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "ListFist classifies this episode as mixed (partial filler segments alongside real story content) rather than plain filler or plain canon. Only one directly-fetched source addresses this specific episode."
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 43,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 44,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 45,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 46,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 69,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 70,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 74,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 75,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 76,
+      "status": "filler",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide",
+        "themarysue-dbs-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 89,
+      "status": "mixed",
+      "citation_ids": [
+        "listfist-dbs-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only directly confirmed as mixed by one fetched guide (ListFist); no second source was found that specifically addresses this episode."
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 93,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 95,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 100,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 101,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 102,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 103,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 104,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 105,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 106,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 107,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 108,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 109,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 110,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 111,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 112,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 113,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 114,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 115,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 116,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 117,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 118,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 119,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 120,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 121,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 122,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 123,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 124,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 125,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 126,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 127,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 128,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 129,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 130,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 131,
+      "status": "canon",
+      "citation_ids": [
+        "listfist-dbs-filler-list",
+        "comicbook-dbs-filler-guide"
+      ],
+      "source_count": 2
+    }
+  ]
+}

@@ -288,4 +288,33 @@ that runs after loading regardless of whether the source JSON carried
 titles. Complete, gap-free, non-overlapping coverage of 1–291 confirmed
 before writing the file.
 
-**Remaining for full #5 completion**: Dragon Ball Super, Black Clover.
+## #5 — dragon-ball-super-episodes.json
+
+**Complete — all 131 episodes, 2026-08-25.** The 14-episode filler list
+(4, 15, 42-46, 68-70, 73-76) is corroborated by three independently-
+fetched sources (ListFist, ComicBook.com, The Mary Sue) agreeing exactly.
+A fourth guide (animefillerguide.com) was checked and discarded — its
+filler list (adding episodes 16-17, 52, 87-90 that none of the three
+agreeing sources call filler) contradicted the consensus, the same
+unreliable-fourth-source pattern already hit once this session with
+Fullmetal Alchemist: Brotherhood's aniyume.net outlier. Episodes 1-2 are
+`mixed` per ListFist (partial filler alongside real story content);
+episode 89 is also `mixed` per ListFist but flagged in its own
+status_note as backed by only one source, unlike everything else in this
+file. Worth noting for whoever reads this later: Dragon Ball Super's
+production history is genuinely unusual for this project's canon/filler
+model — much of its story originates from Toriyama's own movie scripts
+and outlines, adapted into anime before or alongside Toyotaro's manga,
+rather than the more typical "anime runs ahead, so it pads with filler"
+pattern this project's other shows follow. The canon/filler line drawn
+here is the fan-consensus one, same as every other show in this dataset,
+just worth flagging as a different kind of "canon" underneath the same
+label. No titles hand-compiled — left for #73's automated backfill, same
+as Dragon Ball Z. Complete, gap-free, non-overlapping coverage of 1-131
+confirmed before writing the file.
+
+**Remaining for full #5 completion**: Black Clover — the one series
+named in #5's scope list not yet compiled as of this entry. Every other
+series listed (Naruto, Naruto: Shippuuden, Bleach, Dragon Ball Z,
+Dragon Ball Super, Fairy Tail, Boruto, both Fullmetal Alchemist series)
+now has hand-compiled episode data loaded and live.

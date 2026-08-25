@@ -1,0 +1,866 @@
+{
+  "series_title": "Rurouni Kenshin: Meiji Kenkaku Romantan",
+  "research_status": "COMPLETE — all 94 episodes of the original 1996 Rurouni Kenshin TV anime classified canon/filler/mixed, matching this project's catalog entry's AniList-sourced 94-episode count. Real complication worth flagging: both guides checked (QuoteTheAnime, FictionHorizon) independently claim the series has 100 episodes — verified via Wikipedia and a direct AniList API check that this is wrong; the real broadcast run is 94 episodes plus one unaired, DVD-only bonus finale (episode 95, 'End of Wanderings') that isn't part of this project's catalog entry at all. Both guides' classifications for episodes beyond 94 were disregarded as not corresponding to anything real. Within the real 1-94 range, the two guides agree on every episode except 19-21 (QuoteTheAnime: canon; FictionHorizon: mixed) — resolved in favor of canon, see that range's own status_note. The manga-canon Kyoto Arc (28-62) lines up with the well-documented, independently-confirmed arc boundary from Wikipedia, giving confidence the rest of both guides' numbering is real despite their shared confusion about the total. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass. Complete, gap-free, non-overlapping coverage of 1-94 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-rurouni-kenshin-filler-list",
+      "url": "https://quotetheanime.com/filler-list/rurouni-kenshin/",
+      "description": "QuoteTheAnime's Rurouni Kenshin filler list — episode-by-episode classification into manga canon, mixed, and pure filler. Agreed almost exactly with FictionHorizon's independently-fetched guide within this project's real 94-episode scope, differing only on episodes 19-21.",
+      "methodology_note": "This guide's own stated total (100 episodes) is wrong — verified against Wikipedia and AniList that the real broadcast series has 94 episodes (a 95th, unaired DVD-only bonus episode exists but isn't part of this project's AniList-sourced catalog entry). Its classifications for episodes beyond 94 were disregarded as not corresponding to anything real; its classifications for 1-94 were used as-is, since the well-documented Kyoto Arc boundary (28-62/63) lines up with independent confirmation from Wikipedia."
+    },
+    {
+      "id": "fictionhorizon-rurouni-kenshin-filler-guide",
+      "url": "https://fictionhorizon.com/rurouni-kenshin-filler-guide-heres-what-episodes-you-can-skip/",
+      "description": "FictionHorizon's Rurouni Kenshin filler guide — independently confirms the identical filler/canon breakdown as QuoteTheAnime for episodes 1-94, except episodes 19-21 (see their own status_note).",
+      "methodology_note": "Same total-episode-count error as QuoteTheAnime (states 100, real count is 94) — same disregard-beyond-94 treatment applied."
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies these three episodes as manga canon; FictionHorizon classifies them as mixed. Going with canon, since a separate aggregate search (not independently fetched as its own citable page) also implicitly placed these episodes outside its filler list, agreeing with QuoteTheAnime — 2 sources vs 1."
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies these three episodes as manga canon; FictionHorizon classifies them as mixed. Going with canon, since a separate aggregate search (not independently fetched as its own citable page) also implicitly placed these episodes outside its filler list, agreeing with QuoteTheAnime — 2 sources vs 1."
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies these three episodes as manga canon; FictionHorizon classifies them as mixed. Going with canon, since a separate aggregate search (not independently fetched as its own citable page) also implicitly placed these episodes outside its filler list, agreeing with QuoteTheAnime — 2 sources vs 1."
+    },
+    {
+      "episode_number": 22,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 69,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 70,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 71,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 74,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 75,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 76,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 77,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 78,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 79,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 80,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 81,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 82,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 83,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 84,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 85,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 86,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 87,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 88,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 89,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 90,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 91,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 92,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 93,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 94,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rurouni-kenshin-filler-list",
+        "fictionhorizon-rurouni-kenshin-filler-guide"
+      ],
+      "source_count": 2
+    }
+  ]
+}

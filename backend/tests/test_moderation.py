@@ -115,6 +115,44 @@ async def _cleanup_promoted_series(title: str) -> None:
             await session.execute(text("DELETE FROM series WHERE title = :title"), {"title": title})
 
 
+async def _cleanup_promoted_series_with_contributions(title: str) -> None:
+    """#85: same as _cleanup_promoted_series, but also tears down whatever
+    contributions/citations/outbox rows an approval with attached
+    episode_data created for the promoted series — series itself CASCADEs
+    into contributions, but citations and outbox rows don't cascade from
+    either side (same lesson _cleanup_series above already learned).
+    """
+    async with async_session_factory() as session:
+        async with session.begin():
+            series_row = (
+                await session.execute(text("SELECT id FROM series WHERE title = :title"), {"title": title})
+            ).first()
+            if series_row is None:
+                return
+            series_id = series_row.id
+            contribution_rows = (
+                await session.execute(
+                    text("SELECT id, citation_id FROM contributions WHERE series_id = :sid"),
+                    {"sid": series_id},
+                )
+            ).all()
+            contribution_ids = [r.id for r in contribution_rows]
+            citation_ids = [r.citation_id for r in contribution_rows]
+
+            await session.execute(text("DELETE FROM series WHERE id = :id"), {"id": series_id})
+            if citation_ids:
+                await session.execute(text("DELETE FROM citations WHERE id = ANY(:ids)"), {"ids": citation_ids})
+            if contribution_ids:
+                await session.execute(
+                    text(
+                        "DELETE FROM outbox_events WHERE "
+                        "event_type = 'contribution.submitted' "
+                        "AND (payload->>'contribution_id')::int = ANY(:ids)"
+                    ),
+                    {"ids": contribution_ids},
+                )
+
+
 @pytest.fixture
 async def test_series_id():
     series_id = await _make_test_series()
@@ -388,3 +426,132 @@ async def test_approve_already_resolved_contribution_is_409(
         assert first.status_code == 200
         second = await client.post(f"/api/v1/contributions/{contribution_id}/approve")
         assert second.status_code == 409
+
+
+@pytest.mark.asyncio
+async def test_submit_series_proposal_with_malformed_episode_data_returns_422() -> None:
+    """#85: bad ranges are caught at submission time, not deferred to
+    approval — same 422 shape #80's bulk endpoint already uses.
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/series-proposals",
+            json={
+                "title": "__test_85__malformed episode data",
+                "justification": "__test_85__ justification",
+                "license_accepted": True,
+                "episode_data": {
+                    "canon_ranges": "not-a-range",
+                    "citation": {"description": "__test_85__ citation"},
+                },
+            },
+        )
+        assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_approve_series_proposal_with_episode_data_creates_bulk_contributions(
+    moderator_id: int,
+) -> None:
+    """#85: a proposal submitted with attached episode-range data creates
+    the series AND the bulk contributions in one approval step, reusing
+    #80's own validation/creation core.
+    """
+    title = "__test_85__series with episode data"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        submit_response = await client.post(
+            "/api/v1/series-proposals",
+            json={
+                "title": title,
+                "justification": "__test_85__ justification",
+                "license_accepted": True,
+                "episode_data": {
+                    "canon_ranges": "1-3",
+                    "filler_ranges": "4",
+                    "citation": {"description": "__test_85__ citation"},
+                },
+            },
+        )
+        assert submit_response.status_code == 201, submit_response.text
+        submitted = submit_response.json()
+        proposal_id = submitted["id"]
+        assert submitted["episode_data"]["declared_count"] == 4
+
+        client.cookies.set(SESSION_COOKIE_NAME, create_session_token(moderator_id))
+        approve_response = await client.post(f"/api/v1/series-proposals/{proposal_id}/approve")
+        assert approve_response.status_code == 200, approve_response.text
+        approve_body = approve_response.json()
+        assert approve_body["review_status"] == "approved"
+        assert approve_body["episode_contributions_created"] == 4
+
+    try:
+        async with async_session_factory() as session:
+            series_row = (
+                await session.execute(text("SELECT id FROM series WHERE title = :title"), {"title": title})
+            ).first()
+            assert series_row is not None
+            series_id = series_row.id
+
+            contribution_rows = (
+                await session.execute(
+                    text(
+                        "SELECT episode_number, proposed_status FROM contributions "
+                        "WHERE series_id = :sid ORDER BY episode_number"
+                    ),
+                    {"sid": series_id},
+                )
+            ).all()
+            assert [(r.episode_number, r.proposed_status) for r in contribution_rows] == [
+                (1, "canon"),
+                (2, "canon"),
+                (3, "canon"),
+                (4, "filler"),
+            ]
+    finally:
+        await _cleanup_series_proposal(proposal_id)
+        await _cleanup_promoted_series_with_contributions(title)
+
+
+@pytest.mark.asyncio
+async def test_reject_series_proposal_with_episode_data_creates_nothing(moderator_id: int) -> None:
+    """#85: rejecting a proposal with attached episode data discards it —
+    nothing orphaned, since it never became a real series/citation/
+    contribution in the first place (it just sits as JSON on the now-
+    rejected proposal row, same as any other rejected proposal field).
+    """
+    title = "__test_85__rejected series with episode data"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        submit_response = await client.post(
+            "/api/v1/series-proposals",
+            json={
+                "title": title,
+                "justification": "__test_85__ justification",
+                "license_accepted": True,
+                "episode_data": {
+                    "canon_ranges": "1-5",
+                    "citation": {"description": "__test_85__ citation"},
+                },
+            },
+        )
+        assert submit_response.status_code == 201
+        proposal_id = submit_response.json()["id"]
+
+        client.cookies.set(SESSION_COOKIE_NAME, create_session_token(moderator_id))
+        rejected = await client.post(
+            f"/api/v1/series-proposals/{proposal_id}/reject",
+            json={"review_note": "__test_85__ not needed"},
+        )
+        assert rejected.status_code == 200, rejected.text
+        assert rejected.json()["review_status"] == "rejected"
+        assert rejected.json()["episode_contributions_created"] is None
+
+    async with async_session_factory() as session:
+        series_row = (
+            await session.execute(text("SELECT id FROM series WHERE title = :title"), {"title": title})
+        ).first()
+        assert series_row is None
+
+    await _cleanup_series_proposal(proposal_id)

@@ -143,7 +143,14 @@ CREATE TABLE series_proposals (
     -- CC BY-NC-SA structural proof of agreement (CLAUDE.md, issue #21) —
     -- every submission, not a one-time account flag; see the identical
     -- column on contributions below for the full reasoning.
-    license_accepted BOOLEAN NOT NULL
+    license_accepted BOOLEAN NOT NULL,
+    -- #85: optional episode-range data attached at proposal time, in the
+    -- same shape services/contributions.py's bulk-submission path expects
+    -- (canon_ranges/mixed_ranges/filler_ranges/citation). NULL until the
+    -- proposal is approved, at which point it's turned into real citations
+    -- + contributions rows targeting the newly-created series. A rejected
+    -- proposal just leaves this sitting here — nothing else references it.
+    episode_data JSONB
 );
 
 -- =========================================================================

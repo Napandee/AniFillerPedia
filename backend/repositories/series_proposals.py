@@ -6,6 +6,8 @@ title, which isn't unique — duplicate proposals get sorted out at review
 time, not blocked structurally).
 """
 
+import json
+
 from sqlalchemy import text
 from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,16 +23,17 @@ async def create(
     justification: str,
     submitted_by: int | None,
     license_accepted: bool,
+    episode_data: dict | None = None,
 ) -> Row:
     result = await session.execute(
         text(
             """
             INSERT INTO series_proposals
                 (title, anilist_id, mal_id, anidb_id, justification,
-                 submitted_by, license_accepted)
+                 submitted_by, license_accepted, episode_data)
             VALUES
                 (:title, :anilist_id, :mal_id, :anidb_id, :justification,
-                 :submitted_by, :license_accepted)
+                 :submitted_by, :license_accepted, CAST(:episode_data AS JSONB))
             RETURNING *
             """
         ),
@@ -42,6 +45,10 @@ async def create(
             "justification": justification,
             "submitted_by": submitted_by,
             "license_accepted": license_accepted,
+            # #85: asyncpg's JSONB binding needs an explicit JSON string,
+            # not a raw dict — matches how outbox_repo.write already
+            # handles its own JSONB payload column.
+            "episode_data": json.dumps(episode_data) if episode_data is not None else None,
         },
     )
     return result.one()

@@ -1,6 +1,6 @@
 {
   "series_title": "Fullmetal Alchemist: Brotherhood",
-  "research_status": "COMPLETE — all 64 episodes of Fullmetal Alchemist: Brotherhood (2009–2010) classified canon/filler/mixed. Sourced from three independently-fetched guides (epicdope.com, SuperHeroJacked, QuoteTheAnime) whose episode-level classifications matched exactly: episode 1 as a reordered manga-sourced preview (mixed), episodes 4/9/13/14 as partial filler blending original and manga-adapted content within the same episode (mixed), episode 27 as the series' one pure standalone filler episode (filler), and all 58 remaining episodes as straight manga canon. A fourth guide (aniyume.net) was checked as a cross-reference and discarded — it listed a completely different set of 'filler' episodes (including 37, 48, 49, three of the series' most acclaimed and clearly manga-adapted canon episodes), contradicting all three other independently-agreeing sources as well as well-established fan consensus, so it was treated as unreliable rather than a genuine fourth data point. Complete, gap-free, non-overlapping coverage of 1–64 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 64 episodes of Fullmetal Alchemist: Brotherhood (2009–2010) classified canon/filler/mixed. Sourced from three independently-fetched guides (epicdope.com, SuperHeroJacked, QuoteTheAnime) whose episode-level classifications matched exactly: episode 1 tagged 'anime canon' by all three (canon), episodes 4/9/13/14 as partial filler blending original and manga-adapted content within the same episode (mixed), episode 27 as the series' one pure standalone filler episode (filler), and all 59 remaining episodes as straight manga canon. A fourth guide (aniyume.net) was checked as a cross-reference and discarded — it listed a completely different set of 'filler' episodes (including 37, 48, 49, three of the series' most acclaimed and clearly manga-adapted canon episodes), contradicting all three other independently-agreeing sources as well as well-established fan consensus, so it was treated as unreliable rather than a genuine fourth data point. Corrected 2026-08-25: episode 1 was originally recorded as 'mixed' rather than 'canon', an inconsistency with how this project treats the same 'anime canon' label on every other show (see episode 1's own status_note) — caught during a manual cross-check against an independently-sourced breakdown Andreas found himself. Complete, gap-free, non-overlapping coverage of 1–64 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "epicdope-fmab-filler-guide",
@@ -24,7 +24,7 @@
   "episodes": [
     {
       "episode_number": 1,
-      "status": "mixed",
+      "status": "canon",
       "citation_ids": [
         "epicdope-fmab-filler-guide",
         "superherojacked-fmab-filler-guide",
@@ -32,7 +32,7 @@
       ],
       "source_count": 3,
       "title": "Fullmetal Alchemist",
-      "status_note": "The series-opening episode: a compressed, reordered preview built from real manga-sourced material (drawing on events from later in the story as a framing device) rather than a straight adaptation in chapter order. All three cross-referenced guides treat it as distinct from both plain manga-canon and the one standalone filler episode (27), so it's recorded here as 'mixed'."
+      "status_note": "Corrected 2026-08-25: all three cross-referenced guides tag this episode 'anime canon' (a compressed, reordered preview built from real manga-sourced material, drawing on events from later in the story as a framing device, rather than a straight chapter-order adaptation) — distinct from both plain manga-canon and the one standalone filler episode (27). Originally recorded as 'mixed' here, which was inconsistent with how this project treats the identical 'anime canon' label everywhere else (Dragon Ball Super's own anime-canon episodes are recorded as plain canon) — aligned to 'canon' to match."
     },
     {
       "episode_number": 2,

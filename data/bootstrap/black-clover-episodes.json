@@ -1,6 +1,6 @@
 {
   "series_title": "Black Clover",
-  "research_status": "COMPLETE — all 170 episodes of Black Clover classified canon/filler/mixed, though with a real, disclosed confidence gap on the 'mixed' category that this project's other shows don't have. The 17-episode pure-filler list (29, 66, 68, 82, 123-125, 131, 134-135, 142-148) is corroborated by two independently-fetched sources (QuoteTheAnime, CBR) agreeing exactly, including the specific 148 boundary on the Elf Reincarnation arc's filler run. Episode 149 is the one genuinely contested boundary case — see its own status_note. Several other candidate 'mixed' episodes were checked across sources (2, 3, 8, 9, 12, 30, 67, 69, 85, 86, 88, 130) but the sources disagreed with each other, and in one case (joinkaminari.com) with itself, on which specific episodes qualify — rather than guess, those are all recorded as plain canon here, and only episode 102 (the one candidate every checked source that mentioned mixed episodes at all agreed on) is recorded as mixed, itself only backed by one directly-fetched source. This is a meaningfully lower-confidence 'mixed' classification than this project's other shows, which is why it's spelled out here rather than left implicit. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass, same as Dragon Ball Z/Super. Complete, gap-free, non-overlapping coverage of 1-170 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 170 episodes of Black Clover classified canon/filler/mixed. The 17-episode pure-filler core (29, 66, 68, 82, 123-125, 131, 134-135, 142-148) is corroborated by two independently-fetched sources (QuoteTheAnime, CBR) agreeing exactly. Corrected 2026-08-25: this file originally recorded only episode 102 as mixed, with a disclosed low-confidence gap around several other candidate mixed episodes that different sources couldn't agree on, and recorded episode 149 as canon after resolving a QuoteTheAnime/CBR vs. ScreenRant/joinkaminari disagreement in favor of the first pair. Andreas independently found and confirmed a fuller, internally-consistent reading of QuoteTheAnime's own page (a complete, gap-free partition of all 170 episodes) that resolves both gaps: episodes 2, 8, 9, 12, 30, 69, and 102 are mixed, and the filler run extends through episode 149 (18 filler episodes total, not 17) — applied as corrections to the affected episodes' own status_notes rather than a rewrite of this whole file, since the underlying source (QuoteTheAnime) was already cited here, just not read completely the first time. CBR's own arc-level count (17, ending at 148) still disagrees with episode 149 specifically — noted on that episode rather than silently dropped. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass, same as Dragon Ball Z/Super. Complete, gap-free, non-overlapping coverage of 1-170 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "quotetheanime-black-clover-filler-list",
@@ -27,12 +27,12 @@
     },
     {
       "episode_number": 2,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "quotetheanime-black-clover-filler-list",
-        "cbr-black-clover-filler-arcs"
+        "quotetheanime-black-clover-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as canon here, since this project's own directly-fetched read of QuoteTheAnime's page didn't capture it as mixed and no second source corroborated it at the time. Andreas independently found and confirmed a fuller, internally-consistent read of the same QuoteTheAnime breakdown (a complete, gap-free partition of all 170 episodes) that does classify this episode as mixed — applied as a correction rather than a new source, since it's a more accurate reading of the guide already cited here."
     },
     {
       "episode_number": 3,
@@ -81,21 +81,21 @@
     },
     {
       "episode_number": 8,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "quotetheanime-black-clover-filler-list",
-        "cbr-black-clover-filler-arcs"
+        "quotetheanime-black-clover-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as canon here, since this project's own directly-fetched read of QuoteTheAnime's page didn't capture it as mixed and no second source corroborated it at the time. Andreas independently found and confirmed a fuller, internally-consistent read of the same QuoteTheAnime breakdown (a complete, gap-free partition of all 170 episodes) that does classify this episode as mixed — applied as a correction rather than a new source, since it's a more accurate reading of the guide already cited here."
     },
     {
       "episode_number": 9,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "quotetheanime-black-clover-filler-list",
-        "cbr-black-clover-filler-arcs"
+        "quotetheanime-black-clover-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as canon here, since this project's own directly-fetched read of QuoteTheAnime's page didn't capture it as mixed and no second source corroborated it at the time. Andreas independently found and confirmed a fuller, internally-consistent read of the same QuoteTheAnime breakdown (a complete, gap-free partition of all 170 episodes) that does classify this episode as mixed — applied as a correction rather than a new source, since it's a more accurate reading of the guide already cited here."
     },
     {
       "episode_number": 10,
@@ -117,12 +117,12 @@
     },
     {
       "episode_number": 12,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "quotetheanime-black-clover-filler-list",
-        "cbr-black-clover-filler-arcs"
+        "quotetheanime-black-clover-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as canon here, since this project's own directly-fetched read of QuoteTheAnime's page didn't capture it as mixed and no second source corroborated it at the time. Andreas independently found and confirmed a fuller, internally-consistent read of the same QuoteTheAnime breakdown (a complete, gap-free partition of all 170 episodes) that does classify this episode as mixed — applied as a correction rather than a new source, since it's a more accurate reading of the guide already cited here."
     },
     {
       "episode_number": 13,
@@ -279,12 +279,12 @@
     },
     {
       "episode_number": 30,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "quotetheanime-black-clover-filler-list",
-        "cbr-black-clover-filler-arcs"
+        "quotetheanime-black-clover-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as canon here, since this project's own directly-fetched read of QuoteTheAnime's page didn't capture it as mixed and no second source corroborated it at the time. Andreas independently found and confirmed a fuller, internally-consistent read of the same QuoteTheAnime breakdown (a complete, gap-free partition of all 170 episodes) that does classify this episode as mixed — applied as a correction rather than a new source, since it's a more accurate reading of the guide already cited here."
     },
     {
       "episode_number": 31,
@@ -630,12 +630,12 @@
     },
     {
       "episode_number": 69,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "quotetheanime-black-clover-filler-list",
-        "cbr-black-clover-filler-arcs"
+        "quotetheanime-black-clover-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as canon here, since this project's own directly-fetched read of QuoteTheAnime's page didn't capture it as mixed and no second source corroborated it at the time. Andreas independently found and confirmed a fuller, internally-consistent read of the same QuoteTheAnime breakdown (a complete, gap-free partition of all 170 episodes) that does classify this episode as mixed — applied as a correction rather than a new source, since it's a more accurate reading of the guide already cited here."
     },
     {
       "episode_number": 70,
@@ -1350,13 +1350,12 @@
     },
     {
       "episode_number": 149,
-      "status": "canon",
+      "status": "filler",
       "citation_ids": [
-        "quotetheanime-black-clover-filler-list",
-        "cbr-black-clover-filler-arcs"
+        "quotetheanime-black-clover-filler-list"
       ],
-      "source_count": 2,
-      "status_note": "Genuinely disputed across sources, more so than any other episode in this dataset: two independently-fetched, internally consistent sources (QuoteTheAnime, CBR) place the filler run at 142-148 and treat 149 as the resumption of real story content (QuoteTheAnime tags it 'anime canon'). Two other guides checked (ScreenRant, joinkaminari.com) list 149 as filler instead — but joinkaminari's own article simultaneously lists 149 as the start of its 'anime-canon 149-157' range, an internal contradiction within that one source. Going with the two consistent, agreeing sources rather than the two inconsistent ones: canon."
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as canon after resolving a cross-source disagreement in favor of QuoteTheAnime and CBR (both of which this project's own fetch had placing the Elf Reincarnation filler run at 142-148, one episode short of here). Andreas independently found and confirmed a fuller, internally-consistent read of the same QuoteTheAnime page that extends the filler run through episode 149 instead — applied as a correction. CBR's own arc-level filler-arc guide still frames the arc as ending at 148 and reports '17 filler episodes' overall, one short of the 18 this correction implies — that one-source disagreement is real and unresolved, noted here rather than silently dropped, but QuoteTheAnime's own re-verified reading is treated as authoritative for this specific episode."
     },
     {
       "episode_number": 150,

@@ -341,3 +341,34 @@ case, with themselves — see that episode's own status_note.
 No titles hand-compiled — left for #73's automated backfill, same as
 Dragon Ball Z/Super. Complete, gap-free, non-overlapping coverage of
 1-170 confirmed before writing the file.
+
+**Corrections, 2026-08-25 (same day, post-load):** Andreas independently
+verified this session's four newly-compiled shows against his own
+re-reads of the same sources and found two real corrections, applied via
+`load_episodes.py --allow-corrections` (audit trail preserved, old
+contribution rows untouched):
+
+- **Black Clover** — this file's own disclosed "mixed" confidence gap
+  (above) turned out to be a transcription gap, not a genuine source
+  disagreement: a fuller, internally-consistent read of QuoteTheAnime's
+  page (the same source already cited here) resolves it. Episodes 2, 8,
+  9, 12, 30, 69 move from canon to mixed, and episode 149 moves from
+  canon to filler (18 filler episodes total, not 17) — see each episode's
+  own status_note for the full reasoning, including the one remaining
+  real disagreement (CBR's arc-level count still stops at 148).
+- **Fullmetal Alchemist: Brotherhood** — episode 1 moves from mixed to
+  canon, for consistency: all three sources tag it "anime canon," which
+  this project treats as canon everywhere else (confirmed by an
+  independent, unrelated Dragon Ball Super check the same day) — the
+  original "mixed" call here was a one-off inconsistency, not a real
+  factual dispute.
+
+Two other shows (**Dragon Ball Z**, **Dragon Ball Super**) were
+independently checked the same way and confirmed to already match
+exactly — no changes needed there. **Fullmetal Alchemist (2003)** was
+also checked: its 28-episode "anime canon" block (the anime's own
+original continuation once it outpaced the still-ongoing manga) was
+deliberately kept as `filler` rather than moved to `canon` — a real
+policy call, not a data error, since that block adapts nothing from
+Arakawa's manga at all, unlike the smaller "anime canon" pockets in the
+other shows. Andreas confirmed keeping it as-is.

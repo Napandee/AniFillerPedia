@@ -367,6 +367,32 @@ def main() -> None:
     for episode_number, err in failures:
         print(f"  - episode {episode_number}: {err}")
 
+    # #103: a new/corrected series' episode titles used to depend on someone
+    # remembering to separately run backfill_episode_titles_from_anilist.py —
+    # nothing guaranteed that ever actually happened. Attempt it here
+    # automatically, right after the episodes it applies to just landed.
+    # Best-effort: a failure here (AniList down, no anilist_id, etc.) is
+    # reported but never turns an otherwise-successful episode load into a
+    # failure — title backfill is non-contentious metadata, not part of the
+    # data this load is actually responsible for getting right.
+    import httpx
+    import psycopg2 as _psycopg2
+    from backfill_episode_titles_from_anilist import backfill_titles_for_series
+
+    backfill_conn = _psycopg2.connect(get_database_url())
+    backfill_conn.autocommit = False
+    try:
+        with backfill_conn.cursor() as cur:
+            cur.execute("SELECT anilist_id FROM series WHERE id = %s", (series_id,))
+            anilist_id = cur.fetchone()[0]
+        if anilist_id is not None:
+            with httpx.Client() as client:
+                backfill_titles_for_series(backfill_conn, client, series_id, series_title, anilist_id)
+    except Exception as exc:  # noqa: BLE001 - best-effort, never fail the load over this
+        print(f"Title backfill skipped (non-fatal): {exc}", file=sys.stderr)
+    finally:
+        backfill_conn.close()
+
     if failures:
         sys.exit(1)
 

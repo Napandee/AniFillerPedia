@@ -1,0 +1,1028 @@
+{
+  "series_title": "Yuu☆Yuu☆Hakusho",
+  "research_status": "COMPLETE — all 112 episodes of Yu Yu Hakusho classified canon/filler/mixed. This is a genuinely low-filler show (4 pure-filler episodes total), corroborated by two independently-fetched sources (epicdope.com, QuoteTheAnime) agreeing exactly on 107-109 and 111 as the only pure filler. Episodes 11 and 13 are recorded as mixed ('mostly canon' per QuoteTheAnime) but backed by only one source — epicdope's own guide didn't call these two out separately from the surrounding canon run, so this isn't independently corroborated the way the pure-filler episodes are. QuoteTheAnime's own stated total (114 episodes, with a 5th filler episode at 114) doesn't match this project's AniList-sourced catalog entry (112 episodes, confirmed via a direct AniList API check) — disregarded as out of scope, the same kind of guide-site episode-count confusion already hit with Rurouni Kenshin earlier in this same research batch. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass. Complete, gap-free, non-overlapping coverage of 1-112 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "epicdope-yyh-filler-guide",
+      "url": "https://www.epicdope.com/yu-yu-hakusho-filler-guide-how-many-fillers-are-there/",
+      "description": "epicdope.com's Yu Yu Hakusho filler guide — confirms the same 4 pure-filler episodes (107-109, 111) as QuoteTheAnime, out of the real 112-episode series.",
+      "methodology_note": null
+    },
+    {
+      "id": "quotetheanime-yyh-filler-list",
+      "url": "https://quotetheanime.com/filler-list/yu-yu-hakusho/",
+      "description": "QuoteTheAnime's Yu Yu Hakusho filler list — independently confirms the identical 4 pure-filler episodes, and additionally classifies episodes 11 and 13 as 'mostly canon' (mixed here).",
+      "methodology_note": "This guide's own stated total (114 episodes, with a 5th filler episode at 114) doesn't match this project's AniList-sourced catalog entry (112 episodes, confirmed via a direct AniList API check) — episode 114 was disregarded as not corresponding to anything in scope."
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only QuoteTheAnime explicitly addresses this episode ('mostly canon'); epicdope's guide didn't call it out specifically as distinct from the surrounding canon run, so this is a single-source classification rather than corroborated."
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only QuoteTheAnime explicitly addresses this episode ('mostly canon'); epicdope's guide didn't call it out specifically as distinct from the surrounding canon run, so this is a single-source classification rather than corroborated."
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 75,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 76,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 89,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 93,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 95,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 100,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 101,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 102,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 103,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 104,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 105,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 106,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 107,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 108,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 109,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 110,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 111,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 112,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-yyh-filler-guide",
+        "quotetheanime-yyh-filler-list"
+      ],
+      "source_count": 2
+    }
+  ]
+}

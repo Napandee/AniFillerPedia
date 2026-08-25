@@ -372,3 +372,52 @@ deliberately kept as `filler` rather than moved to `canon` — a real
 policy call, not a data error, since that block adapts nothing from
 Arakawa's manga at all, unlike the smaller "anime canon" pockets in the
 other shows. Andreas confirmed keeping it as-is.
+
+## #104 — second batch: InuYasha, Rurouni Kenshin, Yuu☆Yuu☆Hakusho, Toriko, Hajime no Ippo, JoJo no Kimyou na Bouken (TV)
+
+**Complete — all six series, 2026-08-25.** Picked from the 167 manami-project
+candidates left unresearched after #5 closed (see `series-candidates.json`).
+618 episodes total across the six shows.
+
+- **InuYasha** (167/167: 115 canon / 35 filler / 17 mixed) — two
+  independently-fetched sources (QuoteTheAnime, Entoin) agreed exactly, no
+  disputed episodes. Scope deliberately capped at the original series (167
+  episodes); *InuYasha: The Final Act* is a separate 26-episode continuation
+  with its own AniList entry, not part of this catalog entry or this
+  manami candidate.
+- **Rurouni Kenshin: Meiji Kenkaku Romantan** (94/94: 51 canon / 38 filler /
+  5 mixed) — both guides checked (QuoteTheAnime, FictionHorizon) claimed the
+  series has 100 episodes, which is wrong: verified via Wikipedia and a
+  direct AniList API check that the real broadcast run is 94 episodes (plus
+  a 95th, unaired DVD-only bonus finale not in this project's catalog
+  entry). Both guides' classifications beyond 94 were disregarded; within
+  1-94 they agreed on everything except episodes 19-21, resolved as canon
+  (2 sources vs 1) — see that range's own status_note.
+- **Yuu☆Yuu☆Hakusho** (112/112: 106 canon / 4 filler / 2 mixed) — a
+  genuinely low-filler show. Two sources (epicdope, QuoteTheAnime) agreed
+  exactly on the 4 pure-filler episodes; episodes 11 and 13 are recorded as
+  mixed on QuoteTheAnime's authority alone (epicdope's guide didn't call
+  them out specifically). QuoteTheAnime's own stated total (114 episodes)
+  doesn't match this project's 112-episode AniList catalog entry — the same
+  kind of guide-site episode-count confusion hit with Rurouni Kenshin,
+  disregarded the same way.
+- **Toriko** (147/147: 127 canon / 20 filler, no mixed episodes found) —
+  thinner guide coverage than this project's other shows (a less
+  mainstream title). QuoteTheAnime's exhaustive 20-episode filler list is
+  the primary source; the Toriko Fandom wiki's own filler category
+  independently confirms 14 of those 20. The remaining 6 (episodes 1, 51,
+  99, 136, 146-147) are single-source, flagged in their own status_notes.
+- **Hajime no Ippo** (75/75: 73 canon / 2 filler) — an extremely low-filler
+  show; only two clip/recap episodes (31, 52) are filler, agreed by two
+  sources with no disputes. *Hajime no Ippo: Champion Road* (a compilation
+  movie, separate manami candidate) is explicitly out of scope.
+- **JoJo no Kimyou na Bouken (TV)** (26/26: all canon) — the original 2012
+  David Production adaptation of Phantom Blood + Battle Tendency has zero
+  filler or mixed episodes per two agreeing sources. Included deliberately
+  as a low-filler data point, not assuming every manami-flagged candidate
+  has substantial filler content.
+
+No episode titles included in any of the six files — left for #73's
+automated backfill pass (see #103, which tracks actually ensuring that
+backfill runs for every loaded series, this batch included). 161 manami
+candidates remain unresearched after this batch.

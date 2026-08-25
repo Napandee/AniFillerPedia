@@ -1,0 +1,1523 @@
+{
+  "series_title": "InuYasha",
+  "research_status": "COMPLETE — all 167 episodes of the original InuYasha TV series (2000-2004) classified canon/filler/mixed. Sourced from two independently-fetched guides (QuoteTheAnime, Entoin) whose episode-by-episode breakdowns matched exactly, with no disputed episodes. Scope is deliberately capped at 167 — InuYasha: The Final Act (episodes 168-193 in some aggregate counts) is a separate 26-episode continuation series with its own AniList entry, not covered by this project's 'InuYasha' catalog entry, and not in this manami-project candidate. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass, matching this project's precedent for shows at this scale (Dragon Ball Z/Super, Black Clover). Complete, gap-free, non-overlapping coverage of 1-167 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-inuyasha-filler-list",
+      "url": "https://quotetheanime.com/filler-list/inuyasha/",
+      "description": "QuoteTheAnime's InuYasha filler list — episode-by-episode classification into manga canon, mixed, and pure filler, covering the original 167-episode series (this project's scope) and noting The Final Act (a separate 26-episode continuation, not in this project's catalog) as fully canon.",
+      "methodology_note": null
+    },
+    {
+      "id": "entoin-inuyasha-filler-list",
+      "url": "https://www.entoin.com/entertainment/inuyasha-filler-list",
+      "description": "Entoin's InuYasha filler guide — independently confirms the identical canon/mixed/filler breakdown as QuoteTheAnime for the original 167-episode series.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 69,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 75,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 76,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 77,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 78,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 79,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 83,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 84,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 87,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 89,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 90,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 91,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 92,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 93,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 94,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 95,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 96,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 97,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 98,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 99,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 100,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 101,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 102,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 103,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 104,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 105,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 106,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 107,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 108,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 109,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 110,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 111,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 112,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 113,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 114,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 115,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 116,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 117,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 118,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 119,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 120,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 121,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 122,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 123,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 124,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 125,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 126,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 127,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 128,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 129,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 130,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 131,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 132,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 133,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 134,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 135,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 136,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 137,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 138,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 139,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 140,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 141,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 142,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 143,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 144,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 145,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 146,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 147,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 148,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 149,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 150,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 151,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 152,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 153,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 154,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 155,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 156,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 157,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 158,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 159,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 160,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 161,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 162,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 163,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 164,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 165,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 166,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 167,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-inuyasha-filler-list",
+        "entoin-inuyasha-filler-list"
+      ],
+      "source_count": 2
+    }
+  ]
+}

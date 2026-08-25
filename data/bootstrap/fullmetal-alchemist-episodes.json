@@ -1,0 +1,561 @@
+{
+  "series_title": "Fullmetal Alchemist",
+  "research_status": "COMPLETE — all 51 episodes of the original 2003 Fullmetal Alchemist TV series classified canon/filler. Sourced from two independently-fetched filler guides (epicdope.com, QuoteTheAnime) whose episode-by-episode classifications matched exactly. This series has no genuinely disputed episodes between the two sources, but the 'filler' status covers two structurally different things the project's 3-value schema doesn't separate: 3 pure standalone filler episodes (4, 10, 37) and 28 episodes of the anime's own original story continuation once it outpaced the still-ongoing manga (from episode 29 onward, with a handful of earlier original episodes interspersed) — both are 'filler' under this project's manga-adaptation definition, distinguished via each episode's status_note. Complete, gap-free, non-overlapping coverage of 1–51 confirmed before writing this file. A third site (aniyume.net) was checked for Fullmetal Alchemist: Brotherhood cross-reference (see that file) but was not used here.",
+  "citation_sources": [
+    {
+      "id": "epicdope-fma-2003-filler-guide",
+      "url": "https://www.epicdope.com/fullmetal-alchemist-complete-filler-guide-for-beginners/",
+      "description": "epicdope.com's Fullmetal Alchemist (2003) filler guide — episode-by-episode classification into manga canon, anime-original/diverging story, or pure filler.",
+      "methodology_note": null
+    },
+    {
+      "id": "quotetheanime-fma-filler-list",
+      "url": "https://quotetheanime.com/filler-list/fullmetal-alchemist/",
+      "description": "QuoteTheAnime's combined Fullmetal Alchemist filler list (covers both the 2003 series and Brotherhood) — agreed with epicdope's guide on an identical episode-by-episode breakdown for the 2003 series.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Those Who Challenge the Sun"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Body of the Sanctioned"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Mother"
+    },
+    {
+      "episode_number": 4,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "A Forger's Love",
+      "status_note": "Pure standalone filler episode, no connection to the manga or to the 2003 anime's own original continuation story — agreed identically by both cross-referenced guides."
+    },
+    {
+      "episode_number": 5,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Man with the Mechanical Arm",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Alchemy Exam"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Night of the Chimera's Cry"
+    },
+    {
+      "episode_number": 8,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Philosopher's Stone",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Be Thou for the People"
+    },
+    {
+      "episode_number": 10,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Phantom Thief",
+      "status_note": "Pure standalone filler episode, no connection to the manga or to the 2003 anime's own original continuation story — agreed identically by both cross-referenced guides."
+    },
+    {
+      "episode_number": 11,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Other Brothers Elric: Part 1",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Other Brothers Elric: Part 2",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Fullmetal vs. Flame"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Destruction's Right Hand"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Ishbal Massacre"
+    },
+    {
+      "episode_number": 16,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "That Which Is Lost",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "House of the Waiting Family"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Marcoh's Notes"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Truth Behind Truths"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Soul of the Guardian"
+    },
+    {
+      "episode_number": 21,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Red Glow",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 22,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Created Human",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Fullmetal Heart"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Bonding Memories"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Words of Farewell"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Her Reason"
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Teacher"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "All is One, One is All"
+    },
+    {
+      "episode_number": 29,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Untainted Child",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 30,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Assault on South Headquarters",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 31,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Sin",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 32,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Dante of the Deep Forest",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 33,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Al, Captured",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Theory of Avarice"
+    },
+    {
+      "episode_number": 35,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Reunion of the Fallen",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 36,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Sinner Within",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 37,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Flame Alchemist, The Bachelor Lieutenant & The Mystery of Warehouse 13",
+      "status_note": "Pure standalone filler episode, no connection to the manga or to the 2003 anime's own original continuation story — agreed identically by both cross-referenced guides."
+    },
+    {
+      "episode_number": 38,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "With the River's Flow",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 39,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Secret of Ishbal",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 40,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Scar",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 41,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Holy Mother",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 42,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "His Name is Unknown",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 43,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Stray Dog",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 44,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Hohenheim of Light",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 45,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "A Rotted Heart",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 46,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Human Transmutation",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 47,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Sealing the Homunculus",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 48,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Goodbye",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 49,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "The Other Side of the Gate",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 50,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Death",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    },
+    {
+      "episode_number": 51,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fma-2003-filler-guide",
+        "quotetheanime-fma-filler-list"
+      ],
+      "source_count": 2,
+      "title": "Laws and Promises",
+      "status_note": "Anime-original content, not adapted from Hiromu Arakawa's manga — the manga was still ongoing when this 2003 anime aired, so from here the anime diverges into its own original continuation (a different central antagonist, Dante, and a different ending than the manga's). Classified 'filler' under this project's manga-adaptation-based definition, though multiple fan guides caution these episodes are plot-critical to the 2003 anime's own story and not skippable padding, unlike the three pure standalone filler episodes (4, 10, 37)."
+    }
+  ]
+}

@@ -1,0 +1,736 @@
+{
+  "series_title": "Fullmetal Alchemist: Brotherhood",
+  "research_status": "COMPLETE — all 64 episodes of Fullmetal Alchemist: Brotherhood (2009–2010) classified canon/filler/mixed. Sourced from three independently-fetched guides (epicdope.com, SuperHeroJacked, QuoteTheAnime) whose episode-level classifications matched exactly: episode 1 as a reordered manga-sourced preview (mixed), episodes 4/9/13/14 as partial filler blending original and manga-adapted content within the same episode (mixed), episode 27 as the series' one pure standalone filler episode (filler), and all 58 remaining episodes as straight manga canon. A fourth guide (aniyume.net) was checked as a cross-reference and discarded — it listed a completely different set of 'filler' episodes (including 37, 48, 49, three of the series' most acclaimed and clearly manga-adapted canon episodes), contradicting all three other independently-agreeing sources as well as well-established fan consensus, so it was treated as unreliable rather than a genuine fourth data point. Complete, gap-free, non-overlapping coverage of 1–64 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "epicdope-fmab-filler-guide",
+      "url": "https://www.epicdope.com/fullmetal-alchemist-brotherhood-filler-list-guide/",
+      "description": "epicdope.com's Fullmetal Alchemist: Brotherhood filler guide — episode-by-episode classification into manga canon, anime-original opener, partial filler, or pure filler.",
+      "methodology_note": null
+    },
+    {
+      "id": "superherojacked-fmab-filler-guide",
+      "url": "https://superherojacked.com/2021/12/19/fullmetal-alchemist-fma-brotherhood-filler-list-watch-guide/",
+      "description": "SuperHeroJacked's Fullmetal Alchemist / Brotherhood filler and watch guide — matched epicdope's Brotherhood breakdown exactly, episode for episode.",
+      "methodology_note": null
+    },
+    {
+      "id": "quotetheanime-fmab-filler-list",
+      "url": "https://quotetheanime.com/filler-list/fullmetal-alchemist/",
+      "description": "QuoteTheAnime's combined Fullmetal Alchemist filler list (covers both the 2003 series and Brotherhood) — groups episode 1 and 27 under one 'Filler/Anime Canon' column but agrees on the same underlying episode-level facts as the other two guides.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Fullmetal Alchemist",
+      "status_note": "The series-opening episode: a compressed, reordered preview built from real manga-sourced material (drawing on events from later in the story as a framing device) rather than a straight adaptation in chapter order. All three cross-referenced guides treat it as distinct from both plain manga-canon and the one standalone filler episode (27), so it's recorded here as 'mixed'."
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The First Day"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "City of Heresy"
+    },
+    {
+      "episode_number": 4,
+      "status": "mixed",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "An Alchemist's Anguish",
+      "status_note": "\"Partial filler\": part of this episode is original, non-manga content, and part adapts real manga chapters — agreed on identically by all three cross-referenced guides."
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Rain of Sorrows"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Road of Hope"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Hidden Truths"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Fifth Laboratory"
+    },
+    {
+      "episode_number": 9,
+      "status": "mixed",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Created Feelings",
+      "status_note": "\"Partial filler\": part of this episode is original, non-manga content, and part adapts real manga chapters — agreed on identically by all three cross-referenced guides."
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Separate Destinations"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Miracle at Rush Valley"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "One is All, All is One"
+    },
+    {
+      "episode_number": 13,
+      "status": "mixed",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Beasts of Dublith",
+      "status_note": "\"Partial filler\": part of this episode is original, non-manga content, and part adapts real manga chapters — agreed on identically by all three cross-referenced guides."
+    },
+    {
+      "episode_number": 14,
+      "status": "mixed",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Those Who Lurk Underground",
+      "status_note": "\"Partial filler\": part of this episode is original, non-manga content, and part adapts real manga chapters — agreed on identically by all three cross-referenced guides."
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Envoy from the East"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Footsteps of a Comrade-in-Arms"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Cold Flame"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Arrogant Palm of a Small Human"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Death of the Undying"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Father Before the Grave"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Advance of the Fool"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Backs in the Distance"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Girl on the Battlefield"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Inside the Belly"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Doorway of Darkness"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Reunion"
+    },
+    {
+      "episode_number": 27,
+      "status": "filler",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Interlude Party",
+      "status_note": "The one pure standalone filler episode in Brotherhood (a relaxation/beach-trip episode with no manga basis) — agreed on unanimously by all three cross-referenced guides."
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Father"
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Struggle of the Fool"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Ishvalan War of Extermination"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The 520 Cens Promise"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Fuhrer's Son"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Northern Wall of Briggs"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Ice Queen"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Shape of This Country"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Family Portrait"
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The First Homunculus"
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Conflict at Baschool"
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Daydream"
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Homunculus (The Dwarf in the Flask)"
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Abyss"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Signs of a Counteroffensive"
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Bite of the Ant"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Revving at Full Throttle"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Promised Day"
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Looming Shadows"
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Emissary of Darkness"
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Oath in the Tunnel"
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Filial Affection"
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Upheaval in Central"
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Immortal Legion"
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Combined Strength"
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Flame of Vengeance"
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Beyond the Inferno"
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Adults' Way of Life"
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Return of the Fuhrer"
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Eternal Leave"
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Sacrifices"
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Lost Light"
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Eye of Heaven, Gateway of Earth"
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "He Who Would Swallow God"
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "A Fierce Counterattack"
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "The Other Side of the Gateway"
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-fmab-filler-guide",
+        "superherojacked-fmab-filler-guide",
+        "quotetheanime-fmab-filler-list"
+      ],
+      "source_count": 3,
+      "title": "Journey's End"
+    }
+  ]
+}

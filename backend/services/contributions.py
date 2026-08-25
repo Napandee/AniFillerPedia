@@ -17,6 +17,7 @@ from schemas.contributions import (
     BulkContributionResult,
     BulkCreatedEntry,
     BulkSkippedEntry,
+    CitationIn,
     CitationOut,
     ContributionCreate,
     ContributionOut,
@@ -133,6 +134,126 @@ async def submit_contribution(
     )
 
 
+async def _plan_bulk_contributions(
+    session: AsyncSession, series_id: int, canon_ranges: str, mixed_ranges: str, filler_ranges: str
+) -> tuple[dict[int, str], list[BulkSkippedEntry], dict[int, str]]:
+    """Shared by the live dry-run preview and the real creation path below:
+    parse/validate the range strings, then check #20's one-pending-per-
+    episode rule BEFORE any write, so a citation row is never created for a
+    batch that turns out to be entirely conflicts. Returns
+    (by_episode, skipped, to_create).
+    """
+    try:
+        by_episode = episode_ranges.parse_and_validate(canon_ranges, mixed_ranges, filler_ranges)
+    except episode_ranges.BulkRangeValidationError as exc:
+        raise HTTPException(status_code=422, detail=exc.detail) from exc
+
+    pending_by_episode = await contributions_repo.find_pending_for_episodes(
+        session, series_id, sorted(by_episode.keys())
+    )
+    skipped = [
+        BulkSkippedEntry(episode_number=ep, existing_contribution_id=cid)
+        for ep, cid in sorted(pending_by_episode.items())
+    ]
+    to_create = {ep: status for ep, status in by_episode.items() if ep not in pending_by_episode}
+    return by_episode, skipped, to_create
+
+
+async def create_bulk_contributions_for_series(
+    session: AsyncSession,
+    *,
+    series_id: int,
+    canon_ranges: str,
+    mixed_ranges: str,
+    filler_ranges: str,
+    citation: CitationIn,
+    submitted_by: int | None,
+    license_accepted: bool,
+) -> BulkContributionResult:
+    """#80's real (non-dry-run) bulk-creation core, extracted for #85: reused
+    both by the live POST /series/{id}/contributions/bulk endpoint below and
+    by services/series_proposals.py's approve_series_proposal, which calls
+    this once a proposal with attached episode data is approved and a real
+    series_id exists for it to target. `submitted_by` may be None — an
+    anonymous series proposal's attached episode data still needs to be
+    creatable, matching #12's own anonymous-submission allowance.
+    """
+    by_episode, skipped, to_create = await _plan_bulk_contributions(
+        session, series_id, canon_ranges, mixed_ranges, filler_ranges
+    )
+
+    created: list[BulkCreatedEntry] = []
+    if to_create:
+        citation_row = await citations_repo.create(
+            session,
+            url=citation.url,
+            description=citation.description,
+            submitted_by=submitted_by,
+            methodology_note=citation.methodology_note,
+        )
+        for episode_number, status in sorted(to_create.items()):
+            # Security review (#89): the pre-check above has a real TOCTOU
+            # gap — a concurrent submission could create a pending
+            # contribution for this exact episode between that check and
+            # this insert. schema.sql's partial unique index is the real
+            # backstop and correctly prevents a duplicate pending row, but
+            # without a savepoint here the resulting IntegrityError would
+            # poison this whole request's transaction, silently discarding
+            # every other episode already inserted in this same batch —
+            # a reliability bug, not a data-integrity one, but a bad
+            # failure mode for a batch that could be hundreds of episodes.
+            # A nested transaction (SAVEPOINT) scopes the rollback to just
+            # this one episode on conflict.
+            try:
+                async with session.begin_nested():
+                    contribution_row = await contributions_repo.create(
+                        session,
+                        series_id=series_id,
+                        episode_number=episode_number,
+                        proposed_status=status,
+                        proposed_note=None,
+                        citation_id=citation_row.id,
+                        submitted_by=submitted_by,
+                        license_accepted=license_accepted,
+                    )
+            except IntegrityError:
+                existing = await contributions_repo.find_pending_for_episode(session, series_id, episode_number)
+                skipped.append(
+                    BulkSkippedEntry(
+                        episode_number=episode_number,
+                        existing_contribution_id=existing.id if existing else -1,
+                    )
+                )
+                continue
+
+            # Same transaction as the insert above (CLAUDE.md Architecture)
+            # — identical event shape to the single-submission path, so
+            # #15's outbox consumers need no changes for bulk.
+            await outbox_repo.write(
+                session,
+                event_type="contribution.submitted",
+                payload={
+                    "contribution_id": contribution_row.id,
+                    "series_id": series_id,
+                    "episode_number": episode_number,
+                },
+            )
+            created.append(
+                BulkCreatedEntry(
+                    episode_number=episode_number,
+                    contribution_id=contribution_row.id,
+                    proposed_status=status,
+                )
+            )
+
+    return BulkContributionResult(
+        dry_run=False,
+        declared_count=len(by_episode),
+        created=created,
+        skipped_conflicts=skipped,
+    )
+
+
 async def submit_bulk_contributions(
     session: AsyncSession, series_id: int, payload: BulkContributionCreate, current_user: Row
 ) -> BulkContributionResult:
@@ -173,26 +294,10 @@ async def submit_bulk_contributions(
     if series_row is None:
         raise HTTPException(status_code=404, detail="Series not found")
 
-    try:
-        by_episode = episode_ranges.parse_and_validate(
-            payload.canon_ranges, payload.mixed_ranges, payload.filler_ranges
-        )
-    except episode_ranges.BulkRangeValidationError as exc:
-        raise HTTPException(status_code=422, detail=exc.detail) from exc
-
-    # #20 applied per-episode within the batch: conflicts are determined
-    # BEFORE any write, so a citation row is never created for a batch
-    # that turns out to be entirely conflicts.
-    pending_by_episode = await contributions_repo.find_pending_for_episodes(
-        session, series_id, sorted(by_episode.keys())
-    )
-    skipped = [
-        BulkSkippedEntry(episode_number=ep, existing_contribution_id=cid)
-        for ep, cid in sorted(pending_by_episode.items())
-    ]
-    to_create = {ep: status for ep, status in by_episode.items() if ep not in pending_by_episode}
-
     if payload.dry_run:
+        by_episode, skipped, to_create = await _plan_bulk_contributions(
+            session, series_id, payload.canon_ranges, payload.mixed_ranges, payload.filler_ranges
+        )
         return BulkContributionResult(
             dry_run=True,
             declared_count=len(by_episode),
@@ -203,69 +308,16 @@ async def submit_bulk_contributions(
             skipped_conflicts=skipped,
         )
 
-    created: list[BulkCreatedEntry] = []
-    if to_create:
-        citation_row = await citations_repo.create(
-            session,
-            url=payload.citation.url,
-            description=payload.citation.description,
-            submitted_by=current_user.id,
-            methodology_note=payload.citation.methodology_note,
-        )
-        for episode_number, status in sorted(to_create.items()):
-            # Security review (#89): the pre-check above has a real TOCTOU
-            # gap — a concurrent submission could create a pending
-            # contribution for this exact episode between that check and
-            # this insert. schema.sql's partial unique index is the real
-            # backstop and correctly prevents a duplicate pending row, but
-            # without a savepoint here the resulting IntegrityError would
-            # poison this whole request's transaction, silently discarding
-            # every other episode already inserted in this same batch —
-            # a reliability bug, not a data-integrity one, but a bad
-            # failure mode for a batch that could be hundreds of episodes.
-            # A nested transaction (SAVEPOINT) scopes the rollback to just
-            # this one episode on conflict.
-            try:
-                async with session.begin_nested():
-                    contribution_row = await contributions_repo.create(
-                        session,
-                        series_id=series_id,
-                        episode_number=episode_number,
-                        proposed_status=status,
-                        proposed_note=None,
-                        citation_id=citation_row.id,
-                        submitted_by=current_user.id,
-                        license_accepted=payload.license_accepted,
-                    )
-            except IntegrityError:
-                existing = await contributions_repo.find_pending_for_episode(session, series_id, episode_number)
-                skipped.append(
-                    BulkSkippedEntry(
-                        episode_number=episode_number,
-                        existing_contribution_id=existing.id if existing else -1,
-                    )
-                )
-                continue
-
-            # Same transaction as the insert above (CLAUDE.md Architecture)
-            # — identical event shape to the single-submission path, so
-            # #15's outbox consumers need no changes for bulk.
-            await outbox_repo.write(
-                session,
-                event_type="contribution.submitted",
-                payload={
-                    "contribution_id": contribution_row.id,
-                    "series_id": series_id,
-                    "episode_number": episode_number,
-                },
-            )
-            created.append(
-                BulkCreatedEntry(
-                    episode_number=episode_number,
-                    contribution_id=contribution_row.id,
-                    proposed_status=status,
-                )
-            )
+    result = await create_bulk_contributions_for_series(
+        session,
+        series_id=series_id,
+        canon_ranges=payload.canon_ranges,
+        mixed_ranges=payload.mixed_ranges,
+        filler_ranges=payload.filler_ranges,
+        citation=payload.citation,
+        submitted_by=current_user.id,
+        license_accepted=payload.license_accepted,
+    )
 
     # #84: logged once per real call, same transaction as everything above
     # — regardless of how many episodes ended up created vs. skipped, this
@@ -273,12 +325,7 @@ async def submit_bulk_contributions(
     # rolling-window limit.
     await contributions_repo.record_bulk_submission(session, current_user.id)
 
-    return BulkContributionResult(
-        dry_run=False,
-        declared_count=len(by_episode),
-        created=created,
-        skipped_conflicts=skipped,
-    )
+    return result
 
 
 async def list_pending_contributions(session: AsyncSession) -> list[ContributionOut]:

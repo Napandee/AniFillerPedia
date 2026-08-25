@@ -33,6 +33,17 @@ interface FormValues {
   mal_id: string;
   anidb_id: string;
   justification: string;
+  // #85: optional episode-range data attached to the same submission —
+  // same range-notation shorthand and field shape as #80's bulk-submit
+  // form, so held on the proposal row until approval (see
+  // services/series_proposals.py) rather than submitted as real
+  // contributions targeting a series that doesn't exist yet.
+  canon_ranges: string;
+  mixed_ranges: string;
+  filler_ranges: string;
+  citation_url: string;
+  citation_description: string;
+  citation_methodology_note: string;
 }
 
 const emptyValues: FormValues = {
@@ -41,13 +52,19 @@ const emptyValues: FormValues = {
   mal_id: "",
   anidb_id: "",
   justification: "",
+  canon_ranges: "",
+  mixed_ranges: "",
+  filler_ranges: "",
+  citation_url: "",
+  citation_description: "",
+  citation_methodology_note: "",
 };
 
 let values: FormValues = emptyValues;
 let licenseAccepted = false;
 let fieldErrors: Record<string, string> = {};
 let formError: string | null = null;
-let success: { id: number; title: string } | null = null;
+let success: { id: number; title: string; episodeDeclaredCount: number | null } | null = null;
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
@@ -58,6 +75,12 @@ if (Astro.request.method === "POST") {
     mal_id: String(form.get("mal_id") ?? ""),
     anidb_id: String(form.get("anidb_id") ?? ""),
     justification: String(form.get("justification") ?? ""),
+    canon_ranges: String(form.get("canon_ranges") ?? ""),
+    mixed_ranges: String(form.get("mixed_ranges") ?? ""),
+    filler_ranges: String(form.get("filler_ranges") ?? ""),
+    citation_url: String(form.get("citation_url") ?? ""),
+    citation_description: String(form.get("citation_description") ?? ""),
+    citation_methodology_note: String(form.get("citation_methodology_note") ?? ""),
   };
   licenseAccepted = form.get("license_accepted") === "on";
   const turnstileToken = String(form.get("turnstile_token") ?? "").trim();
@@ -80,6 +103,27 @@ if (Astro.request.method === "POST") {
   if (anilistId !== undefined) body.anilist_id = anilistId;
   if (malId !== undefined) body.mal_id = malId;
   if (anidbId !== undefined) body.anidb_id = anidbId;
+
+  // #85: attach episode-range data only when the contributor actually
+  // filled in at least one range — an all-blank block means "no episode
+  // data this time," matching this form's existing "additive, not
+  // required" behavior for everything else.
+  const hasEpisodeData =
+    values.canon_ranges.trim() || values.mixed_ranges.trim() || values.filler_ranges.trim();
+  if (hasEpisodeData) {
+    body.episode_data = {
+      canon_ranges: values.canon_ranges,
+      mixed_ranges: values.mixed_ranges,
+      filler_ranges: values.filler_ranges,
+      citation: {
+        url: values.citation_url.trim() ? values.citation_url.trim() : undefined,
+        description: values.citation_description,
+        methodology_note: values.citation_methodology_note.trim()
+          ? values.citation_methodology_note.trim()
+          : undefined,
+      },
+    };
+  }
   // Turnstile is only enforced server-side when the caller is anonymous
   // (matches #35's pattern exactly) — still forwarded either way, harmless
   // when logged in since the backend never checks it in that case.
@@ -99,7 +143,11 @@ if (Astro.request.method === "POST") {
 
     if (response.status === 201) {
       const data = await response.json();
-      success = { id: data.id, title: data.title };
+      success = {
+        id: data.id,
+        title: data.title,
+        episodeDeclaredCount: data.episode_data?.declared_count ?? null,
+      };
       values = emptyValues;
       licenseAccepted = false;
     } else if (response.status === 422) {
@@ -118,6 +166,11 @@ if (Astro.request.method === "POST") {
       } else if (typeof data.detail === "string") {
         // e.g. "Turnstile verification failed"
         formError = data.detail;
+      } else if (data.detail && typeof data.detail === "object" && "message" in data.detail) {
+        // #85: episode_ranges.py's own business-rule 422 shape (a malformed
+        // or self-contradictory range) — same plain-dict-detail shape
+        // bulk-submit.astro's formatValidationError already handles.
+        formError = String((data.detail as { message: unknown }).message);
       } else {
         formError = "Please check the form and try again.";
       }
@@ -144,6 +197,13 @@ if (Astro.request.method === "POST") {
             <strong>{success.title}</strong> has been submitted for review. A moderator (or enough
             trusted community votes) will need to approve it before it appears in the catalog —
             we'll take it from here.
+            {success.episodeDeclaredCount !== null && (
+              <>
+                {" "}The {success.episodeDeclaredCount} episode{success.episodeDeclaredCount === 1 ? "" : "s"} of
+                data you attached will be created the moment this proposal is approved — no
+                separate bulk-submit step needed.
+              </>
+            )}
           </p>
           <div class="actions">
             <Button href="/">Back to browse</Button>
@@ -198,6 +258,74 @@ if (Astro.request.method === "POST") {
                 <span class="field-error">{fieldErrors.justification}</span>
               )}
             </label>
+
+            <div class="episode-data-block">
+              <p class="episode-data-heading">
+                Already know the filler/canon breakdown? <span class="optional">(optional)</span>
+              </p>
+              <p class="hint">
+                Paste episode ranges the same way you'd write them out by hand — e.g.{" "}
+                <code>1-44, 48-49, 52-53</code>. Leave all three blank to just propose the series
+                with no episode data yet — you (or anyone else) can bulk-submit it separately once
+                the proposal is approved.
+              </p>
+              <label class="field">
+                <span class="field-label">Canon episodes</span>
+                <textarea
+                  name="canon_ranges"
+                  rows="2"
+                  placeholder="1-44, 48-49, 52-53"
+                  set:text={values.canon_ranges}
+                />
+              </label>
+              <label class="field">
+                <span class="field-label">Mixed canon/filler episodes</span>
+                <textarea
+                  name="mixed_ranges"
+                  rows="2"
+                  placeholder="45-47, 61"
+                  set:text={values.mixed_ranges}
+                />
+              </label>
+              <label class="field">
+                <span class="field-label">Filler episodes</span>
+                <textarea
+                  name="filler_ranges"
+                  rows="2"
+                  placeholder="54-60, 98-99"
+                  set:text={values.filler_ranges}
+                />
+              </label>
+              <label class="field">
+                <span class="field-label">Citation URL <span class="optional">(optional)</span></span>
+                <input type="url" name="citation_url" value={values.citation_url} placeholder="https://..." />
+              </label>
+              <label class="field">
+                <span class="field-label">
+                  Citation description <span class="optional">(required if any range above is filled in)</span>
+                </span>
+                <textarea
+                  name="citation_description"
+                  rows="3"
+                  placeholder="e.g. Community-compiled Reddit breakdown, corroborated by a second independent thread..."
+                  set:text={values.citation_description}
+                />
+                {fieldErrors.description && (
+                  <span class="field-error">{fieldErrors.description}</span>
+                )}
+              </label>
+              <label class="field">
+                <span class="field-label">
+                  More detail on how you verified this <span class="optional">(optional)</span>
+                </span>
+                <textarea
+                  name="citation_methodology_note"
+                  rows="3"
+                  placeholder="e.g. cross-referenced against a second independent thread, noted any disagreement and how it was resolved..."
+                  set:text={values.citation_methodology_note}
+                />
+              </label>
+            </div>
 
             <label class="checkbox-field">
               <input type="checkbox" name="license_accepted" required checked={licenseAccepted} />
@@ -309,6 +437,30 @@ if (Astro.request.method === "POST") {
     margin: -8px 0 0;
     font-size: 12px;
     color: var(--color-text-faint);
+  }
+  .episode-data-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .episode-data-heading {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin: 0;
+  }
+  .episode-data-block .hint {
+    margin: -6px 0 0;
+  }
+  .episode-data-block code {
+    background: #fff;
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-size: 11.5px;
   }
   .checkbox-field {
     display: flex;

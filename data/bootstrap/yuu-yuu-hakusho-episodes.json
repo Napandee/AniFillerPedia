@@ -1,6 +1,6 @@
 {
   "series_title": "Yuu☆Yuu☆Hakusho",
-  "research_status": "COMPLETE — all 112 episodes of Yu Yu Hakusho classified canon/filler/mixed. This is a genuinely low-filler show (4 pure-filler episodes total), corroborated by two independently-fetched sources (epicdope.com, QuoteTheAnime) agreeing exactly on 107-109 and 111 as the only pure filler. Episodes 11 and 13 are recorded as mixed ('mostly canon' per QuoteTheAnime) but backed by only one source — epicdope's own guide didn't call these two out separately from the surrounding canon run, so this isn't independently corroborated the way the pure-filler episodes are. QuoteTheAnime's own stated total (114 episodes, with a 5th filler episode at 114) doesn't match this project's AniList-sourced catalog entry (112 episodes, confirmed via a direct AniList API check) — disregarded as out of scope, the same kind of guide-site episode-count confusion already hit with Rurouni Kenshin earlier in this same research batch. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass. Complete, gap-free, non-overlapping coverage of 1-112 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 112 episodes of Yu Yu Hakusho classified canon/filler/mixed. A genuinely low-filler show. Corrected 2026-08-25: this file originally recorded episodes 107, 108, 109, and 111 as pure filler, based on this project's own directly-fetched read of QuoteTheAnime's page, which flattened a more nuanced classification into a plain filler list. Andreas independently confirmed a fuller reading of the same source: 107-108 are actually 'anime canon' (mapped to plain canon here, matching how this project treats the same label on every other show), and 109/111 are mixed, not pure filler — meaning this show now has zero pure-filler episodes in the 107-111 range once corrected, all either canon or mixed. Episodes 11 and 13 remain mixed as originally recorded (single-source, QuoteTheAnime only). QuoteTheAnime's own stated total (114 episodes) still doesn't match this project's 112-episode AniList catalog entry — disregarded as out of scope. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass. Complete, gap-free, non-overlapping coverage of 1-112 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "epicdope-yyh-filler-guide",
@@ -972,30 +972,30 @@
     },
     {
       "episode_number": 107,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
-        "epicdope-yyh-filler-guide",
         "quotetheanime-yyh-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as filler here, since this project's own directly-fetched read of QuoteTheAnime's page flattened it into a plain filler list without capturing a distinct 'anime canon' sub-category. Andreas independently confirmed a fuller read of the same page classifying these two episodes as anime canon rather than filler — mapped to 'canon' here, matching how this project treats the identical 'anime canon' label on every other show (e.g. Dragon Ball Super, Fullmetal Alchemist: Brotherhood)."
     },
     {
       "episode_number": 108,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
-        "epicdope-yyh-filler-guide",
         "quotetheanime-yyh-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as filler here, since this project's own directly-fetched read of QuoteTheAnime's page flattened it into a plain filler list without capturing a distinct 'anime canon' sub-category. Andreas independently confirmed a fuller read of the same page classifying these two episodes as anime canon rather than filler — mapped to 'canon' here, matching how this project treats the identical 'anime canon' label on every other show (e.g. Dragon Ball Super, Fullmetal Alchemist: Brotherhood)."
     },
     {
       "episode_number": 109,
-      "status": "filler",
+      "status": "mixed",
       "citation_ids": [
-        "epicdope-yyh-filler-guide",
         "quotetheanime-yyh-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as filler here, for the same reason as episodes 107-108 above (this project's own fetch flattened a more nuanced source classification into a plain filler list). Andreas independently confirmed these two episodes are actually mixed, not pure filler."
     },
     {
       "episode_number": 110,
@@ -1008,12 +1008,12 @@
     },
     {
       "episode_number": 111,
-      "status": "filler",
+      "status": "mixed",
       "citation_ids": [
-        "epicdope-yyh-filler-guide",
         "quotetheanime-yyh-filler-list"
       ],
-      "source_count": 2
+      "source_count": 1,
+      "status_note": "Corrected 2026-08-25: originally recorded as filler here, for the same reason as episodes 107-108 above (this project's own fetch flattened a more nuanced source classification into a plain filler list). Andreas independently confirmed these two episodes are actually mixed, not pure filler."
     },
     {
       "episode_number": 112,

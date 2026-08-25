@@ -101,6 +101,34 @@ def fetch_streaming_titles(client, anilist_id: int) -> dict[int, str]:
     return {}
 
 
+def backfill_titles_for_series(conn, client, series_id: int, series_title: str, anilist_id: int) -> None:
+    """The per-series work, factored out so load_episodes.py can call this
+    directly right after loading a series' episodes — see #103, which
+    found that nothing previously guaranteed this script ever actually got
+    run for a newly-loaded show. Prints the same summary line either way
+    this is invoked from (this script's own CLI, or load_episodes.py).
+    """
+    print(f"{series_title} (anilist_id={anilist_id}):")
+    titles = fetch_streaming_titles(client, anilist_id)
+    if not titles:
+        print("  no streamingEpisodes titles available")
+        return
+
+    with conn.cursor() as cur:
+        updated = 0
+        for episode_number, title in titles.items():
+            cur.execute(
+                """
+                UPDATE episodes SET title = %s
+                WHERE series_id = %s AND episode_number = %s AND title IS NULL
+                """,
+                (title, series_id, episode_number),
+            )
+            updated += cur.rowcount
+        conn.commit()
+    print(f"  {len(titles)} titles available from AniList, {updated} episodes updated (rest already had a title or don't exist here)")
+
+
 def main() -> None:
     import httpx
     import psycopg2
@@ -140,26 +168,7 @@ def main() -> None:
 
         with httpx.Client() as client:
             for series_id, series_title, anilist_id in target_series:
-                print(f"{series_title} (anilist_id={anilist_id}):")
-                titles = fetch_streaming_titles(client, anilist_id)
-                if not titles:
-                    print("  no streamingEpisodes titles available")
-                    time.sleep(_REQUEST_DELAY_SECONDS)
-                    continue
-
-                with conn.cursor() as cur:
-                    updated = 0
-                    for episode_number, title in titles.items():
-                        cur.execute(
-                            """
-                            UPDATE episodes SET title = %s
-                            WHERE series_id = %s AND episode_number = %s AND title IS NULL
-                            """,
-                            (title, series_id, episode_number),
-                        )
-                        updated += cur.rowcount
-                    conn.commit()
-                print(f"  {len(titles)} titles available from AniList, {updated} episodes updated (rest already had a title or don't exist here)")
+                backfill_titles_for_series(conn, client, series_id, series_title, anilist_id)
                 time.sleep(_REQUEST_DELAY_SECONDS)
     finally:
         conn.close()

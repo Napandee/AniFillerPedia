@@ -263,5 +263,29 @@ earlier one. `load_episodes.py` ran clean against a locally-seeded test
 copy of both series before being applied to production (51/51 and 64/64,
 zero failures) — see `CLAUDE.local.md` for the production load confirmation.
 
-**Remaining for full #5 completion**: Dragon Ball Z, Dragon Ball Super,
-Black Clover.
+## #5 — dragon-ball-z-episodes.json
+
+**Complete — all 291 episodes, 2026-08-25.** Sourced from two
+independently-fetched filler guides (OtakusNotes, SuperHeroJacked) whose
+breakdowns matched almost exactly — same 38 pure-filler episodes, same
+canon range for the vast majority of the show — diverging only on
+episodes 17-20 (SuperHeroJacked calls them straight canon; OtakusNotes
+calls them mixed) and episode 44 (SuperHeroJacked calls it pure filler;
+OtakusNotes calls it mixed). Resolved in favor of the mixed
+classification for all four, backed by two further independently-fetched
+sources: CBR specifically corroborates 11/17/18/20/204/251/287 as mixed,
+and ScreenRant specifically corroborates 44 as mixed (it closes out the
+Fake Namek filler material and opens real canon content in the same
+episode). Episode 229 is the one mixed episode with only a single
+directly-fetched source behind it (OtakusNotes) — flagged in its own
+status_note rather than silently treated as equally corroborated as the
+rest, matching this project's honesty standard on citation confidence.
+
+No episode titles included in this file, unlike every prior show — 291
+episodes was too many to hand-type reliably, and title backfill already
+has an automated path (`backfill_episode_titles_from_anilist.py`, #73)
+that runs after loading regardless of whether the source JSON carried
+titles. Complete, gap-free, non-overlapping coverage of 1–291 confirmed
+before writing the file.
+
+**Remaining for full #5 completion**: Dragon Ball Super, Black Clover.

@@ -1,0 +1,2659 @@
+{
+  "series_title": "Dragon Ball Z",
+  "research_status": "COMPLETE — all 291 episodes of Dragon Ball Z classified canon/filler/mixed. Sourced from two independently-fetched filler guides (OtakusNotes, SuperHeroJacked) whose breakdowns matched almost exactly (both agree on all 38 pure-filler episodes and the vast majority of the canon range), diverging only on episodes 17-20 and 44 — resolved in favor of the mixed classification (OtakusNotes' call) for all four, corroborated by two further independently-fetched sources: CBR specifically confirms 11/17/18/20/204/251/287 as mixed, and ScreenRant specifically confirms 44 as mixed. Episode 229 is the one mixed episode with only a single directly-fetched source behind it — flagged in its own status_note rather than silently treated as equally corroborated as the rest. No episode titles included in this file — matches this project's established pattern of leaving title backfill to backfill_episode_titles_from_anilist.py (#73) after loading, rather than hand-typing 291 titles here. Complete, gap-free, non-overlapping coverage of 1–291 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "otakusnotes-dbz-filler-list",
+      "url": "https://otakusnotes.com/dragon-ball-z-filler-list/",
+      "description": "OtakusNotes' Dragon Ball Z filler list — full episode-by-episode classification into manga canon, mixed canon/filler, and pure filler.",
+      "methodology_note": null
+    },
+    {
+      "id": "superherojacked-dbz-filler-list",
+      "url": "https://superherojacked.com/2021/12/10/dragon-ball-z-filler-list-watch-guide-the-best-dragon-ball-z-order/",
+      "description": "SuperHeroJacked's Dragon Ball Z filler list and watch guide — matched OtakusNotes' breakdown almost exactly, disagreeing only on episodes 17-20 (treated as straight canon rather than mixed) and episode 44 (treated as pure filler rather than mixed).",
+      "methodology_note": null
+    },
+    {
+      "id": "cbr-dbz-semi-canon",
+      "url": "https://www.cbr.com/skippable-dbz-semi-filler-episodes/",
+      "description": "CBR feature on Dragon Ball Z's semi-canon/mixed episodes — independently corroborates OtakusNotes' mixed-episode calls for episodes 11, 17, 18, 20, 204, 251, and 287.",
+      "methodology_note": null
+    },
+    {
+      "id": "screenrant-dbz-filler-list",
+      "url": "https://screenrant.com/dragon-ball-z-filler-list-guide-episodes-skip/",
+      "description": "ScreenRant's Dragon Ball Z filler guide — corroborates OtakusNotes on episodes 9-16 as filler, and specifically confirms episode 44 as mixed (the tail end of the Fake Namek filler material plus the start of real canon content).",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 10,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 11,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "cbr-dbz-semi-canon"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 13,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 14,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 15,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 16,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 3
+    },
+    {
+      "episode_number": 17,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "cbr-dbz-semi-canon"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "cbr-dbz-semi-canon"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "cbr-dbz-semi-canon"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 43,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 44,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "screenrant-dbz-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: OtakusNotes and ScreenRant both call this episode mixed (it closes out the Fake Namek filler material and opens real canon content in the same episode), while SuperHeroJacked's otherwise-agreeing guide lumps it in with the preceding pure filler run (39-43) instead. Going with mixed, 2 sources vs 1."
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 75,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 76,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 89,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 93,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 95,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 100,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 101,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 102,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 103,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 104,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 105,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 106,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 107,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 108,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 109,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 110,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 111,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 112,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 113,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 114,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 115,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 116,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 117,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 118,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 119,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 120,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 121,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 122,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 123,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 124,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 125,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 126,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 127,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 128,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 129,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 130,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 131,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 132,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 133,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 134,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 135,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 136,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 137,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 138,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 139,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 140,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 141,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 142,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 143,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 144,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 145,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 146,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 147,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 148,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 149,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 150,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 151,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 152,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 153,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 154,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 155,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 156,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 157,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 158,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 159,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 160,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 161,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 162,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 163,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 164,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 165,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 166,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 167,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 168,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 169,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 170,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 171,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 172,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 173,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 174,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 175,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 176,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 177,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 178,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 179,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 180,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 181,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 182,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 183,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 184,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 185,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 186,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 187,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 188,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 189,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 190,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 191,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 192,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 193,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 194,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 195,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 196,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 197,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 198,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 199,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 200,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 201,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 202,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 203,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 204,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "cbr-dbz-semi-canon"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 205,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 206,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 207,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 208,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 209,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 210,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 211,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 212,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 213,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 214,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 215,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 216,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 217,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 218,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 219,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 220,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 221,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 222,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 223,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 224,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 225,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 226,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 227,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 228,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 229,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only directly confirmed as mixed by one fetched guide (OtakusNotes); unlike this dataset's other mixed episodes, no second source was found that specifically addresses this episode to corroborate it — flagged here rather than silently treated as equally well-sourced."
+    },
+    {
+      "episode_number": 230,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 231,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 232,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 233,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 234,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 235,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 236,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 237,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 238,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 239,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 240,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 241,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 242,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 243,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 244,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 245,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 246,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 247,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 248,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 249,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 250,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 251,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "cbr-dbz-semi-canon"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 252,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 253,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 254,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 255,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 256,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 257,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 258,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 259,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 260,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 261,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 262,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 263,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 264,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 265,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 266,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 267,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 268,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 269,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 270,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 271,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 272,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 273,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 274,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 275,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 276,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 277,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 278,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 279,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 280,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 281,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 282,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 283,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 284,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 285,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 286,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 287,
+      "status": "mixed",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "cbr-dbz-semi-canon"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 288,
+      "status": "filler",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 289,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 290,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 291,
+      "status": "canon",
+      "citation_ids": [
+        "otakusnotes-dbz-filler-list",
+        "superherojacked-dbz-filler-list"
+      ],
+      "source_count": 2
+    }
+  ]
+}

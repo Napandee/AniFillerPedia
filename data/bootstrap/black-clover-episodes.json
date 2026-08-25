@@ -1,0 +1,1551 @@
+{
+  "series_title": "Black Clover",
+  "research_status": "COMPLETE — all 170 episodes of Black Clover classified canon/filler/mixed, though with a real, disclosed confidence gap on the 'mixed' category that this project's other shows don't have. The 17-episode pure-filler list (29, 66, 68, 82, 123-125, 131, 134-135, 142-148) is corroborated by two independently-fetched sources (QuoteTheAnime, CBR) agreeing exactly, including the specific 148 boundary on the Elf Reincarnation arc's filler run. Episode 149 is the one genuinely contested boundary case — see its own status_note. Several other candidate 'mixed' episodes were checked across sources (2, 3, 8, 9, 12, 30, 67, 69, 85, 86, 88, 130) but the sources disagreed with each other, and in one case (joinkaminari.com) with itself, on which specific episodes qualify — rather than guess, those are all recorded as plain canon here, and only episode 102 (the one candidate every checked source that mentioned mixed episodes at all agreed on) is recorded as mixed, itself only backed by one directly-fetched source. This is a meaningfully lower-confidence 'mixed' classification than this project's other shows, which is why it's spelled out here rather than left implicit. No episode titles included — left for the existing backfill_episode_titles_from_anilist.py (#73) pass, same as Dragon Ball Z/Super. Complete, gap-free, non-overlapping coverage of 1-170 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-black-clover-filler-list",
+      "url": "https://quotetheanime.com/filler-list/black-clover/",
+      "description": "QuoteTheAnime's Black Clover filler list — episode-by-episode classification into pure filler, mixed, manga canon, and anime canon (author-supervised but not manga-adapted). Agreed exactly with CBR's independently-fetched arc guide on the full 17-episode pure-filler list.",
+      "methodology_note": null
+    },
+    {
+      "id": "cbr-black-clover-filler-arcs",
+      "url": "https://www.cbr.com/black-clover-filler-episodes/",
+      "description": "CBR's chronological guide to Black Clover's filler arcs, with precise episode ranges per arc — independently confirms the identical 17-episode filler list as QuoteTheAnime, including the same episode 148 boundary on the Elf Reincarnation arc's filler stretch.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 75,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 76,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 82,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 89,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 93,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 95,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 100,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 101,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 102,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only one directly-fetched source (QuoteTheAnime) classifies this episode as mixed rather than canon; not independently corroborated by a second source the way this dataset's filler episodes are."
+    },
+    {
+      "episode_number": 103,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 104,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 105,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 106,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 107,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 108,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 109,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 110,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 111,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 112,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 113,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 114,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 115,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 116,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 117,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 118,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 119,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 120,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 121,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 122,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 123,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 124,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 125,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 126,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 127,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 128,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 129,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 130,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 131,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 132,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 133,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 134,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 135,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 136,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 137,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 138,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 139,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 140,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 141,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 142,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 143,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 144,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 145,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 146,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 147,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 148,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 149,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2,
+      "status_note": "Genuinely disputed across sources, more so than any other episode in this dataset: two independently-fetched, internally consistent sources (QuoteTheAnime, CBR) place the filler run at 142-148 and treat 149 as the resumption of real story content (QuoteTheAnime tags it 'anime canon'). Two other guides checked (ScreenRant, joinkaminari.com) list 149 as filler instead — but joinkaminari's own article simultaneously lists 149 as the start of its 'anime-canon 149-157' range, an internal contradiction within that one source. Going with the two consistent, agreeing sources rather than the two inconsistent ones: canon."
+    },
+    {
+      "episode_number": 150,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 151,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 152,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 153,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 154,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 155,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 156,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 157,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 158,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 159,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 160,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 161,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 162,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 163,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 164,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 165,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 166,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 167,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 168,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 169,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 170,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-black-clover-filler-list",
+        "cbr-black-clover-filler-arcs"
+      ],
+      "source_count": 2
+    }
+  ]
+}

@@ -313,8 +313,31 @@ label. No titles hand-compiled — left for #73's automated backfill, same
 as Dragon Ball Z. Complete, gap-free, non-overlapping coverage of 1-131
 confirmed before writing the file.
 
-**Remaining for full #5 completion**: Black Clover — the one series
-named in #5's scope list not yet compiled as of this entry. Every other
-series listed (Naruto, Naruto: Shippuuden, Bleach, Dragon Ball Z,
-Dragon Ball Super, Fairy Tail, Boruto, both Fullmetal Alchemist series)
-now has hand-compiled episode data loaded and live.
+## #5 — black-clover-episodes.json
+
+**Complete — all 170 episodes, 2026-08-25. #5 is now fully complete** —
+every series in its original scope list has hand-compiled episode data
+loaded and live.
+
+The 17-episode pure-filler list (29, 66, 68, 82, 123-125, 131, 134-135,
+142-148) is corroborated by two independently-fetched sources
+(QuoteTheAnime, CBR) agreeing exactly, including the specific 148
+boundary. **This file has a real, disclosed confidence gap the other six
+shows compiled this session don't have**, on the "mixed" category
+specifically: several candidate mixed episodes (2, 3, 8, 9, 12, 30, 67,
+69, 85, 86, 88, 130) turned up across various sources, but no two
+sources agreed with each other on which ones actually qualify — one
+source (joinkaminari.com) even contradicted itself, listing episode 149
+as both filler and the start of an "anime-canon" range in the same
+article. Rather than guess, all of those candidates are recorded as
+plain canon here; only episode 102 (the one candidate every source that
+addressed mixed episodes at all agreed on) is recorded as mixed, and
+even that's backed by only one directly-fetched source. Episode 149
+itself is the one genuinely contested boundary case — resolved as canon
+in favor of the two internally-consistent, agreeing sources (QuoteTheAnime,
+CBR) over the two others that disagreed with the consensus and, in one
+case, with themselves — see that episode's own status_note.
+
+No titles hand-compiled — left for #73's automated backfill, same as
+Dragon Ball Z/Super. Complete, gap-free, non-overlapping coverage of
+1-170 confirmed before writing the file.

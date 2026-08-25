@@ -223,3 +223,45 @@ the split into already-loaded episodes' citation rows on a plain re-run
 (same non-contentious-metadata treatment as `title`/`source_count` above),
 which is how the six existing shows got backfilled without a separate
 one-off script.
+
+## #5 — fullmetal-alchemist-episodes.json, fullmetal-alchemist-brotherhood-episodes.json
+
+**Complete — both Fullmetal Alchemist series (51 + 64 = 115 episodes), 2026-08-25.**
+Sourced from filler guides rather than Reddit breakdowns this time (none
+found for these two shows specifically) — two independently-fetched guides
+(epicdope.com, QuoteTheAnime) agreed on an identical episode-by-episode
+breakdown for the 2003 series; a third (SuperHeroJacked) additionally
+agreed exactly for Brotherhood. A fourth Brotherhood guide (aniyume.net)
+was checked and discarded as unreliable — it flagged episodes 37, 48, and
+49 as filler, which contradicts all three agreeing sources and
+well-established fan consensus (these are some of the show's most
+acclaimed, clearly manga-adapted canon episodes: Father's origin reveal,
+and the Mustang/Envy and Trisha's-backstory episodes respectively).
+
+**The 2003 series' "filler" status covers two different things**, both
+folded into `filler` since the project's 3-value schema has no separate
+bucket for this: 3 pure standalone filler episodes (4, 10, 37, agreed
+skippable by both sources) and 28 episodes of the anime's own original
+continuation once it outpaced Arakawa's still-ongoing manga (mostly 29
+onward, with a handful of earlier anime-original episodes interspersed).
+The second group is plot-critical to the 2003 anime's own ending (a
+different central antagonist and different conclusion than the manga)
+and explicitly *not* skippable padding per every guide checked — each of
+those episodes' `status_note` says so, so a reader isn't misled by the
+bare `filler` status alone.
+
+**Brotherhood is almost entirely canon** (58/64), with episode 1 recorded
+as `mixed` (a reordered, compressed preview built from real but
+non-sequential manga content, not a straight adaptation), episodes 4/9/13/14
+as `mixed` ("partial filler" — part manga-adapted, part original, within
+the same episode), and episode 27 as the show's one pure `filler` episode.
+
+Both series' catalog titles matched exactly against `series-candidates.json`
+("Fullmetal Alchemist", AniList 121; "Fullmetal Alchemist: Brotherhood",
+AniList 5114) — no title-mismatch issue this time, unlike Shippuuden's
+earlier one. `load_episodes.py` ran clean against a locally-seeded test
+copy of both series before being applied to production (51/51 and 64/64,
+zero failures) — see `CLAUDE.local.md` for the production load confirmation.
+
+**Remaining for full #5 completion**: Dragon Ball Z, Dragon Ball Super,
+Black Clover.

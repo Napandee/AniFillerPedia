@@ -1,0 +1,124 @@
+{
+  "series_title": "Rosario to Vampire",
+  "research_status": "COMPLETE — all 13 episodes of Rosario + Vampire Season 1 classified canon/filler/mixed, though with lower confidence than most of this project's shows. Only one directly-fetched source (QuoteTheAnime) provides a full episode-by-episode breakdown: episode 4 is pure filler, episodes 1/7/11/12/13 are mixed (blending manga content with anime-original 'monster of the week' material), and the remaining 7 episodes are manga canon. A general aggregate search independently confirms the overall scale (11 non-canon episodes across both 13-episode seasons combined, ~42%) but no second source with a matching per-episode table was found — flagged on each affected episode's own status_note. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-13 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-rosario-vampire-filler-list",
+      "url": "https://quotetheanime.com/filler-list/rosario-vampire/",
+      "description": "QuoteTheAnime's Rosario + Vampire filler list — the only source found with a full episode-by-episode breakdown for Season 1 (this project's catalog scope); a general aggregate search independently confirms the overall magnitude (11 non-canon episodes across both 13-episode seasons combined) without a matching per-episode table.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only one directly-fetched source (QuoteTheAnime) provides a full episode-by-episode breakdown for this show — a general aggregate search independently confirms the overall non-canon episode count across both seasons is in the same ballpark, but no second source with a matching per-episode table was found. Flagged here rather than presented as equally corroborated as this project's other shows."
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only one directly-fetched source (QuoteTheAnime) provides a full episode-by-episode breakdown for this show — a general aggregate search independently confirms the overall non-canon episode count across both seasons is in the same ballpark, but no second source with a matching per-episode table was found. Flagged here rather than presented as equally corroborated as this project's other shows."
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only one directly-fetched source (QuoteTheAnime) provides a full episode-by-episode breakdown for this show — a general aggregate search independently confirms the overall non-canon episode count across both seasons is in the same ballpark, but no second source with a matching per-episode table was found. Flagged here rather than presented as equally corroborated as this project's other shows."
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only one directly-fetched source (QuoteTheAnime) provides a full episode-by-episode breakdown for this show — a general aggregate search independently confirms the overall non-canon episode count across both seasons is in the same ballpark, but no second source with a matching per-episode table was found. Flagged here rather than presented as equally corroborated as this project's other shows."
+    },
+    {
+      "episode_number": 12,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only one directly-fetched source (QuoteTheAnime) provides a full episode-by-episode breakdown for this show — a general aggregate search independently confirms the overall non-canon episode count across both seasons is in the same ballpark, but no second source with a matching per-episode table was found. Flagged here rather than presented as equally corroborated as this project's other shows."
+    },
+    {
+      "episode_number": 13,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-rosario-vampire-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Only one directly-fetched source (QuoteTheAnime) provides a full episode-by-episode breakdown for this show — a general aggregate search independently confirms the overall non-canon episode count across both seasons is in the same ballpark, but no second source with a matching per-episode table was found. Flagged here rather than presented as equally corroborated as this project's other shows."
+    }
+  ]
+}

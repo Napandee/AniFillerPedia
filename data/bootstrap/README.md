@@ -526,3 +526,41 @@ class as #104's own citation-combo issue: Noragami's corrected episode
 10's already-established value for the identical single-source citation
 combo — caught by `load_episodes.py`'s own conflict detection during
 local testing, fixed before the production load.
+
+## #109 — fourth batch: Yowamushi Pedal, Sword Art Online: Alicization, Shokugeki no Souma, Tokyo Ghoul:re, Rosario to Vampire, One Punch Man
+
+**Complete — all six series, 2026-08-26.** 123 episodes total. Five of
+the six turned out to be confirmed-clean (zero filler), a heavier skew
+toward low-filler shows than any prior batch — not by design, just how
+the research landed:
+
+- **Yowamushi Pedal** (38/38, all canon) — the entire 137-episode,
+  5-season franchise has zero reported filler.
+- **Sword Art Online: Alicization** (24/24, all canon) — the entire
+  47-episode Alicization arc (this cour + the separate "War of
+  Underworld" continuation) is a faithful light-novel adaptation.
+- **Shokugeki no Souma** (24/24, all canon) — the entire 86-episode,
+  5-season franchise has zero filler episodes.
+- **Tokyo Ghoul:re** (12/12, all canon) — confirmed via QuoteTheAnime,
+  cross-checked informally against animefillerlist.com (not cited
+  directly, per this project's guardrail). Worth noting: general
+  commentary about this show's later seasons describes real
+  adaptation/pacing changes from the manga, but no guide flags any
+  specific episode in this cour as anime-original or filler.
+- **One Punch Man** (12/12, all canon) — the entire 36-episode,
+  3-season franchise has zero filler.
+- **Rosario to Vampire** (7 canon / 5 mixed / 1 filler) — the one
+  genuinely filler-heavy show in this batch, and also this batch's one
+  lower-confidence file: only one directly-fetched source (QuoteTheAnime)
+  provides a full episode-by-episode breakdown; a general aggregate
+  search confirms the same overall scale but no second source with a
+  matching per-episode table was found. Flagged on each affected
+  episode's own status_note.
+
+No episode titles hand-compiled for any of the six — `load_episodes.py`'s
+auto-backfill (#103) picked up titles automatically during the load
+itself where AniList had them (Sword Art Online: Alicization 24/24,
+Shokugeki no Souma 12/24, Tokyo Ghoul:re 12/12, One Punch Man 12/12;
+Yowamushi Pedal and Rosario to Vampire have no AniList streaming-episode
+data available at all, a known limitation, not a bug). 149 manami
+candidates remain unresearched after this batch.

@@ -1,0 +1,110 @@
+{
+  "series_title": "One Punch Man",
+  "research_status": "COMPLETE — all 12 episodes of One Punch Man Season 1 classified canon. Confirmed by two agreeing sources (a general aggregate search and a direct fetch of MyAnimeForLife's guide) that the entire 36-episode, 3-season franchise has zero filler episodes — a faithful adaptation covering manga chapters 1-37 in this season. Deliberately included in this batch as a low-filler data point, consistent with this project's established practice. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-12 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "myanimeforlife-one-punch-man",
+      "url": "https://www.myanimeforlife.com/one-punch-man-filler/",
+      "description": "MyAnimeForLife's One Punch Man filler guide — confirms Season 1 (episodes 1-12, this project's catalog scope) has zero filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "myanimeforlife-one-punch-man"
+      ],
+      "source_count": 2
+    }
+  ]
+}

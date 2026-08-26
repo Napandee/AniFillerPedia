@@ -1,0 +1,206 @@
+{
+  "series_title": "Sword Art Online: Alicization",
+  "research_status": "COMPLETE — all 24 episodes of Sword Art Online: Alicization (the first cour, this project's catalog scope) classified canon. Confirmed by two agreeing sources (a general aggregate search and a direct fetch of Rochi's episode-by-episode guide) that the whole Alicization franchise (47 episodes across this cour and the separate 'War of Underworld' continuation, a different AniList entry) has zero filler — every episode adapts directly from the light novels. No episode titles included in the JSON — episode titles were visible in the source and will populate automatically via load_episodes.py's auto-backfill (#103) once loaded. Complete, gap-free coverage of 1-24 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "rochi-sao-alicization-filler-guide",
+      "url": "https://rochi.io/anime/sword-art-online-alicization/filler-guide",
+      "description": "Rochi's Sword Art Online: Alicization filler guide — confirms all 24 episodes of the first cour (this project's catalog scope) are canon, directly adapted from the light novels.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-sao-alicization-filler-guide"
+      ],
+      "source_count": 2
+    }
+  ]
+}

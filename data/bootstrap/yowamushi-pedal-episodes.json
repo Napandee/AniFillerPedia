@@ -1,0 +1,318 @@
+{
+  "series_title": "Yowamushi Pedal",
+  "research_status": "COMPLETE — all 38 episodes of Yowamushi Pedal Season 1 classified canon. Confirmed by multiple sources (a general aggregate search citing several guides, plus a direct fetch of AnimeBookmark's episode guide) that the entire Yowamushi Pedal franchise (137 episodes across 5 seasons) has no reported filler at all — a faithful, complete manga adaptation. Deliberately included in this batch alongside more filler-notable shows as a low-filler data point, consistent with this project's established practice (see JoJo TV in #104; Owari no Seraph, Nanatsu no Taizai in #105). No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-38 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "animebookmark-yowamushi-pedal",
+      "url": "https://animebookmark.com/overview/18179/Yowamushi_Pedal/episodes/",
+      "description": "AnimeBookmark's Yowamushi Pedal episode guide — confirms zero filler or mixed episodes for Season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "animebookmark-yowamushi-pedal"
+      ],
+      "source_count": 2
+    }
+  ]
+}

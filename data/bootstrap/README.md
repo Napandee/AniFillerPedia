@@ -644,3 +644,63 @@ answer despite the weaker citation. Two real corrections:
   disagreement-resolved calls in this file's own research_status —
   Andreas's independent check resolved them differently than the
   original two-source synthesis had.
+
+## Sixth batch (#113, 2026-08-26): Sailor Moon, Sailor Moon Crystal, Death Note, Kimetsu no Yaiba, Monster, Ouran Koukou Host Club, Initial D First Stage, Project ARMS, Shugo Chara!, Edens Zero
+
+10 shows, 388 episodes total: Bishoujo Senshi Sailor Moon (46/46: 18
+canon / 28 filler), Bishoujo Senshi Sailor Moon Crystal (26/26, all
+canon), Death Note (37/37: 33 canon / 4 mixed), Kimetsu no Yaiba season
+1 (26/26, all canon), Monster (74/74, all canon), Ouran Koukou Host
+Club (26/26: 24 canon / 2 filler), Initial D First Stage (26/26, all
+canon), Project ARMS (26/26, all canon), Shugo Chara! (51/51: 32 canon
+/ 9 mixed / 10 filler), Edens Zero season 1 (25/25, all canon).
+
+**New this batch, per #111's air-date work and Andreas's request to
+capture air dates/titles in the same pass rather than redo it later**:
+every show in this batch launched with air dates AND episode titles
+already populated at load time, sourced from Wikipedia's per-episode
+tables (same validated scraper/methodology as the full-catalog
+backfill), not left for a later pass or the weaker AniList
+`streamingEpisodes` auto-backfill. All 10 shows hit 100% air-date and
+100% title coverage on load — confirmed live.
+
+**Two shows swapped out of the original candidate picks after real
+sourcing problems, not force-fitted**: Urusei Yatsura (195 episodes per
+AniList/Wikipedia) turned out to have every available fan-guide
+aggregator (animefillerlist, otakukan, simkl) independently capping at
+only 167 episodes with zero signal for the remaining ~28 — a real
+episode-counting-scheme mismatch, not a gap worth guessing across, so
+it was dropped rather than loaded with an unexplained tail of
+unresearched episodes. Detective School Q / Tantei Gakuen Q and
+Kinnikuman (1983) were dropped for the same reason: every fetchable
+source either 404'd, returned content for a different show entirely
+(one animefillerlist fetch returned Fairy Tail OVA data), or disagreed
+with AniList's own episode count outright (animefillerlist reported 25
+total episodes for a show AniList and Wikipedia both confirm has 45).
+Replaced with Sailor Moon Crystal, Shugo Chara!, and Edens Zero, all
+three cleanly sourced. All three dropped shows remain valid future
+candidates if a better source ever turns up — not permanently ruled
+out, just not force-fitted here.
+
+**Ouran Koukou Host Club's episodes 25-26** are the one disputed
+judgment call in this batch: an anime-original two-part finale
+(confirmed directly via Anime News Network's own review) invented
+because the manga — which continued for four years afterward — hadn't
+reached an ending yet. Classified filler under this project's
+established "anime invents an ending that replaces where the source
+was headed" precedent (FMA 2003, Ao no Exorcist), rather than the
+"inserted side material within an ongoing adaptation" pattern that
+gets classified canon (Railgun, Akame ga Kill!) — a per-show judgment
+call each time, not a fixed rule, consistent with how this project has
+handled every prior case of this kind.
+
+**Shugo Chara!'s episode 9** was genuinely ambiguous in the primary
+source's own summarized fetch (silently missing from all three status
+buckets) — resolved by fetching a second independent source
+(The Filler List) which explicitly confirmed it as manga canon, rather
+than guessing from neighboring episodes' pattern.
+
+Loaded into production the same throwaway-container way as every prior
+batch, air dates loaded in the same pass via a direct `series_episode_schedule`
+upsert (additive, `ON CONFLICT DO NOTHING`). Verified live: all ten
+series' episode/title/air-date coverage confirmed via the public API.

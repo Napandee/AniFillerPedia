@@ -1,0 +1,391 @@
+{
+  "series_title": "Death Note",
+  "research_status": "COMPLETE — all 37 episodes classified; only 4 (1, 25, 26, 37) are mixed canon/filler, the rest (33 episodes) are manga canon. Death Note is a famously tight adaptation with essentially no true filler — both sources agree the same four episodes contain the only meaningful additions/deviations (episode 1's original 'montage of kills' not in the manga, episode 25/26's altered pacing around L's death, episode 37's altered ending details for Light/Misa).",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-death-note-filler",
+      "url": "https://quotetheanime.com/filler-list/death-note/",
+      "description": "QuoteTheAnime's Death Note filler list, classifying episodes 1, 25, 26, and 37 as mixed canon/filler and the rest as manga canon.",
+      "methodology_note": null
+    },
+    {
+      "id": "themarysue-death-note-filler",
+      "url": "https://www.themarysue.com/death-note-filler/",
+      "description": "The Mary Sue's Death Note filler rundown, independently identifying the same four episodes (1, 25, 26, 37) as the ones with real deviations from the manga.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Rebirth"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Confrontation"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Dealings"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Pursuit"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Tactics"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Unraveling"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Overcast"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Glare"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Encounter"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Doubt"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Assault"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Love"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Confession"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Friend"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Wager"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Decision"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Execution"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Ally"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Matsuda"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Makeshift"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Performance"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Guidance"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Frenzy"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Revival"
+    },
+    {
+      "episode_number": 25,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Silence"
+    },
+    {
+      "episode_number": 26,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "status_note": "Both sources single this episode out as the biggest deviation from the manga — a recap of events up to L's death, though it still advances the plot (introduces Mello/Near, five-year time jump). QuoteTheAnime classifies it mixed rather than pure filler for that reason.",
+      "title": "Renewal"
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Abduction"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Impatience"
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Father"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Justice"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Transfer"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Selection"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Scorn"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Vigilance"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "Malice"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "1.28"
+    },
+    {
+      "episode_number": 37,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-death-note-filler",
+        "themarysue-death-note-filler"
+      ],
+      "source_count": 2,
+      "title": "New World"
+    }
+  ]
+}

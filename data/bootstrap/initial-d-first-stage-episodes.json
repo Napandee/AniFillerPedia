@@ -1,0 +1,248 @@
+{
+  "series_title": "Initial D First Stage",
+  "research_status": "COMPLETE — all 26 episodes manga canon, no filler. Initial D is widely reported to have no filler across its entire multi-stage run, First Stage included; no itemized single-page episode guide could be directly fetched (the two attempted direct sources 404'd/had no data), so this rests on a consistent aggregate-search signal across multiple guide sites rather than one itemized citation — disclosed explicitly, same as this project's Magi: Sinbad no Bouken precedent for an aggregate-only source.",
+  "citation_sources": [
+    {
+      "id": "aggregate-initial-d-no-filler",
+      "url": "https://en.wikipedia.org/wiki/List_of_Initial_D_episodes",
+      "description": "Wikipedia's Initial D episode list (used for air dates/titles); corroborated by a consistent aggregate search signal across multiple filler-guide sites reporting zero filler for the entire Initial D franchise including First Stage — no single itemized guide page could be directly fetched.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Ultimate Tofu Store Drift"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Revenge! The Rumbling Turbo"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Downhill Specialist Appears"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Into the Battle!"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dogfight!"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A New Challenger"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Racer's Pride"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Time's Almost Up!"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Battle to the Limit!"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The 5 Consecutive Hairpins"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Shingo Arrives!"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The FR Killer"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "First Date"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Evolving Drift"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Takumi's Fury"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Angel of Usui"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Sudden-Death Death Match"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Hot Winds and Furious Driving"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Super Drift!"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The End of Summer"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Challenge From a Superstar"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Fierce Uphill Battle!"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Rainy Downhill"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Akagi's White Comet!"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Last Battle"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-initial-d-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The New Downhill Legend!"
+    }
+  ]
+}

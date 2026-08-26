@@ -1,0 +1,280 @@
+{
+  "series_title": "Kimetsu no Yaiba",
+  "research_status": "COMPLETE — all 26 episodes of season 1 (the Unwavering Resolve / Tanjiro Kamado arc) are manga canon, no filler. Demon Slayer's anime is a notably faithful adaptation; both sources agree season 1 has zero reported filler.",
+  "citation_sources": [
+    {
+      "id": "screenrant-demon-slayer-filler",
+      "url": "https://screenrant.com/every-demon-slayer-filler-episode-guide/",
+      "description": "ScreenRant's complete Demon Slayer filler guide, confirming season 1 (episodes 1-26) is entirely manga canon with no reported filler.",
+      "methodology_note": null
+    },
+    {
+      "id": "wikipedia-demon-slayer-season-1",
+      "url": "https://en.wikipedia.org/wiki/Demon_Slayer:_Kimetsu_no_Yaiba_season_1",
+      "description": "Wikipedia's season 1 article, corroborating a straightforward chapter-by-chapter adaptation with no anime-original episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Cruelty"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Trainer Sakonji Urokodaki"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Sabito and Makomo"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Final Selection"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "My Own Steel"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Swordsman Accompanying a Demon"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Muzan Kibutsuji"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "The Smell of Enchanting Blood"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Temari Demon and Arrow Demon"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Together Forever"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Tsuzumi Mansion"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "The Boar Bares its Fangs, Zenitsu Sleeps"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Something More Important Than Life"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "The House with the Wisteria Family Crest"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Mount Natagumo"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Letting Someone Else Go First"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "You Must Master a Single Thing"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "A Forged Bond"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Hinokami"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Pretend Family"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Against Corps Rules"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Master of the Mansion"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Hashira Meeting"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Rehabilitation Training"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "Tsuguko, Kanao Tsuyuri"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "screenrant-demon-slayer-filler",
+        "wikipedia-demon-slayer-season-1"
+      ],
+      "source_count": 2,
+      "title": "New Mission"
+    }
+  ]
+}

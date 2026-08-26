@@ -1,0 +1,270 @@
+{
+  "series_title": "Edens Zero",
+  "research_status": "COMPLETE — all 25 episodes of season 1 manga canon, no filler. QuoteTheAnime explicitly lists all 25 episodes as manga canon; Wikipedia's season 1 article corroborates it as a straightforward adaptation of the manga's first 8 volumes (chapters 1-68).",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-edens-zero-filler",
+      "url": "https://quotetheanime.com/filler-list/edens-zero/",
+      "description": "QuoteTheAnime's Edens Zero filler list, confirming all 25 season-1 episodes are manga canon with zero filler.",
+      "methodology_note": null
+    },
+    {
+      "id": "wikipedia-edens-zero-season-1",
+      "url": "https://en.wikipedia.org/wiki/Edens_Zero_season_1",
+      "description": "Wikipedia's season 1 article, corroborating a straightforward adaptation of manga chapters 1-68.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Into the Sky Where Cherry Blossoms Flutter"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "A Girl and Her Blue Cat"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Adventurers"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "A Man Named Weisz"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Clash!! The Sibir Family"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "The Skull Fairy"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Warship of the Demon King"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Wind Howls on the Highway"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Planet Guilst"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "The Great Naked Escape"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Sister Ivry"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "New Friends"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "The Super Virtual Planet"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "The Girl on the Hill"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Great Kaiju Shiki"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Fireworks"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "The Temple of Knowledge"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Words Will Give You Strength"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "From the Planet of Eternity"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Stones"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Reset"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "My Mother, the Machine"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Until the Day It Turns to Strength"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Taking Up the Torch"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-edens-zero-filler",
+        "wikipedia-edens-zero-season-1"
+      ],
+      "source_count": 2,
+      "title": "Someone to Love"
+    }
+  ]
+}

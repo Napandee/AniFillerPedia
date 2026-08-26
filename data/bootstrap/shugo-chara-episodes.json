@@ -1,0 +1,530 @@
+{
+  "series_title": "Shugo Chara!",
+  "research_status": "COMPLETE — all 51 episodes classified: 32 canon, 9 mixed, 10 filler. Two independently-fetched sources (Rochi, The Filler List) agree on the full breakdown; The Filler List's fetch was truncated to episodes 1-25 but every episode it covers matches Rochi's classification exactly, including resolving episode 9 (ambiguous in Rochi's own summarized fetch) as manga canon.",
+  "citation_sources": [
+    {
+      "id": "rochi-shugo-chara-filler-guide",
+      "url": "https://rochi.io/anime/shugo-chara/filler-guide",
+      "description": "Rochi's Shugo Chara! filler guide — full episode-by-episode classification into canon, mixed, and filler for all 51 episodes.",
+      "methodology_note": null
+    },
+    {
+      "id": "thefillerlist-shugo-chara",
+      "url": "https://the-filler-list.vercel.app/anime/shugo-chara",
+      "description": "The Filler List's Shugo Chara! guide — independently confirms Rochi's classification for episodes 1-25, including episode 9 as manga canon.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "A Guardian Character is Born!"
+    },
+    {
+      "episode_number": 2,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Heart's Egg!"
+    },
+    {
+      "episode_number": 3,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Flaky and Fluffy, Leave it to Su!"
+    },
+    {
+      "episode_number": 4,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "I'm The Trump Card!?"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Shoot! Get that X-Character!"
+    },
+    {
+      "episode_number": 6,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Character Transformation! Amulet Spade!"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Small Egg!"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "I've Fallen in Love with Your Eyes!"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Seven Mysteries of the Fujisaki Family!?"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Character Transformation! Amulet Clover!"
+    },
+    {
+      "episode_number": 11,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Snow Mountain Holiday!"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "A Sad Christmas Eve!"
+    },
+    {
+      "episode_number": 13,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Big Disturbance! New Year Live!"
+    },
+    {
+      "episode_number": 14,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "A Guardian Character at the Ski Slope!? Snoppe's Appearance!"
+    },
+    {
+      "episode_number": 15,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Battle at the Snowfield! Save Snoppe!"
+    },
+    {
+      "episode_number": 16,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "One Two Three☆Heart's Magic!"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Breathtaking Speech Contest!"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Happy, Embarrassing First Date!"
+    },
+    {
+      "episode_number": 19,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Papa and Mama's Memories!"
+    },
+    {
+      "episode_number": 20,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "A Present for You!"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Kidnapping of Guardian Characters!"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Guardian Characters Rescue Mission!"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Remake Honey! My Would Be Self!"
+    },
+    {
+      "episode_number": 24,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Sketch of Heart!"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Nadeshiko! Goodbye Despite Spring!?"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The New Beginning!"
+    },
+    {
+      "episode_number": 27,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Fourth Guardian Egg!"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Joker Disqualification? New Guardians Appear!"
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Character Transformation!? Amulet Angel!"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Star Class vs. Moon Class! Great Cheerleader Activity!"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Pretty Baby☆Great Tumult!"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Lonely Queen!"
+    },
+    {
+      "episode_number": 33,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "I Can't Help But Fall in Love!"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Really!? Big Adventure to the Haunted Mansion!"
+    },
+    {
+      "episode_number": 35,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Wedding Cake of the First Love!"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Golden Prince! *Part I*"
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Golden Prince! *Part II*"
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Key, Lock, He and I!"
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Character Transformation! Platinum Royale!"
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Rima! Unlock The Heart!"
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "True Self!"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Utau Hoshina! The Last Battle!"
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Character Transformation! Amulet Diamond!"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Sparkle of the Heart!"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Go for it! Seiichiro!"
+    },
+    {
+      "episode_number": 46,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Rima's Advent!? The Goddess of Comedy!"
+    },
+    {
+      "episode_number": 47,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "I'm Utau's Manager!?"
+    },
+    {
+      "episode_number": 48,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Asking a Favor of Yaya!"
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "The Secret of the Violin! Notes Dancing in the Wind!"
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "Have We Really Found It?! The Embryo!"
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-shugo-chara-filler-guide",
+        "thefillerlist-shugo-chara"
+      ],
+      "source_count": 2,
+      "title": "I'll Get the Embryo!"
+    }
+  ]
+}

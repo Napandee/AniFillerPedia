@@ -1,5 +1,5 @@
 {
-  "_readme": "Shows attempted for a batch and dropped rather than force-fitted with weak/unclear/conflicting data. Checked against before picking future batch candidates so they are never silently re-attempted. 'reason' is 'sourcing_gap' (every fetchable filler/canon guide either 404'd, disagreed with AniList's own confirmed episode count, or returned unusable/wrong-show data) or 'scope_mismatch' (doesn't fit this project's filler/canon premise at all, regardless of sourcing). Andreas reviews this list manually to hunt down better sources himself; entries are removed once a show is actually loaded (see data/bootstrap/README.md's dated batch entries for the removal).",
+  "_readme": "Shows attempted for a batch and dropped rather than force-fitted with weak/unclear/conflicting data. Checked against before picking future batch candidates so they are never silently re-attempted. 'reason' is 'sourcing_gap' (every fetchable filler/canon guide either 404'd, disagreed with AniList's own confirmed episode count, or returned unusable/wrong-show data), 'scope_mismatch' (doesn't fit this project's filler/canon premise at all regardless of sourcing, e.g. no preceding source manga), or 'out_of_scope' (a movie/theatrical release with no per-episode weekly-padding concept to speak of). Andreas reviews this list manually to hunt down better sources himself for sourcing_gap/scope_mismatch entries; out_of_scope entries are permanent exclusions, not something to revisit. Entries are removed once a show is actually loaded (see data/bootstrap/README.md's dated batch entries for the removal).",
   "entries": [
     {
       "title": "Urusei Yatsura",
@@ -7,7 +7,10 @@
       "episode_count": 195,
       "reason": "sourcing_gap",
       "detail": "AniList/Wikipedia both confirm 194-195 episodes, but every fan-guide aggregator tried (animefillerlist, otakukan, simkl) caps out at 167 with zero signal for the remaining ~28 -- a real episode-counting-scheme mismatch (likely a segment-vs-episode convention difference), not a gap worth guessing across.",
-      "attempted_in": ["#113", "#115"],
+      "attempted_in": [
+        "#113",
+        "#115"
+      ],
       "date_flagged": "2026-08-26"
     },
     {
@@ -16,7 +19,10 @@
       "episode_count": 45,
       "reason": "sourcing_gap",
       "detail": "Only fetchable source (animefillerlist.com) reports 25 total episodes for a show AniList/Wikipedia both confirm has 45, and is missing episode 19 even within that wrong range. No other itemized per-episode guide found.",
-      "attempted_in": ["#113", "#115"],
+      "attempted_in": [
+        "#113",
+        "#115"
+      ],
       "date_flagged": "2026-08-26"
     },
     {
@@ -25,7 +31,10 @@
       "episode_count": 137,
       "reason": "sourcing_gap",
       "detail": "No itemized filler/canon guide could be found at all. One animefillerlist.com fetch returned content for a completely different show (Fairy Tail OVAs), and no fandom wiki or aggregate search surfaced a real per-episode breakdown.",
-      "attempted_in": ["#113", "#115"],
+      "attempted_in": [
+        "#113",
+        "#115"
+      ],
       "date_flagged": "2026-08-26"
     },
     {
@@ -34,7 +43,9 @@
       "episode_count": 178,
       "reason": "sourcing_gap",
       "detail": "The only itemized source fetchable (a fandom wiki mirror) covers just episodes 1-33 with internal inconsistencies (a stated '3 mixed episodes' followed by 4 listed, episode 29 missing from the numbering). Wikipedia's own air-date coverage is also sparse (106/178) for the same reason -- fan-guide/wiki coverage for this show is genuinely thin past the first arc.",
-      "attempted_in": ["#115"],
+      "attempted_in": [
+        "#115"
+      ],
       "date_flagged": "2026-08-26"
     },
     {
@@ -43,7 +54,9 @@
       "episode_count": 24,
       "reason": "scope_mismatch",
       "detail": "Its manga is a LATER adaptation of the anime (started 2021, by a different author, after the anime aired) -- not a source the anime was adapted from. The reverse of every other show in this catalog. Doesn't fit this project's 'filler = anime content not adapted from a preceding manga' premise at all -- more research wouldn't resolve this, it's a structural scope question. Same treatment as previously-excluded original-anime shows (Code Geass, Evangelion, Samurai Champloo), which were never added to this list since they were filtered out before ever being attempted.",
-      "attempted_in": ["#115"],
+      "attempted_in": [
+        "#115"
+      ],
       "date_flagged": "2026-08-26"
     },
     {
@@ -52,7 +65,482 @@
       "episode_count": 39,
       "reason": "sourcing_gap",
       "detail": "No itemized filler/canon guide exists anywhere for the original 1972 anime -- every filler-guide site's 'Devilman' results are actually for Devilman Crybaby (2018), a different, unrelated adaptation. Wikipedia's own episode list has no commentary distinguishing manga-adapted from anime-original content either. Conceptually murkier than a typical gap, too: the manga started barely a month before the anime and the two ran concurrently with different tones/audiences (the anime described as 'monster of the week' style) -- there may not be a clean episode-level canon/filler split to find even with better sourcing, unlike a normal case where the anime adapts a manga that already exists.",
-      "attempted_in": ["#118"],
+      "attempted_in": [
+        "#118"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Berserk: Ougon Jidai Hen",
+      "anilist_id": null,
+      "episode_count": 3,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Boruto: Naruto the Movie",
+      "anilist_id": 21220,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Dounika Naru Hibi",
+      "anilist_id": 113416,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Dragon Ball Super: Broly",
+      "anilist_id": 101302,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Jujutsu Kaisen 0 Movie",
+      "anilist_id": 131573,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "K: Seven Stories Movie 1 - R:B - Blaze",
+      "anilist_id": 21798,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Kimetsu no Yaiba Movie: Mugen Ressha-hen",
+      "anilist_id": 112151,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Kizumonogatari",
+      "anilist_id": null,
+      "episode_count": 3,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Naruto Movie 1: Dai Katsugeki!! Yuki Hime Ninpouchou Dattebayo!",
+      "anilist_id": 442,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Psycho-Pass: Sinners of the System",
+      "anilist_id": null,
+      "episode_count": 3,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Shin Evangelion Movie:||",
+      "anilist_id": 3786,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "X/1999",
+      "anilist_id": 155,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A theatrical movie (or movie trilogy), not a weekly TV series — there is no 'padding while waiting for the manga to catch up' dynamic for a film, so this project's filler/canon concept doesn't apply. Structurally out of scope, not a sourcing gap — excluded from candidate picking, not something more research could resolve.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Beyblade Burst",
+      "anilist_id": 21236,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Toy/game franchise, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Beyblade Burst God",
+      "anilist_id": 98289,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Toy/game franchise, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Beyblade X",
+      "anilist_id": 165159,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Toy/game franchise, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Metal Fight Beyblade",
+      "anilist_id": 5962,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Toy/game franchise, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "F-Zero: Falcon Densetsu",
+      "anilist_id": 3101,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Video game franchise, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Hoshi no Kirby",
+      "anilist_id": 2390,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Video game franchise, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Super Dragon Ball Heroes",
+      "anilist_id": 102352,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Arcade/card game tie-in, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Pokemon",
+      "anilist_id": 527,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Video game franchise, not manga-based (a manga exists but isn't the anime's source) — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Pokemon Diamond & Pearl",
+      "anilist_id": 1565,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Video game franchise, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Clannad: After Story",
+      "anilist_id": 4181,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Visual novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Code Geass: Hangyaku no Lelouch",
+      "anilist_id": 1575,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime, no source manga (a manga adaptation exists but came after, same pattern as Yashahime) — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Code Geass: Akito the Exiled",
+      "anilist_id": null,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime OVA, no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Darling in the FranXX",
+      "anilist_id": 99423,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime (Trigger/A-1), no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Dennou Coil",
+      "anilist_id": 2164,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime, no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Fate/stay night: Unlimited Blade Works",
+      "anilist_id": 19603,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Visual novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Fractale",
+      "anilist_id": 9314,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime, no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Kiznaiver",
+      "anilist_id": 21421,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime (Trigger), no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Kono Subarashii Sekai ni Shukufuku wo!",
+      "anilist_id": 21202,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Monogatari Series: Second Season",
+      "anilist_id": 17074,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Nekomonogatari: Kuro",
+      "anilist_id": 15689,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Nisemonogatari",
+      "anilist_id": 11597,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Owarimonogatari",
+      "anilist_id": 21262,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Tsukimonogatari",
+      "anilist_id": 20918,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Overlord",
+      "anilist_id": 20832,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Samurai Champloo",
+      "anilist_id": 205,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime, no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Shinseiki Evangelion",
+      "anilist_id": 30,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime, no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Steins;Gate",
+      "anilist_id": 9253,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Visual novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e",
+      "anilist_id": 98659,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation, not manga-based — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Digimon Adventure:",
+      "anilist_id": 114811,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Multimedia game/toy franchise, not manga-first — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Uchuu Patrol Luluco",
+      "anilist_id": 21637,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime (Studio Trigger), no source manga — this project's whole filler/canon premise is 'anime content not adapted from a preceding manga', which requires a manga to exist first. Structurally out of scope, not a sourcing gap.",
+      "attempted_in": [
+        "#119-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Hajime no Ippo: Champion Road",
+      "anilist_id": 264,
+      "episode_count": 1,
+      "reason": "out_of_scope",
+      "detail": "A single 1-episode highlight-reel recap special (not a multi-episode series), same reasoning as the movie exclusions — no per-episode filler/canon concept applies to one clip-show special.",
+      "attempted_in": [
+        "#119-prep"
+      ],
       "date_flagged": "2026-08-26"
     }
   ]

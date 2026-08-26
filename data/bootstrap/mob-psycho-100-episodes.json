@@ -1,0 +1,122 @@
+{
+  "series_title": "Mob Psycho 100",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. Consistent aggregate signal reporting 0% filler across the complete 37-episode series, of which season 1 is the first 12.",
+  "citation_sources": [
+    {
+      "id": "aggregate-mob-psycho-100-no-filler",
+      "url": "https://quotetheanime.com/filler-list/mob-psycho-100/",
+      "description": "Consistent aggregate signal reporting Mob Psycho 100 has 0% filler across all episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Self-Proclaimed Psychic: Arataka Reigen ~And Mob~"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Doubts about Youth ~The Telepathy Club Appears~"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "An Invitation to a Meeting ~Simply Put, I Just Want to be Popular~"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Idiots Only Event ~Kin~"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Ochimusha ~Psychic Powers and Me~"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Discord ~To Become One~"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Exaltation ~I've Obtained Loss~"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Older Brother Bows ~Destructive Intent~"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Claw ~7th Division~"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Heinous Aura ~Mastermind~"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Master ~Leader~"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mob-psycho-100-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mob and Reigen ~A Giant Tsuchinoko Appears~"
+    }
+  ]
+}

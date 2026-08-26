@@ -1,0 +1,122 @@
+{
+  "series_title": "Spy x Family",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. AnimeFillerGuide directly confirms 0% filler for season 1 (adapting manga chapters 1-17); the show's episodic slice-of-life structure can feel filler-like but every episode is manga-sourced.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-spy-x-family",
+      "url": "https://www.animefillerguide.com/anime/spy-x-family/",
+      "description": "AnimeFillerGuide's Spy x Family page, confirming 0 filler episodes across season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "Operation Strix"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "Secure a Wife"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "Prepare for the Interview"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "The Prestigious School's Interview"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "Will They Pass or Fail?"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "The Friendship Scheme"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "The Target's Second Son"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "The Counter-Secret Police Cover Operation"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "Show Off How in Love You Are"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "The Great Dodgeball Plan"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "Stella"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-spy-x-family"
+      ],
+      "source_count": 1,
+      "title": "Penguin Park"
+    }
+  ]
+}

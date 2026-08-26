@@ -1,0 +1,122 @@
+{
+  "series_title": "Golden Kamuy",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. animefillerlist.com directly confirms 0% filler for season 1 (adapting manga volumes 1-7).",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-golden-kamuy",
+      "url": "https://www.animefillerlist.com/shows/golden-kamuy",
+      "description": "animefillerlist.com's Golden Kamuy page, confirming 0 filler episodes across season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Wenkamuy"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Nopperabo"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Kamuy Mosir"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Grim Reaper"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Race"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Hunter's Soul"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Complication"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Eyes of a Murderer"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Gleaming"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Fellow Traveler"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Everybody, Get Together! It's a Murder Hotel!"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-golden-kamuy"
+      ],
+      "source_count": 1,
+      "title": "Trickster Fox"
+    }
+  ]
+}

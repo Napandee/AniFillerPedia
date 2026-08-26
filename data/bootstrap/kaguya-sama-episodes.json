@@ -1,0 +1,122 @@
+{
+  "series_title": "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. Consistent aggregate signal reporting 0% filler for season 1 (adapting manga volumes 1-5).",
+  "citation_sources": [
+    {
+      "id": "aggregate-kaguya-sama-no-filler",
+      "url": "https://www.animefillerlist.com/shows/kaguya-sama-love-war",
+      "description": "Consistent aggregate signal reporting Kaguya-sama: Love Is War has 0% filler across all seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "I Want to Make You Invite Me to a Movie"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Kaguya Wants to Exchange Contact Info"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Miyuki Shirogane Still Hasn't Done It"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Kaguya Wants Affection"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Kaguya Wants to Handle It"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Yu Ishigami Wants to Live"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Miyuki Shirogane Wants to Work"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Kaguya Wants Her to Say It"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Kaguya Wants to Give a Gift"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Kaguya Won't Forgive"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Ai Hayasaka Wants to Get Soaked"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kaguya-sama-no-filler"
+      ],
+      "source_count": 1,
+      "title": "I Can't Hear the Fireworks, Part 2"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "series_title": "Dorohedoro",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. Consistent aggregate signal reporting 0% filler for season 1; some manga subplots (e.g. an underground fight club arc) are skipped entirely rather than replaced with anime-original filler.",
+  "citation_sources": [
+    {
+      "id": "aggregate-dorohedoro-no-filler",
+      "url": "https://www.animefillerguide.com/anime/dorohedoro/",
+      "description": "AnimeFillerGuide's Dorohedoro page, confirming 0 filler episodes across season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Caiman"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "In the Bag / At the Eating Contest"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Night of the Living Dead / Duel! / At the Main Gate"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Roast Duck with Chestnut Sauce / The Appearance of Blue Night"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Caiman in the Kettle / Jolly Days / Mushroom Doll"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Man in the Mouth / Free-for-all / The Neighbor is a Sorcerer?"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The All-Star Dream Game"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Good Day to Leave / La-la-la-la-la-la / The Mystery of the Head"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Ah, My Flower of Life / The Caiman Meat Pie / Caiman the Sorcerer?"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Loneliness of the Long-Distance Runner / Memories of Tea / The Caiman of My Dreams"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Boss / The Man in the Mouth 2 / Blue Night"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dorohedoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Memories of School / Boy Meets Girl / Pinky Swear"
+    }
+  ]
+}

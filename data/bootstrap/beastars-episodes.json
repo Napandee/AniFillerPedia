@@ -1,0 +1,122 @@
+{
+  "series_title": "Beastars",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. AnimeFillerGuide/QuoteTheAnime consistently report 0% filler across all 12 season-1 episodes.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-beastars",
+      "url": "https://quotetheanime.com/filler-list/beastars/",
+      "description": "QuoteTheAnime's Beastars filler list, confirming 0 filler episodes across the full series.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "The Moon and the Beast"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "The Academy's Top Dogs"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "A Wolf Is Born"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "Give It Your All"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "Two Sides to the Story"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "Blurred Vision – Dream or Reality?"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "Below the Fur Coat"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "Caught Like Floss in a Canine's Teeth"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "Into the Lion's Den"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "A Wolf in Sheep's Clothing"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "To the Neon District"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-beastars"
+      ],
+      "source_count": 1,
+      "title": "In the Storm's Wake"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "series_title": "Owari no Seraph",
+  "research_status": "COMPLETE — all 12 episodes of Seraph of the End's first cour classified canon. Confirmed by two agreeing sources (a general aggregate search and a direct fetch of QuoteTheAnime's page) that this cour is a faithful, complete manga adaptation with zero filler. The franchise's one genuinely mixed episode (episode 25, per QuoteTheAnime) belongs to the second cour ('Battle in Nagoya'), a separate AniList entry not covered by this project's catalog entry (AniList id 20829, confirmed 12 episodes). No episode titles included in the JSON — episode titles were visible in the source and match what AniList's own streaming-episode data will provide via load_episodes.py's auto-backfill (#103) once loaded, so hand-typing them here would be redundant. Complete, gap-free coverage of 1-12 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-owari-no-seraph-filler-list",
+      "url": "https://quotetheanime.com/filler-list/owari-no-seraph/",
+      "description": "QuoteTheAnime's Seraph of the End filler list — confirms all 12 episodes of the first cour (this project's catalog scope) are manga canon; the only mixed episode in the whole franchise (episode 25) belongs to the second cour, a separate AniList entry not in this project's catalog.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-owari-no-seraph-filler-list"
+      ],
+      "source_count": 2
+    }
+  ]
+}

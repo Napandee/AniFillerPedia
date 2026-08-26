@@ -1,0 +1,224 @@
+{
+  "series_title": "Ao no Exorcist",
+  "research_status": "COMPLETE — all 25 episodes of Blue Exorcist Season 1 classified canon/filler/mixed. QuoteTheAnime's breakdown matched an independent aggregate search exactly: episodes 1-3 and 16-17 are mixed (blending manga content with original material), episodes 6 and 11 are standalone filler, and episodes 18-25 are the anime's own original ending — produced once the anime outpaced the manga's pace, including a Satan confrontation the manga hadn't reached yet, and explicitly ignored by the manga-faithful Kyoto Saga continuation six years later. Classified 'filler' under this project's manga-adaptation definition, matching how Fullmetal Alchemist (2003)'s analogous anime-original continuation was handled earlier in this project (a deliberate policy call, confirmed with Andreas at the time, not an oversight). No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free, non-overlapping coverage of 1-25 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-blue-exorcist-filler-list",
+      "url": "https://quotetheanime.com/filler-list/blue-exorcist/",
+      "description": "QuoteTheAnime's Blue Exorcist Season 1 filler list — episode-by-episode classification into canon, mixed, and filler, matching an independently-corroborating aggregate search exactly.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Standalone one-off filler episode, unrelated to the season's own original ending arc (episodes 18-25)."
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Standalone one-off filler episode, unrelated to the season's own original ending arc (episodes 18-25)."
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    },
+    {
+      "episode_number": 19,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    },
+    {
+      "episode_number": 20,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    },
+    {
+      "episode_number": 21,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    },
+    {
+      "episode_number": 22,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    },
+    {
+      "episode_number": 23,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    },
+    {
+      "episode_number": 24,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    },
+    {
+      "episode_number": 25,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-blue-exorcist-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime outpaced the manga's own pace and produced its own conclusion (including a Satan confrontation the manga hadn't reached yet), which the manga-faithful Kyoto Saga continuation (six years later) picks up from episode 17 as though these 8 episodes never happened. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s own anime-original continuation was classified earlier in this project."
+    }
+  ]
+}

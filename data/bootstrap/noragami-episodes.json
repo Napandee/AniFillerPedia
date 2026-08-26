@@ -1,0 +1,128 @@
+{
+  "series_title": "Noragami",
+  "research_status": "COMPLETE — all 12 episodes of Noragami Season 1 classified canon/filler/mixed, though with real, disclosed lower confidence than most of this project's other shows — every source checked disagreed with at least one other on episodes 10 and 12 specifically, a genuinely messier picture than usual. Episodes 1-9 are agreed canon by every source checked. Episode 10 is recorded as mixed (QuoteTheAnime, corroborated by a separate aggregate search specifying only the first ~8 minutes are manga-canon) over AnimeWithoutFiller's plain-canon call. Episode 11 is agreed canon by both directly-fetched sources despite QuoteTheAnime's own 'anime canon' framing suggesting it's not a strict manga adaptation. Episode 12 is recorded as filler (AnimeWithoutFiller, corroborated by a third guide per an aggregate search) over QuoteTheAnime's 'anime canon' call, which this project would otherwise map to plain canon — the majority went the other way here specifically. Both single-source-flagged episodes (10, 12) are worth a second look if this ever needs revisiting. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-12 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-noragami-filler-list",
+      "url": "https://quotetheanime.com/filler-list/noragami/",
+      "description": "QuoteTheAnime's Noragami filler list — classifies episodes 1-9 as manga canon, episode 10 as mixed, and episodes 11-12 as 'anime canon' (expanding beyond the manga but consistent with its narrative).",
+      "methodology_note": null
+    },
+    {
+      "id": "animewithoutfiller-noragami",
+      "url": "https://www.animewithoutfiller.com/anime/noragami",
+      "description": "AnimeWithoutFiller's Noragami guide — agrees episodes 1-9 are canon and adds episode 11 to canon too, but classifies episode 12 as filler (disagreeing with QuoteTheAnime's 'anime canon' call) and episode 10 as canon (disagreeing with QuoteTheAnime's 'mixed' call).",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list"
+      ],
+      "source_count": 1,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as mixed (only the first ~8 minutes are manga-canon per a separate aggregate search that corroborates this specifically); AnimeWithoutFiller classifies it as plain canon. Going with mixed, 2 sources vs 1."
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-noragami-filler-list",
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "animewithoutfiller-noragami"
+      ],
+      "source_count": 1,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' (expands beyond the manga but stays narratively consistent, which this project generally maps to plain canon); AnimeWithoutFiller and a separate guide (Anime Filler Guide, per an aggregate search) both classify it as filler instead. Going with filler, 2 sources vs 1 — the reverse majority from episode 10's dispute above."
+    }
+  ]
+}

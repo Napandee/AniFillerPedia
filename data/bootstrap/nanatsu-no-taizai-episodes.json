@@ -1,0 +1,206 @@
+{
+  "series_title": "Nanatsu no Taizai",
+  "research_status": "COMPLETE — all 24 episodes of The Seven Deadly Sins Season 1 classified canon. Confirmed by two agreeing sources (a general aggregate search and a direct fetch of epicdope.com) that Season 1 has zero filler or mixed episodes — a faithful, complete manga adaptation for its run. The 'Signs of Holy War' bridging TV special (4 episodes, sometimes numbered 25-28 by guide sites) is a separate production, not part of this project's catalog entry (AniList id 20789, confirmed 24 episodes) — disregarded as out of scope, same treatment as the season/continuation boundary issues hit with several other shows this project. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-24 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "epicdope-nanatsu-no-taizai-filler-list",
+      "url": "https://www.epicdope.com/the-seven-deadly-sins-filler-list-are-they-worth-watching/",
+      "description": "epicdope.com's Seven Deadly Sins filler guide — confirms Season 1 (episodes 1-24, this project's catalog scope) has zero filler episodes; the four filler episodes some sources mention (25-28) are a separate bridging TV special, not part of Season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "epicdope-nanatsu-no-taizai-filler-list"
+      ],
+      "source_count": 2
+    }
+  ]
+}

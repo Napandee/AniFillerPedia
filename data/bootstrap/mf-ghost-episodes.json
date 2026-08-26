@@ -1,0 +1,122 @@
+{
+  "series_title": "MF Ghost",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "aggregate-mf-ghost-no-filler",
+      "url": "https://www.animefillerlist.com/shows/mf-ghost",
+      "description": "Consistent aggregate signal reporting MF Ghost season 1 has 0% filler; minor anime-original additions (e.g. a cameo car, a flashback scene) are noted but don't rise to full filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Challenger from England"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Shocking New Generation of MFG"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Kamaboko Straight"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tire Management"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Teamwork"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Tragic Rallyist"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Man in the 4 Car"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Voice Callout"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The 300 kph Dogfight"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Updates"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Genius Awakens"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mf-ghost-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Inherited Perception"
+    }
+  ]
+}

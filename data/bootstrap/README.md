@@ -936,3 +936,63 @@ batch, air dates loaded the same pass via the same validated
 episode/title/air-date coverage confirmed via the public API (Kanojo
 mo Kanojo excepted, per its missing Wikipedia source above). 17
 candidates remain.
+
+## Thirteenth and FINAL batch (#123, 2026-08-26): Cobra The Animation, Dragon Quest: Dai no Daibouken (2020), Eikoku Koi Monogatari Emma, Hellsing Ultimate, Excel Saga, JoJo no Kimyou na Bouken: Adventure, Kishibe Rohan wa Ugokanai, MF Ghost, Souten no Ken: Regenesis 2nd Season, Summertime Render
+
+10 shows, 221 episodes total, closing out the entire manami-project
+candidate list. Cobra The Animation (13/13, all canon), Dragon Quest:
+Dai no Daibouken 2020 (100/100, all canon — a complete adaptation of
+the full manga), Eikoku Koi Monogatari Emma season 1 (12/12, all
+canon — see disclosed lower-confidence note below), Hellsing Ultimate
+(10/10, all canon — a deliberate contrast to the original 2001 Hellsing
+TV series' 46% filler), JoJo no Kimyou na Bouken: Adventure (7/7, all
+canon), Kishibe Rohan wa Ugokanai (4/4, all canon), MF Ghost season 1
+(12/12, all canon), Souten no Ken: Regenesis 2nd Season (12/12, all
+canon), Summertime Render (25/25, all canon), and Heppoko Jikken
+Animation Excel♥Saga (26/26, **all filler** — see below).
+
+**Excel Saga is a genuine one-off case, unlike anything else in this
+catalog**: the entire anime deliberately diverges from Rikdo Koshi's
+manga throughout, at the publisher's own request and with the
+creator's approval — not scattered padding around an otherwise-adapting
+story the way every other filler-carrying show in this catalog works,
+but a wholesale reimagining from episode 1. animefillerlist.com
+independently confirms the identical 100% figure. Included (unlike
+Yashahime or Devilman) because the manga genuinely existed first and
+the divergence is fully documented, not because the classification is
+ambiguous — every episode is confidently filler, just unusually all
+of them.
+
+**Eikoku Koi Monogatari Emma's season-1 canon classification is
+disclosed as lower-confidence**: no itemized per-episode filler guide
+could be found anywhere for this show. Classified canon on indirect
+but consistent evidence instead — sources describe this season
+covering only 2 of the manga's 7 volumes across 12 episodes (ample
+source material, no compression pressure) and specifically attribute
+the real filler content found in the separate, later season 2 to a
+distinct compression problem (5 remaining volumes into 12 episodes)
+that doesn't apply here.
+
+Three shows (Hellsing Ultimate, Kishibe Rohan wa Ugokanai, Souten no
+Ken: Regenesis 2nd Season) have no usable Wikipedia episode-list page
+at all; their air dates/titles rely entirely on AniList's own
+rolling-window backfill, which filled in reasonably well for two of
+the three (Souten no Ken picked up all 12 titles from AniList
+directly) but left Hellsing Ultimate and Kishibe Rohan with none.
+
+Loaded into production the same throwaway-container way as every
+prior batch, air dates loaded the same pass via the same validated
+`series_episode_schedule` upsert. Verified live: all ten series'
+episode/title/air-date coverage confirmed via the public API (per the
+three exceptions noted above).
+
+**This closes out every real candidate from the original
+manami-project bootstrap list (`series-candidates.json`).** Of the
+original 180 entries: 123 shows are now loaded across thirteen
+batches (#104, #105, #109, #110, #113, #115, #118, #119, #120, #121,
+#122, #123, plus the original seven from #5), and the remainder sit
+in `data/bootstrap/needs-manual-research.json` for Andreas to review
+by hand — some genuine sourcing gaps worth another look if a better
+guide ever surfaces, some permanent scope exclusions (movies,
+non-manga-based shows) that were never really candidates for this
+project's premise to begin with.

@@ -1,0 +1,94 @@
+{
+  "series_title": "Hellsing Ultimate",
+  "research_status": "COMPLETE — all 10 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-hellsing-ultimate",
+      "url": "https://www.animefillerlist.com/shows/hellsing-ultimate",
+      "description": "animefillerlist.com's Hellsing Ultimate page, confirming 0 filler episodes — a deliberate contrast to the original 2001 Hellsing TV series (46% filler).",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-hellsing-ultimate"
+      ],
+      "source_count": 1
+    }
+  ]
+}

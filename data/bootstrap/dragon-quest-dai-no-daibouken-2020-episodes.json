@@ -1,0 +1,914 @@
+{
+  "series_title": "Dragon Quest: Dai no Daibouken (2020)",
+  "research_status": "COMPLETE — all 100 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "aggregate-dragon-quest-dai-no-filler",
+      "url": "https://simkl.com/anime/1229789/dragon-quest-dai-no-daibouken/filler-list/",
+      "description": "Consistent aggregate signal reporting the 2020 Dragon Quest: The Adventure of Dai adapts the complete manga across all 100 episodes with 0% filler.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dai, the Tiny Hero"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dai and Princess Leona"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Hero's Tutor"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Dark Lord Hadlar's Return"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Insignia of Avan"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Crocodine, the Beast King"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Maam's Turmoil"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Furfang Full Assault"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Single Shard of Courage"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Onto Papnica Kingdom"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Hyunckel, the Dark Swordsman"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Collaborative Zapple"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Deciding Moment"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Blizzblaze General Flazzard"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Terrifying Curse Field"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Grand Sorcerer Matoriv"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Death-Defying Savior"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Hyunckel Versus Hadlar"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Final Avan Style Technique"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Now I Slice Everything"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Maam's Decision"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Off to The Department Store"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Dragon Knight"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dragon Master General Baran"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Terrifying Draconic Aura"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Dragon Masters Approach"
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Land Rider Larhart"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dai's Secret"
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Baran's Rage"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Popp's Resolve"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Father and Son Clash"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Farewell to the Father"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Zaboera's Scheme"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Romos Martial Arts Tournament"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Incident at the Finals"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Superior Being Versus Chiu"
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "All in an Instant"
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The World Summit"
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Landing of Sovereign Rock Castle"
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Master of Darkness Against His Pupil"
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Strongest Sword"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Field of Death"
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Clash of Powerful Swords"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Hero Lost in the Glacier"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Orichalcum Warrior"
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Extreme Annihilation Spell, Medroa"
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "To the Final Battleground"
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Hadlar Royal Guard"
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Team Battle Begins"
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "We're the Beast King Commandos"
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Avan Style Ultimate Technique"
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Father and Son Dragons Set Out"
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Hadlar's Challenge"
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Hadlar Versus Baran"
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Black Core"
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Inherited Heart"
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The God of The Underworld"
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Unlikely Savior"
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Survivors"
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dai and Popp"
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Avan, the Hero"
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Cave of Trials"
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Sacred Inheritance"
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Night Before the Battle"
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Dark Hyunckel"
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Five Colors of Light"
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Peril of the Great Purification Spell"
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Last Challenge"
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Clash of Love"
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Victory or Annihilation"
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Battle of True Dragons"
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Last Attack"
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Hope in the Flames"
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Return of the Great Hero"
+    },
+    {
+      "episode_number": 75,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Secret of Breach"
+    },
+    {
+      "episode_number": 76,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Justice's March"
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Another Hero"
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Survivor from Hell"
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Silver Hair Hym"
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Checkmate"
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Duel in the White Garden"
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Successor of Justice"
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Baran's Testament"
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Stand Up, The Fate of Knight"
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Dark King Vearn"
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Killvearn's Trap"
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Decisive Attack"
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Dark Clothing"
+    },
+    {
+      "episode_number": 89,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Secret Method of Freezing Time"
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mist and Kill"
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Vearn's Truth"
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Attitude of Heaven and Earth Battle"
+    },
+    {
+      "episode_number": 93,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Jewel of the Eye"
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Running on Bonds"
+    },
+    {
+      "episode_number": 95,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Biggest and Last Reversal"
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Like a Flash"
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Tear of God"
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dai's Decision"
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Victory with These Arms"
+    },
+    {
+      "episode_number": 100,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-dragon-quest-dai-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Farewell! The Beloved Earth"
+    }
+  ]
+}

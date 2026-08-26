@@ -1,0 +1,122 @@
+{
+  "series_title": "To LOVE-Ru Darkness",
+  "research_status": "COMPLETE — all 12 main TV episodes manga canon, no filler (separate bonus OVAs exist but are not part of this catalog entry's numbered TV run).",
+  "citation_sources": [
+    {
+      "id": "aggregate-to-love-ru-darkness-no-filler",
+      "url": "https://www.animefillerlist.com/shows/love-ru-darkness",
+      "description": "Consistent aggregate signal reporting To LOVE-Ru Darkness's main TV episodes have 0% filler.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Continue"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Doubt and Dish"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Each Speculation"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "True Smile ~Peace and Anxiety~"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Man? A Woman? ~The Changing Ones~"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Metamorphose ~Time for a Change...~"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Sisters ~The Invention of Happiness~"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Bad Mood ~Bonds of Happiness~"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "True Self ~True Face in the Darkness~"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Past ~Memories Leading to Tomorrow~"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Right Thing ~What is a Way of Life?~"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-to-love-ru-darkness-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Room ~A Maiden's Feelings~"
+    }
+  ]
+}

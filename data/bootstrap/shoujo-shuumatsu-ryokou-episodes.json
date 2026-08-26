@@ -1,0 +1,122 @@
+{
+  "series_title": "Shoujo Shuumatsu Ryokou",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. Consistent search-aggregate signal describing a faithful chapter-by-chapter adaptation with no filler content, adapting manga volumes 1-4.",
+  "citation_sources": [
+    {
+      "id": "aggregate-girls-last-tour-no-filler",
+      "url": "https://www.animefillerlist.com/shows/girls-last-tour",
+      "description": "Consistent aggregate signal reporting Girls' Last Tour has 0% filler across all 12 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Starry Sky"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Bath"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Encounter"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Photograph"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "House"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Accident"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Labyrinth"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Memory"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Technology"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Train"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Culture"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-girls-last-tour-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Connection"
+    }
+  ]
+}

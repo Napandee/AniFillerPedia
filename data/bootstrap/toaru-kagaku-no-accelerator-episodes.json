@@ -1,0 +1,123 @@
+{
+  "series_title": "Toaru Kagaku no Accelerator",
+  "research_status": "COMPLETE — 11 of 12 episodes manga canon; episode 1 is the one reported filler episode, per QuoteTheAnime's direct breakdown.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-accelerator",
+      "url": "https://quotetheanime.com/filler-list/a-certain-scientific-accelerator/",
+      "description": "QuoteTheAnime's A Certain Scientific Accelerator page, itemizing episode 1 as the sole filler episode.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime directly itemizes episode 1 ('Accelerator (Academy City's Mightiest Esper)') as the series' sole filler episode; episodes 2-12 are manga canon.",
+      "title": "Accelerator (Academy City's Mightiest Esper)"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Necromancer (Raiser of the Dead)"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Numbers (Charms of the Four Perils)"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Third Number (The Pseudo-Soul, Huotou)"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "DA (Security Officer Darkness)"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Scavenger (Corpse-Eating Squad)"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Download (Time Limit)"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Friend (Hirumi)"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Memory of Death (10031 Deaths)"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Catastrophe (Awakening)"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Perfect Golem (Perfect Body)"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-accelerator"
+      ],
+      "source_count": 1,
+      "title": "Something to Protect"
+    }
+  ]
+}

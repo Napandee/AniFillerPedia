@@ -1,0 +1,110 @@
+{
+  "series_title": "Kanojo mo Kanojo",
+  "research_status": "COMPLETE — all 12 episodes of season 1 manga canon, no filler, per animefillerlist.com's direct confirmation. No Wikipedia episode-list page exists for this show, so air dates/titles rely on AniList's own backfill instead.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-girlfriend-girlfriend",
+      "url": "https://www.animefillerlist.com/shows/girlfriend-girlfriend",
+      "description": "animefillerlist.com's Girlfriend, Girlfriend page, confirming 0 filler episodes across season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-girlfriend-girlfriend"
+      ],
+      "source_count": 1
+    }
+  ]
+}

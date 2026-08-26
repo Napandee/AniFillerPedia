@@ -1,0 +1,131 @@
+{
+  "series_title": "Vigilante: Boku no Hero Academia Illegals",
+  "research_status": "COMPLETE — all 13 episodes of season 1 manga canon, no filler. Consistent search-aggregate signal reporting 0% filler across both seasons.",
+  "citation_sources": [
+    {
+      "id": "aggregate-mha-vigilantes-no-filler",
+      "url": "https://www.animefillerlist.com/shows/my-hero-academia-vigilantes",
+      "description": "Consistent aggregate signal reporting My Hero Academia: Vigilantes has 0% filler across both seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "I'm Here"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Takeoff"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Bee"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Top Runner"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Judgment"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Crossing Lines"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Makoto/Truth"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Major"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mom Descends"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Event Announcement!"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Day Of"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Goodbye to Dad"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-mha-vigilantes-no-filler"
+      ],
+      "source_count": 1,
+      "title": "What a Man Takes with Him"
+    }
+  ]
+}

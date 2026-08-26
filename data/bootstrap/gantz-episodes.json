@@ -1,0 +1,132 @@
+{
+  "series_title": "GANTZ",
+  "research_status": "COMPLETE — 12 of 13 First Stage episodes manga canon; episode 1 mixed, per animefillerlist.com's direct breakdown. GANTZ's real 5-episode filler run is entirely in the separate Second Stage season (this project's catalog only has a First Stage entry, resolved from a stale/incorrect 26-episode candidate-list count).",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-gantz",
+      "url": "https://www.animefillerlist.com/shows/gantz",
+      "description": "animefillerlist.com's GANTZ page, itemizing episode 1 as mixed and confirming the real filler run (episodes 22-26) is entirely in the Second Stage.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "status_note": "animefillerlist.com labels episode 1 mixed canon/filler; episodes 2-13 (the rest of the First Stage) are manga canon. GANTZ's real reported filler content (episodes 22-26) belongs entirely to the separate Second Stage, outside this 13-episode First Stage catalog entry.",
+      "title": "It's the Beginning of a Brand New Day"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "They Aren't Human"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "Kei, You're Awesome!"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "OK, Here Are Your Scores"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "Then That Means, at That Time..."
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "All Right!"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "We're After You"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "Uh-oh!"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "Kill It There!"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "Yuuzou-kun?"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "I Can't Shoot Him"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "Please stay here, Katou-kun"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-gantz"
+      ],
+      "source_count": 1,
+      "title": "Please Die..."
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "series_title": "Gin no Saji",
+  "research_status": "COMPLETE — 10 of 11 season-1 episodes manga canon; episode 5 is the one mixed canon/filler episode, per animefillerlist.com's direct breakdown.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-silver-spoon",
+      "url": "https://www.animefillerlist.com/shows/silver-spoon",
+      "description": "animefillerlist.com's Silver Spoon page, itemizing episode 5 as the sole mixed episode.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Welcome to Ezo Ag"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Rides a Horse"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Meets Pork Bowl"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Bakes Pizza"
+    },
+    {
+      "episode_number": 5,
+      "status": "mixed",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "status_note": "animefillerlist.com labels this episode ('Hachiken Runs Off') mixed canon/filler; all others are manga canon.",
+      "title": "Hachiken Runs Off"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Stays with the Mikages"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Goes to Giga Farm"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Makes a Huge Mistake"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Hesitates over Pork Bowl"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Hachiken Says Goodbye to Pork Bowl"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-silver-spoon"
+      ],
+      "source_count": 1,
+      "title": "Take Off Running, Hachiken"
+    }
+  ]
+}

@@ -23,6 +23,11 @@ class SeriesOut(BaseModel):
     # the sync worker has reached this series at least once.
     cover_image_url: str | None = Field(validation_alias="anilist_cover_url")
     banner_image_url: str | None = Field(validation_alias="anilist_banner_url")
+    # #111: AniList's own MediaStatus enum (FINISHED, RELEASING,
+    # NOT_YET_RELEASED, CANCELLED, HIATUS), synced by #49's daily worker —
+    # same null-until-first-sync convention as the cover/banner URLs above.
+    # Surfaces whether a series is still airing, not yet aired, or done.
+    airing_status: str | None = Field(validation_alias="anilist_status")
 
 
 class SeriesDetailOut(SeriesOut):

@@ -1,0 +1,131 @@
+{
+  "series_title": "Jigokuraku",
+  "research_status": "COMPLETE — all 13 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-jigokuraku",
+      "url": "https://www.animefillerguide.com/anime/jigokuraku/",
+      "description": "AnimeFillerGuide's Hell's Paradise page, confirming 0 filler episodes across both seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "The Death Row Convict and the Executioner"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Screening and Choosing"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Weakness and Strength"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Hell and Paradise"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "The Samurai and the Woman"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Heart and Reason"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Flowers and Offerings"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Student and Master"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Gods and People"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Yin and Yang"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Weak and Strong"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Umbrella and Ink"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jigokuraku"
+      ],
+      "source_count": 1,
+      "title": "Dreams and Reality"
+    }
+  ]
+}

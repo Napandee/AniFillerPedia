@@ -1,0 +1,122 @@
+{
+  "series_title": "Kaijuu 8-gou",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-kaijuu-8-gou",
+      "url": "https://www.animefillerlist.com/shows/kaiju-no8",
+      "description": "animefillerlist.com's Kaiju No. 8 page, confirming 0 filler episodes across the main series.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "The Man Who Became a Kaiju"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "The Kaiju Who Defeats Kaiju"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Revenge Match"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Fortitude 9.8"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Joining Up!"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Sagamihara Neutralization Operation at Daybreak"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Kaiju No. 9"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Welcome to the Defense Force"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Raid on Tachikawa Base"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Secret Revealed"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Kaiju No. 8 Captured"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-kaijuu-8-gou"
+      ],
+      "source_count": 1,
+      "title": "Kafka Hibino"
+    }
+  ]
+}

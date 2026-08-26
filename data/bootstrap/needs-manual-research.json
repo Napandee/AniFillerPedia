@@ -542,6 +542,17 @@
         "#119-prep"
       ],
       "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Goblin Slayer",
+      "anilist_id": 101165,
+      "episode_count": 12,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation (Kumo Kagyu) — the anime follows the light novels, not the manga adaptation that runs alongside it. Same category as Overlord/Konosuba, excluded for the same reason.",
+      "attempted_in": [
+        "#120-prep"
+      ],
+      "date_flagged": "2026-08-26"
     }
   ]
 }

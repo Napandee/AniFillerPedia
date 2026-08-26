@@ -1,0 +1,123 @@
+{
+  "series_title": "Mashle",
+  "research_status": "COMPLETE — 11 of 12 season-1 episodes manga canon; episode 7 is the one reported filler episode, per animefillerlist.com's direct episode-by-episode breakdown.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-mashle",
+      "url": "https://www.animefillerlist.com/shows/mashle-magic-and-muscles",
+      "description": "animefillerlist.com's Mashle page, itemizing episode 7 as the sole filler episode.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Body of the Gods"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Mysterious Maze"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Baleful Bully"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Challenging Magic User"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Unpopular Classmate"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Magic of Iron"
+    },
+    {
+      "episode_number": 7,
+      "status": "filler",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "status_note": "animefillerlist.com directly itemizes this episode ('Mash Burnedead and the Mysterious Letter') as the series' sole reported filler episode.",
+      "title": "Mash Burnedead and the Puppet Master"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Wolves of Magic"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Accelerated Battle"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Divine Visionary"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Survival of the Fittest"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-mashle"
+      ],
+      "source_count": 1,
+      "title": "Mash Burnedead and the Magic Mirror"
+    }
+  ]
+}

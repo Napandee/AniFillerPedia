@@ -1,0 +1,131 @@
+{
+  "series_title": "Shokugeki no Souma: Ni no Sara",
+  "research_status": "COMPLETE — all 13 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-shokugeki-no-souma",
+      "url": "https://www.animefillerguide.com/anime/shokugeki-no-soma/",
+      "description": "AnimeFillerGuide's Shokugeki no Souma page, confirming 0 filler episodes across all 5 seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "That Which is Placed Within the Box"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Interplay of Light & Shadow"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Age of Kings"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Pursuer"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Secret of the First Bite"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Morning Shall Come Again"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Beasts That Devour Each Other"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Battle That Follows the Seasons"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Sword That Announces Fall"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "A New Jewel"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Stagiaire"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Magician Returns"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Pomp & Circumstance"
+    }
+  ]
+}

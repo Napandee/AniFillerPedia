@@ -1,0 +1,122 @@
+{
+  "series_title": "Shokugeki no Souma: San no Sara",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-shokugeki-no-souma",
+      "url": "https://www.animefillerguide.com/anime/shokugeki-no-soma/",
+      "description": "AnimeFillerGuide's Shokugeki no Souma page, confirming 0 filler episodes across all 5 seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Challenging the Ten"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Má & Là"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Lunar Feast"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "A Pride of Young Lions"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Shadow over the Dining Table"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Captive Queen"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Academy Falls"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Alchemist"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Hunting the Straggerlers"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Dance of the Salmon"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Der Weiße Ritter der Tafel"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Those Who Strive for the Top"
+    }
+  ]
+}

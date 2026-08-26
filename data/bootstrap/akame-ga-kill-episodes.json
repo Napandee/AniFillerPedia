@@ -1,6 +1,6 @@
 {
   "series_title": "Akame ga Kill!",
-  "research_status": "COMPLETE — all 24 episodes of Akame ga Kill! classified canon/filler/mixed. Two independently-fetched sources (QuoteTheAnime, epicdope.com) agree exactly: episodes 1-18 are manga canon, episode 19 is mixed, and episodes 20-24 are the anime's own original ending — the anime adapted through chapter 38 of 78 then produced a different conclusion once production outpaced the still-ongoing manga. Classified 'filler' under this project's manga-adaptation definition, matching the same policy already applied to Fullmetal Alchemist (2003) and Ao no Exorcist — both sources here independently draw that exact FMA (2003) comparison themselves, unprompted. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-24 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 24 episodes of Akame ga Kill! classified canon/filler/mixed. Two independently-fetched sources (QuoteTheAnime, epicdope.com) agree exactly: episodes 1-18 are manga canon, episode 19 is mixed, and episodes 20-24 are anime-original content (both sources explicitly compare it to Fullmetal Alchemist (2003)'s own situation). Corrected 2026-08-26: episodes 20-24 were originally recorded as filler under the same policy applied to FMA 2003's analogous anime-original ending, but Andreas reviewed and confirmed this show's case should map to canon instead, consistent with how 'anime canon' is treated everywhere else in this project. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-24 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "quotetheanime-akame-ga-kill",
@@ -189,53 +189,53 @@
     },
     {
       "episode_number": 20,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
         "quotetheanime-akame-ga-kill",
         "epicdope-akame-ga-kill"
       ],
       "source_count": 2,
-      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+      "status_note": "Corrected 2026-08-26: originally recorded as filler here, following the same policy already applied to Fullmetal Alchemist (2003) and Ao no Exorcist's anime-original endings (both sources' own commentary explicitly compared this episode range to FMA 2003's situation). Andreas reviewed and confirmed this show's 'anime canon' framing should map to plain canon instead, consistent with how every other 'anime canon' label in this project is treated (Dragon Ball Super, Fullmetal Alchemist: Brotherhood, Noragami, and this same show's own Toaru Kagaku no Railgun batch-mate) — this episode range is treated as inserted/side content within the anime's own continuation, not literally replacing where the manga's ending was headed the way FMA 2003's back half does."
     },
     {
       "episode_number": 21,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
         "quotetheanime-akame-ga-kill",
         "epicdope-akame-ga-kill"
       ],
       "source_count": 2,
-      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+      "status_note": "Corrected 2026-08-26: originally recorded as filler here, following the same policy already applied to Fullmetal Alchemist (2003) and Ao no Exorcist's anime-original endings (both sources' own commentary explicitly compared this episode range to FMA 2003's situation). Andreas reviewed and confirmed this show's 'anime canon' framing should map to plain canon instead, consistent with how every other 'anime canon' label in this project is treated (Dragon Ball Super, Fullmetal Alchemist: Brotherhood, Noragami, and this same show's own Toaru Kagaku no Railgun batch-mate) — this episode range is treated as inserted/side content within the anime's own continuation, not literally replacing where the manga's ending was headed the way FMA 2003's back half does."
     },
     {
       "episode_number": 22,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
         "quotetheanime-akame-ga-kill",
         "epicdope-akame-ga-kill"
       ],
       "source_count": 2,
-      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+      "status_note": "Corrected 2026-08-26: originally recorded as filler here, following the same policy already applied to Fullmetal Alchemist (2003) and Ao no Exorcist's anime-original endings (both sources' own commentary explicitly compared this episode range to FMA 2003's situation). Andreas reviewed and confirmed this show's 'anime canon' framing should map to plain canon instead, consistent with how every other 'anime canon' label in this project is treated (Dragon Ball Super, Fullmetal Alchemist: Brotherhood, Noragami, and this same show's own Toaru Kagaku no Railgun batch-mate) — this episode range is treated as inserted/side content within the anime's own continuation, not literally replacing where the manga's ending was headed the way FMA 2003's back half does."
     },
     {
       "episode_number": 23,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
         "quotetheanime-akame-ga-kill",
         "epicdope-akame-ga-kill"
       ],
       "source_count": 2,
-      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+      "status_note": "Corrected 2026-08-26: originally recorded as filler here, following the same policy already applied to Fullmetal Alchemist (2003) and Ao no Exorcist's anime-original endings (both sources' own commentary explicitly compared this episode range to FMA 2003's situation). Andreas reviewed and confirmed this show's 'anime canon' framing should map to plain canon instead, consistent with how every other 'anime canon' label in this project is treated (Dragon Ball Super, Fullmetal Alchemist: Brotherhood, Noragami, and this same show's own Toaru Kagaku no Railgun batch-mate) — this episode range is treated as inserted/side content within the anime's own continuation, not literally replacing where the manga's ending was headed the way FMA 2003's back half does."
     },
     {
       "episode_number": 24,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
         "quotetheanime-akame-ga-kill",
         "epicdope-akame-ga-kill"
       ],
       "source_count": 2,
-      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+      "status_note": "Corrected 2026-08-26: originally recorded as filler here, following the same policy already applied to Fullmetal Alchemist (2003) and Ao no Exorcist's anime-original endings (both sources' own commentary explicitly compared this episode range to FMA 2003's situation). Andreas reviewed and confirmed this show's 'anime canon' framing should map to plain canon instead, consistent with how every other 'anime canon' label in this project is treated (Dragon Ball Super, Fullmetal Alchemist: Brotherhood, Noragami, and this same show's own Toaru Kagaku no Railgun batch-mate) — this episode range is treated as inserted/side content within the anime's own continuation, not literally replacing where the manga's ending was headed the way FMA 2003's back half does."
     }
   ]
 }

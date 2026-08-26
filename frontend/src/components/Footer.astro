@@ -1,12 +1,17 @@
 ---
+import { resolveLocale, useTranslations } from "../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
 const year = new Date().getFullYear();
+const locale = resolveLocale(Astro.currentLocale);
+const t = useTranslations(locale);
 ---
 
 <footer class="site-footer">
   <span>&copy; {year} AniFillerPedia</span>
   <nav>
-    <a href="/license">License</a>
-    <a href="/privacy">Privacy</a>
+    <a href={getRelativeLocaleUrl(locale, "/license")}>{t("footer.license")}</a>
+    <a href={getRelativeLocaleUrl(locale, "/privacy")}>{t("footer.privacy")}</a>
   </nav>
 </footer>
 

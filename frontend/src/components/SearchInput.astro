@@ -1,10 +1,13 @@
 ---
+import { resolveLocale, useTranslations } from "../i18n/utils";
+
 interface Props {
   placeholder?: string;
   name?: string;
 }
 
-const { placeholder = "Search Naruto, Bleach, One Piece...", name = "q" } = Astro.props;
+const t = useTranslations(resolveLocale(Astro.currentLocale));
+const { placeholder = t("home.searchPlaceholder"), name = "q" } = Astro.props;
 ---
 
 <form class="search" role="search">

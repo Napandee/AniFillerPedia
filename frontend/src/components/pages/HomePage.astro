@@ -128,6 +128,7 @@ function pageHref(targetPage: number): string {
                   ) : (
                     <CoverFallback title={series.title} fontSize="22px" />
                   )}
+                  {series.airing_status === "RELEASING" && <span class="airing-badge">{t("series.airingBadge")}</span>}
                 </div>
                 <div class="disp teaser-title">{series.title}</div>
               </a>
@@ -165,6 +166,7 @@ function pageHref(targetPage: number): string {
                 ) : (
                   <CoverFallback title={series.title} fontSize="32px" />
                 )}
+                {series.airing_status === "RELEASING" && <span class="airing-badge">{t("series.airingBadge")}</span>}
               </div>
               <div class="card-body">
                 <div class="disp title">{series.title}</div>
@@ -343,6 +345,7 @@ function pageHref(targetPage: number): string {
     color: inherit;
   }
   .teaser-poster {
+    position: relative;
     aspect-ratio: 2 / 3;
   }
   .teaser-title {
@@ -391,6 +394,7 @@ function pageHref(targetPage: number): string {
     color: inherit;
   }
   .grid-poster {
+    position: relative;
     aspect-ratio: 2 / 3;
   }
   .grid-poster img,
@@ -399,6 +403,21 @@ function pageHref(targetPage: number): string {
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+  .airing-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    background: var(--color-status-pending);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow-sticker);
   }
   .card-body {
     padding: 9px 12px;

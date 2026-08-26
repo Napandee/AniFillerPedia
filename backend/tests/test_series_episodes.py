@@ -305,6 +305,34 @@ async def test_series_detail_includes_anilist_episode_count(client: AsyncClient)
 
 
 @pytest.mark.asyncio
+async def test_series_airing_status_surfaced_on_list_and_detail(client: AsyncClient) -> None:
+    """#111: AniList's own MediaStatus (FINISHED/RELEASING/...), synced by
+    #49's worker — null until the sync worker has reached this series at
+    least once, same convention as anilist_episode_count above.
+    """
+    series_id = await _make_series("Eta", anilist_id=900009)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}")
+        assert response.status_code == 200
+        assert response.json()["airing_status"] is None
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET anilist_status = 'RELEASING' WHERE id = :sid"),
+                    {"sid": series_id},
+                )
+        response = await client.get(f"/api/v1/series/{series_id}")
+        assert response.json()["airing_status"] == "RELEASING"
+
+        list_response = await client.get("/api/v1/series", params={"anilist_id": 900009})
+        item = list_response.json()["items"][0]
+        assert item["airing_status"] == "RELEASING"
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_series_detail_includes_related_series(client: AsyncClient) -> None:
     """Lightweight cross-links for shows split across multiple AniList
     entries (e.g. Fairy Tail / Fairy Tail (2014) / Fairy Tail (2018)) —

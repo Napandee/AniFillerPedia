@@ -880,6 +880,57 @@ export interface components {
             /** Existing Contribution Id */
             existing_contribution_id: number;
         };
+        /**
+         * EpisodeDataIn
+         * @description #85: a contributor's optional episode-range data, attached to a
+         *     series proposal in the same shape #80's bulk-submission endpoint
+         *     already expects — held on the proposal row (see services/
+         *     series_proposals.py) until approval, when it's turned into real
+         *     citations + contributions targeting the newly-created series. No
+         *     license_accepted/dry_run fields here, unlike BulkContributionCreate —
+         *     the proposal's own top-level license_accepted covers this same
+         *     submission event, and there's no series_id yet to preview a dry run
+         *     against.
+         */
+        EpisodeDataIn: {
+            /**
+             * Canon Ranges
+             * @default
+             */
+            canon_ranges: string;
+            /**
+             * Mixed Ranges
+             * @default
+             */
+            mixed_ranges: string;
+            /**
+             * Filler Ranges
+             * @default
+             */
+            filler_ranges: string;
+            citation: components["schemas"]["CitationIn"];
+        };
+        /** EpisodeDataOut */
+        EpisodeDataOut: {
+            /**
+             * Canon Ranges
+             * @default
+             */
+            canon_ranges: string;
+            /**
+             * Mixed Ranges
+             * @default
+             */
+            mixed_ranges: string;
+            /**
+             * Filler Ranges
+             * @default
+             */
+            filler_ranges: string;
+            citation: components["schemas"]["CitationIn"];
+            /** Declared Count */
+            declared_count: number;
+        };
         /** EpisodeOut */
         EpisodeOut: {
             /** Id */
@@ -1050,6 +1101,8 @@ export interface components {
             cover_image_url: string | null;
             /** Banner Image Url */
             banner_image_url: string | null;
+            /** Airing Status */
+            airing_status: string | null;
             /** Synonyms */
             synonyms: string[];
             /** Anilist Episode Count */
@@ -1091,6 +1144,8 @@ export interface components {
             cover_image_url: string | null;
             /** Banner Image Url */
             banner_image_url: string | null;
+            /** Airing Status */
+            airing_status: string | null;
         };
         /** SeriesProposalCreate */
         SeriesProposalCreate: {
@@ -1108,6 +1163,7 @@ export interface components {
             license_accepted: boolean;
             /** Turnstile Token */
             turnstile_token?: string | null;
+            episode_data?: components["schemas"]["EpisodeDataIn"] | null;
         };
         /** SeriesProposalOut */
         SeriesProposalOut: {
@@ -1134,6 +1190,7 @@ export interface components {
             reviewed_at: string | null;
             /** Review Note */
             review_note: string | null;
+            episode_data?: components["schemas"]["EpisodeDataOut"] | null;
         };
         /** SeriesProposalReject */
         SeriesProposalReject: {
@@ -1150,6 +1207,8 @@ export interface components {
             reviewed_at: string | null;
             /** Review Note */
             review_note: string | null;
+            /** Episode Contributions Created */
+            episode_contributions_created?: number | null;
         };
         /** UserOut */
         UserOut: {

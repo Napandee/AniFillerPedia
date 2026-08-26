@@ -1,0 +1,437 @@
+---
+// #32: home/browse page — series search (title+synonym), paginated
+// series grid, a "recently updated" teaser, and a moderator-only "needs
+// review" count. Replaces #31's trivial placeholder wholesale.
+//
+// Out of scope here (owned by parallel #33/#35/#36/#39 work): series
+// detail page, submission/proposal forms, the moderation queue page
+// itself. Links to those routes are plain hrefs even though the routes
+// don't exist in this isolated worktree yet.
+import Layout from "../../layouts/Layout.astro";
+import SearchInput from "../SearchInput.astro";
+import CoverFallback from "../CoverFallback.astro";
+import { createApiClient } from "../../api/client";
+import { resolveLocale, useTranslations } from "../../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+const PAGE_SIZE = 20;
+const TEASER_SIZE = 6;
+
+const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
+
+const q = Astro.url.searchParams.get("q")?.trim() || undefined;
+const requestedPage = Number.parseInt(Astro.url.searchParams.get("page") ?? "1", 10);
+const page = Number.isFinite(requestedPage) && requestedPage >= 1 ? requestedPage : 1;
+const offset = (page - 1) * PAGE_SIZE;
+
+// Main search/browse grid — plain title/synonym search, paginated.
+const { data: listData, error: listError } = await api.GET("/api/v1/series", {
+  params: { query: { q, limit: PAGE_SIZE, offset } },
+});
+const items = listData?.items ?? [];
+const total = listData?.total ?? 0;
+const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+// Recently-updated teaser — separate small query, not paginated.
+const { data: teaserData } = await api.GET("/api/v1/series", {
+  params: { query: { sort: "recently_updated", limit: TEASER_SIZE, offset: 0 } },
+});
+const recentlyUpdated = teaserData?.items ?? [];
+
+// "Needs review" count — moderator+ only (default per #32: skip the live
+// number for anonymous/contributor visitors rather than exposing a
+// public count-only variant that doesn't exist yet).
+const QUALIFYING_ROLES = new Set(["moderator", "admin", "owner"]);
+const user = Astro.locals.user;
+let pendingCount: number | null = null;
+if (user && QUALIFYING_ROLES.has(user.role)) {
+  const cookie = Astro.request.headers.get("cookie") ?? "";
+  const { data: pendingData } = await api.GET("/api/v1/contributions", {
+    params: { query: { review_status: "pending" } },
+    headers: { cookie },
+  });
+  if (pendingData) {
+    pendingCount = pendingData.length;
+  }
+}
+
+function pageHref(targetPage: number): string {
+  const params = new URLSearchParams();
+  if (q) params.set("q", q);
+  if (targetPage > 1) params.set("page", String(targetPage));
+  const qs = params.toString();
+  const base = getRelativeLocaleUrl(locale, "/");
+  return qs ? `${base}?${qs}` : base;
+}
+---
+
+<Layout title={t("home.title")} description={t("home.description")} noindex={!!q}>
+  <section class="hero">
+    <div class="disp headline" set:html={t("home.headline")} />
+    <p class="tagline">{t("home.tagline")}</p>
+    <SearchInput />
+    <!-- #47: a prominent CTA, not a small text link — most of the catalog
+         is unresearched stubs now hidden from this grid entirely, so the
+         path to "this show isn't here, please add it" needs to be obvious,
+         not incidental. Links straight to #36's existing form, which
+         already captures a name and an AniList/MAL/AniDB id. -->
+    <a class="propose-cta" href={getRelativeLocaleUrl(locale, "/propose-series")}>
+      <span class="propose-icon" aria-hidden="true">+</span>
+      <span class="propose-text">
+        <strong>{t("home.proposeCta.strong")}</strong> {t("home.proposeCta.rest")}
+      </span>
+      <span class="propose-arrow" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  {
+    pendingCount !== null && (
+      <a class="review-teaser" href={getRelativeLocaleUrl(locale, "/moderation")}>
+        <span class="review-dot" />
+        <span>
+          {t(pendingCount === 1 ? "home.reviewTeaser.pending_one" : "home.reviewTeaser.pending_other", {
+            count: pendingCount,
+          })}
+        </span>
+        <span class="review-arrow">→</span>
+      </a>
+    )
+  }
+
+  {
+    recentlyUpdated.length > 0 && (
+      <section class="section">
+        <h2 class="disp section-title">{t("home.recentlyUpdated")}</h2>
+        {/* A passive, continuously-scrolling gallery, not a manually
+            scrollable strip — no scrollbar, no drag-to-scroll, nothing to
+            click back and forth. The item list is rendered twice back to
+            back and the track animates exactly one set-width of
+            translateX, so the loop point is seamless; the second copy is
+            aria-hidden/untabbable since it's a visual duplicate, not new
+            content. prefers-reduced-motion just freezes it on the first
+            set instead of trying to fake a paused marquee. */}
+        <div class="teaser-viewport">
+          <div class="teaser-track">
+            {[...recentlyUpdated, ...recentlyUpdated].map((series, i) => (
+              <a
+                class="teaser-card"
+                href={getRelativeLocaleUrl(locale, `/series/${series.id}`)}
+                aria-hidden={i >= recentlyUpdated.length ? "true" : undefined}
+                tabindex={i >= recentlyUpdated.length ? -1 : undefined}
+              >
+                <div class="teaser-poster">
+                  {series.cover_image_url ? (
+                    <img src={series.cover_image_url} alt="" loading="lazy" />
+                  ) : (
+                    <CoverFallback title={series.title} fontSize="22px" />
+                  )}
+                </div>
+                <div class="disp teaser-title">{series.title}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="browse-heading">
+      <h2 class="disp section-title">{q ? t("home.resultsFor", { q }) : t("home.allSeries")}</h2>
+      <span class="result-count">
+        {t(total === 1 ? "home.seriesFound_one" : "home.seriesFound_other", { count: total })}
+      </span>
+    </div>
+
+    {listError && <p class="error-note">{t("home.loadError")}</p>}
+
+    {
+      !listError && items.length === 0 && (
+        <p class="empty-note">{q ? t("home.noMatch", { q }) : t("home.emptyCatalog")}</p>
+      )
+    }
+
+    {
+      items.length > 0 && (
+        <div class="series-grid">
+          {items.map((series) => (
+            <a class="grid-card" href={getRelativeLocaleUrl(locale, `/series/${series.id}`)}>
+              <div class="grid-poster">
+                {series.cover_image_url ? (
+                  <img src={series.cover_image_url} alt="" loading="lazy" />
+                ) : (
+                  <CoverFallback title={series.title} fontSize="32px" />
+                )}
+              </div>
+              <div class="card-body">
+                <div class="disp title">{series.title}</div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      total > 0 && totalPages > 1 && (
+        <nav class="pagination" aria-label={t("home.pagination.ariaLabel")}>
+          <a
+            class:list={["page-link", { disabled: page <= 1 }]}
+            href={page > 1 ? pageHref(page - 1) : undefined}
+            aria-disabled={page <= 1}
+          >
+            {t("home.pagination.prev")}
+          </a>
+          <span class="page-status">{t("home.pagination.status", { page, totalPages })}</span>
+          <a
+            class:list={["page-link", { disabled: page >= totalPages }]}
+            href={page < totalPages ? pageHref(page + 1) : undefined}
+            aria-disabled={page >= totalPages}
+          >
+            {t("home.pagination.next")}
+          </a>
+        </nav>
+      )
+    }
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-bg-hero-start), var(--color-bg-hero-end));
+    border-radius: var(--radius-panel);
+    padding: 36px 32px;
+  }
+  .headline {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--color-heading);
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .tagline {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 20px;
+  }
+  .propose-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sticker);
+    text-decoration: none;
+    color: var(--color-heading);
+  }
+  .propose-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .propose-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+  .propose-text strong {
+    color: var(--color-heading);
+    font-weight: 800;
+  }
+  .propose-arrow {
+    margin-left: auto;
+    color: var(--color-accent);
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .review-teaser {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: var(--color-surface-pending);
+    border: 2px solid var(--color-status-pending);
+    border-radius: var(--radius-card);
+    text-decoration: none;
+    color: var(--color-heading);
+    font-weight: 700;
+    font-size: 13.5px;
+  }
+  .review-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-status-pending);
+    flex-shrink: 0;
+  }
+  .review-arrow {
+    margin-left: auto;
+    color: var(--color-text-faint);
+  }
+
+  .section {
+    margin-top: 32px;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin: 0 0 12px;
+  }
+
+  .teaser-viewport {
+    /* Only the horizontal axis should ever clip — `overflow: hidden`
+       (the shorthand) clips both axes, which silently cut the bottom off
+       every card the moment its real content height came in even a
+       fraction of a pixel taller than the container's computed height
+       (font-loading rounding, line-height quirks, etc.). Explicit
+       overflow-y: visible; is the fix, not a width/height tweak. */
+    overflow-x: hidden;
+    overflow-y: visible;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+  }
+  .teaser-track {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: max-content;
+    animation: teaser-scroll 32s linear infinite;
+  }
+  @keyframes teaser-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* Exactly one full (un-duplicated) set width — the track holds two
+         copies back to back, so this lands the second copy precisely
+         where the first one started, and the loop repeats invisibly. */
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .teaser-track {
+      animation: none;
+    }
+  }
+  .teaser-card {
+    flex: 0 0 auto;
+    width: 140px;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-sticker);
+    text-decoration: none;
+    color: inherit;
+  }
+  .teaser-poster {
+    aspect-ratio: 2 / 3;
+  }
+  .teaser-title {
+    padding: 9px 11px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+    line-height: 1.25;
+  }
+
+  .browse-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .result-count {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-text-faint);
+  }
+
+  .error-note,
+  .empty-note {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 16px;
+  }
+
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .grid-card {
+    display: block;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-sticker);
+    text-decoration: none;
+    color: inherit;
+  }
+  .grid-poster {
+    aspect-ratio: 2 / 3;
+  }
+  .grid-poster img,
+  .teaser-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card-body {
+    padding: 9px 12px;
+  }
+  .grid-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .page-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sticker);
+  }
+  .page-link.disabled {
+    color: var(--color-text-faint);
+    pointer-events: none;
+    box-shadow: none;
+  }
+  .page-status {
+    color: var(--color-text-muted);
+  }
+</style>

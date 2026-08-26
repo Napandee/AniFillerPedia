@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { resolveLocale, useTranslations } from "../i18n/utils";
 import "../styles/tokens.css";
 
 // #63: SEO basics. description/image are per-page and data-driven (a series
@@ -19,10 +20,10 @@ interface Props {
   structuredData?: Record<string, unknown>;
 }
 
-const DEFAULT_DESCRIPTION =
-  "AniFillerPedia is an open, community-editable database of anime filler and canon episodes — find out which episodes you can skip, and which you can't.";
+const locale = resolveLocale(Astro.currentLocale);
+const t = useTranslations(locale);
 
-const { title, description = DEFAULT_DESCRIPTION, image, noindex = false, structuredData } = Astro.props;
+const { title, description = t("meta.defaultDescription"), image, noindex = false, structuredData } = Astro.props;
 
 // Security review (#89): structuredData's own fields (series.title,
 // synonyms) are reachable from the public series-proposal form
@@ -45,7 +46,7 @@ const ogImage = image ? new URL(image, Astro.site).toString() : undefined;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

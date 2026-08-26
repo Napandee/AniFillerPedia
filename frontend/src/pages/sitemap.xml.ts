@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
 import { createApiClient } from "../api/client";
+import { SUPPORTED_LOCALES } from "../i18n/ui";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 // #63: a real, dynamic sitemap — not @astrojs/sitemap's static-route
 // discovery, which only knows about routes it can enumerate at build time.
@@ -14,6 +16,14 @@ import { createApiClient } from "../api/client";
 // separate query, since "worth showing in the public browse grid" and
 // "worth telling Google to index" are the same bar.
 const STATIC_PATHS = ["", "contribute", "docs", "license", "privacy", "export-access", "propose-series"];
+
+// #106: only home (`""`) and series pages are actually translated in this
+// first cut (per that issue's own scope) — the other STATIC_PATHS entries
+// above still render English content at a locale-prefixed URL, so listing
+// e.g. /es/docs/ here would tell Google to index a page that isn't really
+// Spanish. Add locale variants only for what's genuinely localized.
+const LOCALIZED_PATHS = [""];
+const NON_DEFAULT_LOCALES = SUPPORTED_LOCALES.filter((l) => l !== "en");
 
 function urlEntry(loc: string): string {
   return `  <url><loc>${loc}</loc></url>`;
@@ -40,6 +50,10 @@ export const GET: APIRoute = async ({ site }) => {
   const urls = [
     ...STATIC_PATHS.map((path) => urlEntry(`${origin}/${path}`)),
     ...seriesIds.map((id) => urlEntry(`${origin}/series/${id}`)),
+    ...NON_DEFAULT_LOCALES.flatMap((locale) => [
+      ...LOCALIZED_PATHS.map((path) => urlEntry(`${origin}${getRelativeLocaleUrl(locale, `/${path}`)}`)),
+      ...seriesIds.map((id) => urlEntry(`${origin}${getRelativeLocaleUrl(locale, `/series/${id}`)}`)),
+    ]),
   ];
 
   const body =

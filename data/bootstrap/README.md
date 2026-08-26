@@ -616,3 +616,31 @@ auto-backfill (#103) picked up titles automatically during each load
 where AniList had them. 139 manami candidates remain unresearched after
 this batch. Batch size moves from 6 to 10 series going forward, per
 Andreas's request.
+
+**Corrections, 2026-08-26 (post-load):** Andreas independently verified
+all ten shows. Seven matched exactly (Toaru Kagaku no Railgun, Berserk,
+Hikaru no Go, Magi: Sinbad no Bouken, Kingdom, Boku no Hero Academia,
+Haikyuu!!, Tensei shitara Slime Datta Ken) — the Railgun and Magi
+confirmations are worth noting specifically: Railgun confirmed the
+"anime canon → canon" resolution chosen over a disagreeing second
+source was correct, and Magi confirmed the aggregate-search-only
+sourcing (no page could be directly fetched) landed on the right
+answer despite the weaker citation. Two real corrections:
+
+- **Akame ga Kill!** — episodes 20-24 move from filler to canon. This
+  surfaced a real policy inconsistency: these episodes were classified
+  filler under the same policy already applied to Fullmetal Alchemist
+  (2003)/Ao no Exorcist's anime-original endings, but Andreas's own
+  correction labels them "Anime Canon" — the same label his Railgun
+  correction confirms maps to canon. Asked directly which this show
+  should be; Andreas confirmed canon, treating this show's anime-
+  original content as inserted/side material rather than a manga-
+  replacing alternate ending the way FMA 2003's genuinely is. FMA
+  2003 and Ao no Exorcist's own classifications are unaffected — this
+  is a per-show judgment call, not a blanket policy reversal.
+- **Slam Dunk** — episodes 31, 32, 36 move from canon to mixed;
+  episode 90 moves from filler to mixed; episode 92 moves from mixed to
+  filler. All five were previously flagged as single-source or
+  disagreement-resolved calls in this file's own research_status —
+  Andreas's independent check resolved them differently than the
+  original two-source synthesis had.

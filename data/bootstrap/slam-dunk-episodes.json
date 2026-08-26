@@ -1,6 +1,6 @@
 {
   "series_title": "Slam Dunk",
-  "research_status": "COMPLETE — all 101 episodes of Slam Dunk (1993) classified canon/filler/mixed, with real cross-source disagreement on the exact boundary — more than most shows in this project. Two independently-fetched sources (QuoteTheAnime, AnimeFillerGuide) agree exactly on 8 pure-filler episodes (85, 86, 95, 97-101) and roughly agree that episodes 47 and 92 have real filler content, disagreeing only on whether to call them fully filler (QuoteTheAnime) or partial/mixed (AnimeFillerGuide, citing specific in-episode timestamps) — resolved as mixed, trusting the more granular reasoning. Beyond that, the two sources genuinely diverge: AnimeFillerGuide alone flags 34, 35, 48, and 49 as filler (QuoteTheAnime's list omits them entirely, implying canon), and QuoteTheAnime alone flags 90 (AnimeFillerGuide's list omits it). Both single-source calls are recorded as filler here but flagged individually as lower-confidence than the 8-episode core both sources agree on. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-101 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 101 episodes of Slam Dunk (1993) classified canon/filler/mixed. Originally compiled from two disagreeing guide sources (QuoteTheAnime, AnimeFillerGuide) with several single-source and disputed calls flagged explicitly. Corrected 2026-08-26: Andreas independently verified the show and found episodes 31, 32, and 36 are actually mixed (originally recorded as canon), episode 90 is mixed (originally recorded as filler on QuoteTheAnime's sole authority), and episode 92 is filler (originally recorded as mixed, where both original sources had agreed on non-canon content but disagreed on the exact label) — all five applied directly per that independent check. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-101 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "quotetheanime-slam-dunk",
@@ -288,21 +288,23 @@
     },
     {
       "episode_number": 31,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
         "quotetheanime-slam-dunk",
         "animefillerguide-slam-dunk"
       ],
-      "source_count": 2
+      "source_count": 2,
+      "status_note": "Corrected 2026-08-26: Andreas independently verified this show's episodes and found a different classification than this file's original synthesis of two disagreeing guide sources. Applied directly."
     },
     {
       "episode_number": 32,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
         "quotetheanime-slam-dunk",
         "animefillerguide-slam-dunk"
       ],
-      "source_count": 2
+      "source_count": 2,
+      "status_note": "Corrected 2026-08-26: Andreas independently verified this show's episodes and found a different classification than this file's original synthesis of two disagreeing guide sources. Applied directly."
     },
     {
       "episode_number": 33,
@@ -333,12 +335,13 @@
     },
     {
       "episode_number": 36,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
         "quotetheanime-slam-dunk",
         "animefillerguide-slam-dunk"
       ],
-      "source_count": 2
+      "source_count": 2,
+      "status_note": "Corrected 2026-08-26: Andreas independently verified this show's episodes and found a different classification than this file's original synthesis of two disagreeing guide sources. Applied directly."
     },
     {
       "episode_number": 37,
@@ -820,12 +823,12 @@
     },
     {
       "episode_number": 90,
-      "status": "filler",
+      "status": "mixed",
       "citation_ids": [
         "quotetheanime-slam-dunk"
       ],
       "source_count": 1,
-      "status_note": "Only QuoteTheAnime classifies this episode as filler; AnimeFillerGuide's own list doesn't include it at all (implying canon). Flagged as a single-source call rather than presented as equally corroborated as the 8 episodes both sources agree on."
+      "status_note": "Corrected 2026-08-26: Andreas independently verified this show's episodes and found a different classification than this file's original synthesis of two disagreeing guide sources. Applied directly."
     },
     {
       "episode_number": 91,
@@ -838,13 +841,13 @@
     },
     {
       "episode_number": 92,
-      "status": "mixed",
+      "status": "filler",
       "citation_ids": [
         "quotetheanime-slam-dunk",
         "animefillerguide-slam-dunk"
       ],
       "source_count": 2,
-      "status_note": "Cross-source disagreement on label, not on whether this episode has real filler content: QuoteTheAnime calls it pure filler; AnimeFillerGuide calls it mixed/partial filler, citing a specific in-episode timestamp where the filler content starts or ends. Going with mixed, trusting AnimeFillerGuide's more granular, timestamp-based reasoning."
+      "status_note": "Corrected 2026-08-26: Andreas independently verified this show's episodes and found a different classification than this file's original synthesis of two disagreeing guide sources. Applied directly."
     },
     {
       "episode_number": 93,

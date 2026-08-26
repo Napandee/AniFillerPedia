@@ -1,0 +1,230 @@
+{
+  "series_title": "Tokyo Revengers",
+  "research_status": "COMPLETE — all 24 episodes of season 1 manga canon, no filler. AnimeFillerGuide confirms 0% filler across the full series; season 1 adapts manga chapters 1-73.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-tokyo-revengers",
+      "url": "https://www.animefillerguide.com/anime/tokyo-revengers/",
+      "description": "AnimeFillerGuide's Tokyo Revengers page, confirming 0 filler episodes across all 3 seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Reborn"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Resist"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Resolve"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Return"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Releap"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Regret"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Revive"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Rechange"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Revolt"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Rerise"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Respect"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Revenge"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Odds and Ends"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Break Up"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "No Pain, No Gain"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Once Upon a Time"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "No Way"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Open Fire"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Turn Around"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "Dead or Alive"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "One and Only"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "One for All"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "End of War"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-tokyo-revengers"
+      ],
+      "source_count": 1,
+      "title": "A Cry Baby"
+    }
+  ]
+}

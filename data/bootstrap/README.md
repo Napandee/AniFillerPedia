@@ -704,3 +704,50 @@ Loaded into production the same throwaway-container way as every prior
 batch, air dates loaded in the same pass via a direct `series_episode_schedule`
 upsert (additive, `ON CONFLICT DO NOTHING`). Verified live: all ten
 series' episode/title/air-date coverage confirmed via the public API.
+
+## Seventh batch (#115, 2026-08-26): Berserk (1997), Dr. Stone, Jujutsu Kaisen, Vinland Saga, Fire Force, Parasyte -the maxim-, Tokyo Revengers, Rurouni Kenshin (2023), Akatsuki no Yona, Nanatsu no Taizai: Mokushiroku no Yonkishi
+
+10 shows, 241 episodes total: Kenpuu Denki Berserk / 1997 (25/25, all
+canon), Dr. Stone (24/24, all canon), Jujutsu Kaisen season 1 (24/24,
+all canon), Vinland Saga season 1 (24/24: 23 canon / 1 mixed — episode
+6), Enen no Shouboutai / Fire Force season 1 (24/24, all canon),
+Kiseijuu: Sei no Kakuritsu / Parasyte -the maxim- (24/24, all canon),
+Tokyo Revengers season 1 (24/24, all canon), Rurouni Kenshin (2023)
+season 1 (24/24, all canon), Akatsuki no Yona (24/24, all canon),
+Nanatsu no Taizai: Mokushiroku no Yonkishi season 1 (24/24, all canon).
+Heavily skewed toward zero-filler shows this batch — not by design,
+just how the research came out (modern faithful adaptations and one
+classic near-1:1 adaptation).
+
+**This batch's extraction used a corrected scraper** (`wiki_scrape_v2.py`,
+built the same day after a real bug was found — see the dated entry in
+`CLAUDE.local.md` for the full incident). The original scraper's
+per-row date/title search could silently consume forward into a
+following episode's row whenever the current row's own data was
+malformed, corrupting both the batch-6 title data and the full-catalog
+title/air-date backfill already in production; both were audited and
+corrected (1,649 title fixes, 65 date fixes) before this batch started.
+
+**Three shows swapped out after real sourcing problems, not
+force-fitted**: Urusei Yatsura (re-attempted from batch #113, same
+167-vs-195-episode aggregator gap as before), Tantei Gakuen Q and
+Kinnikuman (also re-attempted, same issues as #113 — every fetchable
+source either 404'd, disagreed with AniList's confirmed count, or
+returned wrong content). **A fourth show, Yashahime: Princess
+Half-Demon, was dropped for a different reason discovered mid-research**:
+its manga is a *later* adaptation of the anime (started 2021, by a
+different author, after the anime), not a source the anime was adapted
+from — the reverse of every other show in this catalog, and a genuine
+scope mismatch with this project's whole "filler = anime content not
+adapted from a preceding manga" premise. Treated the same as previously-
+excluded original-anime shows (Code Geass, Evangelion, Samurai Champloo)
+rather than force a filler/canon call onto a show with no source manga
+to compare against. Replaced with Rurouni Kenshin (2023), Akatsuki no
+Yona, and Nanatsu no Taizai: Mokushiroku no Yonkishi — all three
+confirmed manga adaptations with clean, single-table Wikipedia pages
+and consistent "0% filler" signal from at least one direct fetch.
+
+Loaded into production the same throwaway-container way as every prior
+batch, air dates loaded the same pass via the same validated
+`series_episode_schedule` upsert. Verified live: all ten series'
+episode/title/air-date coverage confirmed via the public API.

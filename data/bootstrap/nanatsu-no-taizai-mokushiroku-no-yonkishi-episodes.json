@@ -1,0 +1,230 @@
+{
+  "series_title": "Nanatsu no Taizai: Mokushiroku no Yonkishi",
+  "research_status": "COMPLETE — all 24 episodes of season 1 manga canon, no filler. AnimeFillerGuide confirms 0% filler; season 1 adapts manga chapters 1-40. A proper sequel written by original creator Nakaba Suzuki, not a spin-off — no canon-status ambiguity.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-four-knights",
+      "url": "https://www.animefillerguide.com/anime/mokushiroku-no-yonkishi/",
+      "description": "AnimeFillerGuide's Four Knights of the Apocalypse page, confirming season 1 has 0 filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Boy's Departure"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Unknown Force"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Four Knights of the Apocalypse"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Demon of Echo Gorge"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "A Resolve Further Honed"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Sistana Shaken"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Name of the Magic"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Young Heroes"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Master and Pupil"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Roar of Destruction"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "A Real Holy Knight"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "A Sinister Endeavor"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Cornered"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Goat Sin"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Dark Talismans"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Departing from Sin"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The King of Liones"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Knights of Prophecy Meet"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Liones in Flames"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Taming a Wild Horse"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "The Four Knights vs. the Servants of Chaos"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Freezing, Burning Hearts"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Royal Holy Knights vs. Mela-Galland"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-four-knights"
+      ],
+      "source_count": 1,
+      "title": "Advent"
+    }
+  ]
+}

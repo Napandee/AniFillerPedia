@@ -1,0 +1,230 @@
+{
+  "series_title": "Jujutsu Kaisen",
+  "research_status": "COMPLETE — all 24 episodes of season 1 manga canon, no filler. AnimeFillerGuide confirms 0 filler episodes across the full series; season 1 adapts manga chapters 1-63. Recap specials exist but are optional/non-canonical bonus content, not filler episodes in the numbered run.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-jujutsu-kaisen",
+      "url": "https://www.animefillerguide.com/anime/jujutsu-kaisen/",
+      "description": "AnimeFillerGuide's Jujutsu Kaisen page, confirming 0 filler episodes across all 3 seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Ryomen Sukuna"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "For Myself"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Girl of Steel"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Curse Womb Must Die"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Curse Womb Must Die -II-"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "After Rain"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Assault"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Boredom"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Small Fry and Reverse Retribution"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Idle Transfiguration"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Narrow-minded"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "To You, Someday"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Tomorrow"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Kyoto Sister School Exchange Event - Group Battle 0 -"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Kyoto Sister School Exchange Event - Group Battle 1 -"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Kyoto Sister School Exchange Event - Group Battle 2 -"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Kyoto Sister School Exchange Event - Group Battle 3 -"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Sage"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Black Flash"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Nonstandard"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Jujutsu Koshien"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "The Origin of Blind Obedience"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "The Origin of Blind Obedience - 2 -"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-jujutsu-kaisen"
+      ],
+      "source_count": 1,
+      "title": "Accomplices"
+    }
+  ]
+}

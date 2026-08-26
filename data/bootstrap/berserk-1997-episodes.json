@@ -1,0 +1,239 @@
+{
+  "series_title": "Kenpuu Denki Berserk",
+  "research_status": "COMPLETE — all 25 episodes manga canon, no filler. The 1997 anime adapts volumes 1-13 (the Black Swordsman and Golden Age arcs) faithfully; consistent search-aggregate signal across multiple guide sites reports 0% filler, with only minor omitted subplot details noted (not filler additions).",
+  "citation_sources": [
+    {
+      "id": "aggregate-berserk-1997-no-filler",
+      "url": "https://quotetheanime.com/filler-list/berserk/",
+      "description": "Consistent aggregate signal (QuoteTheAnime and other guide sites) reporting the 1997 Berserk anime has 0% filler across all 25 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Black Swordsman"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Band of the Hawk"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "First Battle"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Hand of God"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Wind of Swords"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Zodd the Immortal"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Sword's Owner"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Conspiracy"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Assassination"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Noble Man"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Battle"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Together"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Prepared for Death"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Bonfire of Dreams"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Decisive Battle"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Conqueror"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Moment of Glory"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tombstone of Flames"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Separation"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Sparks"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Confession"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Infiltration"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Eve of the Feast"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Great Eclipse"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-berserk-1997-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Time of Eternity"
+    }
+  ]
+}

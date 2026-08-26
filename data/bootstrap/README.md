@@ -807,3 +807,26 @@ Loaded into production the same throwaway-container way as every prior
 batch, air dates loaded the same pass via the same validated
 `series_episode_schedule` upsert. Verified live: all ten series'
 episode/title/air-date coverage confirmed via the public API.
+
+## Ninth batch (#119, 2026-08-26): Beastars, Chainsaw Man, Dandadan, Dorohedoro, Golden Kamuy, Mob Psycho 100, Spy x Family, Bungou Stray Dogs, Komi-san wa Comyushou desu, Kaguya-sama wa Kokurasetai
+
+10 shows, 120 episodes total, all season 1: Beastars, Chainsaw Man,
+Dandadan, Dorohedoro, Golden Kamuy, Mob Psycho 100, Spy x Family,
+Bungou Stray Dogs, Komi-san wa, Comyushou desu., Kaguya-sama wa
+Kokurasetai — every single one 12/12 all canon, no filler. First
+batch picked from the cleaned-up candidate pool: before this batch,
+`needs-manual-research.json` gained 43 new permanent-exclusion entries
+(12 movies with no per-episode concept, 30 non-manga-based shows —
+light novel/visual novel/toy-game franchise/original-anime adaptations
+that don't fit this project's premise, 1 single-episode highlight
+special), narrowing the nominal 103 remaining candidates down to a
+real 60. Andreas asked that dropped candidates always land in a
+durable bucket rather than disappear silently — this cleanup pass is
+that same principle applied retroactively to the whole remaining list
+at once, not just future drops.
+
+Loaded into production the same throwaway-container way as every prior
+batch, air dates loaded the same pass via the same validated
+`series_episode_schedule` upsert. Verified live: all ten series'
+episode/title/air-date coverage confirmed via the public API. 50
+candidates remain.

@@ -1,0 +1,122 @@
+{
+  "series_title": "Bungou Stray Dogs",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. Consistent aggregate signal reporting 0% filler for season 1; one episode (6, 'The Azure Messenger') adapts a licensed tie-in light novel rather than the manga directly, but is still treated as canon per the same source.",
+  "citation_sources": [
+    {
+      "id": "aggregate-bungou-stray-dogs-no-filler",
+      "url": "https://www.animefillerlist.com/shows/bungo-stray-dogs",
+      "description": "Consistent aggregate signal reporting Bungou Stray Dogs has 0% filler across all seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Fortune Is Unpredictable and Mutable"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Certain Bomb"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Yokohama Gangster Paradise"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Tragedy of the Fatalist"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Murder on D Street"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Azure Messenger"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Love for the Disease Called Ideals"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Teaching Them To Kill; Then To Die"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Beauty Is Quiet Like a Stone Statue"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Rashoumon and the Tiger"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "First, an Unsuitable Profession for Her"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-bungou-stray-dogs-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Borne Back Ceaselessly into the Past"
+    }
+  ]
+}

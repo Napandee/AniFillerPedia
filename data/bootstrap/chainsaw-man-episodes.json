@@ -1,0 +1,122 @@
+{
+  "series_title": "Chainsaw Man",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. AnimeFillerGuide confirms 0% filler, adapting manga chapters 1-38.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-chainsaw-man",
+      "url": "https://www.animefillerguide.com/anime/chainsaw-man/",
+      "description": "AnimeFillerGuide's Chainsaw Man page, confirming 0 filler episodes across season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Dog & Chainsaw"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Arrival in Tokyo"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Meowy's Whereabouts"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Rescue"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Gun Devil"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Kill Denji"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "The Taste of a Kiss"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Gunfire"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "From Kyoto"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Bruised & Battered"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Mission Start"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-chainsaw-man"
+      ],
+      "source_count": 1,
+      "title": "Katana vs. Chainsaw"
+    }
+  ]
+}

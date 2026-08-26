@@ -1,0 +1,122 @@
+{
+  "series_title": "Komi-san wa, Comyushou desu.",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. Consistent aggregate signal reporting 0% filler for season 1 (adapting manga chapters up to 129 across both seasons).",
+  "citation_sources": [
+    {
+      "id": "aggregate-komi-san-no-filler",
+      "url": "https://en.wikipedia.org/wiki/List_of_Komi_Can't_Communicate_episodes",
+      "description": "Consistent aggregate signal (multiple filler-guide sites) reporting Komi Can't Communicate has 0% filler.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just, I wish I could speak."
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just a childhood friend."
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just stage fright."
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just a physical."
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just my summer uniform."
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just a joke."
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just the pool."
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just Obon."
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just a country kid."
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just sports day."
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just a performance for the culture festival."
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-komi-san-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's just the culture festival."
+    }
+  ]
+}

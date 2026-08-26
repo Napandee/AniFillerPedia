@@ -24,6 +24,22 @@ export default defineConfig({
   security: {
     allowedDomains: [{ hostname: "anifillerpedia.wiki" }, { hostname: "localhost" }],
   },
+  // #106: UI translation. Languages picked to match Napandee/AniDex's own
+  // i18n precedent (#139/#143 there) — top 5 world languages by speaker
+  // count. `prefixDefaultLocale: false` keeps English at the bare `/` (no
+  // `/en/` prefix) so every existing URL keeps working unchanged; the other
+  // four get a path prefix (`/es/...`, `/hi/...`, `/ja/...`, `/zh-cn/...`).
+  // Path-based, not a cookie/account setting like AniDex's — this site is
+  // anonymous-first (no persistent per-visitor identity to hang a
+  // preference off), and path-based locales stay independently indexable
+  // by search engines, consistent with #63's existing SEO investment.
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "es", "hi", "ja", "zh-cn"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   // #41: the API docs / contribute pages render the repo's own docs/API.md
   // and CONTRIBUTING.md (one directory above `frontend/`) via a `?raw`
   // import rather than hand-copying their prose — Vite restricts fs access

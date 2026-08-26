@@ -447,3 +447,55 @@ flattened a more nuanced classification (a distinct "anime canon" or
 "mixed" sub-category) into a blunt filler/canon split, and a careful
 human re-read of the same already-cited page caught what the fetch
 missed — not a new source, a better reading of an existing one.
+
+## #105 — third batch: Kuroshitsuji, Ao no Exorcist, Nanatsu no Taizai, Noragami, Owari no Seraph, Shingeki no Kyojin
+
+**Complete — all six series, 2026-08-26.** 110 episodes total across the
+six shows, all first cours/first seasons only where a franchise has
+multiple AniList entries (confirmed by direct API check before compiling
+any of them, per #104's own lesson about guide-site episode-count
+errors).
+
+- **Kuroshitsuji** (24/24: 9 canon / 15 filler) — the manga author wanted
+  more screen time for Sebastian than the source pacing allowed; the
+  anime follows the manga through the Black/Red/Indian Butler arcs
+  (1-6, 13-15) then diverges fully. Episode 1 is disputed between two
+  sources calling it canon and one calling it filler — resolved canon.
+- **Ao no Exorcist** (10 canon / 5 mixed / 10 filler) — episodes 18-25 are
+  the anime's own original ending, produced once the anime outpaced the
+  manga (a Satan confrontation the manga hadn't reached), later ignored
+  entirely by the manga-faithful Kyoto Saga continuation. Classified
+  filler under this project's manga-adaptation definition, same policy
+  call as Fullmetal Alchemist (2003) earlier in this project.
+- **Nanatsu no Taizai** (24/24, all canon) — zero filler in Season 1,
+  confirmed by two sources; the "Signs of Holy War" bridging special
+  some guides number as 25-28 is a separate production, out of this
+  catalog entry's scope.
+- **Noragami** (10 canon / 1 mixed / 1 filler) — genuinely lower
+  confidence than this batch's other shows; every source checked
+  disagreed with at least one other on episodes 10 and 12 specifically.
+  Resolved by rough majority in each direction (mixed for 10, filler for
+  12) — both flagged in their own status_notes as worth a second look.
+- **Owari no Seraph** (12/12, all canon) — the first cour is fully manga
+  canon; the franchise's one mixed episode belongs to the second cour, a
+  separate catalog entry.
+- **Shingeki no Kyojin** (24 canon / 1 mixed) — Season 1 is almost
+  entirely canon; two sources agree episode 22 is the only mixed
+  episode. Included deliberately as a low-filler data point, same
+  reasoning as JoJo TV in #104.
+
+**A repeat of #104's citation-combo bug caught before it reached the
+loader this time**: Noragami's disputed episodes (10, 12) were initially
+drafted citing both sources with a differing source_count, exactly the
+mistake made (and caught by the loader) with Rurouni Kenshin/Yu Yu
+Hakusho last batch — fixed in the generator script itself before ever
+running the loader, by citing only the source that actually supports
+each disputed episode's status.
+
+No episode titles hand-compiled for any of the six — `load_episodes.py`'s
+new auto-backfill (#103) picked up titles automatically during the load
+itself (13/24 for Kuroshitsuji, 12/25 for Ao no Exorcist, 12/12 for
+Noragami, 25/25 for Shingeki no Kyojin; Nanatsu no Taizai and Owari no
+Seraph have no AniList streaming-episode data available at all, a known
+limitation, not a bug). 155 manami candidates remain unresearched after
+this batch.

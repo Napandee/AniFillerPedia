@@ -1,0 +1,245 @@
+{
+  "series_title": "Shingeki no Kyojin",
+  "research_status": "COMPLETE — all 25 episodes of Attack on Titan Season 1 classified canon/mixed (no pure filler episodes at all, deliberately included in this batch as a low-filler data point per #105's own scope note, same reasoning as JoJo TV in #104). Two independently-fetched sources (QuoteTheAnime, BNGLY) agree exactly: episode 22 ('The Defeated') is mixed, every other episode is straight manga canon covering chapters 1-34. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-25 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-attack-on-titan-filler-list",
+      "url": "https://quotetheanime.com/filler-list/attack-on-titan/",
+      "description": "QuoteTheAnime's Attack on Titan filler list — Season 1 is fully manga canon except episode 22, which is mixed.",
+      "methodology_note": null
+    },
+    {
+      "id": "bngly-attack-on-titan-filler",
+      "url": "https://bngly.com/filler/attack-on-titan/",
+      "description": "BNGLY's Attack on Titan filler guide — independently confirms the identical classification: episode 22 mixed, every other Season 1 episode canon.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-attack-on-titan-filler-list",
+        "bngly-attack-on-titan-filler"
+      ],
+      "source_count": 2
+    }
+  ]
+}

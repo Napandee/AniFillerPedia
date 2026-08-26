@@ -1,0 +1,236 @@
+{
+  "series_title": "Kuroshitsuji",
+  "research_status": "COMPLETE — all 24 episodes of Kuroshitsuji (Black Butler) Season 1 classified canon/filler (no mixed episodes found). The series follows the manga through the Black Butler and Red Butler arcs (episodes 1-6) and the Indian Butler arc (13-15), then diverges into a fully anime-original story for the rest — the manga author reportedly wanted more screen time for Sebastian than the source material's pacing allowed. Two sources (IsItFiller, a general aggregate search) confirm episode 1 as canon; a third (QuoteTheAnime) calls it filler instead — resolved as canon, 2 vs 1, see that episode's own status_note. IsItFiller's own numbering runs past episode 24 into what is actually Season 2 (a separate, also fully anime-original continuation) — disregarded as out of this project's scope, since this catalog entry (AniList id 4898) covers only Season 1's 24 episodes. No episode titles included — handled automatically by load_episodes.py's new auto-backfill (#103) once loaded. Complete, gap-free, non-overlapping coverage of 1-24 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "isitfiller-black-butler",
+      "url": "https://www.isitfiller.com/black-butler",
+      "description": "IsItFiller's Black Butler filler guide — confirms episodes 7-12 and 16-24 as filler for Season 1 (its numbering continues past 24 into Season 2, disregarded as out of this project's scope, same treatment as Rurouni Kenshin's/Yu Yu Hakusho's inflated totals earlier this project).",
+      "methodology_note": null
+    },
+    {
+      "id": "quotetheanime-black-butler-filler-list",
+      "url": "https://quotetheanime.com/filler-list/black-butler/",
+      "description": "QuoteTheAnime's Black Butler filler list — agrees on episodes 7-12 and 16-24 as filler, but classifies episode 1 as filler too (disagreeing with IsItFiller and a separate aggregate search, both of which place episode 1 as canon).",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler"
+      ],
+      "source_count": 1,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies episode 1 as filler; IsItFiller and a separate aggregate search both classify it as canon. Going with canon, 2 sources vs 1."
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "filler",
+      "citation_ids": [
+        "isitfiller-black-butler",
+        "quotetheanime-black-butler-filler-list"
+      ],
+      "source_count": 2
+    }
+  ]
+}

@@ -899,3 +899,40 @@ batch, air dates loaded the same pass via the same validated
 episode/title/air-date coverage confirmed via the public API (Blue
 Period excepted, per its missing Wikipedia source above). 30
 candidates remain.
+
+## Twelfth batch (#122, 2026-08-26): Gin no Saji, Fairy Tail: 100-nen Quest, GANTZ, Shaman King: Flowers, Mugen no Juunin: Immortal, Vigilante: MHA Illegals, Toaru Kagaku no Accelerator, To LOVE-Ru Darkness, Kanojo mo Kanojo, Shoujo Shuumatsu Ryokou
+
+10 shows, 147 episodes total: Gin no Saji (11/11: 10 canon / 1 mixed),
+Fairy Tail: 100-nen Quest (25/25, all canon), GANTZ (13/13: 12 canon /
+1 mixed — First Stage only; the franchise's real 5-episode filler run
+is entirely in the separate Second Stage, outside this catalog
+entry), Shaman King: Flowers (13/13, all canon), Mugen no Juunin:
+Immortal (24/24, all canon), Vigilante: Boku no Hero Academia
+Illegals season 1 (13/13, all canon), Toaru Kagaku no Accelerator
+(12/12: 11 canon / 1 filler — episode 1), To LOVE-Ru Darkness (12/12,
+all canon), Kanojo mo Kanojo season 1 (12/12, all canon — no
+Wikipedia episode-list page exists, air dates/titles rely on
+AniList's own backfill), Shoujo Shuumatsu Ryokou (12/12, all canon).
+
+**GANTZ resolved a real, pre-existing data-quality gap**: its
+`series-candidates.json` entry had no AniList id recorded at all and
+an incorrect 26-episode count (the real total for the combined
+First+Second Stage, not this catalog entry specifically). Resolved
+the correct AniList id (384, First Stage, 13 episodes) directly and
+updated the live `series` row's `anilist_id` column (previously NULL)
+to match — a safe, additive correction (filling a null, not altering
+existing data), not a schema change.
+
+Seven more shows added to `needs-manual-research.json` while reviewing
+the remaining pool for this batch: Charlotte, Dungeon ni Deai wo
+Motomeru no wa Machigatteiru Darou ka, Hataraku Maou-sama!, Koutetsujou
+no Kabaneri, and Yu-Gi-Oh! Arc-V (scope_mismatch — not manga-based),
+plus Ranma 1/2 Nettou Hen and Shingeki no Kyojin OAD (sourcing_gap,
+formalizing known problems from earlier in the session).
+
+Loaded into production the same throwaway-container way as every prior
+batch, air dates loaded the same pass via the same validated
+`series_episode_schedule` upsert. Verified live: all ten series'
+episode/title/air-date coverage confirmed via the public API (Kanojo
+mo Kanojo excepted, per its missing Wikipedia source above). 17
+candidates remain.

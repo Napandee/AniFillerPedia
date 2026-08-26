@@ -1,0 +1,131 @@
+{
+  "series_title": "Shaman King: Flowers",
+  "research_status": "COMPLETE — all 13 episodes manga canon, no filler. Consistent search-aggregate signal reporting 0% filler; the anime adapts the complete 6-volume manga in full.",
+  "citation_sources": [
+    {
+      "id": "aggregate-shaman-king-flowers-no-filler",
+      "url": "https://www.animefillerlist.com/shows/shaman-kingflowers",
+      "description": "Consistent aggregate signal reporting Shaman King: Flowers has 0% filler across all 13 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Asakura VS Hidden Asakura"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "West Tokyo Sound Effect Festival"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Prodigal Shaman Returns"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Sense of Loss"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Shocking Mall"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "An Oni Lies Down by the River"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Oni, Rumbling"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Flower of Watchamacallit"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Same Age ~Me, My Father, and My Uncle!~"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Island of Death Zero"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Black Maiden"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Just Cuz?"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-flowers-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's Love!!!"
+    }
+  ]
+}

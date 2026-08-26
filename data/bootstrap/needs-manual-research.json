@@ -575,6 +575,83 @@
         "#121"
       ],
       "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Charlotte",
+      "anilist_id": 20997,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime by Key/Jun Maeda — a manga adaptation exists but came after/alongside the anime, not before it, same reverse pattern as Yashahime.",
+      "attempted_in": [
+        "#122-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka",
+      "anilist_id": 20920,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation (Fujino Omori) — the anime follows the light novels, not a preceding manga.",
+      "attempted_in": [
+        "#122-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Hataraku Maou-sama!",
+      "anilist_id": 15809,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Light novel adaptation (Satoshi Wagahara) — the anime follows the light novels, not a preceding manga.",
+      "attempted_in": [
+        "#122-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Koutetsujou no Kabaneri",
+      "anilist_id": 21196,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Original anime (Wit Studio) — a manga adaptation exists as a tie-in but came alongside/after the anime, not before it.",
+      "attempted_in": [
+        "#122-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Yu☆Gi☆Oh! Arc-V",
+      "anilist_id": 20552,
+      "episode_count": null,
+      "reason": "scope_mismatch",
+      "detail": "Trading card game franchise, not manga-first — same category as the other Yu-Gi-Oh/card-game exclusions.",
+      "attempted_in": [
+        "#122-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Ranma 1/2 Nettou Hen",
+      "anilist_id": 149939,
+      "episode_count": null,
+      "reason": "sourcing_gap",
+      "detail": "Already attempted earlier this session (pre-dating this bucket's creation): the only fetchable filler guide covers the full 161-episode franchise with no season/block breakdown, and this catalog entry is specifically the 143-episode 'Nettou-hen' continuation block, not the full franchise -- no way found to isolate just this block's classification from the combined data.",
+      "attempted_in": [
+        "#122-prep"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Shingeki no Kyojin OAD",
+      "anilist_id": null,
+      "episode_count": null,
+      "reason": "sourcing_gap",
+      "detail": "No AniList entry could be matched at all (search returns nothing for this exact bundle of OVA specials) -- can't even verify episode count/dates against a real catalog entry, let alone find filler/canon data.",
+      "attempted_in": [
+        "#122-prep"
+      ],
+      "date_flagged": "2026-08-26"
     }
   ]
 }

@@ -1,0 +1,122 @@
+{
+  "series_title": "Houseki no Kuni",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-houseki-no-kuni",
+      "url": "https://www.animefillerlist.com/shows/land-lustrous",
+      "description": "animefillerlist.com's Land of the Lustrous page, confirming 0 filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Phosphophyllite"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Diamond"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Metamorphos"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Soul - Flesh - Bone"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Return"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "First Battle"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Hibernation"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Antarcticite"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Spring"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Shiro"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "Secrets"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-houseki-no-kuni"
+      ],
+      "source_count": 1,
+      "title": "New Work"
+    }
+  ]
+}

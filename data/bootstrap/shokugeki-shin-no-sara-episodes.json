@@ -1,0 +1,122 @@
+{
+  "series_title": "Shokugeki no Souma: Shin no Sara",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-shokugeki-no-souma",
+      "url": "https://www.animefillerguide.com/anime/shokugeki-no-soma/",
+      "description": "AnimeFillerGuide's Shokugeki no Souma page, confirming 0 filler episodes across all 5 seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "That Which I Want to Protect"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Strobe Flashes"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Hopeful Solidarity"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Aim for Victory!"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "You're Done For, Fool"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "A Single Blade"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Two Queens"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Your Best Side"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The First & Second Seats"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "How to Cook a Killer Dish"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "Song of Hope"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-shokugeki-no-souma"
+      ],
+      "source_count": 1,
+      "title": "The Totsuki Ten"
+    }
+  ]
+}

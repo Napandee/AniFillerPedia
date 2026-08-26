@@ -830,3 +830,39 @@ batch, air dates loaded the same pass via the same validated
 `series_episode_schedule` upsert. Verified live: all ten series'
 episode/title/air-date coverage confirmed via the public API. 50
 candidates remain.
+
+## Tenth batch (#120, 2026-08-26): Shokugeki no Souma seasons 2-5, Kaijuu 8-gou, Mashle, Jigokuraku, Zom 100, Houseki no Kuni, Sono Bisque Doll wa Koi wo Suru
+
+10 shows, 124 episodes total: Shokugeki no Souma Ni no Sara (13/13),
+San no Sara (12/12), Shin no Sara (12/12), Gou no Sara (13/13) — all
+four all canon, no filler across the whole 5-season franchise now
+that seasons 2-5 join the already-loaded season 1. Kaijuu 8-gou
+(12/12, all canon), Jigokuraku (13/13, all canon), Zom 100 (12/12, all
+canon), Houseki no Kuni (12/12, all canon), Sono Bisque Doll wa Koi wo
+Suru (12/12, all canon), Mashle (12/12: 11 canon / 1 filler — episode
+7, the one reported filler episode).
+
+Goblin Slayer was picked initially, then dropped to
+`needs-manual-research.json` mid-prep as scope_mismatch: it's a light
+novel adaptation (the anime follows Kumo Kagyu's novels, not the
+manga that runs alongside), same category as the already-excluded
+Overlord/Konosuba. Replaced with Sono Bisque Doll wa Koi wo Suru.
+
+**Real numbering-scheme work for the four Shokugeki sequels**:
+Wikipedia's four "season N" articles use continuous absolute
+numbering across the whole 86-episode franchise, but the season
+boundaries don't line up 1:1 with this catalog's 4 separate AniList
+entries the way a naive accumulation would suggest — verified each
+entry's real offset directly against AniList's own exact start/end
+air dates rather than assuming a clean running total (a 12-episode
+gap between San no Sara and Shin no Sara's expected ranges turned out
+to be non-catalog bridge/OVA content on the same Wikipedia page, not
+a counting error). Confirmed offsets: Ni no Sara +24, San no Sara +37,
+Shin no Sara +61, Gou no Sara +73 — each checked against the exact
+AniList start-date match before trusting it.
+
+Loaded into production the same throwaway-container way as every prior
+batch, air dates loaded the same pass via the same validated
+`series_episode_schedule` upsert. Verified live: all ten series'
+episode/title/air-date coverage confirmed via the public API. 40
+candidates remain.

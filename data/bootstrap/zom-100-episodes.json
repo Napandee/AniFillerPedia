@@ -1,0 +1,122 @@
+{
+  "series_title": "Zom 100: Zombie ni Naru made ni Shitai 100 no Koto",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-zom-100",
+      "url": "https://www.animefillerlist.com/shows/zom-100-bucket-list-dead",
+      "description": "animefillerlist.com's Zom 100 page, confirming 0 filler episodes; some comedic omake chapters were skipped entirely rather than replaced with filler.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Akira of the Dead"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Bucket List of the Dead"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Best Friend of the Dead"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Flight Attendant of the Dead"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Hero of the Dead"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "RV of the Dead"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Truck Stop of the Dead"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Sushi & Hot Springs of the Dead"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Treehouse of the Dead"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Hometown of the Dead I"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Hometown of the Dead II"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-zom-100"
+      ],
+      "source_count": 1,
+      "title": "Hometown of the Dead III"
+    }
+  ]
+}

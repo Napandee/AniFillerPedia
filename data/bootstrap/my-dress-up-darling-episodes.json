@@ -1,0 +1,122 @@
+{
+  "series_title": "Sono Bisque Doll wa Koi wo Suru",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "aggregate-my-dress-up-darling-no-filler",
+      "url": "https://www.animefillerguide.com/anime/my-dress-up-darling/",
+      "description": "Consistent aggregate signal reporting My Dress-Up Darling has 0% filler across both seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Someone Who Lives in the Exact Opposite World as Me"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Wanna Hurry Up, and Do It?"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Then Why Don't We?"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Are These Your Girlfriend's?"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's Probably Because This Is the Best Boob Bag Here"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "For Real?!"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Home Date with the Guy I Wuv Is the Best"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Backlighting Is the Best"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Lot Happened After I Saw That Photo"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "We've All Got Struggles"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "I Am Currently at a Love Hotel"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-my-dress-up-darling-no-filler"
+      ],
+      "source_count": 1,
+      "title": "My Dress-Up Darling"
+    }
+  ]
+}

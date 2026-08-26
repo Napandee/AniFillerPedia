@@ -1,10 +1,31 @@
 ---
+import { LOCALE_LABELS, SUPPORTED_LOCALES } from "../i18n/ui";
+import { resolveLocale, useTranslations } from "../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
 // #37: identity/login state comes from Astro.locals.user (set by
 // src/middleware.ts on every request via the real session cookie) — never
 // held in client-only memory that would vanish or lie on refresh.
 const user = Astro.locals.user;
 const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 const next = encodeURIComponent(Astro.url.pathname);
+
+const locale = resolveLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+// #106: strip any existing locale prefix off the current path before
+// handing it to getRelativeLocaleUrl for each switcher link — Astro's own
+// helper expects a locale-less path and re-prefixes it itself, so passing
+// an already-prefixed path would double it up.
+const pathWithoutLocale = (() => {
+  for (const l of SUPPORTED_LOCALES) {
+    const prefix = `/${l}`;
+    if (Astro.url.pathname === prefix || Astro.url.pathname.startsWith(`${prefix}/`)) {
+      return Astro.url.pathname.slice(prefix.length) || "/";
+    }
+  }
+  return Astro.url.pathname;
+})();
 
 // Same-origin in the real deploy (Caddy fronts both under one domain), so a
 // relative `next` correctly lands back on this app after the round trip.
@@ -16,30 +37,45 @@ const authorizeHref = (provider: "github" | "discord") =>
 ---
 
 <header class="site-header">
-  <a class="disp brand" href="/">AniFillerPedia</a>
+  <a class="disp brand" href={getRelativeLocaleUrl(locale, "/")}>AniFillerPedia</a>
   <nav>
-    <a href="/">Browse</a>
-    {user && ["moderator", "admin", "owner"].includes(user.role) && <a href="/moderation">Review queue</a>}
-    {user && ["admin", "owner"].includes(user.role) && <a href="/admin/users">Manage users</a>}
+    <a href={getRelativeLocaleUrl(locale, "/")}>{t("nav.browse")}</a>
+    {user && ["moderator", "admin", "owner"].includes(user.role) && (
+      <a href={getRelativeLocaleUrl(locale, "/moderation")}>{t("nav.reviewQueue")}</a>
+    )}
+    {user && ["admin", "owner"].includes(user.role) && (
+      <a href={getRelativeLocaleUrl(locale, "/admin/users")}>{t("nav.manageUsers")}</a>
+    )}
     {
       user ? (
         <span class="identity">
-          <a href="/account">
-            {user.display_name ?? "Account"} <span class="role">· {user.role}</span>
+          <a href={getRelativeLocaleUrl(locale, "/account")}>
+            {user.display_name ?? t("nav.account")} <span class="role">· {user.role}</span>
           </a>
           <form method="POST" action="/api/logout" class="logout-form">
             <button type="submit" class="linklike">
-              Log out
+              {t("nav.logOut")}
             </button>
           </form>
         </span>
       ) : (
         <span class="login-links">
-          <a href={authorizeHref("github")}>Log in with GitHub</a>
-          <a href={authorizeHref("discord")}>Discord</a>
+          <a href={authorizeHref("github")}>{t("nav.logInGithub")}</a>
+          <a href={authorizeHref("discord")}>{t("nav.logInDiscord")}</a>
         </span>
       )
     }
+    <span class="lang-switcher" aria-label={t("lang.switcher.label")}>
+      {SUPPORTED_LOCALES.map((l) => (
+        <a
+          href={getRelativeLocaleUrl(l, pathWithoutLocale)}
+          class:list={["lang-link", { "lang-link--active": l === locale }]}
+          hreflang={l}
+        >
+          {LOCALE_LABELS[l]}
+        </a>
+      ))}
+    </span>
   </nav>
 </header>
 
@@ -77,6 +113,22 @@ const authorizeHref = (provider: "github" | "discord") =>
   .identity a {
     color: var(--color-accent);
     text-decoration: none;
+  }
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 12px;
+    border-left: 2px solid var(--color-border-divider);
+  }
+  .lang-link {
+    color: var(--color-text-faint);
+    text-decoration: none;
+    font-size: 11.5px;
+  }
+  .lang-link--active {
+    color: var(--color-accent);
+    font-weight: 800;
   }
   .role {
     color: var(--color-text-faint);

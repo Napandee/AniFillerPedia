@@ -40,8 +40,14 @@ const COPY: Record<EpisodeStatus, string> = {
   .badge {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     padding: 6px 12px;
+    /* Fixed so "Filler" (the longest label) doesn't render wider than
+       "Canon"/"Mixed" — each episode row is its own independent CSS Grid, so
+       without this the badge column's auto width varies per row by status
+       text length, throwing off the badge's left edge from row to row. */
+    min-width: 96px;
     border-radius: var(--radius-pill);
     font-family: var(--font-body);
     font-size: 12px;

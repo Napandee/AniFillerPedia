@@ -1,0 +1,119 @@
+{
+  "series_title": "Magi: Sinbad no Bouken (TV)",
+  "research_status": "COMPLETE — all 13 episodes of Magi: Sinbad no Bouken (a prequel mini-series) classified canon. Unlike this project's usual standard of directly-fetching 2 independent source pages, no single page could actually be fetched for this show (several candidates returned 403/404) — this classification rests on a consistent aggregate search result citing multiple filler-guide sites that all independently report zero filler episodes. Flagged as genuinely lower-confidence sourcing than this project's norm (noted on episode 1's own status_note as a pointer, applies to the whole file). No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-13 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "aggregate-search-magi-sinbad",
+      "url": null,
+      "description": "Consistent aggregate result across two separate search queries citing multiple filler-guide sites (including animefillerlist.com, TechNadu, Simkl) — all report zero filler episodes for this 13-episode prequel.",
+      "methodology_note": "No single source page could be directly fetched (several returned 403/404 on attempt) — this is corroborated by the search results' own aggregation across multiple independent guides reaching the same conclusion, not a single directly-fetched citable page. Flagged as lower-confidence sourcing than this project's norm."
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1,
+      "status_note": "Sourcing note: confirmed via consistent aggregate search results rather than a direct single-page fetch (several candidate pages returned 403/404) — see this file's citation_sources methodology_note."
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-search-magi-sinbad"
+      ],
+      "source_count": 1
+    }
+  ]
+}

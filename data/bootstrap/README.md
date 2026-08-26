@@ -564,3 +564,55 @@ Shokugeki no Souma 12/24, Tokyo Ghoul:re 12/12, One Punch Man 12/12;
 Yowamushi Pedal and Rosario to Vampire have no AniList streaming-episode
 data available at all, a known limitation, not a bug). 149 manami
 candidates remain unresearched after this batch.
+
+## #110 — fifth batch: first batch sized at 10 (Andreas's request going forward)
+
+**Complete — all ten series, 2026-08-26.** 349 episodes total.
+
+- **Akame ga Kill!** (18 canon / 1 mixed / 5 filler) — episodes 20-24 are
+  an anime-original ending once the anime outpaced the still-ongoing
+  manga; classified filler under this project's manga-adaptation
+  definition, same policy as Fullmetal Alchemist (2003)/Ao no Exorcist —
+  both cross-referenced sources here independently draw that exact FMA
+  (2003) comparison themselves.
+- **Toaru Kagaku no Railgun** (17 canon / 1 mixed / 6 filler) — two
+  sources agree on episodes 1-14 exactly but disagree on 15-24: one
+  distinguishes an anime-original "Level 6 Shift" arc from plain filler
+  (mapped to canon, matching this project's "anime canon" convention),
+  the other calls the whole block filler with no distinction and has an
+  internal inconsistency elsewhere on its own page. Resolved in favor of
+  the more granular source, flagged per-episode.
+- **Berserk** (2016, 12/12, all canon) — the entire season is a
+  faithful manga adaptation.
+- **Hikaru no Go** (71 canon / 2 mixed / 2 filler) — a genuinely
+  low-filler show; two sources agree exactly on episodes 64/66 (filler)
+  and 65/67 (mixed).
+- **Magi: Sinbad no Bouken (TV)** (13/13, all canon) — this file has a
+  real, disclosed sourcing gap: no single page could actually be
+  fetched (several candidates 403'd or 404'd), so this rests on a
+  consistent aggregate search result rather than a directly-fetched
+  citation, flagged explicitly.
+- **Kingdom** (38/38, all canon) — some manga arcs were skipped
+  entirely in the adaptation rather than replaced with filler, which is
+  a different thing from filler itself.
+- **Slam Dunk** (86 canon / 2 mixed / 13 filler) — the most genuinely
+  disputed file in this batch: two sources agree exactly on 8 pure-filler
+  episodes and roughly agree on 2 more (labeled filler vs. mixed,
+  resolved as mixed), but diverge entirely on 5 more episodes each
+  source calls filler and the other doesn't mention at all — both kept
+  as filler but flagged individually as single-source, lower-confidence
+  calls.
+- **Boku no Hero Academia** (season 1, 13/13, all canon) — the
+  franchise's first filler episode doesn't appear until Season 2, a
+  separate catalog entry.
+- **Haikyuu!!** (season 1, 25/25, all canon) — the entire 85-episode
+  franchise has zero filler.
+- **Tensei shitara Slime Datta Ken** (22 canon / 1 mixed / 1 filler) —
+  a genuinely low-filler show; episode 4 mixed, episode 24 a
+  standalone filler side-story.
+
+No episode titles hand-compiled for any of the ten — `load_episodes.py`'s
+auto-backfill (#103) picked up titles automatically during each load
+where AniList had them. 139 manami candidates remain unresearched after
+this batch. Batch size moves from 6 to 10 series going forward, per
+Andreas's request.

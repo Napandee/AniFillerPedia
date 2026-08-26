@@ -1,0 +1,118 @@
+{
+  "series_title": "Boku no Hero Academia",
+  "research_status": "COMPLETE — all 13 episodes of My Hero Academia Season 1 classified canon. Confirmed by two agreeing sources (a general aggregate search and a direct fetch of AnimeFillerGuide's page) that this season (adapting manga chapters 1-21) has zero filler episodes — the franchise's first filler episode doesn't appear until Season 2, a separate AniList entry not in this project's catalog scope. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-13 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-my-hero-academia",
+      "url": "https://www.animefillerguide.com/anime/my-hero-academia/",
+      "description": "AnimeFillerGuide's My Hero Academia guide — confirms Season 1 (episodes 1-13, this project's catalog scope) has zero filler episodes; each episode maps to specific manga chapters (1-21).",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-my-hero-academia"
+      ],
+      "source_count": 2
+    }
+  ]
+}

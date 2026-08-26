@@ -1,0 +1,614 @@
+{
+  "series_title": "Hikaru no Go",
+  "research_status": "COMPLETE — all 75 episodes of Hikaru no Go classified canon/filler/mixed. A genuinely low-filler show: episodes 64 and 66 are pure filler (side-story episodes expanding on supporting characters), and 65/67 are mixed — confirmed by two agreeing sources (a direct fetch of Rochi's guide and a separate corroborating aggregate search citing the identical episode numbers). No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-75 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "rochi-hikaru-no-go-filler-guide",
+      "url": "https://rochi.io/anime/hikaru-no-go/filler-guide",
+      "description": "Rochi's Hikaru no Go filler guide — 2 pure filler episodes (64, 66) and 2 mixed episodes (65, 67), independently confirmed by a separate aggregate search citing the identical episode numbers.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "filler",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "mixed",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 75,
+      "status": "canon",
+      "citation_ids": [
+        "rochi-hikaru-no-go-filler-guide"
+      ],
+      "source_count": 2
+    }
+  ]
+}

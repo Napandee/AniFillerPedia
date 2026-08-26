@@ -105,6 +105,7 @@ const en = {
     "{title} on AniFillerPedia — no episodes researched yet. Help build the filler/canon guide for this series.",
   "series.pendingIndicator.title": "Has a pending correction under review",
   "series.pendingIndicator.label": "Pending",
+  "series.airingBadge": "Airing",
 
   "lang.switcher.label": "Language",
 };
@@ -183,6 +184,7 @@ const es: Partial<Record<TranslationKey, string>> = {
     "{title} en AniFillerPedia — aún no se ha investigado ningún episodio. Ayuda a construir la guía de relleno/canon para esta serie.",
   "series.pendingIndicator.title": "Tiene una corrección pendiente de revisión",
   "series.pendingIndicator.label": "Pendiente",
+  "series.airingBadge": "En emisión",
 
   "lang.switcher.label": "Idioma",
 };
@@ -259,6 +261,7 @@ const hi: Partial<Record<TranslationKey, string>> = {
     "AniFillerPedia पर {title} — अभी तक किसी एपिसोड पर शोध नहीं हुआ। इस सीरीज़ के लिए फिलर/कैनन गाइड बनाने में मदद करें।",
   "series.pendingIndicator.title": "समीक्षाधीन एक लंबित सुधार है",
   "series.pendingIndicator.label": "लंबित",
+  "series.airingBadge": "प्रसारणाधीन",
 
   "lang.switcher.label": "भाषा",
 };
@@ -335,6 +338,7 @@ const ja: Partial<Record<TranslationKey, string>> = {
     "AniFillerPediaの{title} — まだ調査された話がありません。この作品のフィラー・カノンガイド作りに協力してください。",
   "series.pendingIndicator.title": "審査中の修正提案があります",
   "series.pendingIndicator.label": "審査中",
+  "series.airingBadge": "放送中",
 
   "lang.switcher.label": "言語",
 };
@@ -411,6 +415,7 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
     "AniFillerPedia 上的 {title} —— 尚未有任何集数经过研究。帮助我们为这部作品建立填充/原著指南。",
   "series.pendingIndicator.title": "有一个待审核的更正",
   "series.pendingIndicator.label": "待处理",
+  "series.airingBadge": "连载中",
 
   "lang.switcher.label": "语言",
 };

@@ -75,7 +75,8 @@ async def search_series(
                 text(
                     f"""
                     SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
-                           s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url
+                           s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
+                           s.anilist_status
                     FROM series s
                     LEFT JOIN episodes e ON e.series_id = s.id
                     {where_sql}
@@ -93,7 +94,8 @@ async def search_series(
                 text(
                     f"""
                     SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
-                           s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url
+                           s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
+                           s.anilist_status
                     FROM series s
                     {where_sql}
                     ORDER BY s.id
@@ -111,7 +113,7 @@ async def get_series_by_id(session: AsyncSession, series_id: int) -> Row | None:
     result = await session.execute(
         text(
             "SELECT id, anilist_id, mal_id, anidb_id, title, provenance, created_at, "
-            "anilist_episode_count, anilist_cover_url, anilist_banner_url "
+            "anilist_episode_count, anilist_cover_url, anilist_banner_url, anilist_status "
             "FROM series WHERE id = :id"
         ),
         {"id": series_id},
@@ -132,7 +134,8 @@ async def get_related_series(session: AsyncSession, series_id: int) -> list[Row]
         text(
             """
             SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
-                   s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url
+                   s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
+                   s.anilist_status
             FROM series_relations r
             JOIN series s ON s.id = r.related_series_id
             WHERE r.series_id = :id

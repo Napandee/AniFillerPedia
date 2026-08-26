@@ -228,7 +228,10 @@ const structuredData = series
               )}
             </div>
             <div class="title-block">
-              <div class="disp title">{series!.title}</div>
+              <div class="disp title">
+                {series!.title}
+                {series!.airing_status === "RELEASING" && <span class="airing-badge">{t("series.airingBadge")}</span>}
+              </div>
             </div>
           </div>
 
@@ -608,6 +611,23 @@ const structuredData = series
     color: #fff8f2;
     line-height: 1.15;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+  .airing-badge {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--color-status-pending);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-shadow: none;
+    box-shadow: var(--shadow-sticker);
   }
 
   /* #51: collapsed by default — a 40+ entry synonym list used to run for

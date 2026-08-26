@@ -4,6 +4,18 @@ Raw working output for issues #4 and #5. Not final schema/SQL — a landing
 point for whoever builds the actual import once #6's `backend/schema.sql`
 exists.
 
+## needs-manual-research.json
+
+Standing bucket (decided 2026-08-26) for candidates a batch attempted
+and dropped rather than force-fitting weak/unclear/conflicting data —
+Andreas reviews it manually to hunt down better sources himself.
+Checked against before picking any future batch's candidates so a
+dropped show is never silently re-attempted (this happened once before
+the bucket existed: Urusei Yatsura, Tantei Gakuen Q, and Kinnikuman
+were all independently re-attempted and re-dropped in #115 after
+already failing in #113). An entry is removed once its show is
+actually loaded in a later batch.
+
 ## #4 — series-candidates.json
 
 - Source: `manami-project/anime-offline-database` release `2026-27`

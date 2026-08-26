@@ -45,6 +45,15 @@
       "detail": "Its manga is a LATER adaptation of the anime (started 2021, by a different author, after the anime aired) -- not a source the anime was adapted from. The reverse of every other show in this catalog. Doesn't fit this project's 'filler = anime content not adapted from a preceding manga' premise at all -- more research wouldn't resolve this, it's a structural scope question. Same treatment as previously-excluded original-anime shows (Code Geass, Evangelion, Samurai Champloo), which were never added to this list since they were filtered out before ever being attempted.",
       "attempted_in": ["#115"],
       "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Devilman",
+      "anilist_id": 2252,
+      "episode_count": 39,
+      "reason": "sourcing_gap",
+      "detail": "No itemized filler/canon guide exists anywhere for the original 1972 anime -- every filler-guide site's 'Devilman' results are actually for Devilman Crybaby (2018), a different, unrelated adaptation. Wikipedia's own episode list has no commentary distinguishing manga-adapted from anime-original content either. Conceptually murkier than a typical gap, too: the manga started barely a month before the anime and the two ran concurrently with different tones/audiences (the anime described as 'monster of the week' style) -- there may not be a clean episode-level canon/filler split to find even with better sourcing, unlike a normal case where the anime adapts a manga that already exists.",
+      "attempted_in": ["#118"],
+      "date_flagged": "2026-08-26"
     }
   ]
 }

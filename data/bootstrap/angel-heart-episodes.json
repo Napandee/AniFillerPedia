@@ -1,0 +1,464 @@
+{
+  "series_title": "Angel Heart",
+  "research_status": "COMPLETE — 49 of 50 episodes manga canon; episode 24 ('Together with The Beat...') is the sole reported filler episode, per animefillerlist.com's direct episode-by-episode breakdown, corroborated by consistent aggregate search signal describing a 2% filler rate for the series.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-angel-heart",
+      "url": "https://www.animefillerlist.com/shows/angel-heart",
+      "description": "animefillerlist.com's Angel Heart episode list, itemizing episode 24 as the sole filler episode.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Glass Heart"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Kaori has Returned"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "City of XYZ"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Wavering Heart"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Farewell...Kaori"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Reunion"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "The Town I Love"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "True Friends"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Xiang Ying ~The Forgotten Name~"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Angel Smile"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Family Time"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Encounter and Farewell on the Ship"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "A Gift from Master Li"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "The Return of City Hunter!"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Please Find My Papa!"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "City Hunter's Qualifications"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Encounter in a Dream"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Family Ties"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Elder Chen's Restaurant"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Prelude to Fate"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Sad Guardian"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "An Unfair Happiness"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Melody of Departure"
+    },
+    {
+      "episode_number": 24,
+      "status": "filler",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Together with The Beat..."
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "A Client With a Death Wish"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Going Back to Those Times"
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Am I In Love!?"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Promise"
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "My Sister...Kaori"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "This City Means Everything to Me"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "The Vision She Saw on the Last Night"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "The Girl from the Organization"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Blessed Child from God"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Their Determination"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Into the Future"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "The Girl Who Brings Happiness"
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Untainted Heart"
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Become My Eyes"
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "The Client is a Big Actress"
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Miki's Hidden Secret"
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Where I Belong"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Their Secret Signal"
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "My Everyday Life"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "For the Sake of Our Children"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "The Human Nuclear Warhead, Yang"
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Mother Heart"
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "A Bright Future!?"
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Drawn in by Fate"
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Get My Life"
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-angel-heart"
+      ],
+      "source_count": 1,
+      "title": "Last Present"
+    }
+  ]
+}

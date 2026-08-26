@@ -1,0 +1,131 @@
+{
+  "series_title": "Made in Abyss",
+  "research_status": "COMPLETE — all 13 episodes of season 1 manga canon, no filler. AnimeFillerGuide confirms season 1 adapts manga chapters 1-26 with no filler content.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-made-in-abyss",
+      "url": "https://www.animefillerguide.com/anime/made-in-abyss/",
+      "description": "AnimeFillerGuide's Made in Abyss page, confirming season 1 has no filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "The City of the Great Pit"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "Resurrection Festival"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "Departure"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "The Edge of the Abyss"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "Incinerator"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "Seeker Camp"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "The Unmovable Sovereign"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "Survival Training"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "The Great Fault"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "Poison and the Curse"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "Nanachi"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "The True Nature of the Curse"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-made-in-abyss"
+      ],
+      "source_count": 1,
+      "title": "The Challengers"
+    }
+  ]
+}

@@ -65,19 +65,106 @@ const authorizeHref = (provider: "github" | "discord") =>
         </span>
       )
     }
-    <span class="lang-switcher" aria-label={t("lang.switcher.label")}>
-      {SUPPORTED_LOCALES.map((l) => (
-        <a
-          href={getRelativeLocaleUrl(l, pathWithoutLocale)}
-          class:list={["lang-link", { "lang-link--active": l === locale }]}
-          hreflang={l}
+    <div class="lang-switcher">
+      <button
+        type="button"
+        id="lang-switcher-trigger"
+        class="lang-trigger"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-controls="lang-switcher-menu"
+      >
+        <svg
+          class="lang-trigger-globe"
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         >
-          {LOCALE_LABELS[l]}
-        </a>
-      ))}
-    </span>
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"></path>
+        </svg>
+        {LOCALE_LABELS[locale]}
+        <svg
+          class="lang-trigger-chevron"
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+      <div id="lang-switcher-menu" class="lang-menu" aria-label={t("lang.switcher.label")} hidden>
+        {SUPPORTED_LOCALES.map((l) => (
+          <a
+            href={getRelativeLocaleUrl(l, pathWithoutLocale)}
+            class:list={["lang-menu-item", { "lang-menu-item--active": l === locale }]}
+            hreflang={l}
+          >
+            {LOCALE_LABELS[l]}
+            {l === locale && (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 12 10 18 20 6"></polyline>
+              </svg>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
   </nav>
 </header>
+
+<script>
+  // #106 (Direction A): globe-icon trigger opens a small anchored popover
+  // with the 5 languages as pills — plain DOM APIs, matching this
+  // project's existing convention for page-level interactivity (no
+  // framework island for a widget this small).
+  const trigger = document.getElementById("lang-switcher-trigger");
+  const menu = document.getElementById("lang-switcher-menu");
+
+  function closeMenu() {
+    menu?.setAttribute("hidden", "");
+    trigger?.setAttribute("aria-expanded", "false");
+  }
+
+  function openMenu() {
+    menu?.removeAttribute("hidden");
+    trigger?.setAttribute("aria-expanded", "true");
+  }
+
+  trigger?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (trigger.getAttribute("aria-expanded") === "true") {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // Outside click and Escape both close it — the menu itself never
+  // stops propagation, so a click on one of its own language links
+  // reaches this handler too, but that's fine: the link's own
+  // navigation already takes over immediately after.
+  document.addEventListener("click", (event) => {
+    if (menu && !menu.hidden && !menu.contains(event.target as Node) && event.target !== trigger) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+</script>
 
 <style>
   .site-header {
@@ -115,18 +202,71 @@ const authorizeHref = (provider: "github" | "discord") =>
     text-decoration: none;
   }
   .lang-switcher {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    position: relative;
     padding-left: 12px;
     border-left: 2px solid var(--color-border-divider);
   }
-  .lang-link {
-    color: var(--color-text-faint);
-    text-decoration: none;
-    font-size: 11.5px;
+  .lang-trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px 7px 10px;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--color-border-card);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sticker);
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
   }
-  .lang-link--active {
+  .lang-trigger-globe {
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .lang-trigger-chevron {
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+  .lang-trigger[aria-expanded="true"] .lang-trigger-chevron {
+    transform: rotate(180deg);
+  }
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 10;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sticker);
+    padding: 8px;
+  }
+  .lang-menu[hidden] {
+    display: none;
+  }
+  .lang-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    color: var(--color-heading);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .lang-menu-item:hover {
+    background: var(--color-bg);
+  }
+  .lang-menu-item--active {
+    background: var(--color-trust-chip-bg);
     color: var(--color-accent);
     font-weight: 800;
   }

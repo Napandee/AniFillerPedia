@@ -1,6 +1,6 @@
 {
   "series_title": "Kuroshitsuji",
-  "research_status": "COMPLETE — all 24 episodes of Kuroshitsuji (Black Butler) Season 1 classified canon/filler (no mixed episodes found). The series follows the manga through the Black Butler and Red Butler arcs (episodes 1-6) and the Indian Butler arc (13-15), then diverges into a fully anime-original story for the rest — the manga author reportedly wanted more screen time for Sebastian than the source material's pacing allowed. Two sources (IsItFiller, a general aggregate search) confirm episode 1 as canon; a third (QuoteTheAnime) calls it filler instead — resolved as canon, 2 vs 1, see that episode's own status_note. IsItFiller's own numbering runs past episode 24 into what is actually Season 2 (a separate, also fully anime-original continuation) — disregarded as out of this project's scope, since this catalog entry (AniList id 4898) covers only Season 1's 24 episodes. No episode titles included — handled automatically by load_episodes.py's new auto-backfill (#103) once loaded. Complete, gap-free, non-overlapping coverage of 1-24 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 24 episodes of Kuroshitsuji (Black Butler) Season 1 classified canon/filler/mixed. The series follows the manga through the Black Butler and Red Butler arcs (episodes 2-6) and the Indian Butler arc (13-15), then diverges into a fully anime-original story for the rest — the manga author reportedly wanted more screen time for Sebastian than the source material's pacing allowed. Corrected 2026-08-26: episode 1 was originally recorded as canon (resolving an IsItFiller/aggregate-vs-QuoteTheAnime disagreement in canon's favor), but Andreas independently found a third classification — mixed — that reads as the more precise call, splitting the difference between the two disagreeing sources rather than picking one side. Everything else in this file is unchanged and was independently confirmed to match. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free, non-overlapping coverage of 1-24 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "isitfiller-black-butler",
@@ -18,12 +18,12 @@
   "episodes": [
     {
       "episode_number": 1,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
         "isitfiller-black-butler"
       ],
       "source_count": 1,
-      "status_note": "Cross-source disagreement: QuoteTheAnime classifies episode 1 as filler; IsItFiller and a separate aggregate search both classify it as canon. Going with canon, 2 sources vs 1."
+      "status_note": "Corrected 2026-08-26: originally recorded as canon (2 sources: IsItFiller, a general aggregate search) over QuoteTheAnime's disagreeing 'filler' call. Andreas independently found a third classification for this episode — mixed — which splits the difference between the two prior disagreeing calls in a way that reads as more precise than either: this episode blends real character-introduction material with anime-only framing, consistent with how other shows' similar opening episodes (e.g. Fullmetal Alchemist: Brotherhood's episode 1) have been classified in this project."
     },
     {
       "episode_number": 2,

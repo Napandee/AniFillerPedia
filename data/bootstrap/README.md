@@ -499,3 +499,30 @@ Noragami, 25/25 for Shingeki no Kyojin; Nanatsu no Taizai and Owari no
 Seraph have no AniList streaming-episode data available at all, a known
 limitation, not a bug). 155 manami candidates remain unresearched after
 this batch.
+
+**Corrections, 2026-08-26 (post-load):** Andreas independently verified
+all six shows. Four matched exactly (Ao no Exorcist, Nanatsu no Taizai,
+Owari no Seraph, Shingeki no Kyojin), applying the same continuous-
+numbering-across-seasons scope check used for InuYasha/Rurouni Kenshin —
+each correction source's numbering ran past this project's actual
+per-show scope (a sequel season not in this catalog entry), and once
+restricted to the real scope, matched exactly. Two real corrections
+found, applied via `load_episodes.py --allow-corrections`:
+
+- **Kuroshitsuji** — episode 1 moves from canon to mixed. This episode
+  had already been disputed between two sources (canon vs filler);
+  Andreas found a third classification (mixed) that reads as more
+  precise than either — the episode genuinely blends real character-
+  introduction content with anime-only framing.
+- **Noragami** — episode 12 moves from filler back to canon, reversing
+  this file's own earlier majority resolution (2 sources called it
+  filler, 1 called it "anime canon"). Andreas's independent check
+  confirmed the "anime canon" reading, which this project maps to plain
+  canon everywhere else.
+
+A real generator-script bug caught before touching production, same
+class as #104's own citation-combo issue: Noragami's corrected episode
+12 initially specified a `source_count` that conflicted with episode
+10's already-established value for the identical single-source citation
+combo — caught by `load_episodes.py`'s own conflict detection during
+local testing, fixed before the production load.

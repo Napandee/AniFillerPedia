@@ -987,6 +987,12 @@ const structuredData = series
   .pending-indicator {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    /* Same fixed-width reasoning as .badge below: this column is "auto" in
+       the grid, and an empty (no pending contribution) span vs. a real
+       pending pill are very different widths — without a shared min-width,
+       every subsequent column's boundary (badge/date) shifts by row. */
+    min-width: 80px;
   }
   a.pending-indicator {
     gap: 4px;
@@ -1030,6 +1036,13 @@ const structuredData = series
     color: var(--color-text-muted);
   }
   .air-date {
+    display: inline-block;
+    /* Same reasoning as .pending-indicator above: a single-digit day
+       ("Jul 1, 2016") is narrower than a double-digit one ("Jul 18, 2016"),
+       and this grid column is "auto" — without a fixed min-width, that
+       small difference shifted the badge column's boundary row to row. */
+    min-width: 88px;
+    text-align: right;
     font-size: 12.5px;
     font-weight: 700;
     color: var(--color-text-muted);
@@ -1143,7 +1156,10 @@ const structuredData = series
       grid-template-columns: 1fr;
     }
     .episode-row-head {
-      grid-template-columns: 56px minmax(0, 1fr) auto auto 18px;
+      /* 6 tracks for 6 grid children (number, title, badge, pending,
+         date, chevron) — this was missing one track, silently collapsing
+         two columns into one via an implicit auto-generated track. */
+      grid-template-columns: 56px minmax(0, 1fr) auto auto auto 18px;
       gap: 8px;
       padding: 12px 14px;
     }

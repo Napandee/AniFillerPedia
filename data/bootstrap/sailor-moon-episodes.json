@@ -1,0 +1,480 @@
+{
+  "series_title": "Bishoujo Senshi Sailor Moon",
+  "research_status": "COMPLETE — all 46 episodes of Sailor Moon (original 1992 season, before Sailor Moon R) classified canon/filler. 28 filler episodes (2-7, 9, 11-12, 15-18, 20-21, 26-32, 37-41, 43) confirmed by two independently-fetched sources (Looper's direct episode-by-episode list restricted to this season, ScreenRant's spot-checked filler episodes 4/15/31/32 — all four fall within Looper's filler ranges, no contradictions). The classic 90s anime and Takeuchi's manga are widely treated as separate continuities sharing only characters/setting; filler here means 'no manga chapter counterpart', same convention as every other show in this project. Episode titles sourced from Wikipedia's List of Sailor Moon episodes.",
+  "citation_sources": [
+    {
+      "id": "looper-sailor-moon-filler",
+      "url": "https://www.looper.com/662216/original-sailor-moon-filler-episodes-you-should-always-skip/",
+      "description": "Looper's episode-by-episode Sailor Moon filler breakdown, covering the full 200-episode franchise; restricted here to episodes 1-46 (season 1) only.",
+      "methodology_note": null
+    },
+    {
+      "id": "screenrant-sailor-moon-filler",
+      "url": "https://screenrant.com/sailor-moon-best-worst-filler-episodes/",
+      "description": "ScreenRant's best/worst filler episodes piece, independently confirming episodes 4, 15, 31, and 32 as filler — all consistent with Looper's list.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "A Moon Star is Born"
+    },
+    {
+      "episode_number": 2,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Punishment Awaits! The House of Fortune is the Monster Mansion"
+    },
+    {
+      "episode_number": 3,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Talk Radio"
+    },
+    {
+      "episode_number": 4,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Slim City"
+    },
+    {
+      "episode_number": 5,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Scent of a Monster! Chanela Will Steal Your Love"
+    },
+    {
+      "episode_number": 6,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Protect the Melody of Love: Usagi Plays Cupid"
+    },
+    {
+      "episode_number": 7,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "So You Want to Be a Superstar"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Computer School Blues"
+    },
+    {
+      "episode_number": 9,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Time Bomb"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "An Uncharmed Life"
+    },
+    {
+      "episode_number": 11,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Nightmare in Dreamland"
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Cruise Blues"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Fight to the Finish"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Match Point for Sailor Moon"
+    },
+    {
+      "episode_number": 15,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "An Unnatural Phenomena"
+    },
+    {
+      "episode_number": 16,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Wedding Day Blues"
+    },
+    {
+      "episode_number": 17,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Shutter Bugged"
+    },
+    {
+      "episode_number": 18,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Dangerous Dollies"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Who is That Masked Man?"
+    },
+    {
+      "episode_number": 20,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "The Summer, the Beach, Youth and Ghosts"
+    },
+    {
+      "episode_number": 21,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "An Animated Mess"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Worth a Princess' Ransom"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Molly's Folly"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "A Friend in Wolf's Clothing"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Jupiter Comes Thundering In"
+    },
+    {
+      "episode_number": 26,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "The Power of Friendship"
+    },
+    {
+      "episode_number": 27,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Mercury's Mental Match"
+    },
+    {
+      "episode_number": 28,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "An Artful Attack"
+    },
+    {
+      "episode_number": 29,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Too Many Girlfriends"
+    },
+    {
+      "episode_number": 30,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Grandpa's Follies"
+    },
+    {
+      "episode_number": 31,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Kitty Chaos"
+    },
+    {
+      "episode_number": 32,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Tuxedo Melvin"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Sailor Venus Makes the Scene"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "A Crystal Clear Destiny"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "A Reluctant Princess"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Bad Hair Day"
+    },
+    {
+      "episode_number": 37,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Little Miss Manners"
+    },
+    {
+      "episode_number": 38,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Ski Bunny Blues"
+    },
+    {
+      "episode_number": 39,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "The Ice Princess"
+    },
+    {
+      "episode_number": 40,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "The Last Resort"
+    },
+    {
+      "episode_number": 41,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Tuxedo Unmask"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Sailor Venus' Past: Minako's Tragic Love"
+    },
+    {
+      "episode_number": 43,
+      "status": "filler",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Fractious Friends"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "The Past Returns"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "The Day of Destiny"
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "looper-sailor-moon-filler",
+        "screenrant-sailor-moon-filler"
+      ],
+      "source_count": 2,
+      "title": "Brand New Life"
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "series_title": "Ouran Koukou Host Club",
+  "research_status": "COMPLETE — 24 of 26 episodes are manga canon; the final two-part episode (25-26) is an anime-original ending, confirmed by Anime News Network's own review ('a quick chapter-summary skim seems to reveal that this last two-part storyline was an anime-original ending concoction') and corroborated by Wikipedia noting the anime adapts only the manga's first 8 volumes while the manga itself continues much further. Classified filler under this project's 'anime-original ending that replaces the unfinished source' precedent, consistent with FMA (2003) and Ao no Exorcist rather than the 'inserted side arc' pattern (Railgun, Akame ga Kill!) — a per-show judgment call each time per this project's established policy, not a fixed rule.",
+  "citation_sources": [
+    {
+      "id": "ann-ouran-review-25-26",
+      "url": "https://www.animenewsnetwork.com/review/ouran-high-school-host-club/episodes-25-26/.163143",
+      "description": "Anime News Network's review of the final two episodes, confirming they are an anime-original ending not adapted from the manga.",
+      "methodology_note": null
+    },
+    {
+      "id": "wikipedia-ouran-episodes",
+      "url": "https://en.wikipedia.org/wiki/List_of_Ouran_High_School_Host_Club_episodes",
+      "description": "Wikipedia's episode list, corroborating that the anime adapts only the manga's first 8 volumes while the manga's own story continues much further.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Starting Today, You Are a Host!"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "The Job of a High School Host!"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Beware the Physical Exam!"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Attack of the Lady Manager!"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "The Twins Fight!"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "The Grade School Host is the Naughty Type!"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Jungle Pool SOS!"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "The Sun, the Sea, and the Host Club!"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "A Challenge from Lobelia Girls' Academy!"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "A Day in the Life of the Fujioka Family!"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Big Brother is a Prince!"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Honey's Three Bitter Days"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Haruhi in Wonderland!"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Covering The Famous Host Club!"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "The Refreshing Battle of Karuizawa!"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Operation Haruhi and Hikaru’s First Date!"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Kyouya's Reluctant Day Out!"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Chika's “Down with Honey” Declaration!"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Lobelia Girls' Academy Strikes Back!"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "The Door the Twins Opened!"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Until the Day it Becomes a Pumpkin!"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Mori Has an Apprentice Candidate!"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "Tamaki's Unwitting Depression!"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "title": "And so Kyouya Met Him!"
+    },
+    {
+      "episode_number": 25,
+      "status": "filler",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "status_note": "Anime News Network's review confirms this two-part finale is an anime-original conclusion invented because the manga (which continued for four years afterward) hadn't reached an ending yet — introduces the anime-only character Eclair and an anime-only engagement plot for Tamaki. Classified filler per this project's established 'anime invents an ending that replaces where the manga was headed' precedent (same test applied to FMA (2003) and Ao no Exorcist), as opposed to the 'inserted side material within an ongoing adaptation' pattern that gets classified canon (Railgun, Akame ga Kill!).",
+      "title": "The Host Club Declares Dissolution!"
+    },
+    {
+      "episode_number": 26,
+      "status": "filler",
+      "citation_ids": [
+        "ann-ouran-review-25-26",
+        "wikipedia-ouran-episodes"
+      ],
+      "source_count": 2,
+      "status_note": "See episode 25's note — same anime-original two-part finale.",
+      "title": "This is Our Ouran Fair!"
+    }
+  ]
+}

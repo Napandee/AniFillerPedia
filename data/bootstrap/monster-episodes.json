@@ -1,0 +1,730 @@
+{
+  "series_title": "Monster",
+  "research_status": "COMPLETE — all 74 episodes manga canon, no filler. Monster is widely regarded as one of the most faithful anime adaptations that exists; QuoteTheAnime explicitly itemizes episodes 1-24 as canon and reports a 0% filler figure for the complete series, and independent reviews describe it as a shot-for-shot, scene-for-scene recreation of Urasawa's manga throughout. Episodes 25-74 are flagged with this aggregate-based reasoning rather than an itemized per-episode source, disclosed rather than presented as equally itemized as 1-24.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-monster-filler",
+      "url": "https://quotetheanime.com/filler-list/monster/",
+      "description": "QuoteTheAnime's Monster filler list — explicitly itemizes episodes 1-24 as manga canon and states a 0% filler composition for the complete 74-episode series.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Herr Dr. Tenma"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Downfall"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Murder Case"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Night of the Execution"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "The Girl From Heidelberg"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Disappearance Report"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Mansion of Tragedy"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "The Fugitive"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "The Girl And The Seasoned Soldier"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "A Past Erased"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "511 Kinderheim"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "A Little Experiment"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Petra and Schumann"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "The Abandoned Man・The Abandoned Woman"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Be My Baby"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Wolf's Confession"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Reunion"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "The Fifth Spoonful of Sugar"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "The Monster's Abyss"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Journey to Freiham"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "A Wonderful Holiday"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Lunge's Trap"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "Eva's Confession"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "title": "The Men's Dining Table"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Thursday Boy"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Secret Woods"
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Pieces of Evidence"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Just One Case"
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Execution"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "A Certain Decision"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Under Broad Daylight"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Sanctuary"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Scene of a Child"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "At the End of the Darkness"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "A Hero With No Name"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "A Monster of Chaos"
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "A Monster Without a Name"
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Demon in Our Eyes"
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Hell in His Eyes"
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Grimmer"
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Ghost of 511"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Adventures of the Magnificent Steiner"
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Detective Suk"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Two Darkness"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Afterimage of a Monster"
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Point of Contact"
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Door to a Nightmare"
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Most Frightening Thing"
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Cruelest Thing"
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Rose Mansion"
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "A Monster's Love Letter"
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Lawyer"
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Determination"
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Escape"
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Room Number 402"
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Unending Journey"
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "That Night"
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Unwanted Job"
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Man Who Saw the Devil"
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Man Who Knew Too Much"
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Door of Memory"
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "A Fun Dining Table"
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "An Unrelated Murder"
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Baby's Depression"
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Johan's Footprints"
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Welcome Back"
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "I'm Home"
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Ruhenheim"
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "A Peaceful Home"
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Town of Slaughter"
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Magnificent Steiner's Rage"
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "Man Without A Name"
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Landscape of the End"
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-monster-filler"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly verified episodes 1-24 as manga canon and reports 0% filler for the full series; episodes 25-74 are not individually itemized in the source but are covered by the same 0%-filler figure, corroborated by independent general consensus (multiple reviewers describing Monster as a shot-for-shot, scene-for-scene adaptation).",
+      "title": "The Real Monster"
+    }
+  ]
+}

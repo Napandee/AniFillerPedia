@@ -1,0 +1,248 @@
+{
+  "series_title": "Bishoujo Senshi Sailor Moon Crystal",
+  "research_status": "COMPLETE — all 26 episodes canon, no filler found. Unlike the original 1992 anime, Crystal was produced specifically as a faithful manga adaptation; Wikipedia's own episode-by-episode synopses (directly checked) describe every episode adapting a specific manga arc (Dark Kingdom, Black Moon, Infinity) with no anime-original content noted anywhere, corroborated by general critical consensus describing Crystal as more faithful to the manga than the 90s series. Episode titles sourced from Wikipedia's List of Sailor Moon Crystal episodes.",
+  "citation_sources": [
+    {
+      "id": "wikipedia-sailor-moon-crystal-episodes",
+      "url": "https://en.wikipedia.org/wiki/List_of_Sailor_Moon_Crystal_episodes",
+      "description": "Wikipedia's episode list with per-episode synopses, directly checked for any anime-original/filler content — none found; every episode ties to a specific manga arc.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Usagi -Sailor Moon-"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Ami -Sailor Mercury-"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Rei -Sailor Mars-"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Masquerade Dance Party"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Makoto -Sailor Jupiter-"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Tuxedo Mask"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Mamoru Chiba -Tuxedo Mask-"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Minako -Sailor V-"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Serenity -Princess-"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Moon"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Reunion -Endymion-"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Enemy -Queen Metalia-"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Final Battle -Reincarnation-"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Conclusion and Commencement -Petite Étrangère- [b]"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Infiltration -Sailor Mars-"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Abduction -Sailor Mercury-"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Secret -Sailor Jupiter-"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Invasion -Sailor Venus-"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Time Warp -Sailor Pluto-"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Crystal Tokyo -King Endymion-"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Complication -Nemesis-"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Hidden Agenda -Nemesis-"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Covert Maneuvers -Wiseman-"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Attack -Black Lady-"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Showdown -Death Phantom-"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "wikipedia-sailor-moon-crystal-episodes"
+      ],
+      "source_count": 1,
+      "title": "Replay -Never Ending-"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "series_title": "Noragami",
-  "research_status": "COMPLETE — all 12 episodes of Noragami Season 1 classified canon/filler/mixed, though with real, disclosed lower confidence than most of this project's other shows — every source checked disagreed with at least one other on episodes 10 and 12 specifically, a genuinely messier picture than usual. Episodes 1-9 are agreed canon by every source checked. Episode 10 is recorded as mixed (QuoteTheAnime, corroborated by a separate aggregate search specifying only the first ~8 minutes are manga-canon) over AnimeWithoutFiller's plain-canon call. Episode 11 is agreed canon by both directly-fetched sources despite QuoteTheAnime's own 'anime canon' framing suggesting it's not a strict manga adaptation. Episode 12 is recorded as filler (AnimeWithoutFiller, corroborated by a third guide per an aggregate search) over QuoteTheAnime's 'anime canon' call, which this project would otherwise map to plain canon — the majority went the other way here specifically. Both single-source-flagged episodes (10, 12) are worth a second look if this ever needs revisiting. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-12 confirmed before writing this file.",
+  "research_status": "COMPLETE — all 12 episodes of Noragami Season 1 classified canon/filler/mixed. Episodes 1-9 and 11 are agreed canon by every source checked. Episode 10 is mixed (QuoteTheAnime, corroborated by a separate aggregate search specifying only the first ~8 minutes are manga-canon) over AnimeWithoutFiller's plain-canon call — this specific call remains unconfirmed/unchallenged as of the 2026-08-26 correction pass below. Corrected 2026-08-26: episode 12 was originally recorded as filler, resolving an AnimeWithoutFiller-vs-QuoteTheAnime disagreement in filler's favor — Andreas independently found a source confirming QuoteTheAnime's original 'anime canon' call instead, reversing that earlier majority resolution. Mapped to plain canon, consistent with how this project treats 'anime canon' everywhere else. Episode 10's own dispute is unaffected by this correction and remains as originally resolved. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-12 confirmed before writing this file.",
   "citation_sources": [
     {
       "id": "quotetheanime-noragami-filler-list",
@@ -117,12 +117,12 @@
     },
     {
       "episode_number": 12,
-      "status": "filler",
+      "status": "canon",
       "citation_ids": [
-        "animewithoutfiller-noragami"
+        "quotetheanime-noragami-filler-list"
       ],
       "source_count": 1,
-      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' (expands beyond the manga but stays narratively consistent, which this project generally maps to plain canon); AnimeWithoutFiller and a separate guide (Anime Filler Guide, per an aggregate search) both classify it as filler instead. Going with filler, 2 sources vs 1 — the reverse majority from episode 10's dispute above."
+      "status_note": "Corrected 2026-08-26: originally recorded as filler, resolving an earlier AnimeWithoutFiller-vs-QuoteTheAnime disagreement in filler's favor (2 sources vs 1, counting a separate aggregate search alongside AnimeWithoutFiller). Andreas independently found a source classifying this episode as 'anime canon' instead, matching QuoteTheAnime's original call — mapped to plain canon here, consistent with how this project treats the 'anime canon' label everywhere else. Reverses the earlier majority call."
     }
   ]
 }

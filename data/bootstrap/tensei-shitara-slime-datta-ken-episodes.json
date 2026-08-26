@@ -1,0 +1,206 @@
+{
+  "series_title": "Tensei shitara Slime Datta Ken",
+  "research_status": "COMPLETE — all 24 episodes of That Time I Got Reincarnated as a Slime Season 1 classified canon/filler/mixed. A genuinely low-filler show: episode 4 is mixed (a real light-novel-sourced encounter, but reordered/expanded), and episode 24 is a standalone filler episode (a self-contained side story revisiting an early-season character's backstory), confirmed by a directly-fetched source (QuoteTheAnime) and independently corroborated by a general aggregate search citing the same episode titles and content. No episode titles included in the JSON, though real episode titles were confirmed during research — left for the existing backfill_episode_titles_from_anilist.py (#103) pass. Complete, gap-free coverage of 1-24 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-reincarnated-as-a-slime",
+      "url": "https://quotetheanime.com/filler-list/reincarnated-as-a-slime/",
+      "description": "QuoteTheAnime's That Time I Got Reincarnated as a Slime filler list — episode 4 mixed, episode 24 filler, all other Season 1 episodes manga canon.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-reincarnated-as-a-slime"
+      ],
+      "source_count": 2
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "series_title": "Toaru Kagaku no Railgun",
+  "research_status": "COMPLETE — all 24 episodes of A Certain Scientific Railgun Season 1 classified canon/filler/mixed. Two independently-fetched sources (QuoteTheAnime, DigiStatement) agree exactly on episodes 1-14 (episode 2 mixed, 3/13/14 filler, the rest manga canon), but disagree on episodes 15-24: QuoteTheAnime distinguishes an anime-original 'Level 6 Shift'/Dark Side arc (15-16, 20-24) from plain filler (17-19), while DigiStatement's flatter table calls the entire 15-24 block filler with no such distinction. Resolved in favor of QuoteTheAnime's more granular read — mapped to canon, matching this project's convention for 'anime canon' labels elsewhere (Dragon Ball Super, Fullmetal Alchemist: Brotherhood, Noragami) — noting DigiStatement's own page contains an internal inconsistency (a summary line elsewhere on the page doesn't match its own table's episode count), which further reduces confidence in its classification for this specific range. Flagged on each affected episode's own status_note. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-24 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-railgun",
+      "url": "https://quotetheanime.com/filler-list/a-certain-scientific-railgun/",
+      "description": "QuoteTheAnime's A Certain Scientific Railgun filler list — distinguishes pure filler (episodes 3, 13-14, 17-19) from a distinct 'anime canon' block (15-16, 20-24, the anime-original 'Level 6 Shift'/Dark Side arc, treated as canon here) and one mixed episode (2).",
+      "methodology_note": null
+    },
+    {
+      "id": "digistatement-railgun-canon-filler-list",
+      "url": "https://digistatement.com/toaru-kagaku-no-railgun-a-certain-scientific-railgun-canon-and-filler-list/",
+      "description": "DigiStatement's Railgun canon/filler list — agrees on episodes 1, 3-14 exactly, but classifies the whole 15-24 block as plain filler rather than distinguishing an anime-canon arc within it.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' — part of the anime-original 'Level 6 Shift'/Dark Side arc, distinct from disconnected filler and generally regarded by fans as a meaningful (if non-manga) storyline, not skippable padding. DigiStatement's own table instead lumps the entire 15-24 block in with plain filler, with no such distinction. Going with QuoteTheAnime's more granular read (mapped to canon, matching this project's convention for 'anime canon' labels elsewhere) — DigiStatement's own summary text elsewhere on the same page contradicts its own table's episode count, which reduces confidence in its classification here specifically."
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' — part of the anime-original 'Level 6 Shift'/Dark Side arc, distinct from disconnected filler and generally regarded by fans as a meaningful (if non-manga) storyline, not skippable padding. DigiStatement's own table instead lumps the entire 15-24 block in with plain filler, with no such distinction. Going with QuoteTheAnime's more granular read (mapped to canon, matching this project's convention for 'anime canon' labels elsewhere) — DigiStatement's own summary text elsewhere on the same page contradicts its own table's episode count, which reduces confidence in its classification here specifically."
+    },
+    {
+      "episode_number": 17,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' — part of the anime-original 'Level 6 Shift'/Dark Side arc, distinct from disconnected filler and generally regarded by fans as a meaningful (if non-manga) storyline, not skippable padding. DigiStatement's own table instead lumps the entire 15-24 block in with plain filler, with no such distinction. Going with QuoteTheAnime's more granular read (mapped to canon, matching this project's convention for 'anime canon' labels elsewhere) — DigiStatement's own summary text elsewhere on the same page contradicts its own table's episode count, which reduces confidence in its classification here specifically."
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' — part of the anime-original 'Level 6 Shift'/Dark Side arc, distinct from disconnected filler and generally regarded by fans as a meaningful (if non-manga) storyline, not skippable padding. DigiStatement's own table instead lumps the entire 15-24 block in with plain filler, with no such distinction. Going with QuoteTheAnime's more granular read (mapped to canon, matching this project's convention for 'anime canon' labels elsewhere) — DigiStatement's own summary text elsewhere on the same page contradicts its own table's episode count, which reduces confidence in its classification here specifically."
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' — part of the anime-original 'Level 6 Shift'/Dark Side arc, distinct from disconnected filler and generally regarded by fans as a meaningful (if non-manga) storyline, not skippable padding. DigiStatement's own table instead lumps the entire 15-24 block in with plain filler, with no such distinction. Going with QuoteTheAnime's more granular read (mapped to canon, matching this project's convention for 'anime canon' labels elsewhere) — DigiStatement's own summary text elsewhere on the same page contradicts its own table's episode count, which reduces confidence in its classification here specifically."
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' — part of the anime-original 'Level 6 Shift'/Dark Side arc, distinct from disconnected filler and generally regarded by fans as a meaningful (if non-manga) storyline, not skippable padding. DigiStatement's own table instead lumps the entire 15-24 block in with plain filler, with no such distinction. Going with QuoteTheAnime's more granular read (mapped to canon, matching this project's convention for 'anime canon' labels elsewhere) — DigiStatement's own summary text elsewhere on the same page contradicts its own table's episode count, which reduces confidence in its classification here specifically."
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-railgun",
+        "digistatement-railgun-canon-filler-list"
+      ],
+      "source_count": 2,
+      "status_note": "Cross-source disagreement: QuoteTheAnime classifies this episode as 'anime canon' — part of the anime-original 'Level 6 Shift'/Dark Side arc, distinct from disconnected filler and generally regarded by fans as a meaningful (if non-manga) storyline, not skippable padding. DigiStatement's own table instead lumps the entire 15-24 block in with plain filler, with no such distinction. Going with QuoteTheAnime's more granular read (mapped to canon, matching this project's convention for 'anime canon' labels elsewhere) — DigiStatement's own summary text elsewhere on the same page contradicts its own table's episode count, which reduces confidence in its classification here specifically."
+    }
+  ]
+}

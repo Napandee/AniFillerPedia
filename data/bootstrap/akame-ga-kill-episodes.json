@@ -1,0 +1,241 @@
+{
+  "series_title": "Akame ga Kill!",
+  "research_status": "COMPLETE — all 24 episodes of Akame ga Kill! classified canon/filler/mixed. Two independently-fetched sources (QuoteTheAnime, epicdope.com) agree exactly: episodes 1-18 are manga canon, episode 19 is mixed, and episodes 20-24 are the anime's own original ending — the anime adapted through chapter 38 of 78 then produced a different conclusion once production outpaced the still-ongoing manga. Classified 'filler' under this project's manga-adaptation definition, matching the same policy already applied to Fullmetal Alchemist (2003) and Ao no Exorcist — both sources here independently draw that exact FMA (2003) comparison themselves, unprompted. No episode titles included — handled automatically by load_episodes.py's auto-backfill (#103). Complete, gap-free coverage of 1-24 confirmed before writing this file.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-akame-ga-kill",
+      "url": "https://quotetheanime.com/filler-list/akame-ga-kill/",
+      "description": "QuoteTheAnime's Akame ga Kill! filler list — episodes 1-18 manga canon, episode 19 mixed, episodes 20-24 the anime's own original ending.",
+      "methodology_note": null
+    },
+    {
+      "id": "epicdope-akame-ga-kill",
+      "url": "https://www.epicdope.com/akame-ga-kill-filler-guide-are-the-fillers-necessary-to-watch/",
+      "description": "epicdope.com's Akame ga Kill! filler guide — independently confirms the identical 1-18/19/20-24 breakdown, and explicitly compares the anime-original ending to how Fullmetal Alchemist (2003) handled its own finale once the anime caught up to the manga.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+    },
+    {
+      "episode_number": 21,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+    },
+    {
+      "episode_number": 22,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+    },
+    {
+      "episode_number": 23,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+    },
+    {
+      "episode_number": 24,
+      "status": "filler",
+      "citation_ids": [
+        "quotetheanime-akame-ga-kill",
+        "epicdope-akame-ga-kill"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original alternate ending — the anime adapted the manga through chapter 38 (of 78) then produced its own original conclusion once production caught up to the still-ongoing source material, resulting in a different ending than the manga's. Classified 'filler' under this project's manga-adaptation definition, consistent with how Fullmetal Alchemist (2003)'s and Ao no Exorcist's analogous anime-original endings were classified earlier in this project — both cross-referenced sources here independently draw the same FMA (2003) comparison themselves."
+    }
+  ]
+}

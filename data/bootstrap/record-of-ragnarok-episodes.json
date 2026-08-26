@@ -1,0 +1,122 @@
+{
+  "series_title": "Shuumatsu no Walküre",
+  "research_status": "COMPLETE — all 12 episodes of season 1 manga canon, no filler. AnimeFillerGuide directly confirms 0% filler for season 1, adapting manga chapters 1-20.",
+  "citation_sources": [
+    {
+      "id": "aggregate-record-of-ragnarok-no-filler",
+      "url": "https://www.animefillerguide.com/anime/shuumatsu-no-valkyrie/",
+      "description": "AnimeFillerGuide's Record of Ragnarok page, confirming season 1 has 0 filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Ragnarok"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Worthy Opponent"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Killer Move"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Joy"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "File No.00000000001"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Great Emulation"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Expelled from Paradise"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Grace Abounding"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tyrant of the Ocean"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Greatest Loser"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Swallow Gazes into the Abyss"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-record-of-ragnarok-no-filler"
+      ],
+      "source_count": 1,
+      "title": "And Ragnarok Goes On"
+    }
+  ]
+}

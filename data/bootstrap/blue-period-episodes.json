@@ -1,0 +1,110 @@
+{
+  "series_title": "Blue Period",
+  "research_status": "COMPLETE — all 12 episodes manga canon, no filler. Consistent search-aggregate signal reporting 0% filler, adapting manga chapters 1-25. No Wikipedia episode-list page exists for this show, so air dates/titles were not backfilled from that source for this one (left to the existing AniList auto-backfill).",
+  "citation_sources": [
+    {
+      "id": "aggregate-blue-period-no-filler",
+      "url": "https://www.animefillerguide.com/2024/02/blue-period.html",
+      "description": "Consistent aggregate signal reporting Blue Period has 0% filler across all 12 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-blue-period-no-filler"
+      ],
+      "source_count": 1
+    }
+  ]
+}

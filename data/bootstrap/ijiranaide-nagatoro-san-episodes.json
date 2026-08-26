@@ -1,0 +1,122 @@
+{
+  "series_title": "Ijiranaide, Nagatoro-san",
+  "research_status": "COMPLETE — all 12 episodes of season 1 manga canon, no filler. Consistent search-aggregate signal reporting 0% filler across both seasons.",
+  "citation_sources": [
+    {
+      "id": "aggregate-nagatoro-no-filler",
+      "url": "https://www.animefillerlist.com/shows/don%E2%80%99t-toy-me-miss-nagatoro",
+      "description": "Consistent aggregate signal reporting Don't Toy with Me, Miss Nagatoro has 0% filler across both seasons.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Senpai is a bit ..."
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "You Got Your Wish, Senpai!"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Let's Play Again, Senpai"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "You're All Red, Senpai"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Senpai's Poofball"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "You're Such a Wimp, Senpai ♥"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Senpai, Want to Go to the Festival?"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "That Might Actually Be Fun, Senpai♥"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Senpai's Such a Closet Perv!!"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "You Seem Pretty Stiff, Senpai"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "What Do You Think, Senpai?"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-nagatoro-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Has Spring Come Even for You, the Unpopular Loner Louse Senpai?"
+    }
+  ]
+}

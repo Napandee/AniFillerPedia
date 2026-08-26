@@ -1,0 +1,131 @@
+{
+  "series_title": "Kamonohashi Ron no Kindan Suiri",
+  "research_status": "COMPLETE — all 13 episodes of season 1 manga canon, no filler. Consistent search-aggregate signal reporting 0% filler; minor scene-level additions/omissions noted but treated as ordinary adaptation changes, not filler content.",
+  "citation_sources": [
+    {
+      "id": "aggregate-kamonohashi-ron-no-filler",
+      "url": "https://www.animefillerguide.com/anime/kamonohashi-ron-no-kindan-suiri/",
+      "description": "Consistent aggregate signal reporting Kamonohashi Ron no Kindan Suiri has 0% filler across season 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Metropolitan Serial Drownings"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Locked-Room Piggy Bank Theft"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Benizome Hot Spring Murder (Part 1)"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Benizome Hot Spring Murder (Part 2)"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Hand Collector"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Live Broadcast Murder"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Observatory Murder (Part 1)"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Observatory Murder (Part 2)"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Observatory Murder (Part 3)"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Poisoned Latte"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Mad Chameleon Murder"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Yadagami-sama Murders (Part 1)"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kamonohashi-ron-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Case of the Yadagami-sama Murders (Part 2)"
+    }
+  ]
+}

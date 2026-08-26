@@ -866,3 +866,36 @@ batch, air dates loaded the same pass via the same validated
 `series_episode_schedule` upsert. Verified live: all ten series'
 episode/title/air-date coverage confirmed via the public API. 40
 candidates remain.
+
+## Eleventh batch (#121, 2026-08-26): Black Cat, Blue Period, Fumetsu no Anata e, Gachiakuta, Ijiranaide Nagatoro-san, Kamonohashi Ron no Kindan Suiri, Masamune-kun no Revenge, Ousama Ranking, Shadows House, Record of Ragnarok
+
+10 shows, 165 episodes total: Black Cat (24/24: 20 canon / 4 filler —
+episodes 21-24 are a wholly original anime-only arc extending past
+the manga's ending, classified filler per this project's established
+anime-original-ending precedent), Blue Period (12/12, all canon —
+no Wikipedia episode-list page exists for this show, so air dates/
+titles rely on AniList's own backfill instead), Fumetsu no Anata e
+season 1 (20/20, all canon), Gachiakuta (24/24, all canon), Ijiranaide
+Nagatoro-san season 1 (12/12, all canon), Kamonohashi Ron no Kindan
+Suiri season 1 (13/13, all canon), Masamune-kun no Revenge season 1
+(12/12, all canon), Ousama Ranking (23/23, all canon), Shadows House
+season 1 (13/13: 10 canon / 1 mixed / 2 filler — an anime-original
+bridge to season 2), Record of Ragnarok season 1 (12/12, all canon).
+
+Two candidates dropped mid-research and added to
+`needs-manual-research.json`: Lupin III (1971 original series) — no
+itemized filler/canon guide found anywhere, and conceptually murkier
+than a typical gap (multiple sources describe the classic-era show as
+having no strict continuity between episodes, standalone stories
+loosely riffing on the manga rather than a chapter-by-chapter
+adaptation, similar to the Devilman case). Katsute Kami Datta
+Kemono-tachi e was tried as a replacement and also dropped (niche
+enough that no filler-guide site has compiled a breakdown at all).
+Landed on Record of Ragnarok as the actual tenth show.
+
+Loaded into production the same throwaway-container way as every prior
+batch, air dates loaded the same pass via the same validated
+`series_episode_schedule` upsert. Verified live: all ten series'
+episode/title/air-date coverage confirmed via the public API (Blue
+Period excepted, per its missing Wikipedia source above). 30
+candidates remain.

@@ -1,0 +1,221 @@
+{
+  "series_title": "Ousama Ranking",
+  "research_status": "COMPLETE — all 23 episodes manga canon, no filler. Consistent search-aggregate signal reporting 0% filler for this main season; the separate sequel special ('The Treasure Chest of Courage') is flagged by the same sources as largely original content, but is a distinct catalog entry not covered by this file.",
+  "citation_sources": [
+    {
+      "id": "aggregate-ousama-ranking-no-filler",
+      "url": "https://www.animefillerguide.com/anime/ousama-ranking/",
+      "description": "Consistent aggregate signal reporting Ranking of Kings' main 23-episode season has 0% filler.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Prince's New Clothes"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Prince and Kage"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The New King"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "His First Journey"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Intertwining Plots"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The King of the Underworld"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Prince's Apprenticeship"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Sacrifice of Dreams"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Queen and the Shield"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Prince's Sword"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Older and Younger Brothers"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Footsteps of War"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Kingdom in Turmoil"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Return of the Prince"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Order of the Underworld"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Royal Majesty"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Curse of Immortality"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Battle with the Gods"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Last Bastion"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Immortal vs. Invincible"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Swordsmanship of a King"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Promise to the Demon"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ousama-ranking-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The King and the Sun"
+    }
+  ]
+}

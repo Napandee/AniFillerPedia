@@ -1,0 +1,230 @@
+{
+  "series_title": "Ao Ashi",
+  "research_status": "COMPLETE — all 24 episodes manga canon, no filler. Consistent search-aggregate signal reporting 0% filler, adapting manga chapters 1-117.",
+  "citation_sources": [
+    {
+      "id": "aggregate-aoashi-no-filler",
+      "url": "https://www.animefillerlist.com/shows/aoashi",
+      "description": "Consistent aggregate signal reporting Aoashi has 0% filler across all 24 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "First Touch"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tokyo City Esperion"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Final Stage of Assessment Begins"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "CROW"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Orange Scenery"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "First Fan"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The First Youth Match"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Night Training"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Broader Soccer"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "No Compromises"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tokyo Metropolis League Match 1 - Seikyo High School"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Eagle Eye"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Turn"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "It's Just Soccer"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Where I Ought To Be"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Just Like You"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tokyo Metropolis League Match 7 - Tama Sports University High School"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Wind of Change"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "What We Lack"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Truly Weak One"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tokyo Metropolis League Match 8 - Tokyo Musashino Football Club Youths"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Like A Demon"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Do Your Best. Don't Lose. Fight to Your Limits"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-aoashi-no-filler"
+      ],
+      "source_count": 1,
+      "title": "From Now"
+    }
+  ]
+}

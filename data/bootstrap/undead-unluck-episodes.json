@@ -1,0 +1,230 @@
+{
+  "series_title": "Undead Unluck",
+  "research_status": "COMPLETE — all 24 episodes manga canon, no filler. Consistent search-aggregate signal reporting 0% filler, adapting manga chapters 1-53.",
+  "citation_sources": [
+    {
+      "id": "aggregate-undead-unluck-no-filler",
+      "url": "https://www.animefillerlist.com/shows/undead-unluck",
+      "description": "Consistent aggregate signal reporting Undead Unluck has 0% filler across all 24 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Undead and Unluck"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Union"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "How to Use My Unluck"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Do You Love the Change in Me?"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "United We Negate"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Spoil"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Dream"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Victhor"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Return"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Result"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Rio de Janeiro"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Activate"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Tatiana"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Crimson Bullet"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Under"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Revolution"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Outsmart"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Cry for the Moon"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Undead + Unluck"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Anno Un"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Memento Mori"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Profile"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Story I Won't See Coming"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-undead-unluck-no-filler"
+      ],
+      "source_count": 1,
+      "title": "To You, From Me"
+    }
+  ]
+}

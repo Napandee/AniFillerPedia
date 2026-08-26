@@ -1,0 +1,230 @@
+{
+  "series_title": "Mahoutsukai no Yome",
+  "research_status": "COMPLETE — all 24 episodes of season 1 manga canon, no filler. Consistent search-aggregate signal reporting 0% filler across the full series.",
+  "citation_sources": [
+    {
+      "id": "aggregate-ancient-magus-bride-no-filler",
+      "url": "https://www.animefillerlist.com/shows/ancient-magus-bride",
+      "description": "Consistent aggregate signal reporting The Ancient Magus' Bride has 0% filler across all episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "April showers bring May flowers."
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "One today is worth two tomorrows."
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The balance distinguishes not between gold and lead."
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Everything must have a beginning."
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Love conquers all."
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Faerie Queene."
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Talk of the devil, and he is sure to appear."
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Let sleeping dogs lie."
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "None so deaf as those who will not hear."
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "We live and learn."
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Lovers ever run before the clock."
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Better to ask the way than go astray."
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "East, west, home's best."
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Looks breed love."
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "There is no place like home."
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "God's mill grinds slow but sure."
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Look before you leap."
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Forgive and forget."
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Any port in a storm."
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "You can't make an omelet without breaking a few eggs."
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Necessity has no law."
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "As you sow, so shall you reap."
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Nothing seek, nothing find."
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-ancient-magus-bride-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Live and let live."
+    }
+  ]
+}

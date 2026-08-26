@@ -763,3 +763,47 @@ Loaded into production the same throwaway-container way as every prior
 batch, air dates loaded the same pass via the same validated
 `series_episode_schedule` upsert. Verified live: all ten series'
 episode/title/air-date coverage confirmed via the public API.
+
+## Eighth batch (#118, 2026-08-26): Diamond no Ace: Act II, Shaman King (2021), Angel Heart, Ao Ashi, Blue Lock, Mahoutsukai no Yome, Undead Unluck, Ansatsu Kyoushitsu, Made in Abyss, Bleach: Sennen Kessen-hen
+
+10 shows, 348 episodes total: Diamond no Ace: Act II (52/52: 49 canon
+/ 2 mixed / 1 filler), Shaman King (2021) (52/52, all canon), Angel
+Heart (50/50: 49 canon / 1 filler), Ao Ashi (24/24, all canon), Blue
+Lock season 1 (24/24, all canon), Mahoutsukai no Yome season 1 (24/24,
+all canon), Undead Unluck (24/24, all canon), Ansatsu Kyoushitsu
+season 1 (22/22: 21 canon / 1 mixed), Made in Abyss season 1 (13/13,
+all canon), Bleach: Sennen Kessen-hen cour 1 (13/13, all canon — a
+stark contrast to the original Bleach already in this catalog, 163 of
+366 episodes filler).
+
+**Andreas asked that dropped candidates go into a durable bucket
+instead of silently disappearing** — see `data/bootstrap/
+needs-manual-research.json` (added this same session, tracked in
+#117) for the full standing process. Checked first before picking
+this batch's 10; Devilman (1972) was attempted and added to it after
+this batch's own research: every filler-guide site's "Devilman"
+results turned out to actually be for Devilman Crybaby (2018), an
+unrelated adaptation, and no itemized per-episode source exists
+anywhere for the real 1972 series. Replaced with Bleach: Sennen
+Kessen-hen, which connects naturally to the already-loaded original
+Bleach.
+
+**Diamond no Ace: Act II required real numbering-scheme detective
+work**: AniList's own dates for this specific catalog entry (2019-04-02
+to 2020-03-31) didn't match what a naive offset assumption would have
+produced from Wikipedia's combined "List of Ace of Diamond episodes"
+page — the page actually bundles THREE distinct broadcast runs under
+one continuous numbering (original series 1-75, a second season 76-126
+not in this catalog at all, then Act II proper at 127-178, with a real
+3-year broadcast gap between 126 and 127 confirming the boundary).
+Verified against AniList's exact start/end dates before committing to
+offset 126, rather than the more obvious-looking offset 75. Bleach:
+Sennen Kessen-hen has a similar but simpler case — its Wikipedia page
+continues the original Bleach's absolute numbering starting at 367,
+confirmed via the exact same air-date cross-check technique used for
+Bleach's own original air-date backfill earlier this session.
+
+Loaded into production the same throwaway-container way as every prior
+batch, air dates loaded the same pass via the same validated
+`series_episode_schedule` upsert. Verified live: all ten series'
+episode/title/air-date coverage confirmed via the public API.

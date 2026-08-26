@@ -1,0 +1,213 @@
+{
+  "series_title": "Ansatsu Kyoushitsu",
+  "research_status": "COMPLETE — 21 of 22 season-1 episodes manga canon; episode 5 is the one mixed canon/filler episode, per QuoteTheAnime's direct episode-by-episode breakdown, corroborated by Looper's own filler rundown.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-assassination-classroom",
+      "url": "https://quotetheanime.com/filler-list/assassination-classroom/",
+      "description": "QuoteTheAnime's Assassination Classroom filler list, itemizing episode 5 as the sole mixed canon/filler episode in the full series.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Assassination Time"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Baseball Time"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Karma Time"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Grown-Up Time"
+    },
+    {
+      "episode_number": 5,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly labels this episode ('Assembly Time') mixed canon/filler — Koro-sensei teaches Manami Okuda confidence while secretly deceiving her about her chemistry knowledge, blending manga-adapted material with anime-original content.",
+      "title": "Assembly Time"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Test Time"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "School Trip Time/1st Period"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "School Trip Time/2nd Period"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Transfer Student Time"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "L and R Time"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Transfer Student Time/2nd Period"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Ball Game Tournament Time"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Talent Time"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Vision Time"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "End-of-Term Time"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "School's Out/1st Term"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Island Time"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Action Time"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Pandemonium Time"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Karma Time/2nd Period"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "XX Time"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-assassination-classroom"
+      ],
+      "source_count": 1,
+      "title": "Nagisa Time"
+    }
+  ]
+}

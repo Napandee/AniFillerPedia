@@ -1,0 +1,482 @@
+{
+  "series_title": "Shaman King (2021)",
+  "research_status": "COMPLETE — all 52 episodes manga canon, no filler. Consistent search-aggregate signal across multiple guide sites; the 2021 reboot is explicitly noted as far more faithful than the original 2001 series (which did contain filler).",
+  "citation_sources": [
+    {
+      "id": "aggregate-shaman-king-2021-no-filler",
+      "url": "https://www.animefillerlist.com/shows/shaman-king-2021",
+      "description": "Consistent aggregate signal reporting the 2021 Shaman King reboot has 0% filler across all 52 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Boy Who Dances with Ghosts"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Another Shaman"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Anna and Tao Jun"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Happy Place"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Over Soul"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Yoh vs. Horohoro!"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Form of Courage"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Progress"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Yoh vs. Ren: Again!"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Night in the Flame"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Tale of Two Men"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Ren vs. En: The End of the Tao"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "And Hao!"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Lyserg the Avenger"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "When the Pieces Come Together"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Enter the Ultra-Pompandour"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Guns of the Angels"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Great Spirits and My Team"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Jaguar"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Joco’s Christmas"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Iron Maiden Jeanne"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "I'll Go Anywhere with you"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Power of Yoh"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Trust No One"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Great Onmyoji, Hao Asakura"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mikihisa Typhoon"
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Farewell Forever"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Yoh's Decision"
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Emeth"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mt. Osore Le Voile"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mt. Osore Le Voile II"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mt. Osore Le Voile III"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Mt. Osore Le Voile IV"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "To Be King"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Reunion"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Redseb and Seyrarm"
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Winds of Laughter"
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Graduation"
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Summit"
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Humility"
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Encounters in Hell"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Great Trial"
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The End of a Dream"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Speak Slowly"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The First and the Last"
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "True Justice"
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Plants"
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Ever Since"
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Good Night"
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Falling Damuko"
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Last Test: Shaman Fight"
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-shaman-king-2021-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Shaman King: God End"
+    }
+  ]
+}

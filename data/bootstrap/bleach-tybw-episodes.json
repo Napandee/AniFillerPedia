@@ -1,0 +1,131 @@
+{
+  "series_title": "Bleach: Sennen Kessen-hen",
+  "research_status": "COMPLETE — all 13 episodes of cour 1 manga canon, no filler. animefillerlist.com confirms 0% filler for the Thousand-Year Blood War adaptation — a stark contrast to the original Bleach anime already in this catalog (163 of 366 episodes filler). Continues the absolute episode numbering from the original series on its shared Wikipedia page (this catalog entry maps to that page's episodes 367-379), but is tracked as its own catalog entry per its own separate AniList id.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-bleach-tybw",
+      "url": "https://www.animefillerlist.com/shows/bleach-thousand-year-blood-war",
+      "description": "animefillerlist.com's Bleach: Thousand-Year Blood War page, confirming 0% filler across all episodes including cour 1.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "The Blood Warfare"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "Foundation Stones"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "March of the StarCross"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "Kill the Shadow"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "Wrath as a Lightning"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "The Fire"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "Born in the Dark"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "The Shooting Star Project (Zero Mix)"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "The Drop"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "The Battle"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "Everything But the Rain"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "Everything But the Rain"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-bleach-tybw"
+      ],
+      "source_count": 1,
+      "title": "The Blade Is Me"
+    }
+  ]
+}

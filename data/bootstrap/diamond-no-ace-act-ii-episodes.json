@@ -1,0 +1,540 @@
+{
+  "series_title": "Diamond no Ace: Act II",
+  "research_status": "COMPLETE — 49 canon, 2 mixed (episodes 1, 4), 1 filler (episode 29). Two independently-fetched sources (DigiStatement, animefillerlist.com) agree exactly on all three non-canon episodes.",
+  "citation_sources": [
+    {
+      "id": "digistatement-ace-of-diamond-act2",
+      "url": "https://digistatement.com/ace-of-diamond-act-ii-canon-and-filler-list-2019/",
+      "description": "DigiStatement's Ace of Diamond Act II canon/filler list, itemizing episodes 1 and 4 as mixed and episode 29 as filler.",
+      "methodology_note": null
+    },
+    {
+      "id": "animefillerlist-ace-of-diamond-act2",
+      "url": "https://www.animefillerlist.com/shows/ace-diamond-act-ii",
+      "description": "Independently confirms the identical classification: episodes 1/4 mixed, episode 29 filler, rest canon.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Beyond the Dream"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Wanna Take The Mound"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Blessed by the Baseball Gods"
+    },
+    {
+      "episode_number": 4,
+      "status": "mixed",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "The Day It Began"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Joining"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Go Straight"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "KING"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Camphor"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Battle, Battle"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Debut"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Where You Look"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Selfish"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Batting First"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Presence"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "My Role"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Only After You've Won"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Three Months"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Something to Find Out"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Competitive Streak"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Self-Assertive"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Out of Time"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Designated"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "One Pitch, One Second"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Incomplete"
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Unleashed"
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Beneath the Same Banner"
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "The Note"
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "I'm Not Stopping"
+    },
+    {
+      "episode_number": 29,
+      "status": "filler",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "After Spring Comes"
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Bloom of Youth"
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Kind of Like a Promise"
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Hunger"
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Heat Transfer"
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Competition"
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Because He's Awesome"
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "As a Catcher"
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Invincible Mentality"
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Fragile"
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "I'm Counting on You"
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Expression"
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Shared Fate"
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "20 People"
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Summer Training Camp"
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Setting Sail"
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Go EXCEED!!"
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Encouragement"
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Under the Feet"
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Get Back"
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Seido Goes All Out"
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "FIRE AGE"
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "That's The Reason Why"
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "digistatement-ace-of-diamond-act2",
+        "animefillerlist-ace-of-diamond-act2"
+      ],
+      "source_count": 2,
+      "title": "Ace of Diamond"
+    }
+  ]
+}

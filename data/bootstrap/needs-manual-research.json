@@ -553,6 +553,28 @@
         "#120-prep"
       ],
       "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Lupin III",
+      "anilist_id": 1412,
+      "episode_count": 23,
+      "reason": "sourcing_gap",
+      "detail": "No itemized filler/canon guide could be found (animefillerlist.com/simkl both 403/404'd). Conceptually murkier than a typical gap too: multiple sources describe the classic 1971-1986 era Lupin III anime as having no strict continuity between episodes (standalone stories loosely riffing on the manga's characters/tone rather than chapter-by-chapter adaptation), similar to the Devilman case -- there may not be a clean episode-level canon/filler split to find even with better sourcing.",
+      "attempted_in": [
+        "#121"
+      ],
+      "date_flagged": "2026-08-26"
+    },
+    {
+      "title": "Katsute Kami Datta Kemono-tachi e",
+      "anilist_id": 107672,
+      "episode_count": 12,
+      "reason": "sourcing_gap",
+      "detail": "No itemized filler/canon guide found on any major filler-guide site (animefillerguide.com 404'd, no results from animefillerlist.com/quotetheanime in search). A niche enough show that no one appears to have compiled a per-episode breakdown.",
+      "attempted_in": [
+        "#121"
+      ],
+      "date_flagged": "2026-08-26"
     }
   ]
 }

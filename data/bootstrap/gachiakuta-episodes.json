@@ -1,0 +1,230 @@
+{
+  "series_title": "Gachiakuta",
+  "research_status": "COMPLETE — all 24 episodes manga canon, no filler. Consistent search-aggregate signal reporting 0% filler, adapting manga chapters 1-87.",
+  "citation_sources": [
+    {
+      "id": "aggregate-gachiakuta-no-filler",
+      "url": "https://www.animefillerlist.com/shows/gachiakuta",
+      "description": "Consistent aggregate signal reporting Gachiakuta has 0% filler across all 24 episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Sphere"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Inhabited"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Ground"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Cleaner HQ"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Raiders"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "One Good Strike!!"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "A Score to Settle"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Moving Forward"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The City of Graffiti"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Penta: The Desert No Man's Land"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Amo's Hospitality"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Something Like a Curse"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "An Empty Gaze"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Storm Before the Storm"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Clash!"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Gifted and Not"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Memories of a Mediocrity"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Oh Zap, Totes Legit"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Watchmen Series"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Ensign"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Time Attack"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Power of Protection"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "The Man Who Will Be Stronger"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-gachiakuta-no-filler"
+      ],
+      "source_count": 1,
+      "title": "Field Trip"
+    }
+  ]
+}

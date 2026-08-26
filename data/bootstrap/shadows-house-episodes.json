@@ -1,0 +1,134 @@
+{
+  "series_title": "Shadows House",
+  "research_status": "COMPLETE — 10 of 13 season-1 episodes manga canon; episode 11 mixed (adapts manga content out of order), episodes 12-13 filler (an anime-original bridge to season 2). Per animefillerlist.com's direct episode-by-episode breakdown.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-shadows-house",
+      "url": "https://www.animefillerlist.com/shows/shadows-house",
+      "description": "animefillerlist.com's Shadows House page, itemizing episode 11 as mixed and episodes 12-13 as filler.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "The Shadow and Her Doll"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "Outside the Room"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "The Soot Sickness"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "Watchers in the Night"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "The Debut"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "The Garden Labyrinth"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "An Incomplete Map"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "In the Palm of His Hand"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "A Birdcage and Flowers"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "title": "The Final Pair"
+    },
+    {
+      "episode_number": 11,
+      "status": "mixed",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "status_note": "animefillerlist.com labels this 'mixed canon/filler' — adapts the end of the Debut Arc but also uses scenes from two later Master Robe Arc chapters ahead of where the story would naturally reach them.",
+      "title": "The Dark Drink"
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "status_note": "animefillerlist.com labels this filler — original anime-only content bridging to season 2, not adapted from any manga chapter.",
+      "title": "To Lord Grandfather's Wing"
+    },
+    {
+      "episode_number": 13,
+      "status": "filler",
+      "citation_ids": [
+        "animefillerlist-shadows-house"
+      ],
+      "source_count": 1,
+      "status_note": "animefillerlist.com labels this filler — same anime-original bridge as episode 12.",
+      "title": "For the Sake of the Shadows Family"
+    }
+  ]
+}

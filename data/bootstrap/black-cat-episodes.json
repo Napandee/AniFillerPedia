@@ -1,0 +1,234 @@
+{
+  "series_title": "Black Cat",
+  "research_status": "COMPLETE — 20 of 24 episodes manga canon (adapting the entire manga); episodes 21-24 are a completely original anime-only story arc extending past the manga's ending. Classified filler per this project's established anime-original-ending precedent.",
+  "citation_sources": [
+    {
+      "id": "aggregate-black-cat-original-ending",
+      "url": "https://www.animefillerlist.com/shows/black-cat",
+      "description": "Consistent aggregate signal (animefillerlist.com, fandom wiki) describing episodes 21-24 as a wholly original anime-only arc.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Solitary Cat"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Hesitant Cat"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Cat in the Dark"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Grinning Cat"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Departing Cat"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Cat Under Fire"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Wounded Cat"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Sweeping Cat"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Charming Cat"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Cat Unleashed"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The False Cat"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Fighting Cat"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Love Cat"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Kitty Cat"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Distant Cat"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Cat and the Lizard"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Napping Cat"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Cat Deploys"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Sprinting Cat"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "title": "The Cat's Showdown"
+    },
+    {
+      "episode_number": 21,
+      "status": "filler",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "status_note": "Consistent aggregate signal describing episodes 21-24 as a completely original, self-contained story arc invented to give the anime its own ending, extending past where the manga left off. Classified filler per this project's established 'anime invents an ending that replaces where the source was headed' precedent (FMA 2003, Ao no Exorcist).",
+      "title": "The Drowning Cat"
+    },
+    {
+      "episode_number": 22,
+      "status": "filler",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "status_note": "Consistent aggregate signal describing episodes 21-24 as a completely original, self-contained story arc invented to give the anime its own ending, extending past where the manga left off. Classified filler per this project's established 'anime invents an ending that replaces where the source was headed' precedent (FMA 2003, Ao no Exorcist).",
+      "title": "The Cat Bares Claw"
+    },
+    {
+      "episode_number": 23,
+      "status": "filler",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "status_note": "Consistent aggregate signal describing episodes 21-24 as a completely original, self-contained story arc invented to give the anime its own ending, extending past where the manga left off. Classified filler per this project's established 'anime invents an ending that replaces where the source was headed' precedent (FMA 2003, Ao no Exorcist).",
+      "title": "The Cat's Paradise"
+    },
+    {
+      "episode_number": 24,
+      "status": "filler",
+      "citation_ids": [
+        "aggregate-black-cat-original-ending"
+      ],
+      "source_count": 1,
+      "status_note": "Consistent aggregate signal describing episodes 21-24 as a completely original, self-contained story arc invented to give the anime its own ending, extending past where the manga left off. Classified filler per this project's established 'anime invents an ending that replaces where the source was headed' precedent (FMA 2003, Ao no Exorcist).",
+      "title": "The Carefree Cat"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "series_title": "Masamune-kun no Revenge",
+  "research_status": "COMPLETE — all 12 episodes of season 1 manga canon, no filler, per animefillerlist.com's direct confirmation.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-masamune-kun",
+      "url": "https://www.animefillerlist.com/shows/masamune-kuns-revenge",
+      "description": "animefillerlist.com's Masamune-kun's Revenge page, confirming 0 filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "The Boy Who Was Called Pig's Foot"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "Cinderella Doesn't Smile"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "Yoshino's Magic Show"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "Clear and Present Danger"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "Mysterious Cat"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "Attack! Battle of the Home Visits"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "The Tsunade Island Incident"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "It's Not You"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "It's Been Called Love and Affection"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "The New School Term Filled With Doubts"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "Snow White of the Yasaka Festival"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-masamune-kun"
+      ],
+      "source_count": 1,
+      "title": "Don't Let Go of the Mic, Even if You Die"
+    }
+  ]
+}

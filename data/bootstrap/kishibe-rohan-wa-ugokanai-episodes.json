@@ -1,0 +1,46 @@
+{
+  "series_title": "Kishibe Rohan wa Ugokanai",
+  "research_status": "COMPLETE — all 4 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "aggregate-kishibe-rohan-no-filler",
+      "url": "https://www.animefillerlist.com/shows/chrono-crusade",
+      "description": "Consistent aggregate signal confirming each episode directly adapts a published Thus Spoke Rohan Kishibe manga one-shot, with no anime-original filler content. No Wikipedia episode-list page exists for this show.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kishibe-rohan-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kishibe-rohan-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kishibe-rohan-no-filler"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-kishibe-rohan-no-filler"
+      ],
+      "source_count": 1
+    }
+  ]
+}

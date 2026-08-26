@@ -1,0 +1,77 @@
+{
+  "series_title": "JoJo no Kimyou na Bouken: Adventure",
+  "research_status": "COMPLETE — all 7 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "aggregate-jojo-ova-canon",
+      "url": "https://www.animefillerlist.com/shows/jojos-bizarre-adventure-tv",
+      "description": "Consistent aggregate signal describing these 7 episodes as direct adaptations of manga one-shots/early Stardust Crusaders chapters, with no anime-original filler content.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-jojo-ova-canon"
+      ],
+      "source_count": 1,
+      "title": "The Evil Spirit"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-jojo-ova-canon"
+      ],
+      "source_count": 1,
+      "title": "Hierophant Green"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-jojo-ova-canon"
+      ],
+      "source_count": 1,
+      "title": "Silver Chariot and Strength"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-jojo-ova-canon"
+      ],
+      "source_count": 1,
+      "title": "The Emperor and the Hanged Man"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-jojo-ova-canon"
+      ],
+      "source_count": 1,
+      "title": "The Judgement"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-jojo-ova-canon"
+      ],
+      "source_count": 1,
+      "title": "The Mist of Vengeance"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "aggregate-jojo-ova-canon"
+      ],
+      "source_count": 1,
+      "title": "Justice"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "series_title": "Cobra The Animation",
+  "research_status": "COMPLETE — all 13 episodes manga canon, no filler.",
+  "citation_sources": [
+    {
+      "id": "animefillerlist-cobra",
+      "url": "https://www.animefillerlist.com/shows/cobra-animation",
+      "description": "animefillerlist.com's Cobra: The Animation page, confirming 0 filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "The Key of Shiva"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "The Golden Gate"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "The Starless City"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "The Ghost of the Golden Paradise"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "Legend of the Wandering Beauties"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "Climbing Mt. Kagero"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "To the Summit"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "Mandrad"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "The Black Bullet"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "Galaxy Knights"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "The Thirteenth Man"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "The Devil of the Temple"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerlist-cobra"
+      ],
+      "source_count": 1,
+      "title": "Distant Memories"
+    }
+  ]
+}

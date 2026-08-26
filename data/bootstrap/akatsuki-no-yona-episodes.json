@@ -1,0 +1,230 @@
+{
+  "series_title": "Akatsuki no Yona",
+  "research_status": "COMPLETE — all 24 episodes manga canon, no filler. AnimeFillerGuide confirms 0% filler, adapting manga chapters 1-47 (episode 2, 'Broken Bond', explicitly confirmed manga canon, adapting chapter 2 — an earlier ambiguous web-search signal calling it mixed was checked directly against this source and found unsupported).",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-akatsuki-no-yona",
+      "url": "https://www.animefillerguide.com/anime/akatsuki-no-yona/",
+      "description": "AnimeFillerGuide's Akatsuki no Yona page, confirming all 24 episodes are canon with 0% filler, including an explicit per-episode check of episode 2.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "The Princess Yona"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Broken Bond"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Faraway Sky"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "The Wind Clan"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Roar"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "The Crimson Hair"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Fate"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "The Chosen Door"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Wavering Determination"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Yearn"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "The Dragon's Claws"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "The Blindfolded Dragon"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "The Rippling Fear"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Light"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "To a New Land"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Pretend-War"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Pirate of Awa"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Ties"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Trial of the Cheonsu Plant"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Chain of Courage"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Spark"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "History Is Made at Night"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "Morning of Pledges"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-akatsuki-no-yona"
+      ],
+      "source_count": 1,
+      "title": "From Here On"
+    }
+  ]
+}

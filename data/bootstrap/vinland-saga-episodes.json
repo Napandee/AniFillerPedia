@@ -1,0 +1,232 @@
+{
+  "series_title": "Vinland Saga",
+  "research_status": "COMPLETE — 23 of 24 episodes manga canon (including episode 5, labeled 'anime canon' by the source and mapped to canon per this project's standing convention); episode 6 is the one mixed canon/filler episode, per QuoteTheAnime's direct episode-by-episode breakdown. Season 1 adapts manga chapters 1-54.",
+  "citation_sources": [
+    {
+      "id": "quotetheanime-vinland-saga",
+      "url": "https://quotetheanime.com/filler-list/vinland-saga/",
+      "description": "QuoteTheAnime's Vinland Saga filler list, directly itemizing episode 5 as anime canon and episode 6 as mixed canon/filler, all others as manga canon.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Somewhere Not Here"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Sword"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Troll"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "A True Warrior"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime labels this 'anime canon' — original anime content that doesn't contradict the manga — mapped to canon per this project's standing convention for that label.",
+      "title": "The Troll's Son"
+    },
+    {
+      "episode_number": 6,
+      "status": "mixed",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "status_note": "QuoteTheAnime explicitly labels this 'mixed canon/filler' — blends manga-adapted material with anime-original content, the one non-fully-canon episode in an otherwise faithful season.",
+      "title": "The Journey Begins"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Normanni"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Beyond the Edge of the Sea"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "The Battle of London Bridge"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Ragnarok"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "A Gamble"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "The Land on the Far Bank"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Child of a Hero"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "The Light of Dawn"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "After Yule"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "History of Beasts"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Servant"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Out of the Cradle"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "United Front"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Crown"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Reunion"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Lone Wolf"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "Miscalculation"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "quotetheanime-vinland-saga"
+      ],
+      "source_count": 1,
+      "title": "End of the Prologue[c]"
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "series_title": "Dr. Stone",
+  "research_status": "COMPLETE — all 24 episodes of season 1 manga canon, no filler. AnimeFillerGuide explicitly confirms 0% filler across the whole series; season 1 adapts manga chapters 1-60.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-dr-stone",
+      "url": "https://www.animefillerguide.com/anime/dr-stone/",
+      "description": "AnimeFillerGuide's Dr. Stone page, confirming 0 filler episodes and 0% filler composition across the full series.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Stone World"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "King of the Stone World"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Weapons of Science"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Fire the Smoke Signal"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Stone World the Beginning"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Two Nations of the Stone World"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Where Two Million Years Have Gone"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Stone Road"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Let There Be the Light of Science"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "A Flimsy Alliance"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Clear World"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Buddies Back to Back"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Masked Warrior"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Master of Flame"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "The Culmination of Two Million Years"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "A Tale for the Ages"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "A Hundred Nights and a Thousand Skies"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Stone Wars"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "To Modernity"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "The Age of Energy"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Spartan Crafts Club"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "The Treasure"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Wave of Science"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-dr-stone"
+      ],
+      "source_count": 1,
+      "title": "Voices Over Infinite Distance"
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "series_title": "Enen no Shouboutai",
+  "research_status": "COMPLETE — all 24 episodes of season 1 manga canon, no filler. AnimeFillerGuide confirms season 1 has no filler episodes (adapting manga chapters 1-90); the one disclosed anime-original segment in the franchise (an ~17-minute cold open) belongs to season 2's premiere, outside this 24-episode catalog entry.",
+  "citation_sources": [
+    {
+      "id": "animefillerguide-fire-force",
+      "url": "https://www.animefillerguide.com/anime/fire-force/",
+      "description": "AnimeFillerGuide's Fire Force page, confirming season 1 has no filler episodes.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Shinra Kusakabe Enlists"
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Heart of a Fire Soldier"
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Rookie Fire Soldier Games"
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Hero and the Princess"
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Battle Begins"
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Spark of Promise"
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Investigation of the 1st Commences"
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Infernal Insects"
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Spreading Malice"
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Promise"
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Formation of Special Fire Force Company 8"
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Eve of Hostilities in Asakusa"
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Trap Is Set"
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "For Whom the Flames Burn"
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Blacksmith's Dream"
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "We Are Family"
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Black and White and Gray"
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Secrets of Pyrokinesis"
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Into the Nether"
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Wearing His Pride"
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Those Connected"
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "A Brother's Determination"
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "Smile"
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "animefillerguide-fire-force"
+      ],
+      "source_count": 1,
+      "title": "The Burning Past"
+    }
+  ]
+}

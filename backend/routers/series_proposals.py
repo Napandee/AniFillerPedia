@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import services.series_proposals as series_proposals_service
@@ -17,9 +17,28 @@ from schemas.series_proposals import (
     SeriesProposalOut,
     SeriesProposalReject,
     SeriesProposalReviewOut,
+    SimilarSeriesCheckOut,
 )
 
 router = APIRouter(tags=["series-proposals"])
+
+
+@router.get("/series-proposals/check-title", response_model=SimilarSeriesCheckOut)
+async def check_title_for_duplicates(
+    title: str = Query(default="", max_length=300),
+    session: AsyncSession = Depends(get_session),
+) -> SimilarSeriesCheckOut:
+    """#150: pre-submission duplicate hint — the propose-series form calls
+    this on Title-field blur, same "possible match" pattern #165's
+    anilist-lookup endpoint uses for the ID-present path. Public/
+    unauthenticated (a plain read against our own catalog, same trust
+    level as GET /series's own search) and never errors on an empty/
+    unmatched title — an empty result is a completely normal outcome, not
+    a client mistake.
+    """
+    if not title.strip():
+        return SimilarSeriesCheckOut(matches=[])
+    return await series_proposals_service.check_similar_series_by_title(session, title)
 
 
 @router.post(

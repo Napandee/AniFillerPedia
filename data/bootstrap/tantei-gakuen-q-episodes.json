@@ -1,0 +1,214 @@
+{
+  "series_title": "Tantei Gakuen Q",
+  "research_status": "Andreas's own manual cross-reference review (2026-08-27), absolute episodes 1-26 of this franchise's continuous numbering. 25 of 26 episodes classified. Episode(s) [19] omitted — his data had a gap there, not yet confirmed, left unresearched rather than guessed. Partial coverage — episodes 27-45 (19 eps) remain unresearched. Narrows, doesn't fully resolve, the prior sourcing-gap flag.",
+  "citation_sources": [
+    {
+      "id": "andreas-manual-crossref-2026-08-27",
+      "url": null,
+      "description": "Andreas's own manual cross-reference review, compiled and checked directly against the loaded (or previously unloaded) data as part of the confidence-audit pass.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 15,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 22,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 24,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 26,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    }
+  ]
+}

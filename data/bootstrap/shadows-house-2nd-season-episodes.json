@@ -1,0 +1,110 @@
+{
+  "series_title": "Shadows House 2nd Season",
+  "research_status": "Andreas's own manual cross-reference review (2026-08-27), absolute episodes 14-25 of this franchise's continuous numbering. 12 of 12 episodes classified.",
+  "citation_sources": [
+    {
+      "id": "andreas-manual-crossref-2026-08-27",
+      "url": null,
+      "description": "Andreas's own manual cross-reference review, compiled and checked directly against the loaded (or previously unloaded) data as part of the confidence-audit pass.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    }
+  ]
+}

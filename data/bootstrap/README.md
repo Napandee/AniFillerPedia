@@ -1040,3 +1040,56 @@ model as a real moderator correction) rather than a fetched guide site.
 Verified against local test-pg before touching production; loaded into
 production via the same throwaway-container pattern as every prior
 batch.
+
+## More post-audit review corrections and franchise completion (2026-08-27, batch 2)
+
+Andreas continued working through the confidence-audit artifact and sent
+hand-compiled cross-referenced breakdowns for seven more shows in one
+batch:
+
+- **Rosario to Vampire, Shadows House, Shugo Chara!** — all three
+  matched their already-loaded season-1 data exactly (0 discrepancies).
+  Same pattern as GANTZ/Sailor Moon in the prior batch: his numbering
+  was continuous across sequel seasons never loaded before. Added:
+  - Rosario to Vampire Capu2 (AniList 4214, 13 eps: 3 canon / 3 mixed / 7 filler)
+  - Shadows House 2nd Season (AniList 139093, 12 eps: 11 canon / 1 mixed / 0 filler)
+  - Shugo Chara!! Doki (AniList 5262, 50 eps loaded, 1 skipped — see below)
+  - Shugo Chara! Party! (AniList 7082, 25 eps)
+- **Tennis no Oujisama** — previously in the manual-research queue
+  (`needs-manual-research.json`) as a sourcing gap: the only fetchable
+  guide covered just episodes 1-33. Andreas's list covers the full
+  178-episode run (1 episode, #105, omitted rather than guessed — see
+  below). **This fully resolves the prior sourcing-gap flag**, removed
+  from the manual-research queue.
+- **Urusei Yatsura** — also previously flagged: every aggregator caps
+  out at episode 167 of a confirmed 194-195 total. Andreas's list also
+  covers exactly 1-167 (same cap), so this **narrows but doesn't fully
+  resolve** the gap — loaded what we have, updated the manual-research
+  entry to flag only the remaining 168-195 as still unresearched.
+- **Tantei Gakuen Q** — same pattern: previously flagged at a
+  25-of-45-episode source gap, Andreas's list covers 1-26 (1 episode,
+  #19, omitted — see below). Narrows the gap to 27-45 (19 eps),
+  updated the manual-research entry accordingly.
+- **Kinnikuman** — Andreas found only a general note ("a filler arc is
+  added in the anime: the Poison Six Pack arc"), no episode numbers.
+  Not enough to load per-episode data from directly; a follow-up
+  research pass is needed to pin down the actual episode range before
+  this can be loaded.
+
+**Three single-episode gaps left unresolved, deliberately not guessed**:
+Shugo Chara!! Doki's episode 73 (local ep 22), Tennis no Oujisama's
+episode 105, and Tantei Gakuen Q's episode 19 were each missing from
+Andreas's ranges with no explicit status given — each sits at a
+plausible boundary (a status could reasonably continue from either
+neighbor), so rather than infer one, they were left out of the loaded
+episode set entirely (silently absent = unresearched, not a wrong
+guess). Flagged back to Andreas directly to fill in the three single
+values rather than silently choosing.
+
+All new/loaded data cites Andreas's own manual cross-reference review
+directly (no external URL), same citation model as the prior batch.
+Verified against local test-pg (which needed its own series-catalog
+backfill first — it was stuck on a stale partial import missing ~100
+of the 187 real catalog rows, including several of these shows'
+base entries; re-ran `load_series.py` against it to bring it back in
+sync with production) before touching production.

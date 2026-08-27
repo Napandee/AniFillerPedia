@@ -10,6 +10,7 @@ import repositories.series as series_repo
 import repositories.series_proposals as series_proposals_repo
 import services.contributions as contributions_service
 import services.episode_ranges as episode_ranges
+import services.series_similarity as series_similarity
 from schemas.contributions import CitationIn
 from schemas.moderation import BulkModerationEntry, BulkModerationResult
 from schemas.series_proposals import (
@@ -17,6 +18,8 @@ from schemas.series_proposals import (
     SeriesProposalCreate,
     SeriesProposalOut,
     SeriesProposalReviewOut,
+    SimilarSeriesCheckOut,
+    SimilarSeriesMatchOut,
 )
 
 # Same transaction-boundary convention as services/contributions.py — the
@@ -118,17 +121,29 @@ async def submit_series_proposal(
                 session, scope=ANONYMOUS_EPISODE_DATA_RATE_LIMIT_SCOPE, identifier=identifier
             )
 
-    return _row_to_out(row)
+    return await _row_to_out(session, row)
 
 
 async def list_my_series_proposals(session: AsyncSession, user_id: int) -> list[SeriesProposalOut]:
     rows = await series_proposals_repo.list_mine(session, user_id)
-    return [_row_to_out(row) for row in rows]
+    return [await _row_to_out(session, row) for row in rows]
 
 
 async def list_pending_series_proposals(session: AsyncSession) -> list[SeriesProposalOut]:
     rows = await series_proposals_repo.list_pending(session)
-    return [_row_to_out(row) for row in rows]
+    return [await _row_to_out(session, row) for row in rows]
+
+
+async def check_similar_series_by_title(session: AsyncSession, title: str) -> SimilarSeriesCheckOut:
+    """#150: the standalone, pre-submission check the frontend calls on
+    Title-field blur — same matching logic as the possible_duplicate_
+    matches computed on every SeriesProposalOut, just callable before a
+    submitter has committed to filling out the rest of the form.
+    """
+    matches = await series_similarity.find_similar_series(session, title)
+    return SimilarSeriesCheckOut(
+        matches=[SimilarSeriesMatchOut(id=m.id, title=m.title, slug=m.slug) for m in matches]
+    )
 
 
 async def approve_series_proposal(
@@ -262,7 +277,12 @@ async def bulk_reject_series_proposals(
     return BulkModerationResult(results=results)
 
 
-def _row_to_out(row: Row) -> SeriesProposalOut:
+async def _row_to_out(session: AsyncSession, row: Row) -> SeriesProposalOut:
+    # #150: computed fresh on every read against the CURRENT series
+    # catalog — a proposal submitted before a matching series existed
+    # (or vice versa) still gets an accurate hint later, e.g. when a
+    # moderator opens the queue days after submission.
+    matches = await series_similarity.find_similar_series(session, row.title)
     return SeriesProposalOut(
         id=row.id,
         title=row.title,
@@ -275,6 +295,9 @@ def _row_to_out(row: Row) -> SeriesProposalOut:
         reviewed_at=row.reviewed_at,
         review_note=row.review_note,
         episode_data=_episode_data_out(row.episode_data),
+        possible_duplicate_matches=[
+            SimilarSeriesMatchOut(id=m.id, title=m.title, slug=m.slug) for m in matches
+        ],
     )
 
 

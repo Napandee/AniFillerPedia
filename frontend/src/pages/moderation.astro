@@ -24,6 +24,10 @@ type SeriesProposalOut = components["schemas"]["SeriesProposalOut"] & {
     citation: { url?: string | null; description: string; methodology_note?: string | null };
     declared_count: number;
   } | null;
+  // #150: same "schema.d.ts hasn't been regenerated" situation as
+  // episode_data above — augmented locally, drop this augmentation once
+  // schema.d.ts picks the field up on its own.
+  possible_duplicate_matches?: { id: number; title: string; slug: string | null }[];
 };
 
 const MODERATOR_ROLES = ["moderator", "admin", "owner"];
@@ -184,6 +188,20 @@ function formatDate(iso: string): string {
               {p.mal_id && <span class="id-chip">MAL #{p.mal_id}</span>}
               {p.anidb_id && <span class="id-chip">AniDB #{p.anidb_id}</span>}
             </div>
+            {p.possible_duplicate_matches && p.possible_duplicate_matches.length > 0 && (
+              <p class="duplicate-hint">
+                Possible match already in the catalog:{" "}
+                {p.possible_duplicate_matches.map((m, i) => (
+                  <>
+                    {i > 0 && ", "}
+                    <a href={m.slug ? `/series/${m.slug}` : `/series/${m.id}`} target="_blank" rel="noopener">
+                      {m.title}
+                    </a>
+                  </>
+                ))}
+                — worth a look before approving.
+              </p>
+            )}
             <p class="note">{p.justification}</p>
             {p.episode_data && (
               <div class="episode-data-summary">
@@ -686,6 +704,23 @@ function formatDate(iso: string): string {
     font-size: 13px;
     color: var(--color-text);
     margin: 0 0 8px;
+  }
+  /* #150: same visual language propose-series.astro's own .match-note
+     uses for its submitter-facing "possible match" hint — a moderator
+     reviewing this queue should recognize it as the same kind of signal. */
+  .duplicate-hint {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 0 0 8px;
+  }
+  .duplicate-hint a {
+    color: var(--color-accent);
+    font-weight: 700;
   }
   .citation {
     font-size: 12.5px;

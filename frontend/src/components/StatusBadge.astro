@@ -52,15 +52,20 @@ const COPY: Record<EpisodeStatus, string> = {
     font-family: var(--font-body);
     font-size: 12px;
     font-weight: 800;
-    color: #fff;
   }
+  /* #143: light-tint background + dark text, replacing white text directly
+     on the raw saturated --color-status-* values (2.04-2.72:1, failing AA).
+     See tokens.css for the computed contrast on each pair. */
   .badge--canon {
-    background: var(--color-status-canon);
+    background: var(--color-status-canon-bg);
+    color: var(--color-status-canon-text);
   }
   .badge--filler {
-    background: var(--color-status-filler);
+    background: var(--color-status-filler-bg);
+    color: var(--color-status-filler-text);
   }
   .badge--mixed {
-    background: var(--color-status-mixed);
+    background: var(--color-status-mixed-bg);
+    color: var(--color-status-mixed-text);
   }
 </style>

@@ -3,7 +3,9 @@ from sqlalchemy.engine import Row
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import repositories.contributions as contributions_repo
 import repositories.outbox as outbox_repo
+import repositories.rate_limits as rate_limits_repo
 import repositories.series as series_repo
 import repositories.series_proposals as series_proposals_repo
 import services.contributions as contributions_service
@@ -20,15 +22,58 @@ from schemas.series_proposals import (
 # Same transaction-boundary convention as services/contributions.py — the
 # caller (router) already has `async with session.begin():` open.
 
+# #139: this proposal endpoint's episode_data field is structurally
+# identical in blast radius to services/contributions.py's own bulk-
+# contribution endpoint (up to 2000 episodes per call, validated against
+# the same episode_ranges cap) but never called that endpoint's #84 rate
+# limiter at all — confirmed via grep as the actual security-review
+# finding. Scope name for the anonymous-caller counter below.
+ANONYMOUS_EPISODE_DATA_RATE_LIMIT_SCOPE = "series_proposal_bulk_anonymous"
+
 
 async def submit_series_proposal(
-    session: AsyncSession, payload: SeriesProposalCreate, current_user: Row | None
+    session: AsyncSession, payload: SeriesProposalCreate, current_user: Row | None, identifier: str
 ) -> SeriesProposalOut:
     if not payload.license_accepted:
         raise HTTPException(status_code=422, detail="license_accepted must be true")
 
     episode_data_dict: dict | None = None
     if payload.episode_data is not None:
+        # #139: apply #84's own bulk-submission rate limit here too, since
+        # this field carries the identical up-to-2000-episode blast radius
+        # as the direct bulk-contribution endpoint. An authenticated caller
+        # is counted against the SAME bulk_submission_events account-keyed
+        # counter #84 already built (hitting either endpoint consumes the
+        # same shared budget) — reusing it directly rather than inventing
+        # a parallel per-account mechanism, per this issue's own guidance.
+        # An anonymous caller has no account for that table's NOT NULL
+        # submitted_by FK to key on, so falls back to a parallel IP-keyed
+        # counter (repositories/rate_limits.py) using the identical
+        # constants, since the size/frequency concern is the same either
+        # way.
+        if current_user is not None:
+            recent_count = await contributions_repo.count_recent_bulk_submissions(
+                session, current_user.id, contributions_service.BULK_SUBMISSION_RATE_LIMIT_WINDOW_HOURS
+            )
+        else:
+            recent_count = await rate_limits_repo.count_recent(
+                session,
+                scope=ANONYMOUS_EPISODE_DATA_RATE_LIMIT_SCOPE,
+                identifier=identifier,
+                window_seconds=contributions_service.BULK_SUBMISSION_RATE_LIMIT_WINDOW_HOURS * 3600,
+            )
+        if recent_count >= contributions_service.BULK_SUBMISSION_RATE_LIMIT:
+            raise HTTPException(
+                status_code=429,
+                detail=(
+                    f"You've made {recent_count} bulk-episode-data submissions in the last "
+                    f"{contributions_service.BULK_SUBMISSION_RATE_LIMIT_WINDOW_HOURS}h (limit "
+                    f"{contributions_service.BULK_SUBMISSION_RATE_LIMIT}, shared with "
+                    "POST /series/<id>/contributions/bulk). Try again later, or submit this "
+                    "proposal without attached episode data."
+                ),
+            )
+
         # #85: validate ranges at submission time, not deferred to
         # approval — a contributor gets feedback on a malformed range
         # right away, rather than a moderator discovering it's unusable
@@ -60,6 +105,18 @@ async def submit_series_proposal(
         event_type="series_proposal.submitted",
         payload={"series_proposal_id": row.id, "title": payload.title},
     )
+
+    if payload.episode_data is not None:
+        # #139: logged once per real call with attached episode data, same
+        # transaction as everything above — counts against the same
+        # rolling-window limit checked above (shared with the direct bulk
+        # endpoint for authenticated callers).
+        if current_user is not None:
+            await contributions_repo.record_bulk_submission(session, current_user.id)
+        else:
+            await rate_limits_repo.record(
+                session, scope=ANONYMOUS_EPISODE_DATA_RATE_LIMIT_SCOPE, identifier=identifier
+            )
 
     return _row_to_out(row)
 

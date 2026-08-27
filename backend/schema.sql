@@ -290,6 +290,23 @@ CREATE TABLE bulk_submission_events (
 CREATE INDEX bulk_submission_events_by_user_and_time
     ON bulk_submission_events (submitted_by, submitted_at);
 
+-- #139/#141: generic rate-limit bookkeeping for the anonymous-accessible
+-- write endpoints that have no natural per-account row to count against
+-- the way bulk_submission_events above does (an anonymous caller has no
+-- user id). `identifier` is caller-supplied — a "user:<id>" string when
+-- authenticated, an "ip:<address>" string otherwise; `scope` keeps each
+-- endpoint's counters independent. No FK / no audit-trail purpose, same
+-- transient-bookkeeping reasoning as bulk_submission_events.
+CREATE TABLE rate_limit_events (
+    id           BIGSERIAL PRIMARY KEY,
+    scope        TEXT NOT NULL,
+    identifier   TEXT NOT NULL,
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX rate_limit_events_by_scope_identifier_time
+    ON rate_limit_events (scope, identifier, created_at);
+
 -- =========================================================================
 -- EPISODES (the live, authoritative community layer)
 -- =========================================================================

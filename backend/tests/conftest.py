@@ -9,11 +9,29 @@ loop.
 """
 
 import pytest_asyncio
+from sqlalchemy import text
 
-from core.db import engine
+from core.db import async_session_factory, engine
 
 
 @pytest_asyncio.fixture(autouse=True)
 async def _dispose_engine_after_test():
     yield
     await engine.dispose()
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def _clear_rate_limit_events():
+    """#139/#141: rate_limit_events (repositories/rate_limits.py) is
+    transient IP/user-keyed rate-limit bookkeeping with no audit-trail
+    purpose — cleared before every test so one test's anonymous
+    submissions (many tests in this suite POST /contributions or
+    /series-proposals without a session cookie, sharing the same test
+    client "IP") never spuriously count against a completely unrelated
+    test's own rate-limit budget, and so re-running the suite repeatedly
+    inside the same real hour never accumulates stale counts either.
+    """
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(text("DELETE FROM rate_limit_events"))
+    yield

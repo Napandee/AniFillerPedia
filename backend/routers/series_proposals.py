@@ -1,10 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import services.series_proposals as series_proposals_service
 import services.turnstile as turnstile_service
 from core.db import get_session
-from core.deps import get_current_user, get_current_user_optional, require_moderator
+from core.deps import (
+    get_current_user,
+    get_current_user_optional,
+    get_rate_limit_identifier,
+    require_moderator,
+)
+from schemas.contributions import BulkSubmissionRateLimited
 from schemas.moderation import BulkApproveRequest, BulkModerationResult, BulkRejectRequest
 from schemas.series_proposals import (
     SeriesProposalCreate,
@@ -16,9 +22,15 @@ from schemas.series_proposals import (
 router = APIRouter(tags=["series-proposals"])
 
 
-@router.post("/series-proposals", response_model=SeriesProposalOut, status_code=201)
+@router.post(
+    "/series-proposals",
+    response_model=SeriesProposalOut,
+    status_code=201,
+    responses={429: {"model": BulkSubmissionRateLimited}},
+)
 async def submit_series_proposal(
     payload: SeriesProposalCreate,
+    request: Request,
     current_user=Depends(get_current_user_optional),  # noqa: ANN001 - Row | None, anonymous allowed
     session: AsyncSession = Depends(get_session),
 ) -> SeriesProposalOut:
@@ -27,11 +39,18 @@ async def submit_series_proposal(
         if not allowed:
             raise HTTPException(status_code=422, detail="Turnstile verification failed")
 
+    # #139: identifies the caller for the episode_data rate-limit check
+    # (services/series_proposals.py) — user id when authenticated, IP
+    # otherwise.
+    identifier = get_rate_limit_identifier(request, current_user)
+
     # Not a context-managed session.begin() — see the detailed comment in
     # routers/contributions.py's identical fix. Same root cause: the
     # get_current_user_optional dependency's SELECT autobegins a
     # transaction before this handler body runs.
-    result = await series_proposals_service.submit_series_proposal(session, payload, current_user)
+    result = await series_proposals_service.submit_series_proposal(
+        session, payload, current_user, identifier
+    )
     await session.commit()
     return result
 

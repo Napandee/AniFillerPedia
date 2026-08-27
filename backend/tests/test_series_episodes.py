@@ -418,6 +418,121 @@ async def test_series_detail_includes_related_series(client: AsyncClient) -> Non
 
 
 @pytest.mark.asyncio
+async def test_series_next_and_previous_computed_from_sequence_order(
+    client: AsyncClient,
+) -> None:
+    """#133: watch-order navigation. A 3-member franchise chain (sequence_order
+    1/2/3, full symmetric series_relations closure) — the middle entry gets
+    both next and previous, the first gets only next, the last gets only
+    previous.
+    """
+    a_id = await _make_series("SeqA", anilist_id=900020)
+    b_id = await _make_series("SeqB", anilist_id=900021)
+    c_id = await _make_series("SeqC", anilist_id=900022)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET sequence_order = 1 WHERE id = :a"), {"a": a_id}
+                )
+                await session.execute(
+                    text("UPDATE series SET sequence_order = 2 WHERE id = :b"), {"b": b_id}
+                )
+                await session.execute(
+                    text("UPDATE series SET sequence_order = 3 WHERE id = :c"), {"c": c_id}
+                )
+                await session.execute(
+                    text(
+                        "INSERT INTO series_relations (series_id, related_series_id) "
+                        "VALUES (:a, :b), (:a, :c), (:b, :a), (:b, :c), (:c, :a), (:c, :b)"
+                    ),
+                    {"a": a_id, "b": b_id, "c": c_id},
+                )
+
+        # First in the chain: next only.
+        response = await client.get(f"/api/v1/series/{a_id}")
+        body = response.json()
+        assert body["previous_series"] is None
+        assert body["next_series"]["id"] == b_id
+
+        # Middle of the chain: both.
+        response = await client.get(f"/api/v1/series/{b_id}")
+        body = response.json()
+        assert body["previous_series"]["id"] == a_id
+        assert body["next_series"]["id"] == c_id
+
+        # Last in the chain: previous only.
+        response = await client.get(f"/api/v1/series/{c_id}")
+        body = response.json()
+        assert body["previous_series"]["id"] == b_id
+        assert body["next_series"] is None
+    finally:
+        await _cleanup_series(a_id)
+        await _cleanup_series(b_id)
+        await _cleanup_series(c_id)
+
+
+@pytest.mark.asyncio
+async def test_series_next_and_previous_none_without_sequence_order(
+    client: AsyncClient,
+) -> None:
+    """A series with no sequence_order (the vast majority) gets neither,
+    even with related_series present; a series related only to entries with
+    no sequence_order of their own also gets neither.
+    """
+    a_id = await _make_series("NoSeqA", anilist_id=900023)
+    b_id = await _make_series("NoSeqB", anilist_id=900024)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "INSERT INTO series_relations (series_id, related_series_id) "
+                        "VALUES (:a, :b), (:b, :a)"
+                    ),
+                    {"a": a_id, "b": b_id},
+                )
+
+        response = await client.get(f"/api/v1/series/{a_id}")
+        body = response.json()
+        assert body["previous_series"] is None
+        assert body["next_series"] is None
+    finally:
+        await _cleanup_series(a_id)
+        await _cleanup_series(b_id)
+
+
+@pytest.mark.asyncio
+async def test_series_sequence_order_and_watch_nav_not_on_search_list(
+    client: AsyncClient,
+) -> None:
+    """#133: sequence_order/next_series/previous_series are a detail-page-
+    only concept, same reasoning as #126's description/dates — the browse/
+    search list response must not carry them.
+    """
+    series_id = await _make_series("SeqList", anilist_id=900025)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET sequence_order = 1 WHERE id = :sid"),
+                    {"sid": series_id},
+                )
+
+        list_response = await client.get("/api/v1/series", params={"anilist_id": 900025})
+        item = list_response.json()["items"][0]
+        assert item["sequence_order"] is None
+        assert "next_series" not in item
+        assert "previous_series" not in item
+
+        detail_response = await client.get(f"/api/v1/series/{series_id}")
+        detail_body = detail_response.json()
+        assert detail_body["sequence_order"] == 1
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_series_lookup_by_slug_and_id_resolve_the_same_series(client: AsyncClient) -> None:
     """#116: slug-based series URLs. Both the numeric id and the slug
     generated from its title must resolve to the identical series.

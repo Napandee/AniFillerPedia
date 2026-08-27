@@ -1,7 +1,14 @@
-from fastapi import FastAPI
+import asyncio
+import logging
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
 from core.version import API_VERSION
 from routers import admin, auth, contributions, episodes, export, health, legal, series, series_proposals, settings, users
+from services.alerting import alert_unhandled_exception
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="AniFillerPedia API",
@@ -28,3 +35,20 @@ app.include_router(contributions.router, prefix="/api/v1")
 app.include_router(series_proposals.router, prefix="/api/v1")
 app.include_router(legal.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")
+
+
+# #17: a genuine unhandled exception (a real 500) alerts via Telegram.
+# Registering a handler for the bare `Exception` type only intercepts
+# Starlette's ServerErrorMiddleware (the outermost layer, for anything
+# that reaches it unhandled) — it does NOT shadow FastAPI's own default
+# handlers for HTTPException/RequestValidationError (those are matched
+# more specifically first), so intentional 404s/403s/422s the app already
+# raises deliberately are completely unaffected by this.
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    logger.exception("Unhandled exception handling %s %s", request.method, request.url.path)
+    # Fire-and-forget (asyncio.create_task, not awaited): a slow/failing
+    # Telegram call must never turn one application error into a hung
+    # response. See services/alerting.py's own docstring.
+    asyncio.create_task(alert_unhandled_exception(f"{request.method} {request.url.path}", exc))
+    return JSONResponse(status_code=500, content={"detail": "Internal server error"})

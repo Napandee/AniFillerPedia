@@ -128,6 +128,45 @@ const pageTitle = series
 // yet, same as before.
 const bannerUrl = series?.banner_image_url ?? series?.cover_image_url ?? null;
 
+// #126: era tile — "1999 – present" / "1992 – 1993" — synced by #49's
+// worker alongside everything else above. Null (no tile at all, not a
+// placeholder) until the sync worker has reached this series and found a
+// complete start date. start_date/end_date are ISO "YYYY-MM-DD" strings;
+// slicing the first 4 chars avoids any Date()/timezone parsing entirely.
+const startYear = series?.start_date ? series.start_date.slice(0, 4) : null;
+const endYear = series?.end_date ? series.end_date.slice(0, 4) : null;
+const eraLine =
+  startYear === null
+    ? null
+    : endYear !== null
+      ? t("series.era.range", { startYear, endYear })
+      : series!.airing_status === "RELEASING"
+        ? t("series.era.ongoing", { startYear })
+        : // Edge case: no end date recorded, but AniList doesn't (or no
+          // longer) reports this as RELEASING either (e.g. a
+          // cancelled/hiatus show AniList never gave an end date for) —
+          // an "ongoing"/"present" framing would be actively wrong here,
+          // so fall back to just the bare start year.
+          startYear;
+
+// #126: about-card — AniList's own synopsis, cleaned server-side
+// (services/anilist_sync.py's clean_anilist_description) into plain text
+// with "\n\n" paragraph breaks. Null description (not yet synced, or this
+// series genuinely has none) renders no card at all, same "nothing rather
+// than a placeholder" convention as everywhere else on this page.
+const descriptionParagraphs = series?.description
+  ? series.description
+      .split(/\n{2,}/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+  : [];
+const firstParagraph = descriptionParagraphs[0] ?? null;
+// Only a real second paragraph earns a "Read more" toggle — a single
+// short paragraph with no natural break just renders plain, per #126's
+// own acceptance criteria.
+const restOfDescription =
+  descriptionParagraphs.length > 1 ? descriptionParagraphs.slice(1).join("\n\n") : null;
+
 // #51: aired_at is nullable (#49's AniList sync doesn't reach every
 // episode — notably not the earlier episodes of an already-finished long
 // show, since AniList's own schedule data only retains a rolling window).
@@ -229,7 +268,28 @@ const structuredData = series
                 {series!.airing_status === "RELEASING" && <span class="airing-badge">{t("series.airingBadge")}</span>}
               </div>
             </div>
+            {eraLine !== null && (
+              <div class="era-tile">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3" /><path d="M3 10h18" /><path d="M8 3v4" /><path d="M16 3v4" /></svg>
+                {eraLine}
+              </div>
+            )}
           </div>
+
+          {firstParagraph !== null && (
+            <div class="about-card">
+              <div class="about-label">{t("series.about.label")}</div>
+              <div class="about-text">
+                {firstParagraph}
+                {restOfDescription !== null && (
+                  <details class="about-more">
+                    <summary><span class="about-more-label">{t("series.about.readMore")}</span></summary>
+                    <span class="about-more-text">{restOfDescription}</span>
+                  </details>
+                )}
+              </div>
+            </div>
+          )}
 
           {series!.synonyms.length > 0 && (
             <details class="synonyms">
@@ -624,6 +684,94 @@ const structuredData = series
     letter-spacing: 0.02em;
     text-shadow: none;
     box-shadow: var(--shadow-sticker);
+  }
+
+  /* #126: era tile — a small dark rounded-card chip in the hero's empty
+     space to the right of the title, not stacked as plain text under it. */
+  .era-tile {
+    margin-left: auto;
+    align-self: flex-start;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #2b1220;
+    border-radius: 14px;
+    padding: 9px 16px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff8f2;
+    flex-shrink: 0;
+  }
+  .era-tile svg {
+    flex-shrink: 0;
+  }
+
+  /* #126: about-card — collapsed/expand synopsis right under the title,
+     reusing the same <details>/<summary> disclosure pattern as .synonyms
+     and .range-more below. A <div>, not a <p>, wraps the text: <details>
+     is flow content and browsers silently auto-close an open <p> when
+     they hit one, which broke an earlier draft's nesting. */
+  .about-card {
+    margin: 16px 24px 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sticker);
+    padding: 16px 18px;
+  }
+  .about-label {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .about-text {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.65;
+    margin: 0;
+    white-space: pre-line;
+  }
+  .about-more {
+    display: inline;
+  }
+  .about-more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    color: var(--color-accent);
+    font-weight: 800;
+    font-size: 12.5px;
+    list-style: none;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: #ffe1f0;
+    margin-left: 4px;
+  }
+  .about-more summary:hover {
+    background: #ffd0e6;
+  }
+  .about-more summary::-webkit-details-marker {
+    display: none;
+  }
+  .about-more-text {
+    display: inline;
+    white-space: pre-line;
+  }
+  .about-more[open] summary {
+    background: transparent;
+    padding: 2px 0;
+    margin-left: 0;
+  }
+  .about-more[open] summary .about-more-label {
+    display: none;
+  }
+  .about-more[open] summary::before {
+    content: "\2212\00a0show less";
   }
 
   /* #51: collapsed by default — a 40+ entry synonym list used to run for

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -46,6 +46,16 @@ class SeriesDetailOut(SeriesOut):
     # Fairy Tail (2014) / Fairy Tail (2018)) — see series_relations in
     # schema.sql. Empty for the vast majority of series.
     related_series: list[SeriesOut]
+    # #126: AniList's own synopsis + air-date range, synced by #49's
+    # worker on the same cadence as everything else — null until first
+    # sync (or, for description, until a still-pending #67-style
+    # one-more-pass backfill for a series marked FINISHED before this
+    # field existed; see repositories/series_episode_schedule.py). Only
+    # exposed on the detail response (not SeriesOut/the browse grid) —
+    # the about-card/era-tile only render on the series detail page.
+    description: str | None = Field(validation_alias="anilist_description")
+    start_date: date | None = Field(validation_alias="anilist_start_date")
+    end_date: date | None = Field(validation_alias="anilist_end_date")
 
 
 class SeriesListOut(BaseModel):

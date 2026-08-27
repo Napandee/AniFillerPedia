@@ -1117,6 +1117,12 @@ export interface components {
             anilist_episode_count: number | null;
             /** Related Series */
             related_series: components["schemas"]["SeriesOut"][];
+            /** Description */
+            description: string | null;
+            /** Start Date */
+            start_date: string | null;
+            /** End Date */
+            end_date: string | null;
         };
         /** SeriesListOut */
         SeriesListOut: {

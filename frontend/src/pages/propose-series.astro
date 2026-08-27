@@ -480,8 +480,13 @@ if (Astro.request.method === "POST") {
     font-size: 12px;
     font-weight: 700;
   }
+  /* #147: background was a hardcoded #fff0f3 — promoted into tokens.css as
+     --color-dispute-bg (unifies this with the near-identical literals in
+     bulk-submit.astro/submit.astro's .notice--error and
+     episodes/[id]/history.astro's error banner). --color-dispute itself
+     was darkened for #143 (was 3.5-3.67:1 as text, failing AA). */
   .form-error {
-    background: #fff0f3;
+    background: var(--color-dispute-bg);
     border: 1px solid var(--color-dispute);
     color: var(--color-dispute);
     border-radius: 10px;

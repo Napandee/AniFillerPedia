@@ -15,7 +15,7 @@ const { placeholder = t("home.searchPlaceholder"), name = "q" } = Astro.props;
     <circle cx="11" cy="11" r="7"></circle>
     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
   </svg>
-  <input type="search" {name} {placeholder} />
+  <input type="search" {name} {placeholder} aria-label={placeholder} />
 </form>
 
 <style>
@@ -40,6 +40,15 @@ const { placeholder = t("home.searchPlaceholder"), name = "q" } = Astro.props;
     font-size: 13.5px;
     font-weight: 700;
     color: var(--color-heading);
+  }
+  /* #145: this input previously had no visible keyboard-focus indicator at
+     all (outline: none, no replacement) — the sitewide :focus-visible
+     baseline in Layout.astro can't reach it since this unconditional
+     `outline: none` above has higher specificity and always wins. Give it
+     its own explicit focus-visible treatment instead. */
+  .search input:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
   }
   .search input::placeholder {
     color: var(--color-text-faint);

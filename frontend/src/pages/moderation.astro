@@ -106,7 +106,7 @@ function formatDate(iso: string): string {
           <li class="card" data-kind="contribution" data-id={c.id}>
             <div class="card-top">
               <label class="select-one">
-                <input type="checkbox" class="select-checkbox" />
+                <input type="checkbox" class="select-checkbox" aria-label="Select this contribution" />
               </label>
               <span class="target">Series #{c.series_id} · Episode #{c.episode_number}</span>
               <span class={`status-pill status-pill--${c.proposed_status}`}>{c.proposed_status}</span>
@@ -175,7 +175,7 @@ function formatDate(iso: string): string {
           <li class="card" data-kind="proposal" data-id={p.id}>
             <div class="card-top">
               <label class="select-one">
-                <input type="checkbox" class="select-checkbox" />
+                <input type="checkbox" class="select-checkbox" aria-label="Select this series proposal" />
               </label>
               <span class="target disp">{p.title}</span>
             </div>

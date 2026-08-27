@@ -4,6 +4,8 @@ table only ever records "does episode N exist and when did it air,"
 independent of any filler/canon research.
 """
 
+from datetime import date
+
 from sqlalchemy import text
 from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,6 +22,11 @@ async def list_series_needing_sync(session: AsyncSession) -> list[Row]:
     sync, so they'd otherwise never be reconsidered by the check above)
     remains a candidate for exactly one more pass, purely to backfill
     that field. Once populated it drops out again like anything else.
+
+    #126: same one-more-pass exception for anilist_description — a series
+    already marked FINISHED and cover-synced before this field existed
+    would otherwise never be revisited to backfill it. Once populated it
+    drops out of the candidate list again, same as the cover-art case.
     """
     result = await session.execute(
         text(
@@ -31,6 +38,7 @@ async def list_series_needing_sync(session: AsyncSession) -> list[Row]:
                 anilist_status IS NULL
                 OR anilist_status != 'FINISHED'
                 OR anilist_cover_url IS NULL
+                OR anilist_description IS NULL
               )
             ORDER BY id
             """
@@ -65,6 +73,9 @@ async def mark_synced(
     anilist_episode_count: int | None,
     anilist_cover_url: str | None,
     anilist_banner_url: str | None,
+    anilist_description: str | None = None,
+    anilist_start_date: date | None = None,
+    anilist_end_date: date | None = None,
 ) -> None:
     await session.execute(
         text(
@@ -74,6 +85,9 @@ async def mark_synced(
                 anilist_episode_count = :episode_count,
                 anilist_cover_url = :cover_url,
                 anilist_banner_url = :banner_url,
+                anilist_description = :description,
+                anilist_start_date = :start_date,
+                anilist_end_date = :end_date,
                 episode_schedule_synced_at = now()
             WHERE id = :series_id
             """
@@ -83,6 +97,9 @@ async def mark_synced(
             "episode_count": anilist_episode_count,
             "cover_url": anilist_cover_url,
             "banner_url": anilist_banner_url,
+            "description": anilist_description,
+            "start_date": anilist_start_date,
+            "end_date": anilist_end_date,
             "series_id": series_id,
         },
     )

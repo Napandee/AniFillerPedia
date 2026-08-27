@@ -5,7 +5,20 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from core.version import API_VERSION
-from routers import admin, auth, contributions, episodes, export, health, legal, series, series_proposals, settings, users
+from routers import (
+    admin,
+    anilist_lookup,
+    auth,
+    contributions,
+    episodes,
+    export,
+    health,
+    legal,
+    series,
+    series_proposals,
+    settings,
+    users,
+)
 from services.alerting import alert_unhandled_exception
 
 logger = logging.getLogger(__name__)
@@ -46,6 +59,7 @@ app.include_router(users.router, prefix="/api/v1")
 app.include_router(export.router, prefix="/api/v1")
 app.include_router(contributions.router, prefix="/api/v1")
 app.include_router(series_proposals.router, prefix="/api/v1")
+app.include_router(anilist_lookup.router, prefix="/api/v1")
 app.include_router(legal.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")
 

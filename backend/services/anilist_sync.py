@@ -30,6 +30,7 @@ import asyncio
 import html as html_module
 import logging
 import re
+from dataclasses import dataclass
 from datetime import date
 
 import httpx
@@ -111,6 +112,90 @@ def _parse_anilist_date(value: dict | None) -> date | None:
         return date(year, month, day)
     except ValueError:
         return None
+
+@dataclass
+class AniListMediaSummary:
+    """#165: the small, live-lookup-shaped subset of a Media object the
+    series-proposal form's blur-triggered preview needs — deliberately
+    not reusing _fetch_schedule's return shape (that's built for the
+    batch daily-sync worker's own columns, e.g. airingSchedule pagination
+    this single-request lookup has no use for)."""
+
+    anilist_id: int
+    title: str
+    format: str | None
+    episode_count: int | None
+    cover_image_url: str | None
+
+
+_LOOKUP_QUERY = """
+query ($id: Int) {
+  Media(id: $id, type: ANIME) {
+    id
+    title { romaji english native }
+    format
+    episodes
+    coverImage { extraLarge large }
+  }
+}
+"""
+
+
+async def fetch_anilist_media_summary(anilist_id: int) -> AniListMediaSummary | None:
+    """#165: a live, single-request AniList lookup for the series-
+    proposal form's blur-triggered preview — distinct from _fetch_schedule
+    above, which is built for the daily sync worker (retry/backoff,
+    airingSchedule pagination) and would be the wrong tool for a
+    synchronous per-request call a real user is waiting on.
+
+    Returns None for anything that isn't a clean, parseable 200 with a
+    real Media object carrying at least one title — no such AniList id,
+    a network error, a non-200 response, or a malformed body are all
+    treated identically as "nothing to show," matching this module's
+    existing "no data" convention (_fetch_schedule above does the same).
+    A live user-facing path failing soft this way is a better failure
+    mode than surfacing a raw 500 for what's ultimately a non-blocking,
+    optional preview.
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                ANILIST_ENDPOINT,
+                json={"query": _LOOKUP_QUERY, "variables": {"id": anilist_id}},
+                timeout=10.0,
+            )
+    except httpx.HTTPError:
+        logger.warning("AniList live lookup request failed for anilist_id=%s", anilist_id, exc_info=True)
+        return None
+
+    if response.status_code != 200:
+        return None
+
+    try:
+        body = response.json()
+    except ValueError:
+        return None
+
+    media = (body or {}).get("data", {}).get("Media")
+    if not media:
+        return None
+
+    title_fields = media.get("title") or {}
+    title = title_fields.get("english") or title_fields.get("romaji") or title_fields.get("native")
+    if not title:
+        return None
+
+    cover = media.get("coverImage") or {}
+    cover_url = cover.get("extraLarge") or cover.get("large")
+
+    return AniListMediaSummary(
+        anilist_id=media.get("id") or anilist_id,
+        title=title,
+        format=media.get("format"),
+        episode_count=media.get("episodes"),
+        cover_image_url=cover_url,
+    )
+
 
 # Polite spacing against AniList's shared rate limit (nominally 90 req/min,
 # but confirmed live 2026-08-22 that a large first backfill across the

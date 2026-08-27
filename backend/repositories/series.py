@@ -141,6 +141,18 @@ async def get_series_by_identifier(session: AsyncSession, identifier: str) -> Ro
     return result.first()
 
 
+async def get_by_anilist_id(session: AsyncSession, anilist_id: int) -> Row | None:
+    """#165: the early duplicate check for the series-proposal form's
+    live AniList-ID lookup — checked BEFORE calling out to AniList itself,
+    so an ID that already belongs to a catalogued series never needs a
+    live AniList round-trip at all (services/anilist_lookup.py)."""
+    result = await session.execute(
+        text("SELECT id, title, slug FROM series WHERE anilist_id = :anilist_id"),
+        {"anilist_id": anilist_id},
+    )
+    return result.first()
+
+
 async def get_synonyms(session: AsyncSession, series_id: int) -> list[str]:
     result = await session.execute(
         text("SELECT synonym FROM series_synonyms WHERE series_id = :id ORDER BY id"),

@@ -503,12 +503,15 @@ async def test_series_next_and_previous_none_without_sequence_order(
 
 
 @pytest.mark.asyncio
-async def test_series_sequence_order_and_watch_nav_not_on_search_list(
+async def test_series_next_and_previous_not_on_search_list(
     client: AsyncClient,
 ) -> None:
-    """#133: sequence_order/next_series/previous_series are a detail-page-
-    only concept, same reasoning as #126's description/dates — the browse/
-    search list response must not carry them.
+    """#133: next_series/previous_series are a genuinely detail-page-only
+    concept (computed watch-nav, not a plain column) — the browse/search
+    list response must not carry them. sequence_order itself is NOT in this
+    category: #146 fixed search_series() to select it like every other
+    SeriesOut-shaped query, so it's asserted present (not absent) below,
+    unlike next_series/previous_series.
     """
     series_id = await _make_series("SeqList", anilist_id=900025)
     try:
@@ -521,13 +524,41 @@ async def test_series_sequence_order_and_watch_nav_not_on_search_list(
 
         list_response = await client.get("/api/v1/series", params={"anilist_id": 900025})
         item = list_response.json()["items"][0]
-        assert item["sequence_order"] is None
+        assert item["sequence_order"] == 1
         assert "next_series" not in item
         assert "previous_series" not in item
 
         detail_response = await client.get(f"/api/v1/series/{series_id}")
         detail_body = detail_response.json()
         assert detail_body["sequence_order"] == 1
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_sequence_order_present_on_recently_updated_sort(
+    client: AsyncClient,
+) -> None:
+    """#146: the recently_updated sort branch is a separate SELECT from the
+    plain list branch in search_series() — regression-test it independently
+    so a future edit touching only one branch can't silently reintroduce the
+    null-sequence_order bug in the other.
+    """
+    series_id = await _make_series("SeqRecent", anilist_id=900026)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET sequence_order = 4 WHERE id = :sid"),
+                    {"sid": series_id},
+                )
+
+        list_response = await client.get(
+            "/api/v1/series",
+            params={"sort": "recently_updated", "anilist_id": 900026},
+        )
+        item = list_response.json()["items"][0]
+        assert item["sequence_order"] == 4
     finally:
         await _cleanup_series(series_id)
 

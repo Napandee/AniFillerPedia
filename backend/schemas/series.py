@@ -16,6 +16,11 @@ class SeriesOut(BaseModel):
     title: str
     provenance: str
     created_at: datetime
+    # #116: slug-based series URLs (/series/berserk instead of /series/8).
+    # Nullable only until the one-time production backfill runs — every
+    # series created after #116 shipped always has one (repositories/
+    # series.py's create() generates it at insert time).
+    slug: str | None
     # #46 follow-up (2026-08-22): synced by #49's worker on a daily cadence,
     # not fetched live from AniList per-request — a real AniList outage
     # previously took down cover art site-wide since it used to be a

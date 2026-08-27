@@ -34,7 +34,12 @@ export const GET: APIRoute = async ({ site }) => {
   const api = createApiClient(baseUrl);
   const origin = site?.toString().replace(/\/$/, "") ?? "https://anifillerpedia.wiki";
 
-  const seriesIds: number[] = [];
+  // #116: slugs, not numeric ids — the canonical series URL is now
+  // /series/{slug}. Falls back to the numeric id for the vanishingly rare
+  // case of a series whose slug backfill hasn't reached it yet (never true
+  // in production after the #116 migration's backfill runs, but avoids
+  // emitting a literal "null" segment if it ever were).
+  const seriesSlugs: string[] = [];
   const limit = 100;
   let offset = 0;
   // Bounded to a sane number of pages so a backend error/loop can't hang
@@ -42,17 +47,17 @@ export const GET: APIRoute = async ({ site }) => {
   for (let page = 0; page < 100; page++) {
     const { data } = await api.GET("/api/v1/series", { params: { query: { limit, offset } } });
     if (!data || data.items.length === 0) break;
-    seriesIds.push(...data.items.map((item) => item.id));
+    seriesSlugs.push(...data.items.map((item) => item.slug ?? String(item.id)));
     offset += limit;
     if (offset >= data.total) break;
   }
 
   const urls = [
     ...STATIC_PATHS.map((path) => urlEntry(`${origin}/${path}`)),
-    ...seriesIds.map((id) => urlEntry(`${origin}/series/${id}`)),
+    ...seriesSlugs.map((slug) => urlEntry(`${origin}/series/${slug}`)),
     ...NON_DEFAULT_LOCALES.flatMap((locale) => [
       ...LOCALIZED_PATHS.map((path) => urlEntry(`${origin}${getRelativeLocaleUrl(locale, `/${path}`)}`)),
-      ...seriesIds.map((id) => urlEntry(`${origin}${getRelativeLocaleUrl(locale, `/series/${id}`)}`)),
+      ...seriesSlugs.map((slug) => urlEntry(`${origin}${getRelativeLocaleUrl(locale, `/series/${slug}`)}`)),
     ]),
   ];
 

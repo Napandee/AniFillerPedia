@@ -1,0 +1,26 @@
+---
+// #106: thin per-locale route wrapper — see src/pages/series/[slug].astro's
+// own comment for why this file exists and just re-renders a shared
+// component (and #116's own comment there for why the redirect/404-status
+// handling has to live here, not in the shared component itself).
+import SeriesDetailPage from "../../../components/pages/series/SeriesDetailPage.astro";
+import { resolveSeriesDetail } from "../../../lib/seriesDetail";
+import { resolveLocale } from "../../../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+const resolution = await resolveSeriesDetail(Astro.params.slug ?? "", apiBaseUrl, (slug) =>
+  getRelativeLocaleUrl(locale, `/series/${slug}`)
+);
+
+if (resolution.kind === "redirect") {
+  return Astro.redirect(resolution.to, 301);
+}
+if (resolution.kind === "not-found") {
+  Astro.response.status = 404;
+}
+---
+
+<SeriesDetailPage resolution={resolution} />

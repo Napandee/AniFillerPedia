@@ -8,6 +8,8 @@ from sqlalchemy import text
 from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from services.slugs import disambiguate_slug, slugify_title
+
 
 async def search_series(
     session: AsyncSession,
@@ -76,7 +78,7 @@ async def search_series(
                     f"""
                     SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
                            s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
-                           s.anilist_status
+                           s.anilist_status, s.slug
                     FROM series s
                     LEFT JOIN episodes e ON e.series_id = s.id
                     {where_sql}
@@ -95,7 +97,7 @@ async def search_series(
                     f"""
                     SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
                            s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
-                           s.anilist_status
+                           s.anilist_status, s.slug
                     FROM series s
                     {where_sql}
                     ORDER BY s.id
@@ -109,14 +111,23 @@ async def search_series(
     return list(rows), total
 
 
-async def get_series_by_id(session: AsyncSession, series_id: int) -> Row | None:
+async def get_series_by_identifier(session: AsyncSession, identifier: str) -> Row | None:
+    """#116: `identifier` is either a numeric series id (legacy/internal
+    lookups, e.g. episode/contribution rows that only carry series_id) or
+    a slug (the new canonical public URL segment). The check happens in
+    Python, not SQL — `WHERE id = :id OR slug = :slug` would also match a
+    slug that happens to be all-digits some day, which isn't the intent
+    here (an identifier that parses as a plain int is ALWAYS treated as an
+    id, never as a slug lookup).
+    """
+    column = "id" if identifier.isdigit() else "slug"
     result = await session.execute(
         text(
             "SELECT id, anilist_id, mal_id, anidb_id, title, provenance, created_at, "
-            "anilist_episode_count, anilist_cover_url, anilist_banner_url, anilist_status "
-            "FROM series WHERE id = :id"
+            "anilist_episode_count, anilist_cover_url, anilist_banner_url, anilist_status, slug "
+            f"FROM series WHERE {column} = :identifier"
         ),
-        {"id": series_id},
+        {"identifier": int(identifier) if column == "id" else identifier},
     )
     return result.first()
 
@@ -135,7 +146,7 @@ async def get_related_series(session: AsyncSession, series_id: int) -> list[Row]
             """
             SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
                    s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
-                   s.anilist_status
+                   s.anilist_status, s.slug
             FROM series_relations r
             JOIN series s ON s.id = r.related_series_id
             WHERE r.series_id = :id
@@ -162,6 +173,13 @@ async def create(
     proposal whose external ID collides with an already-bootstrapped
     series raises IntegrityError, which the service layer (not this
     repository) turns into a clean 409 rather than a raw 500.
+
+    #116: also generates a slug for the new row, same rule as the one-time
+    production backfill (migrations/011_backfill_series_slugs.py) — both
+    import services.slugs so the two can never drift apart. The new row's
+    own id is only known after INSERT, so a real collision (the generated
+    base slug already belongs to another series) is disambiguated with a
+    follow-up UPDATE rather than computed up front.
     """
     result = await session.execute(
         text(
@@ -180,4 +198,19 @@ async def create(
             "added_by": added_by,
         },
     )
-    return result.one()
+    row = result.one()
+
+    base_slug = slugify_title(title)
+    collision = (
+        await session.execute(
+            text("SELECT 1 FROM series WHERE slug = :slug AND id != :id"),
+            {"slug": base_slug, "id": row.id},
+        )
+    ).first()
+    slug = disambiguate_slug(base_slug, row.id) if collision else base_slug
+    await session.execute(
+        text("UPDATE series SET slug = :slug WHERE id = :id"),
+        {"slug": slug, "id": row.id},
+    )
+    row = (await session.execute(text("SELECT * FROM series WHERE id = :id"), {"id": row.id})).one()
+    return row

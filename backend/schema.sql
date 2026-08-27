@@ -92,7 +92,13 @@ CREATE TABLE series (
     -- every page load — a real AniList outage previously took down cover
     -- art site-wide since it was a synchronous per-request dependency.
     anilist_cover_url            TEXT,
-    anilist_banner_url           TEXT
+    anilist_banner_url           TEXT,
+    -- #116: slug-based series URLs (/series/berserk instead of /series/8).
+    -- Nullable until backfilled (see migrations/011_backfill_series_slugs.py)
+    -- — repositories/series.py's lookup falls back to id when a series has
+    -- no slug yet. Generated from title via services/slugs.py; collisions
+    -- disambiguated with the series' own numeric id.
+    slug                         TEXT UNIQUE
 );
 
 -- Alternate/romanized/native-script titles, captured during the one-time

@@ -30,7 +30,10 @@ class CitationIn(BaseModel):
 
 class ContributionCreate(BaseModel):
     series_id: int
-    episode_number: int
+    # #152: floor of 1 — matches services/episode_ranges.py's own
+    # start >= 1 rule for the bulk path's range parser; the single-episode
+    # path never had an equivalent lower-bound check before this.
+    episode_number: int = Field(ge=1)
     proposed_status: str = Field(pattern="^(canon|filler|mixed)$")
     # #140: max_length 3000 — the longest real status_note loaded so far
     # (across data/bootstrap/*.json) is 802 chars; 3000 leaves real

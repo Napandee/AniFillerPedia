@@ -120,3 +120,22 @@ def parse_and_validate(
         )
 
     return by_episode
+
+
+def find_out_of_range_episodes(
+    episode_numbers, anilist_episode_count: int | None  # noqa: ANN001 - Iterable[int]
+) -> list[int]:
+    """#152: which of the given episode numbers exceed the series' own
+    known real episode count (series.anilist_episode_count, synced by
+    #49's AniList worker). A NULL count — a series #49 has never synced
+    (a brand-new community proposal, a movie/special with no AniList
+    entry) — means "unknown," not "zero episodes": validation is a no-op
+    in that case, never a block, per this project's own guardrail against
+    rejecting a submission just because the real count isn't known yet.
+    Pure function, no DB access, same reasoning as parse_ranges/
+    parse_and_validate above — easy to unit test, reusable from both the
+    single-episode and bulk submission paths.
+    """
+    if anilist_episode_count is None:
+        return []
+    return sorted(n for n in episode_numbers if n > anilist_episode_count)

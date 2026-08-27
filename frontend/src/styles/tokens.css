@@ -20,12 +20,25 @@
   --color-text: #2b1b2e;
   --color-heading: #3b1830;
   --color-text-muted: #7c3a56;
-  --color-text-faint: #b06090;
-  --color-text-label: #c9a0b8;
+  /* #143: darkened from #b06090 (4.06-4.27:1 against bg/surface — passed
+     only at large text sizes) to a value that clears 4.5:1 at the 11-13px
+     sizes this is actually used at (.stat-pct, .verified-line, .status-note,
+     .about-label, and others) — computed 5.02:1 vs --color-bg, 5.28:1 vs
+     --color-surface. Fixed at the token level so every consumer benefits,
+     not patched per-component. */
+  --color-text-faint: #a15080;
+  /* #143: darkened from #c9a0b8 (2.17-2.28:1, failing) — unused today, but
+     fixed at the token level so it isn't a latent contrast trap for a future
+     consumer. 5.12-5.38:1 vs bg/surface. */
+  --color-text-label: #8f5a78;
 
   /* Accent */
   --color-accent: #d6337a;
   --color-accent-gold: #ffc93c;
+  /* #147: promoted from a hardcoded literal in CoverFallback.astro's second
+     gradient stripe — not a status-mixed color, a distinct decorative
+     purple. */
+  --color-accent-purple: #a166e0;
 
   /* Borders / dividers */
   --color-border-card: #ffd6ea;
@@ -38,8 +51,42 @@
   --color-status-mixed: #a78bfa;
   --color-status-pending: #38bdf8;
   --color-endorse: #22c55e;
-  --color-dispute: #f43f5e;
+  /* #143: darkened from #f43f5e (3.49-3.67:1 as text, failing AA) to a value
+     that clears 4.5:1 wherever it's used as text (form validation errors,
+     the "required" asterisk, dispute vote labels) — computed 7.36-7.75:1
+     vs bg/surface. Contrast is symmetric, so this also improves (without
+     regressing) every place this token is used as a solid background behind
+     white text (Button.astro's dispute variant, toast/banner errors) —
+     2.28:1→7.75:1 there too, a bonus fix, not a separate change. */
+  --color-dispute: #9f1d3a;
   --color-trust-chip-bg: #ffe1f0;
+
+  /* #143/#147: light-tint background + dark text pairs for the canon/filler/
+     mixed status badge family (StatusBadge.astro, moderation.astro's
+     contribution status pill), replacing white text directly on the raw
+     saturated --color-status-* values above (2.04-2.72:1, failing AA badly).
+     --color-status-canon-text doubles as the "positive/success" dark-text
+     color for the trust badge and the endorse success banner — same green
+     family, one token instead of three near-duplicates. Computed contrast,
+     text vs its own paired -bg token: canon 6.49:1, filler 5.62:1,
+     mixed 5.11:1 (all also verified >=6:1 against plain white/cream). */
+  --color-status-canon-text: #166534;
+  --color-status-filler-text: #9a4a0a;
+  --color-status-mixed-text: #6d4fb8;
+  --color-status-canon-bg: #dcfce7;
+  --color-status-filler-bg: #fef3c7;
+  --color-status-mixed-bg: #ede9fe;
+  /* #147: promoted from hardcoded literals duplicated across files.
+     --color-trust-bg was SeriesDetailPage.astro's own .trust-badge
+     background; --color-dispute-bg unifies three near-identical pale-red
+     literals (moderation.astro's error banner, propose-series.astro's
+     .form-error, bulk-submit.astro/submit.astro's .notice--error,
+     episodes/[id]/history.astro's error banner) into one token, now paired
+     with the darkened --color-dispute above (6.33-7.75:1); --color-endorse-bg
+     was episodes/[id]/history.astro's own success-banner background. */
+  --color-trust-bg: #ecfdf3;
+  --color-dispute-bg: #ffe1e6;
+  --color-endorse-bg: #eafff1;
 
   /* Shape */
   --radius-pill: 999px;

@@ -371,8 +371,12 @@ const countsByStatus = (entries: BulkEntry[]) => {
   .notice p:last-child {
     margin-bottom: 0;
   }
+  /* #147: background was a hardcoded #fde8ec, reused independently in this
+     file and submit.astro — promoted into tokens.css as --color-dispute-bg.
+     --color-dispute itself was darkened for #143 (was 3.5-3.67:1 as text,
+     failing AA). */
   .notice--error {
-    background: #fde8ec;
+    background: var(--color-dispute-bg);
     color: var(--color-dispute);
   }
   .notice--duplicate {

@@ -37,7 +37,11 @@ class SeriesProposalCreate(BaseModel):
     anilist_id: int | None = None
     mal_id: int | None = None
     anidb_id: int | None = None
-    justification: str = Field(min_length=1)
+    # #140: max_length 3000 — same "a couple thousand characters is plenty
+    # for a real justification" ceiling as the other freeform fields in
+    # this batch of fixes (schemas/contributions.py), bounding the
+    # storage-bloat vector without risking rejecting any real submission.
+    justification: str = Field(min_length=1, max_length=3000)
     license_accepted: bool
     # Same structurally-ready-not-live-verified note as ContributionCreate.
     turnstile_token: str | None = None

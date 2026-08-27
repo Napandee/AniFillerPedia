@@ -64,6 +64,23 @@ async def require_admin(current_user: Row = Depends(get_current_user)) -> Row:
     return current_user
 
 
+def get_rate_limit_identifier(request: Request, current_user: Row | None) -> str:
+    """#139/#141: identity to key a rate-limit counter against, for the
+    anonymous-accessible write endpoints (POST /contributions,
+    POST /series-proposals, POST /export/request-access) — the caller's
+    own user id when authenticated (so a shared NAT/proxy IP never lumps
+    distinct logged-in callers into one bucket), the remote IP otherwise.
+    Relies on the Dockerfile's `--proxy-headers --forwarded-allow-ips=*`
+    uvicorn flags so `request.client.host` reflects the real client IP
+    behind Caddy, not the proxy's own address — see repositories/
+    rate_limits.py for what this identifier is actually counted against.
+    """
+    if current_user is not None:
+        return f"user:{current_user.id}"
+    host = request.client.host if request.client else "unknown"
+    return f"ip:{host}"
+
+
 async def require_owner(current_user: Row = Depends(get_current_user)) -> Row:
     """Owner-only tier (decided 2026-08-21, CLAUDE.md) — strictly above
     admin, and structurally unreachable via the role-promotion endpoint

@@ -456,3 +456,27 @@ Not yet decided.
   with no structural distinction) — the simpler option, but it leaves the
   privilege-escalation gap open the moment a second admin exists, which
   Phase 5's admin UI is expected to make easy to create.
+- **CORS: deliberately left unconfigured** (decided 2026-08-27, issue
+  #142) — no `CORSMiddleware` in `backend/main.py`, and that's a decision,
+  not an oversight. No real external browser-based consumer exists today:
+  the Astro frontend calls this API same-origin (Caddy splits
+  `/api/v1/*` to the backend container on the same domain, never a
+  cross-origin browser-JS call), and auth is cookie-based session tokens
+  (`samesite=lax`, `httpOnly`) — which wouldn't usefully support
+  cross-origin browser calls without meaningfully more work (a bearer-
+  token auth path, explicit origin allowlisting, credentialed-CORS
+  wiring) even if CORS were opened. The one speculative future consumer
+  named elsewhere in this doc (a possible AniDex integration) would most
+  plausibly be server-to-server, which CORS doesn't gate at all — it's a
+  browser-enforced restriction, so a server calling this API directly is
+  unaffected by CORS being closed either way. **Rejected**: opening CORS
+  now for anticipated future consumers with no concrete one yet — this
+  project's own general bias (stated repeatedly elsewhere in this doc) is
+  against building for demand that doesn't exist yet, and a wide-open
+  `allow_origins=["*"]` would be actively worse than the current default
+  for zero present benefit. Revisit if a real browser-based third-party
+  client actually shows up wanting cross-origin reads — at that point,
+  scope any opening to the public read endpoints specifically (series/
+  episodes/citations), not the auth-gated write paths, and treat it as a
+  real (if small) architecture change requiring the same care as any
+  other Guardrails-listed decision, not a quick middleware add.

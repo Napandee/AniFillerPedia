@@ -101,6 +101,18 @@ const ogImage = image ? new URL(image, Astro.site).toString() : undefined;
   .disp {
     font-family: var(--font-display);
   }
+
+  /* #145: sitewide keyboard-focus baseline. :focus-visible (not plain
+     :focus) so this only shows for keyboard/programmatic focus, never on a
+     mouse click — the browser decides input modality for us. This is a
+     low-specificity fallback: any element with its own explicit focus
+     treatment, or an unconditional `outline: none` rule (e.g. SearchInput's
+     input, fixed separately in that component), still wins the cascade and
+     must handle focus visibility itself. */
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+  }
 </style>
 
 <style>

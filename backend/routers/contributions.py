@@ -1,10 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import services.contributions as contributions_service
 import services.turnstile as turnstile_service
 from core.db import get_session
-from core.deps import get_current_user, get_current_user_optional, require_moderator
+from core.deps import (
+    get_current_user,
+    get_current_user_optional,
+    get_rate_limit_identifier,
+    require_moderator,
+)
 from schemas.contributions import (
     BulkContributionCreate,
     BulkContributionResult,
@@ -27,10 +32,14 @@ router = APIRouter(tags=["contributions"])
     "/contributions",
     response_model=ContributionOut,
     status_code=201,
-    responses={409: {"model": DuplicatePendingContribution}},
+    responses={
+        409: {"model": DuplicatePendingContribution},
+        429: {"model": BulkSubmissionRateLimited},
+    },
 )
 async def submit_contribution(
     payload: ContributionCreate,
+    request: Request,
     current_user=Depends(get_current_user_optional),  # noqa: ANN001 - Row | None, anonymous allowed
     session: AsyncSession = Depends(get_session),
 ) -> ContributionOut:
@@ -41,6 +50,10 @@ async def submit_contribution(
         allowed = await turnstile_service.verify(payload.turnstile_token)
         if not allowed:
             raise HTTPException(status_code=422, detail="Turnstile verification failed")
+
+    # #139: identifies the caller for the rate-limit check below —
+    # user id when authenticated, IP otherwise (core/deps.py).
+    identifier = get_rate_limit_identifier(request, current_user)
 
     # NOT `async with session.begin():` here — deliberately. When
     # current_user is resolved (get_current_user_optional runs a SELECT),
@@ -53,7 +66,7 @@ async def submit_contribution(
     # anonymous one every earlier test happened to use. get_session()
     # still doesn't auto-commit (#8's own fix note, core/db.py), so the
     # explicit commit below is still required either way.
-    result = await contributions_service.submit_contribution(session, payload, current_user)
+    result = await contributions_service.submit_contribution(session, payload, current_user, identifier)
     await session.commit()
     return result
 

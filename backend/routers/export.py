@@ -1,20 +1,35 @@
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import services.export as export_service
 from core.db import get_session
+from core.deps import get_rate_limit_identifier
+from schemas.contributions import BulkSubmissionRateLimited
 from schemas.export import ExportAccessRequest, ExportAccessResponse, ExportOut
 
 router = APIRouter(tags=["export"])
 
 
-@router.post("/export/request-access", response_model=ExportAccessResponse)
+@router.post(
+    "/export/request-access",
+    response_model=ExportAccessResponse,
+    responses={429: {"model": BulkSubmissionRateLimited}},
+)
 async def request_export_access(
     body: ExportAccessRequest,
+    request: Request,
     session: AsyncSession = Depends(get_session),
 ) -> ExportAccessResponse:
+    # #141: no auth exists on this endpoint by design (it's how anyone
+    # first gets a key) — rate-limited purely by IP, there's no logged-in
+    # caller concept here the way get_rate_limit_identifier's user-id
+    # branch would apply.
+    identifier = get_rate_limit_identifier(request, None)
     return await export_service.request_access(
-        session, email=body.email, license_accepted=body.license_accepted
+        session,
+        email=body.email,
+        license_accepted=body.license_accepted,
+        identifier=identifier,
     )
 
 

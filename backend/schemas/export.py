@@ -1,8 +1,16 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class ExportAccessRequest(BaseModel):
-    email: str
+    # #141: was a bare `str` — nothing stopped a junk string or someone
+    # else's real address from being recorded as having "agreed" to the
+    # license terms. EmailStr (via the `email-validator` dependency)
+    # rejects anything that isn't a real email shape; it can't verify the
+    # address is actually reachable/owned by the requester, which is fine
+    # — the key is returned directly in the response, never emailed (see
+    # ExportAccessResponse's own note), so this is about data-quality on
+    # export_api_keys.email, not proving inbox ownership.
+    email: EmailStr
     license_accepted: bool
 
 

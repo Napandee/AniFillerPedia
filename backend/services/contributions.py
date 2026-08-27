@@ -10,6 +10,7 @@ import repositories.citations as citations_repo
 import repositories.contributions as contributions_repo
 import repositories.episodes as episodes_repo
 import repositories.outbox as outbox_repo
+import repositories.rate_limits as rate_limits_repo
 import repositories.series as series_repo
 import services.episode_ranges as episode_ranges
 from schemas.contributions import (
@@ -57,12 +58,44 @@ AUTO_APPROVAL_THRESHOLD = 75
 BULK_SUBMISSION_RATE_LIMIT = 10
 BULK_SUBMISSION_RATE_LIMIT_WINDOW_HOURS = 24
 
+# #139: the single-episode submission path has no #84-style per-batch size
+# concern (it's always exactly one row), but was otherwise completely
+# unlimited — an anonymous or authenticated caller alike could hammer this
+# endpoint indefinitely. Sized more generously than the bulk limit above
+# since each call here only ever creates one row (vs. up to 2000): 20 per
+# rolling hour comfortably covers a real contributor working through a
+# show's episodes one at a time in a sitting, while still bounding the
+# storage-bloat/spam vector. Not a tuned number — same "no real abuse data
+# yet" stance already taken for #84/#14; revisit if real usage disagrees.
+CONTRIBUTION_SUBMIT_RATE_LIMIT = 20
+CONTRIBUTION_SUBMIT_RATE_LIMIT_WINDOW_SECONDS = 60 * 60
+
 
 async def submit_contribution(
-    session: AsyncSession, payload: ContributionCreate, current_user: Row | None
+    session: AsyncSession, payload: ContributionCreate, current_user: Row | None, identifier: str
 ) -> ContributionOut:
     if not payload.license_accepted:
         raise HTTPException(status_code=422, detail="license_accepted must be true")
+
+    # #139: checked before any lookup/validation work, same fail-fast
+    # placement as #84's bulk check below — `identifier` is the caller's
+    # own user id when authenticated or their IP otherwise (core/deps.py's
+    # get_rate_limit_identifier), so a shared IP never throttles distinct
+    # logged-in contributors together.
+    recent_count = await rate_limits_repo.count_recent(
+        session,
+        scope="contribution_submit",
+        identifier=identifier,
+        window_seconds=CONTRIBUTION_SUBMIT_RATE_LIMIT_WINDOW_SECONDS,
+    )
+    if recent_count >= CONTRIBUTION_SUBMIT_RATE_LIMIT:
+        raise HTTPException(
+            status_code=429,
+            detail=(
+                f"You've made {recent_count} contribution submissions in the last hour "
+                f"(limit {CONTRIBUTION_SUBMIT_RATE_LIMIT}). Try again later."
+            ),
+        )
 
     existing_pending = await contributions_repo.find_pending_for_episode(
         session, payload.series_id, payload.episode_number
@@ -112,6 +145,11 @@ async def submit_contribution(
             "episode_number": payload.episode_number,
         },
     )
+
+    # #139: logged once per real submission, same transaction as the
+    # insert above — counts against `identifier`'s rolling-window limit
+    # checked at the top of this function.
+    await rate_limits_repo.record(session, scope="contribution_submit", identifier=identifier)
 
     return ContributionOut(
         id=contribution_row.id,

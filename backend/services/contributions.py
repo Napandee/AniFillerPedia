@@ -97,6 +97,29 @@ async def submit_contribution(
             ),
         )
 
+    # #152: the target series must exist (previously unchecked here — a
+    # bogus series_id would just 500 on the FK-constrained insert below),
+    # and its anilist_episode_count (#49's AniList sync column), if known,
+    # is what the range check right after is validated against.
+    series_row = await series_repo.get_series_by_identifier(session, str(payload.series_id))
+    if series_row is None:
+        raise HTTPException(status_code=404, detail="Series not found")
+
+    out_of_range = episode_ranges.find_out_of_range_episodes(
+        [payload.episode_number], series_row.anilist_episode_count
+    )
+    if out_of_range:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": (
+                    f"Episode {payload.episode_number} exceeds this series' known "
+                    f"episode count ({series_row.anilist_episode_count})."
+                ),
+                "anilist_episode_count": series_row.anilist_episode_count,
+            },
+        )
+
     existing_pending = await contributions_repo.find_pending_for_episode(
         session, payload.series_id, payload.episode_number
     )
@@ -122,16 +145,40 @@ async def submit_contribution(
         methodology_note=payload.citation.methodology_note,
     )
 
-    contribution_row = await contributions_repo.create(
-        session,
-        series_id=payload.series_id,
-        episode_number=payload.episode_number,
-        proposed_status=payload.proposed_status,
-        proposed_note=payload.proposed_note,
-        citation_id=citation_row.id,
-        submitted_by=current_user.id if current_user else None,
-        license_accepted=payload.license_accepted,
-    )
+    # #151: same TOCTOU gap the security review (#89) already fixed for the
+    # bulk path (create_bulk_contributions_for_series below) — the
+    # find_pending_for_episode check above has a real race window between
+    # itself and this INSERT. Two genuinely concurrent submissions for the
+    # same (series_id, episode_number) can both pass that check, then race
+    # on the partial unique index here; without a savepoint + catch, the
+    # loser's IntegrityError would surface as a raw 500 instead of the
+    # clean 409 the frontend's isDuplicateBody handler already expects.
+    try:
+        async with session.begin_nested():
+            contribution_row = await contributions_repo.create(
+                session,
+                series_id=payload.series_id,
+                episode_number=payload.episode_number,
+                proposed_status=payload.proposed_status,
+                proposed_note=payload.proposed_note,
+                citation_id=citation_row.id,
+                submitted_by=current_user.id if current_user else None,
+                license_accepted=payload.license_accepted,
+            )
+    except IntegrityError as exc:
+        existing = await contributions_repo.find_pending_for_episode(
+            session, payload.series_id, payload.episode_number
+        )
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": (
+                    "A contribution for this episode is already pending review — "
+                    "endorse or dispute it instead of submitting a competing one."
+                ),
+                "existing_contribution_id": existing.id if existing else -1,
+            },
+        ) from exc
 
     # Same transaction as the insert above (CLAUDE.md Architecture) — #9's
     # worker will pick this up once #15 registers a handler for it; until
@@ -173,18 +220,52 @@ async def submit_contribution(
 
 
 async def _plan_bulk_contributions(
-    session: AsyncSession, series_id: int, canon_ranges: str, mixed_ranges: str, filler_ranges: str
+    session: AsyncSession,
+    series_id: int,
+    canon_ranges: str,
+    mixed_ranges: str,
+    filler_ranges: str,
+    anilist_episode_count: int | None = None,
 ) -> tuple[dict[int, str], list[BulkSkippedEntry], dict[int, str]]:
     """Shared by the live dry-run preview and the real creation path below:
     parse/validate the range strings, then check #20's one-pending-per-
     episode rule BEFORE any write, so a citation row is never created for a
     batch that turns out to be entirely conflicts. Returns
     (by_episode, skipped, to_create).
+
+    `anilist_episode_count` defaults to None (no-op validation) rather than
+    being fetched in here — the router path (submit_bulk_contributions)
+    already has the series row in hand and passes its
+    anilist_episode_count straight through; services/series_proposals.py's
+    approve_series_proposal calls create_bulk_contributions_for_series
+    right after creating a brand-new series row, which never has a synced
+    count yet anyway (#49 hasn't had a chance to run), so leaving it
+    unpassed there is correct, not an oversight.
     """
     try:
         by_episode = episode_ranges.parse_and_validate(canon_ranges, mixed_ranges, filler_ranges)
     except episode_ranges.BulkRangeValidationError as exc:
         raise HTTPException(status_code=422, detail=exc.detail) from exc
+
+    # #152: reject any declared episode number beyond the series' own known
+    # real episode count, checked before the #20 pending-conflict lookup
+    # below so an out-of-range batch fails fast rather than silently
+    # succeeding against episodes that can never really exist. A NULL
+    # count is never validated against (see the docstring above and
+    # episode_ranges.find_out_of_range_episodes).
+    out_of_range = episode_ranges.find_out_of_range_episodes(by_episode.keys(), anilist_episode_count)
+    if out_of_range:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": (
+                    f"Episode number(s) {out_of_range} exceed this series' known "
+                    f"episode count ({anilist_episode_count})."
+                ),
+                "out_of_range_episodes": out_of_range,
+                "anilist_episode_count": anilist_episode_count,
+            },
+        )
 
     pending_by_episode = await contributions_repo.find_pending_for_episodes(
         session, series_id, sorted(by_episode.keys())
@@ -207,6 +288,7 @@ async def create_bulk_contributions_for_series(
     citation: CitationIn,
     submitted_by: int | None,
     license_accepted: bool,
+    anilist_episode_count: int | None = None,
 ) -> BulkContributionResult:
     """#80's real (non-dry-run) bulk-creation core, extracted for #85: reused
     both by the live POST /series/{id}/contributions/bulk endpoint below and
@@ -215,9 +297,11 @@ async def create_bulk_contributions_for_series(
     series_id exists for it to target. `submitted_by` may be None — an
     anonymous series proposal's attached episode data still needs to be
     creatable, matching #12's own anonymous-submission allowance.
+    `anilist_episode_count` — see _plan_bulk_contributions's docstring for
+    why it defaults to None rather than being looked up in here.
     """
     by_episode, skipped, to_create = await _plan_bulk_contributions(
-        session, series_id, canon_ranges, mixed_ranges, filler_ranges
+        session, series_id, canon_ranges, mixed_ranges, filler_ranges, anilist_episode_count
     )
 
     created: list[BulkCreatedEntry] = []
@@ -334,7 +418,12 @@ async def submit_bulk_contributions(
 
     if payload.dry_run:
         by_episode, skipped, to_create = await _plan_bulk_contributions(
-            session, series_id, payload.canon_ranges, payload.mixed_ranges, payload.filler_ranges
+            session,
+            series_id,
+            payload.canon_ranges,
+            payload.mixed_ranges,
+            payload.filler_ranges,
+            series_row.anilist_episode_count,
         )
         return BulkContributionResult(
             dry_run=True,
@@ -355,6 +444,7 @@ async def submit_bulk_contributions(
         citation=payload.citation,
         submitted_by=current_user.id,
         license_accepted=payload.license_accepted,
+        anilist_episode_count=series_row.anilist_episode_count,
     )
 
     # #84: logged once per real call, same transaction as everything above

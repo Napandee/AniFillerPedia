@@ -199,6 +199,84 @@ async def test_bulk_submission_missing_license_rejected(authed_client: AsyncClie
 
 
 @pytest.mark.asyncio
+async def test_bulk_submission_rejects_episode_numbers_beyond_known_count(
+    authed_client: AsyncClient,
+) -> None:
+    """#152: same episode-count validation as the single-episode path,
+    applied to the bulk range parser's declared episode numbers. A batch
+    declaring episode 13 of a known-12-episode show is rejected outright
+    (422) rather than silently creating a pending contribution for an
+    episode that can never really exist — even though episodes 1-12 in
+    the same batch are perfectly valid, the whole batch fails fast, same
+    all-or-nothing behavior as a malformed/overlapping range (this is a
+    genuine input error, not a per-episode moderation call).
+    """
+    series_id = await _make_test_series("OutOfRange")
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET anilist_episode_count = 12 WHERE id = :id"),
+                    {"id": series_id},
+                )
+
+        response = await authed_client.post(
+            f"/api/v1/series/{series_id}/contributions/bulk",
+            json={
+                "canon_ranges": "1-13",
+                "citation": {"description": "__test_80__ out-of-range batch"},
+                "license_accepted": True,
+            },
+        )
+        assert response.status_code == 422, response.text
+        detail = response.json()["detail"]
+        assert detail["out_of_range_episodes"] == [13]
+        assert detail["anilist_episode_count"] == 12
+
+        async with async_session_factory() as session:
+            count = (
+                await session.execute(
+                    text("SELECT count(*) FROM contributions WHERE series_id = :sid"),
+                    {"sid": series_id},
+                )
+            ).scalar_one()
+            assert count == 0  # rejected before any write, including the in-range episodes
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_bulk_submission_dry_run_also_validates_episode_count(authed_client: AsyncClient) -> None:
+    """The dry-run preview path shares _plan_bulk_contributions with the
+    real creation path — it must report the same out-of-range rejection,
+    not just the real (non-dry-run) path, since the whole point of
+    dry_run is an accurate preview of what a real submission would do.
+    """
+    series_id = await _make_test_series("DryRunOutOfRange")
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET anilist_episode_count = 12 WHERE id = :id"),
+                    {"id": series_id},
+                )
+
+        response = await authed_client.post(
+            f"/api/v1/series/{series_id}/contributions/bulk",
+            json={
+                "canon_ranges": "1-13",
+                "citation": {"description": "__test_80__ dry-run out-of-range"},
+                "license_accepted": True,
+                "dry_run": True,
+            },
+        )
+        assert response.status_code == 422, response.text
+        assert response.json()["detail"]["out_of_range_episodes"] == [13]
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_bulk_submission_overlapping_categories_rejected_with_no_writes(
     authed_client: AsyncClient,
 ) -> None:

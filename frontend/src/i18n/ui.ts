@@ -113,6 +113,13 @@ const en = {
   "series.about.readMore": "Read more",
   "series.era.range": "{startYear} – {endYear}",
   "series.era.ongoing": "{startYear} – present",
+  // #133: within-franchise watch-order navigation (e.g. "Also on this
+  // site" links tell you a related entry exists; these are the stronger
+  // "go watch it" call-to-action pointing at the adjacent entry in watch
+  // order specifically). Only rendered when the series has an adjacent
+  // entry — see SeriesDetailPage.astro's watch-nav block.
+  "series.watchPrevious": "Watch previous",
+  "series.watchNext": "Watch next",
 
   "lang.switcher.label": "Language",
 };
@@ -196,6 +203,8 @@ const es: Partial<Record<TranslationKey, string>> = {
   "series.about.readMore": "Leer más",
   "series.era.range": "{startYear} – {endYear}",
   "series.era.ongoing": "{startYear} – presente",
+  "series.watchPrevious": "Ver anterior",
+  "series.watchNext": "Ver siguiente",
 
   "lang.switcher.label": "Idioma",
 };
@@ -277,6 +286,8 @@ const hi: Partial<Record<TranslationKey, string>> = {
   "series.about.readMore": "और पढ़ें",
   "series.era.range": "{startYear} – {endYear}",
   "series.era.ongoing": "{startYear} – अब तक",
+  "series.watchPrevious": "पिछला देखें",
+  "series.watchNext": "अगला देखें",
 
   "lang.switcher.label": "भाषा",
 };
@@ -358,6 +369,8 @@ const ja: Partial<Record<TranslationKey, string>> = {
   "series.about.readMore": "続きを読む",
   "series.era.range": "{startYear} – {endYear}",
   "series.era.ongoing": "{startYear} – 放送中",
+  "series.watchPrevious": "前作を見る",
+  "series.watchNext": "次作を見る",
 
   "lang.switcher.label": "言語",
 };
@@ -439,6 +452,8 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "series.about.readMore": "阅读更多",
   "series.era.range": "{startYear} – {endYear}",
   "series.era.ongoing": "{startYear} – 至今",
+  "series.watchPrevious": "观看上一部",
+  "series.watchNext": "观看下一部",
 
   "lang.switcher.label": "语言",
 };

@@ -1111,6 +1111,8 @@ export interface components {
             banner_image_url: string | null;
             /** Airing Status */
             airing_status: string | null;
+            /** Sequence Order */
+            sequence_order?: number | null;
             /** Synonyms */
             synonyms: string[];
             /** Anilist Episode Count */
@@ -1123,6 +1125,8 @@ export interface components {
             start_date: string | null;
             /** End Date */
             end_date: string | null;
+            next_series: components["schemas"]["SeriesOut"] | null;
+            previous_series: components["schemas"]["SeriesOut"] | null;
         };
         /** SeriesListOut */
         SeriesListOut: {
@@ -1162,6 +1166,8 @@ export interface components {
             banner_image_url: string | null;
             /** Airing Status */
             airing_status: string | null;
+            /** Sequence Order */
+            sequence_order?: number | null;
         };
         /** SeriesProposalCreate */
         SeriesProposalCreate: {

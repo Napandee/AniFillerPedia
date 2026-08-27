@@ -168,9 +168,15 @@ const authorizeHref = (provider: "github" | "discord") =>
 
 <style>
   .site-header {
+    /* #144: matches Footer.astro's own 20px/32px bracket-bar padding —
+       .shell (Layout.astro) has no padding of its own, so without this
+       the brand/nav sat flush against the viewport edge. */
+    padding: 20px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 16px;
   }
   .brand {
     font-weight: 800;
@@ -181,7 +187,8 @@ const authorizeHref = (provider: "github" | "discord") =>
   nav {
     display: flex;
     align-items: center;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 10px 16px;
     font-family: var(--font-body);
     font-size: 13px;
     font-weight: 700;
@@ -194,7 +201,8 @@ const authorizeHref = (provider: "github" | "discord") =>
   .identity {
     display: flex;
     align-items: center;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 8px 16px;
   }
   .login-links a,
   .identity a {

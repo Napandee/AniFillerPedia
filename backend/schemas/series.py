@@ -36,11 +36,14 @@ class SeriesOut(BaseModel):
     # #133: within-franchise watch-order position (e.g. Fairy Tail=1,
     # Fairy Tail (2014)=2, ...). Column name matches directly, no alias
     # needed. Null for the vast majority of series (standalone, or no
-    # decided watch order yet). Defaults to None because search_series()
-    # deliberately does NOT select this column (detail-page-only concept,
-    # same reasoning as #126's description/dates) — without a default,
-    # constructing SeriesOut from a search_series row (which has no
-    # sequence_order key) would raise a validation error.
+    # decided watch order yet). #146: search_series() (both the plain list
+    # and recently_updated branches) DOES select this column, same as
+    # get_related_series/get_series_by_identifier — an earlier version of
+    # this comment claimed the list omitting it was deliberate, matching
+    # #126's description/dates, but that was actually just an oversight
+    # (#146) with no real reason behind it, unlike #126's genuinely
+    # intentional detail-only fields. The default is kept anyway as cheap
+    # defensive robustness for any future row shape that doesn't carry it.
     sequence_order: int | None = None
 
 

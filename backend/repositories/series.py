@@ -124,7 +124,12 @@ async def get_series_by_identifier(session: AsyncSession, identifier: str) -> Ro
     result = await session.execute(
         text(
             "SELECT id, anilist_id, mal_id, anidb_id, title, provenance, created_at, "
-            "anilist_episode_count, anilist_cover_url, anilist_banner_url, anilist_status, slug "
+            "anilist_episode_count, anilist_cover_url, anilist_banner_url, anilist_status, slug, "
+            # #126: description/start_date/end_date only fetched on the
+            # detail lookup — the browse/search list (search_series above)
+            # deliberately doesn't carry these, since the about-card/
+            # era-tile only ever render on the series detail page.
+            "anilist_description, anilist_start_date, anilist_end_date "
             f"FROM series WHERE {column} = :identifier"
         ),
         {"identifier": int(identifier) if column == "id" else identifier},

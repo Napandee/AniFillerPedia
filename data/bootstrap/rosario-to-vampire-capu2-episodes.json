@@ -1,0 +1,118 @@
+{
+  "series_title": "Rosario to Vampire Capu2",
+  "research_status": "Andreas's own manual cross-reference review (2026-08-27), absolute episodes 14-26 of this franchise's continuous numbering. 13 of 13 episodes classified.",
+  "citation_sources": [
+    {
+      "id": "andreas-manual-crossref-2026-08-27",
+      "url": null,
+      "description": "Andreas's own manual cross-reference review, compiled and checked directly against the loaded (or previously unloaded) data as part of the confidence-audit pass.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 13,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-2026-08-27"
+      ],
+      "source_count": 1
+    }
+  ]
+}

@@ -6,10 +6,11 @@
       "anilist_id": 1293,
       "episode_count": 195,
       "reason": "sourcing_gap",
-      "detail": "AniList/Wikipedia both confirm 194-195 episodes, but every fan-guide aggregator tried (animefillerlist, otakukan, simkl) caps out at 167 with zero signal for the remaining ~28 -- a real episode-counting-scheme mismatch (likely a segment-vs-episode convention difference), not a gap worth guessing across.",
+      "detail": "Andreas's own manual cross-reference review (2026-08-27) resolved episodes 1-167 (loaded, see data/bootstrap/urusei-yatsura-episodes.json) -- episodes 168-195 (28 eps) still hit the same aggregator cap every fan-guide site has for this show, and remain unresearched.",
       "attempted_in": [
         "#113",
-        "#115"
+        "#115",
+        "#125"
       ],
       "date_flagged": "2026-08-26"
     },
@@ -18,10 +19,11 @@
       "anilist_id": 407,
       "episode_count": 45,
       "reason": "sourcing_gap",
-      "detail": "Only fetchable source (animefillerlist.com) reports 25 total episodes for a show AniList/Wikipedia both confirm has 45, and is missing episode 19 even within that wrong range. No other itemized per-episode guide found.",
+      "detail": "Andreas's own manual cross-reference review (2026-08-27) resolved episodes 1-26 (loaded, see data/bootstrap/tantei-gakuen-q-episodes.json) -- episodes 27-45 (19 eps) remain unresearched, no source found covering them.",
       "attempted_in": [
         "#113",
-        "#115"
+        "#115",
+        "#125"
       ],
       "date_flagged": "2026-08-26"
     },
@@ -33,17 +35,6 @@
       "detail": "No itemized filler/canon guide could be found at all. One animefillerlist.com fetch returned content for a completely different show (Fairy Tail OVAs), and no fandom wiki or aggregate search surfaced a real per-episode breakdown.",
       "attempted_in": [
         "#113",
-        "#115"
-      ],
-      "date_flagged": "2026-08-26"
-    },
-    {
-      "title": "Tennis no Oujisama",
-      "anilist_id": 22,
-      "episode_count": 178,
-      "reason": "sourcing_gap",
-      "detail": "The only itemized source fetchable (a fandom wiki mirror) covers just episodes 1-33 with internal inconsistencies (a stated '3 mixed episodes' followed by 4 listed, episode 29 missing from the numbering). Wikipedia's own air-date coverage is also sparse (106/178) for the same reason -- fan-guide/wiki coverage for this show is genuinely thin past the first arc.",
-      "attempted_in": [
         "#115"
       ],
       "date_flagged": "2026-08-26"

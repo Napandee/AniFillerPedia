@@ -33,6 +33,15 @@ class SeriesOut(BaseModel):
     # same null-until-first-sync convention as the cover/banner URLs above.
     # Surfaces whether a series is still airing, not yet aired, or done.
     airing_status: str | None = Field(validation_alias="anilist_status")
+    # #133: within-franchise watch-order position (e.g. Fairy Tail=1,
+    # Fairy Tail (2014)=2, ...). Column name matches directly, no alias
+    # needed. Null for the vast majority of series (standalone, or no
+    # decided watch order yet). Defaults to None because search_series()
+    # deliberately does NOT select this column (detail-page-only concept,
+    # same reasoning as #126's description/dates) — without a default,
+    # constructing SeriesOut from a search_series row (which has no
+    # sequence_order key) would raise a validation error.
+    sequence_order: int | None = None
 
 
 class SeriesDetailOut(SeriesOut):
@@ -56,6 +65,15 @@ class SeriesDetailOut(SeriesOut):
     description: str | None = Field(validation_alias="anilist_description")
     start_date: date | None = Field(validation_alias="anilist_start_date")
     end_date: date | None = Field(validation_alias="anilist_end_date")
+    # #133: the adjacent entries in this series' own series_relations group,
+    # by sequence_order — computed in services/series.py's get_series(),
+    # not the repository layer (needs both the current series' own
+    # sequence_order and the related_series list together). None when this
+    # series has no sequence_order, or no related entries with one —
+    # renders nothing on the frontend, matching this page's existing
+    # "no placeholder" convention (see #51).
+    next_series: SeriesOut | None
+    previous_series: SeriesOut | None
 
 
 class SeriesListOut(BaseModel):

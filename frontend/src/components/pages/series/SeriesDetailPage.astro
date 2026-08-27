@@ -309,6 +309,42 @@ const structuredData = series
             </div>
           )}
 
+          {/* #133: watch-order navigation — a stronger call-to-action than
+              the plain "Also on this site" pill list above ("go watch the
+              next/previous entry"), so it's visually distinct rather than
+              blended into that list. Renders nothing when the current
+              series has no sequence_order or no adjacent related entry
+              with one, matching this page's existing no-placeholder
+              convention (see #51). */}
+          {(series!.previous_series || series!.next_series) && (
+            <div class="watch-nav">
+              {series!.previous_series && (
+                <a
+                  class="watch-nav-link watch-nav-link--prev"
+                  href={getRelativeLocaleUrl(locale, `/series/${series!.previous_series.slug}`)}
+                >
+                  <span class="watch-nav-arrow">←</span>
+                  <span class="watch-nav-text">
+                    <span class="watch-nav-kicker">{t("series.watchPrevious")}</span>
+                    <span class="watch-nav-title">{series!.previous_series.title}</span>
+                  </span>
+                </a>
+              )}
+              {series!.next_series && (
+                <a
+                  class="watch-nav-link watch-nav-link--next"
+                  href={getRelativeLocaleUrl(locale, `/series/${series!.next_series.slug}`)}
+                >
+                  <span class="watch-nav-text">
+                    <span class="watch-nav-kicker">{t("series.watchNext")}</span>
+                    <span class="watch-nav-title">{series!.next_series.title}</span>
+                  </span>
+                  <span class="watch-nav-arrow">→</span>
+                </a>
+              )}
+            </div>
+          )}
+
           {totalEpisodes > 0 && (
             <div class="stat-cards" id="stat-cards">
               <button class="stat-card" data-status="canon" data-count={canonCount} type="button">
@@ -839,6 +875,62 @@ const structuredData = series
   }
   .related-series-link:hover {
     text-decoration: underline;
+  }
+
+  /* #133: within-franchise watch-order navigation — visually a stronger
+     call-to-action than the plain related-series pill list above (reuses
+     its pill/shadow/accent base, but full-width and bolder, reading as
+     "go watch this" rather than "these are the same show"). */
+  .watch-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 14px 24px 0;
+  }
+  .watch-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 220px;
+    background: var(--color-surface);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sticker);
+    padding: 10px 18px;
+    text-decoration: none;
+    color: var(--color-text);
+    border: 2px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .watch-nav-link:hover {
+    border-color: var(--color-accent);
+  }
+  .watch-nav-link--next {
+    justify-content: flex-end;
+    text-align: right;
+  }
+  .watch-nav-arrow {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-accent);
+  }
+  .watch-nav-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .watch-nav-kicker {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-accent);
+  }
+  .watch-nav-title {
+    font-weight: 800;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .stat-cards {

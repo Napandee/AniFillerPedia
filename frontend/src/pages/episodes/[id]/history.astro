@@ -110,9 +110,13 @@ if (!notFound) {
 }
 
 let seriesTitle: string | null = null;
+let seriesSlug: string | null = null;
 if (seriesId !== null) {
-  const { data } = await api.GET("/api/v1/series/{series_id}", { params: { path: { series_id: seriesId } } });
+  const { data } = await api.GET("/api/v1/series/{id_or_slug}", {
+    params: { path: { id_or_slug: String(seriesId) } },
+  });
   seriesTitle = data?.title ?? null;
+  seriesSlug = data?.slug ?? null;
 }
 
 function identity(ref: UserRef | null): string {
@@ -144,7 +148,9 @@ function formatDate(iso: string): string {
     ) : (
       <section class="panel">
         <p class="eyebrow">
-          {seriesId !== null && <a href={`/series/${seriesId}`}>{seriesTitle ?? `Series #${seriesId}`}</a>}
+          {seriesId !== null && (
+            <a href={`/series/${seriesSlug ?? seriesId}`}>{seriesTitle ?? `Series #${seriesId}`}</a>
+          )}
         </p>
         <h1 class="disp title">{episodeLabel} — contribution history</h1>
 

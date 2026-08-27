@@ -1,0 +1,38 @@
+---
+// #106: thin per-locale route wrapper — the real page lives in
+// components/pages/series/SeriesDetailPage.astro so it's written once and
+// shared across every locale's own route file (Astro's i18n routing
+// requires an actual page file per locale, it doesn't auto-duplicate
+// routes from config alone). See
+// src/pages/{es,hi,ja,zh-cn}/series/[slug].astro for the identical pattern.
+// #116: renamed from [id].astro — the param is now a slug (or, for a
+// legacy numeric URL, a series id that resolves and 301-redirects to its
+// canonical slug).
+//
+// The redirect/404-status decision has to happen HERE, not inside
+// SeriesDetailPage.astro — verified directly that Astro.redirect() and
+// Astro.response.status only take effect from the actual routed page
+// component, not a nested one (see src/lib/seriesDetail.ts's own comment
+// for the full story). Every locale wrapper repeats this same small block;
+// the actual lookup logic lives once in that shared lib module.
+import SeriesDetailPage from "../../components/pages/series/SeriesDetailPage.astro";
+import { resolveSeriesDetail } from "../../lib/seriesDetail";
+import { resolveLocale } from "../../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+const resolution = await resolveSeriesDetail(Astro.params.slug ?? "", apiBaseUrl, (slug) =>
+  getRelativeLocaleUrl(locale, `/series/${slug}`)
+);
+
+if (resolution.kind === "redirect") {
+  return Astro.redirect(resolution.to, 301);
+}
+if (resolution.kind === "not-found") {
+  Astro.response.status = 404;
+}
+---
+
+<SeriesDetailPage resolution={resolution} />

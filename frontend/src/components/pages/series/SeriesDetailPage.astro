@@ -9,55 +9,48 @@
 // status is one of exactly three values (no `recap`).
 //
 // output: "server" means this route is resolved per-request — no
-// getStaticPaths() needed, Astro.params.id is read directly.
+// getStaticPaths() needed.
+//
+// #116: this component is now given an already-resolved `resolution` prop
+// rather than doing its own fetch — a real, verified Astro constraint
+// (Astro.redirect()/Astro.response.status only take effect from the actual
+// routed page component, not a nested one like this) means the redirect/404
+// decision has to happen in each per-locale src/pages/.../[slug].astro
+// wrapper, which calls src/lib/seriesDetail.ts's resolveSeriesDetail() and
+// hands the result down. This component stays a pure rendering component,
+// same responsibility split every other case in this file already has —
+// data in, HTML out.
 import Layout from "../../../layouts/Layout.astro";
 import StatusBadge from "../../StatusBadge.astro";
 import Button from "../../Button.astro";
 import CoverFallback from "../../CoverFallback.astro";
-import { createApiClient } from "../../../api/client";
-import type { components } from "../../../api/schema";
 import { resolveLocale, useTranslations } from "../../../i18n/utils";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import type { SeriesDetailResolution, EpisodeOut } from "../../../lib/seriesDetail";
 
-type SeriesDetailOut = components["schemas"]["SeriesDetailOut"];
-type EpisodeOut = components["schemas"]["EpisodeOut"];
+interface Props {
+  resolution: SeriesDetailResolution;
+}
+
+const { resolution } = Astro.props;
 
 const locale = resolveLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 
-const api = createApiClient(import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000");
+// "redirect" should never actually reach this component in practice — the
+// page wrapper redirects before rendering <SeriesDetailPage /> at all — but
+// treating any non-"found" kind as not-found here is a harmless, cheap
+// safety net rather than assuming that invariant always holds.
+const notFound = resolution.kind !== "found";
+const series = resolution.kind === "found" ? resolution.series : null;
+const episodes = resolution.kind === "found" ? resolution.episodes : [];
 
-const rawId = Astro.params.id ?? "";
-const seriesId = Number(rawId);
-const idLooksValid = rawId !== "" && Number.isInteger(seriesId) && seriesId > 0;
-
-let notFound = !idLooksValid;
-let series: SeriesDetailOut | null = null;
-let episodes: EpisodeOut[] = [];
-
-if (idLooksValid) {
-  const { data: seriesData, response: seriesResponse } = await api.GET("/api/v1/series/{series_id}", {
-    params: { path: { series_id: seriesId } },
-  });
-
-  if (seriesResponse.status === 404 || !seriesData) {
-    // Covers both the real 404 the backend raises for an unknown id and any
-    // other non-success response — either way there's nothing to render.
-    notFound = true;
-  } else {
-    series = seriesData;
-    const { data: episodesData } = await api.GET("/api/v1/series/{series_id}/episodes", {
-      params: { path: { series_id: seriesId } },
-    });
-    // An empty array is a normal, valid response (zero-episode series) —
-    // `?? []` only guards against a genuinely failed/undefined fetch.
-    episodes = (episodesData ?? []).slice().sort((a, b) => a.episode_number - b.episode_number);
-  }
-}
-
-if (notFound) {
-  Astro.response.status = 404;
-}
+// Everything below only runs once `series` is a real, resolved row —
+// `seriesId` is its numeric id, used for the episodes fetch (done by the
+// caller now) and every downstream link that's still numeric-id-based
+// (episode submission/history routes — a separate route tree, untouched by
+// #116).
+const seriesId = series?.id ?? null;
 
 // #51: full canon/filler/mixed breakdown for the dashboard cards, computed
 // client-side from the fetched episode list — no dedicated backend field
@@ -182,7 +175,10 @@ const structuredData = series
       "@context": "https://schema.org",
       "@type": "TVSeries",
       name: series.title,
-      url: new URL(`/series/${seriesId}`, Astro.site).toString(),
+      // #116: the canonical URL for this series is now its slug, not its
+      // numeric id — `series` is non-null in this branch, guaranteed by
+      // the ternary above.
+      url: new URL(`/series/${series.slug}`, Astro.site).toString(),
       ...(series.synonyms.length > 0 ? { alternateName: series.synonyms } : {}),
       ...(totalKnownEpisodes ? { numberOfEpisodes: totalKnownEpisodes } : {}),
       ...(series.anilist_id ? { sameAs: [`https://anilist.co/anime/${series.anilist_id}`] } : {}),
@@ -246,7 +242,7 @@ const structuredData = series
             <div class="related-series">
               <span class="related-series-label">{t("series.alsoOnThisSite")}</span>
               {series!.related_series.map((related) => (
-                <a class="related-series-link" href={getRelativeLocaleUrl(locale, `/series/${related.id}`)}>
+                <a class="related-series-link" href={getRelativeLocaleUrl(locale, `/series/${related.slug}`)}>
                   {related.title}
                 </a>
               ))}

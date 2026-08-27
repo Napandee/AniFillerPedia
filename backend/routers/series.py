@@ -26,11 +26,16 @@ async def list_series(
     )
 
 
-@router.get("/series/{series_id}", response_model=SeriesDetailOut)
+@router.get("/series/{id_or_slug}", response_model=SeriesDetailOut)
 async def get_series(
-    series_id: int, session: AsyncSession = Depends(get_session)
+    id_or_slug: str, session: AsyncSession = Depends(get_session)
 ) -> SeriesDetailOut:
-    return await series_service.get_series(session, series_id)
+    """#116: accepts either a numeric series id (legacy URLs — the
+    frontend 301-redirects these to the canonical slug URL, but the API
+    itself keeps resolving both indefinitely, since it's a public contract
+    other consumers may already depend on) or a slug.
+    """
+    return await series_service.get_series(session, id_or_slug)
 
 
 @router.get("/series/{series_id}/episodes", response_model=list[EpisodeOut])

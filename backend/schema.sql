@@ -107,7 +107,14 @@ CREATE TABLE series (
     -- fully complete; a still-airing show simply has a NULL end date.
     anilist_description          TEXT,
     anilist_start_date           DATE,
-    anilist_end_date             DATE
+    anilist_end_date             DATE,
+    -- #133: within-franchise watch-order position (e.g. Fairy Tail=1,
+    -- Fairy Tail (2014)=2, Fairy Tail (2018)=3, ...). Nullable — most
+    -- series are standalone or have no decided order yet; only backfilled
+    -- for series already grouped via series_relations below.
+    -- services/series.py's get_series() uses this to compute next_series/
+    -- previous_series among the current series' own related-series group.
+    sequence_order               INTEGER
 );
 
 -- Alternate/romanized/native-script titles, captured during the one-time

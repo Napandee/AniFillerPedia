@@ -1,0 +1,15 @@
+-- #133: within-franchise watch-order position for a series entry.
+--
+-- series_relations already groups same-franchise catalog entries
+-- symmetrically (e.g. Fairy Tail / Fairy Tail (2014) / Fairy Tail (2018)),
+-- but carries no ordering — ordering is a property of each entry, not the
+-- relation pair, so it lives on series itself rather than on
+-- series_relations. Next/previous (services/series.py's get_series()) is
+-- computed as the nearest sequence_order above/below the current series'
+-- own value, among its own series_relations group.
+--
+-- Nullable: the vast majority of series are standalone or have no decided
+-- watch order yet. Backfilled for 9 franchises via a one-off script (see
+-- issue #133) rather than a schema default, since ordering is inherently
+-- per-franchise data, not derivable from the column's own definition.
+ALTER TABLE series ADD COLUMN sequence_order INTEGER;

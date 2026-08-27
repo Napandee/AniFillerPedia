@@ -129,7 +129,11 @@ async def get_series_by_identifier(session: AsyncSession, identifier: str) -> Ro
             # detail lookup — the browse/search list (search_series above)
             # deliberately doesn't carry these, since the about-card/
             # era-tile only ever render on the series detail page.
-            "anilist_description, anilist_start_date, anilist_end_date "
+            "anilist_description, anilist_start_date, anilist_end_date, "
+            # #133: needed here so the service layer knows the CURRENT
+            # series' own watch-order position, to compute next/previous
+            # against its related_series group.
+            "sequence_order "
             f"FROM series WHERE {column} = :identifier"
         ),
         {"identifier": int(identifier) if column == "id" else identifier},
@@ -151,11 +155,14 @@ async def get_related_series(session: AsyncSession, series_id: int) -> list[Row]
             """
             SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
                    s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
-                   s.anilist_status, s.slug
+                   s.anilist_status, s.slug, s.sequence_order
             FROM series_relations r
             JOIN series s ON s.id = r.related_series_id
             WHERE r.series_id = :id
-            ORDER BY s.id
+            -- #133: watch order, when populated, rather than insertion
+            -- order — services/series.py's get_series() also relies on
+            -- these rows carrying sequence_order to compute next/previous.
+            ORDER BY s.sequence_order NULLS LAST, s.id
             """
         ),
         {"id": series_id},

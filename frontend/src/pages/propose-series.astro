@@ -225,14 +225,36 @@ if (Astro.request.method === "POST") {
           <form method="POST" novalidate>
             <label class="field">
               <span class="field-label">Title *</span>
-              <input type="text" name="title" required value={values.title} maxlength="300" />
+              <input
+                type="text"
+                name="title"
+                id="title-input"
+                required
+                value={values.title}
+                maxlength="300"
+                autocomplete="off"
+              />
               {fieldErrors.title && <span class="field-error">{fieldErrors.title}</span>}
             </label>
+            <!-- #150: populated on Title-field blur by the script below —
+                 same non-blocking "possible match" pattern #165's AniList
+                 preview card uses, so the two read as one consistent
+                 signal to a submitter regardless of which path (title-only
+                 or AniList-ID) surfaces it. -->
+            <div class="match-panel" id="title-duplicate-panel" hidden></div>
 
             <div class="id-row">
               <label class="field">
                 <span class="field-label">AniList ID</span>
-                <input type="number" name="anilist_id" min="1" step="1" value={values.anilist_id} />
+                <input
+                  type="number"
+                  name="anilist_id"
+                  id="anilist-id-input"
+                  min="1"
+                  step="1"
+                  value={values.anilist_id}
+                  autocomplete="off"
+                />
                 {fieldErrors.anilist_id && <span class="field-error">{fieldErrors.anilist_id}</span>}
               </label>
               <label class="field">
@@ -246,9 +268,14 @@ if (Astro.request.method === "POST") {
                 {fieldErrors.anidb_id && <span class="field-error">{fieldErrors.anidb_id}</span>}
               </label>
             </div>
+            <!-- #165: populated on AniList-ID-field blur by the script
+                 below. MAL/AniDB stay plain numbers — no lookup client
+                 exists for either (see this issue's own "out of scope"
+                 note), so their hint text still says so explicitly. -->
+            <div class="match-panel" id="anilist-lookup-panel" hidden></div>
             <p class="hint">
-              Optional — plug in whichever IDs you happen to know. No lookup/autocomplete yet, just
-              plain numbers.
+              AniList ID looks you up automatically when you tab away from the field. MyAnimeList
+              and AniDB IDs are optional too, but have no lookup yet — just plain numbers.
             </p>
 
             <label class="field">
@@ -376,6 +403,166 @@ if (Astro.request.method === "POST") {
   </section>
 </Layout>
 
+<script>
+  // #150/#165: two "this might already exist" signals sharing one visual
+  // pattern (see .match-panel/.match-card/.match-note in the style block
+  // below) — title-similarity for the no-ID path, AniList-ID lookup for
+  // the ID-present path — built together so a submitter sees one
+  // consistent kind of hint regardless of which one fires. Vanilla DOM,
+  // no framework island, matching moderation.astro's own progressive-
+  // enhancement approach elsewhere in this codebase.
+  const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+  function escapeHtml(value: string): string {
+    const div = document.createElement("div");
+    div.textContent = value;
+    return div.innerHTML;
+  }
+
+  function seriesUrl(id: number, slug?: string | null): string {
+    return slug ? `/series/${slug}` : `/series/${id}`;
+  }
+
+  function clearPanel(panel: HTMLElement | null) {
+    if (!panel) return;
+    panel.hidden = true;
+    panel.innerHTML = "";
+  }
+
+  const titleInput = document.getElementById("title-input") as HTMLInputElement | null;
+
+  // --- #150: title-similarity duplicate hint (no-ID path) ---------------
+
+  const titlePanel = document.getElementById("title-duplicate-panel");
+  let lastCheckedTitle: string | null = null;
+
+  async function checkTitleForDuplicates() {
+    if (!titleInput || !titlePanel) return;
+    const raw = titleInput.value.trim();
+    if (!raw) {
+      lastCheckedTitle = null;
+      clearPanel(titlePanel);
+      return;
+    }
+    // Guard against refiring on an unchanged value (e.g. tabbing through
+    // the field without editing it) — same guard #165's lookup uses below.
+    if (raw === lastCheckedTitle) return;
+    lastCheckedTitle = raw;
+    try {
+      const response = await fetch(
+        `${baseUrl}/api/v1/series-proposals/check-title?title=${encodeURIComponent(raw)}`
+      );
+      if (!response.ok) return;
+      const data: { matches: { id: number; title: string; slug: string | null }[] } =
+        await response.json();
+      if (!data.matches || data.matches.length === 0) {
+        clearPanel(titlePanel);
+        return;
+      }
+      const links = data.matches
+        .map(
+          (m) =>
+            `<a href="${seriesUrl(m.id, m.slug)}" target="_blank" rel="noopener">${escapeHtml(m.title)}</a>`
+        )
+        .join(", ");
+      titlePanel.hidden = false;
+      titlePanel.innerHTML = `<p class="match-note">This might already exist in the catalog: ${links}. Just a heads-up — not a block, submit anyway if it's genuinely a different show.</p>`;
+    } catch {
+      // Non-blocking hint — a network hiccup here should never stop the
+      // submitter from finishing and submitting the rest of the form.
+    }
+  }
+
+  titleInput?.addEventListener("blur", () => {
+    void checkTitleForDuplicates();
+  });
+
+  // --- #165: live AniList-ID lookup + early duplicate detection ---------
+
+  const anilistIdInput = document.getElementById("anilist-id-input") as HTMLInputElement | null;
+  const anilistPanel = document.getElementById("anilist-lookup-panel");
+  let lastCheckedAnilistId: string | null = null;
+
+  async function checkAnilistId() {
+    if (!anilistIdInput || !anilistPanel) return;
+    const raw = anilistIdInput.value.trim();
+    if (!raw) {
+      lastCheckedAnilistId = null;
+      clearPanel(anilistPanel);
+      return;
+    }
+    if (raw === lastCheckedAnilistId) return;
+    lastCheckedAnilistId = raw;
+    try {
+      const response = await fetch(`${baseUrl}/api/v1/anilist-lookup/${encodeURIComponent(raw)}`);
+      if (!response.ok) {
+        clearPanel(anilistPanel);
+        return;
+      }
+      const data: {
+        status: "found" | "already_exists" | "not_found";
+        title: string | null;
+        format: string | null;
+        episode_count: number | null;
+        cover_image_url: string | null;
+        existing_series_id: number | null;
+        existing_series_slug: string | null;
+      } = await response.json();
+
+      anilistPanel.hidden = false;
+
+      if (data.status === "already_exists") {
+        anilistPanel.innerHTML = `<div class="match-card match-card--exists"><p class="match-note">This AniList entry is already in the catalog: <a href="${seriesUrl(
+          data.existing_series_id ?? 0,
+          data.existing_series_slug
+        )}" target="_blank" rel="noopener">${escapeHtml(data.title ?? "View series")}</a>.</p></div>`;
+        return;
+      }
+
+      if (data.status === "found") {
+        const meta = [data.format, data.episode_count ? `${data.episode_count} episodes` : null]
+          .filter(Boolean)
+          .join(" · ");
+        anilistPanel.innerHTML = `
+          <div class="match-card">
+            ${data.cover_image_url ? `<img class="match-cover" src="${data.cover_image_url}" alt="" />` : ""}
+            <div class="match-card-body">
+              <p class="match-card-title">${escapeHtml(data.title ?? "")}</p>
+              ${meta ? `<p class="match-card-meta">${escapeHtml(meta)}</p>` : ""}
+              <div class="match-actions">
+                <button type="button" class="match-btn" data-action="confirm">Yes, this one</button>
+                <button type="button" class="match-btn match-btn--ghost" data-action="dismiss">Not this one</button>
+              </div>
+            </div>
+          </div>
+        `;
+        const confirmBtn = anilistPanel.querySelector<HTMLButtonElement>('[data-action="confirm"]');
+        const dismissBtn = anilistPanel.querySelector<HTMLButtonElement>('[data-action="dismiss"]');
+        confirmBtn?.addEventListener("click", () => {
+          // Autofills as an editable starting point — never locks the
+          // field, per this issue's own explicit requirement.
+          if (titleInput && data.title) titleInput.value = data.title;
+          anilistPanel.querySelector(".match-card")?.classList.add("match-card--confirmed");
+          if (confirmBtn) confirmBtn.disabled = true;
+          if (dismissBtn) dismissBtn.disabled = true;
+        });
+        dismissBtn?.addEventListener("click", () => clearPanel(anilistPanel));
+        return;
+      }
+
+      // "not_found" — non-blocking, the rest of the form stays fully
+      // usable regardless (all three ID fields are optional).
+      anilistPanel.innerHTML = `<p class="match-note match-note--muted">No AniList entry found for that ID.</p>`;
+    } catch {
+      clearPanel(anilistPanel);
+    }
+  }
+
+  anilistIdInput?.addEventListener("blur", () => {
+    void checkAnilistId();
+  });
+</script>
+
 <style>
   .panel {
     background: var(--color-surface);
@@ -437,6 +624,106 @@ if (Astro.request.method === "POST") {
     margin: -8px 0 0;
     font-size: 12px;
     color: var(--color-text-faint);
+  }
+  /* #150/#165: shared "this might already exist" pattern — one visual
+     language for both the title-similarity hint (no-ID path) and the
+     AniList-lookup preview/already-exists card (ID-present path), so the
+     two read as one consistent signal rather than two unrelated
+     features bolted on separately. */
+  .match-panel {
+    margin: -8px 0 0;
+  }
+  .match-note {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 9px 12px;
+  }
+  .match-note a {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .match-note--muted {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--color-text-faint);
+  }
+  .match-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .match-card--exists {
+    background: var(--color-endorse-bg);
+    border-color: var(--color-endorse);
+  }
+  .match-card--exists .match-note {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--color-text);
+  }
+  .match-card--confirmed {
+    opacity: 0.65;
+  }
+  .match-cover {
+    width: 52px;
+    height: 74px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .match-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+  .match-card-title {
+    margin: 0;
+    font-weight: 800;
+    font-size: 13.5px;
+    color: var(--color-heading);
+  }
+  .match-card-meta {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+  .match-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .match-btn {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-accent);
+    background: var(--color-accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .match-btn--ghost {
+    background: transparent;
+    color: var(--color-text-muted);
+    border-color: var(--color-border-card);
+  }
+  .match-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
   }
   .episode-data-block {
     display: flex;

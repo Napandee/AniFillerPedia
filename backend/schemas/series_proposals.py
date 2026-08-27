@@ -50,6 +50,32 @@ class SeriesProposalCreate(BaseModel):
     episode_data: EpisodeDataIn | None = None
 
 
+class SimilarSeriesMatchOut(BaseModel):
+    """#150: a single "this might already exist" hint against the live
+    `series` catalog. Surfaced both in the submission response (frontend
+    shows it to the submitter right after they submit) and in the
+    moderation-queue listing (services/series_proposals.py's _row_to_out
+    computes this fresh every time a proposal is serialized, so a
+    moderator always sees it against the CURRENT catalog, not a stale
+    snapshot from submission time) — never blocking, just a pointer.
+    """
+
+    id: int
+    title: str
+    slug: str | None = None
+
+
+class SimilarSeriesCheckOut(BaseModel):
+    """#150: response shape for the standalone, pre-submission
+    GET /series-proposals/check-title lookup the frontend calls on
+    Title-field blur — same matches list as SeriesProposalOut's own
+    possible_duplicate_matches, just available before a submitter has
+    committed to the rest of the form.
+    """
+
+    matches: list[SimilarSeriesMatchOut]
+
+
 class SeriesProposalOut(BaseModel):
     id: int
     title: str
@@ -62,6 +88,9 @@ class SeriesProposalOut(BaseModel):
     reviewed_at: datetime | None
     review_note: str | None
     episode_data: EpisodeDataOut | None = None
+    # #150: computed at read time against the live series catalog — see
+    # SimilarSeriesMatchOut's own docstring for why this is never stale.
+    possible_duplicate_matches: list[SimilarSeriesMatchOut] = Field(default_factory=list)
 
 
 class SeriesProposalReject(BaseModel):

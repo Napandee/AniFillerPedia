@@ -2,8 +2,20 @@
 contributions. No "one pending per X" constraint here (#20's rule is
 specific to episode contributions; a proposal targets a not-yet-existing
 series, so there's no natural key two proposals could collide on beyond
-title, which isn't unique — duplicate proposals get sorted out at review
-time, not blocked structurally).
+title, which isn't unique — nothing here blocks a duplicate proposal
+structurally).
+
+#150 corrected an earlier version of this comment that claimed duplicates
+were "sorted out at review time" full stop — that's only true when the
+proposal carries an anilist_id/mal_id/anidb_id that collides with an
+already-catalogued series (Postgres's UNIQUE constraint on those columns,
+caught in services/series_proposals.py's approve_series_proposal). All
+three id fields are optional, and NULL != NULL in Postgres, so a bare-
+title submission (the realistic case, per the frontend's own "no lookup/
+autocomplete yet" hint text) never hits that constraint at all.
+services/series_similarity.py's title-normalization check is what
+actually covers that gap now — a non-blocking hint, not a structural
+guarantee, surfaced both at submission time and in the moderation queue.
 """
 
 import json

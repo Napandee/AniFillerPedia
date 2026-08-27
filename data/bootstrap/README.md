@@ -1112,3 +1112,36 @@ anime-original characterization disclosed as a lower-confidence,
 cross-referenced-but-not-primary-read call (the primary wiki source
 couldn't be fetched directly). Removed from
 `needs-manual-research.json` — 57 entries remain.
+
+## Bleach: Thousand-Year Blood War Parts 2-3 added (2026-08-27)
+
+Andreas flagged that Bleach: Sennen Kessen-hen (loaded as Part 1 only,
+13 eps) was showing as FINISHED when the real show is still airing —
+same "franchise split across multiple separate AniList catalog
+entries" pattern already hit with Sailor Moon/GANTZ/Rosario to Vampire/
+Shadows House/Shugo Chara!. Checked AniList directly: the real show is
+split across FOUR cour-based entries. Part 1 "The Blood Warfare"
+(already loaded) is correctly FINISHED on its own. Added:
+
+- Part 2 "The Separation"/"Ketsubetsu-tan" (AniList 159322, 13 eps,
+  all canon, adapts ch.542-609)
+- Part 3 "The Conflict"/"Soukoku-tan" (AniList 169755, 14 eps, all
+  canon, adapts ch.609-661)
+
+Both confirmed 100% canon by two independently-fetched sources
+agreeing exactly on episode count and chapter range. Anime-original
+scenes are inserted within several otherwise-canon episodes (per
+Sportskeeda's per-episode anime-vs-manga comparisons) but no source
+flags any full episode as filler/mixed in either part.
+
+**Part 4 "The Calamity"/"Kashin-tan" (AniList 185874, 10 eps total,
+RELEASING since 2026-07-25) deliberately NOT added yet** — only 5 of
+10 episodes have aired as of this writing, and no source has a
+reliable per-episode filler/canon breakdown for it. Real signal that
+Part 4 differs from Parts 1-3: two independent sources note it adapts
+an unusually low chapters-per-episode ratio (~22 chapters across 10
+episodes, vs. Parts 2-3's ~65-70 chapters across 13-14 episodes),
+consistent with meaningfully more anime-original padding than the
+earlier parts — likely to give the ending room to breathe after the
+manga's own rushed finale. Revisit once the remaining episodes air and
+a dedicated per-episode Part 4 guide exists.

@@ -1093,3 +1093,22 @@ backfill first — it was stuck on a stale partial import missing ~100
 of the 187 real catalog rows, including several of these shows'
 base entries; re-ran `load_series.py` against it to bring it back in
 sync with production) before touching production.
+
+## Kinnikuman resolved via research subagent (2026-08-27)
+
+Andreas's original lead for Kinnikuman ("a filler arc is added in the
+anime: the Poison Six Pack arc") turned out to belong to a completely
+different, later show — **Kinnikuman Nisei / Ultimate Muscle: The
+Kinnikuman Legacy (2002-2004)**, not this project's 137-episode 1983
+series at all (same class of franchise-entry mixup already seen with
+Yashahime and the animefillerlist.com/.tv confusion earlier in this
+project's history). A dedicated research pass instead found the real
+divergence point: the anime runs anime-original material for its final
+18 episodes (120-137 — the Ultimate Choujin and Nefarious Choujin arcs),
+confirmed directly against Wikipedia's own arc-by-arc episode listing,
+after the manga had only been adapted through episode 119. Loaded as
+119 canon / 18 filler, with the boundary treated as solid but the
+anime-original characterization disclosed as a lower-confidence,
+cross-referenced-but-not-primary-read call (the primary wiki source
+couldn't be fetched directly). Removed from
+`needs-manual-research.json` — 57 entries remain.

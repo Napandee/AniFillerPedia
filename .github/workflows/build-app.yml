@@ -89,3 +89,25 @@ jobs:
         run: |
           docker compose pull app worker
           docker compose up -d --no-deps app worker
+
+      # #17: alert on a failed *deploy* specifically (this job), not a
+      # failed workflow in general — a PR-validate lint failure doesn't
+      # need to page anyone. Scoped with `if: failure()` on this job only,
+      # so it only fires once every prior step in this job has already
+      # been attempted (checkout/build succeeded — this job wouldn't even
+      # start otherwise via `needs: build` — so a failure here means the
+      # droplet-side checkout/pull/restart itself failed). Calls the
+      # Telegram Bot API directly via curl — no marketplace action needed
+      # for one POST. Chat ID is hardcoded, not a secret — same call as
+      # backend/core/config.py's own `telegram_chat_id` default ("already
+      # public knowledge, safe to default here" — only the bot token is
+      # the real secret). TELEGRAM_BOT_TOKEN is unset today
+      # (external-account checklist, CLAUDE.local.md) — curl fails fast
+      # (empty token) rather than hanging, so this step's own failure
+      # never masks the real deploy failure above it.
+      - name: Alert on deploy failure
+        if: failure()
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="8528154154" \
+            --data-urlencode text="AniFillerPedia: backend deploy FAILED on ${{ github.sha }} (${{ github.workflow }} / ${{ github.job }}) — https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

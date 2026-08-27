@@ -1,0 +1,35 @@
+name: Uptime check
+
+# #17: a genuinely new, separate workflow — not a change to the existing
+# deploy pipeline (build-app.yml/frontend-deploy.yml), so this doesn't
+# fall under CLAUDE.md's "ask before changing the deploy pipeline"
+# guardrail. Every 15 minutes, matching the cadence of this project's
+# other periodic health checks (see global ~/.claude/CLAUDE.md's Unraid
+# `OpenClaw Tool Check`, "Every 15 min").
+#
+# `workflow_dispatch` added deliberately so this can be run manually once
+# real TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID secrets exist — a
+# `schedule`-triggered workflow can't be dry-run any other way.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check public API health endpoint
+        run: |
+          status=$(curl -sS -o /tmp/health_body -w "%{http_code}" --max-time 10 \
+            "https://anifillerpedia.wiki/api/v1/health" || echo "000")
+          echo "HTTP status: $status"
+          echo "Body: $(cat /tmp/health_body 2>/dev/null || echo '(no body — request may have failed/timed out)')"
+          echo "status=$status" >> "$GITHUB_ENV"
+
+      - name: Alert if the health endpoint didn't return 200
+        if: env.status != '200'
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="8528154154" \
+            --data-urlencode text="AniFillerPedia: uptime check FAILED — https://anifillerpedia.wiki/api/v1/health returned HTTP ${{ env.status }} (expected 200). Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -26,10 +26,14 @@ async def search_series(
     )
 
 
-async def get_series(session: AsyncSession, series_id: int) -> SeriesDetailOut:
-    row = await series_repo.get_series_by_id(session, series_id)
+async def get_series(session: AsyncSession, identifier: str) -> SeriesDetailOut:
+    """#116: `identifier` is either a numeric series id or a slug — see
+    repositories.series.get_series_by_identifier for how that's resolved.
+    """
+    row = await series_repo.get_series_by_identifier(session, identifier)
     if row is None:
         raise HTTPException(status_code=404, detail="Series not found")
+    series_id = row.id
     synonyms = await series_repo.get_synonyms(session, series_id)
     related_rows = await series_repo.get_related_series(session, series_id)
     related_series = [SeriesOut(**r._mapping) for r in related_rows]

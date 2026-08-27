@@ -290,7 +290,7 @@ async def submit_bulk_contributions(
                 ),
             )
 
-    series_row = await series_repo.get_series_by_id(session, series_id)
+    series_row = await series_repo.get_series_by_identifier(session, str(series_id))
     if series_row is None:
         raise HTTPException(status_code=404, detail="Series not found")
 

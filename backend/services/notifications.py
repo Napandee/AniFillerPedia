@@ -14,17 +14,19 @@ always catches its own errors, logs them, and returns normally — a failed
 notification is visible in logs, not silently lost, but it does not hold
 up the batch or retry indefinitely (retrying a structurally-missing token
 forever would never succeed anyway).
+
+#17 extracted the actual Telegram HTTP call into services/telegram.py
+(shared with the new unhandled-error/deploy/uptime alerting) — this
+module now only builds the message text and delegates the send, which
+already never raises on its own, so the try/except below is purely
+defense-in-depth against this module's own message-building logic.
 """
 
 import logging
 
-import httpx
-
-from core.config import get_settings
+from services.telegram import send_telegram_message
 
 logger = logging.getLogger(__name__)
-
-TELEGRAM_API_BASE = "https://api.telegram.org"
 
 
 def _build_message(payload: dict) -> str:
@@ -45,20 +47,8 @@ def _build_message(payload: dict) -> str:
 
 
 async def notify_moderators_new_submission(payload: dict) -> None:
-    settings = get_settings()
-    if not settings.telegram_bot_token:
-        logger.warning(
-            "TELEGRAM_BOT_TOKEN not set — moderator notification skipped for payload=%s "
-            "(structurally ready, not live-configured yet)",
-            payload,
-        )
-        return
-
-    text = _build_message(payload)
-    url = f"{TELEGRAM_API_BASE}/bot{settings.telegram_bot_token}/sendMessage"
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            response = await client.post(url, json={"chat_id": settings.telegram_chat_id, "text": text})
-            response.raise_for_status()
+        text = _build_message(payload)
+        await send_telegram_message(text)
     except Exception:
-        logger.exception("Telegram notification failed for payload=%s — not retried, see module docstring", payload)
+        logger.exception("Failed to build/send moderator notification for payload=%s", payload)

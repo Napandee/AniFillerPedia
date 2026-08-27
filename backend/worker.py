@@ -21,6 +21,7 @@ from collections.abc import Awaitable, Callable
 from core.config import get_settings
 from core.db import async_session_factory
 from repositories.outbox import fetch_unprocessed_batch, mark_processed
+from services.alerting import alert_unhandled_exception
 from services.anilist_sync import run_episode_schedule_sync_forever
 from services.cache_purge import purge_series_page_cache
 from services.notifications import notify_moderators_new_submission
@@ -80,8 +81,13 @@ async def run_forever() -> None:
             handled = await process_batch()
             if handled:
                 logger.info("processed %s event(s)", handled)
-        except Exception:
+        except Exception as exc:
             logger.exception("error during outbox poll cycle — continuing")
+            # #17: alert on the worker's own unhandled failures rather than
+            # silently crash-looping — awaited directly (not
+            # fire-and-forget) since this is a background poll loop, not a
+            # request path nothing is blocked on waiting for a response.
+            await alert_unhandled_exception("outbox worker poll loop", exc)
         await asyncio.sleep(settings.worker_poll_interval_seconds)
 
 

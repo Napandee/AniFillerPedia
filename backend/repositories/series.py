@@ -78,7 +78,7 @@ async def search_series(
                     f"""
                     SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
                            s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
-                           s.anilist_status, s.slug
+                           s.anilist_status, s.slug, s.sequence_order
                     FROM series s
                     LEFT JOIN episodes e ON e.series_id = s.id
                     {where_sql}
@@ -97,7 +97,7 @@ async def search_series(
                     f"""
                     SELECT s.id, s.anilist_id, s.mal_id, s.anidb_id, s.title,
                            s.provenance, s.created_at, s.anilist_cover_url, s.anilist_banner_url,
-                           s.anilist_status, s.slug
+                           s.anilist_status, s.slug, s.sequence_order
                     FROM series s
                     {where_sql}
                     ORDER BY s.id

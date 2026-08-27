@@ -28,18 +28,6 @@
       "date_flagged": "2026-08-26"
     },
     {
-      "title": "Kinnikuman",
-      "anilist_id": 3272,
-      "episode_count": 137,
-      "reason": "sourcing_gap",
-      "detail": "No itemized filler/canon guide could be found at all. One animefillerlist.com fetch returned content for a completely different show (Fairy Tail OVAs), and no fandom wiki or aggregate search surfaced a real per-episode breakdown.",
-      "attempted_in": [
-        "#113",
-        "#115"
-      ],
-      "date_flagged": "2026-08-26"
-    },
-    {
       "title": "Yashahime: Princess Half-Demon",
       "anilist_id": 118399,
       "episode_count": 24,

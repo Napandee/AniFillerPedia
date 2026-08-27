@@ -1,0 +1,1111 @@
+{
+  "series_title": "Kinnikuman",
+  "research_status": "COMPLETE (disclosed lower confidence for the filler boundary) — 137 episodes, 119 canon / 18 filler. Andreas's own lead (a 'Poison Six Pack arc' filler note) turned out to belong to a completely different, later show — Kinnikuman Nisei / Ultimate Muscle: The Kinnikuman Legacy (2002-2004), episodes 45-51 there — not this 1983 137-episode series at all. Real research instead found that the anime diverges from the manga after episode 119 (confirmed directly against Wikipedia's own arc-by-arc episode listing: Ultimate Choujin arc 120-124, Nefarious Choujin arc 125-137, both anime-original, running past chapter 274 where the manga was at the time through the show's cancellation). The exact boundary (119/120) is solidly sourced; the anime-original characterization of the full 120-137 stretch is corroborated across multiple independent searches but could not be confirmed by directly reading a primary wiki page (blocked on fetch) — disclosed explicitly as lower-confidence rather than presented as equally solid as a directly-read source.",
+  "citation_sources": [
+    {
+      "id": "kinnikuman-1983-post-manga-divergence",
+      "url": "https://wheredoestheanimeleaveoff.com/where-does-the-kinnikuman-anime-end-in-the-manga/",
+      "description": "Cross-referenced sources (wheredoestheanimeleaveoff.com's manga/anime divergence point, corroborated against Wikipedia's own List of Kinnikuman episodes arc breakdown) confirming the 1983 anime runs anime-original material for its final 18 episodes (120-137) after the manga had been adapted through episode 119.",
+      "methodology_note": "Andreas's originally-supplied lead ('Poison Six Pack arc') was checked and found to belong to a different franchise entry (Kinnikuman Nisei, 2002) — not used here."
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 16,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 17,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 18,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 19,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 20,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 21,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 23,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 24,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 25,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 30,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 32,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 33,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 34,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 35,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 43,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 44,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 45,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 46,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 47,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 48,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 49,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 50,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 51,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 52,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 53,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 54,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 55,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 56,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 57,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 58,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 59,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 60,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 61,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 62,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 63,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 64,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 65,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 66,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 67,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 68,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 69,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 70,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 71,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 72,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 73,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 74,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 75,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 76,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 77,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 78,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 79,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 80,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 81,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 82,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 83,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 84,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 85,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 86,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 87,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 88,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 89,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 90,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 91,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 92,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 93,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 94,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 95,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 96,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 97,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 98,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 99,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 100,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 101,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 102,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 103,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 104,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 105,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 106,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 107,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 108,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 109,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 110,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 111,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 112,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 113,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 114,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 115,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 116,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 117,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 118,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 119,
+      "status": "canon",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 120,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2,
+      "status_note": "Anime-original material (Ultimate Choujin + Nefarious Choujin arcs) extending past where the manga had gotten to (ch. 274) by this point in production, through the show's cancellation. Boundary confirmed directly against Wikipedia's own episode/arc listing; the anime-original characterization is corroborated across multiple independent sources but not read from a primary wiki page directly (blocked on fetch) — a disclosed, lower-confidence call, not a directly-sourced one."
+    },
+    {
+      "episode_number": 121,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 122,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 123,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 124,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 125,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 126,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 127,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 128,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 129,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 130,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 131,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 132,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 133,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 134,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 135,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 136,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 137,
+      "status": "filler",
+      "citation_ids": [
+        "kinnikuman-1983-post-manga-divergence"
+      ],
+      "source_count": 2
+    }
+  ]
+}

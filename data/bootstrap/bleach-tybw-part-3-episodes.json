@@ -1,0 +1,146 @@
+{
+  "series_title": "Bleach: Sennen Kessen-hen - Soukoku-tan",
+  "research_status": "COMPLETE — all 14 episodes manga canon, no filler (adapts manga chapters 609-661). Two independently-fetched sources agree exactly on episode count and chapter range. Anime-original scenes/expansions are inserted within several otherwise-canon-adapting episodes (confirmed via Sportskeeda's per-episode anime-vs-manga comparisons) but no source flags any full episode as filler or mixed.",
+  "citation_sources": [
+    {
+      "id": "digitalcitizen-bleach-tybw",
+      "url": "https://www.digitalcitizen.life/bleach-filler-episodes-list/",
+      "description": "digitalcitizen.life's Bleach filler-episode guide, confirming 14 episodes (chapters 609-661), 0% filler for this part.",
+      "methodology_note": null
+    },
+    {
+      "id": "animefillerguide-bleach",
+      "url": "https://www.animefillerguide.com/anime/bleach/",
+      "description": "animefillerguide.com's Bleach episode guide, independently confirming 14 episodes (chapters 609-661), \"none of which are filler\".",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 4,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 9,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 10,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 11,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 12,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 13,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "digitalcitizen-bleach-tybw",
+        "animefillerguide-bleach"
+      ],
+      "source_count": 2
+    }
+  ]
+}

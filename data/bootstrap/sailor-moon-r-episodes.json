@@ -1,0 +1,358 @@
+{
+  "series_title": "Bishoujo Senshi Sailor Moon R",
+  "research_status": "COMPLETE — all 43 episodes classified via Andreas's own manual cross-reference review (2026-08-27), part of a continuous 200-episode numbering scheme across the whole original Sailor Moon run that this project splits across each season's separate AniList catalog entry (this entry = absolute episodes 47-89).",
+  "citation_sources": [
+    {
+      "id": "andreas-manual-crossref-sailor-moon-2026-08-27",
+      "url": null,
+      "description": "Andreas's own manual cross-reference review, compiled directly using continuous absolute numbering across all five original-run seasons (Sailor Moon through Sailor Stars), mapped onto each season's own separate AniList catalog entry by this project.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 13,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 14,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 15,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 16,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 17,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 18,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 19,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 20,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 21,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 22,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 23,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 24,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 25,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 26,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 27,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 28,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 29,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 30,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 31,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 32,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 33,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 34,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 35,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 36,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 37,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 38,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 39,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 40,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 41,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 42,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 43,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
+      ],
+      "source_count": 1
+    }
+  ]
+}

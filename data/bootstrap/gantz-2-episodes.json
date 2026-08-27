@@ -1,0 +1,118 @@
+{
+  "series_title": "GANTZ 2",
+  "research_status": "COMPLETE — all 13 episodes classified via Andreas's own manual cross-reference review (2026-08-27), part of a continuous 26-episode numbering scheme across GANTZ First Stage + Second Stage (this entry = absolute episodes 14-26). Confirms the 5-episode filler run already flagged in First Stage's own citation note as belonging to Second Stage.",
+  "citation_sources": [
+    {
+      "id": "andreas-manual-crossref-gantz-2026-08-27",
+      "url": null,
+      "description": "Andreas's own manual cross-reference review, compiled using continuous absolute numbering across GANTZ First Stage and Second Stage, mapped onto Second Stage's own separate AniList catalog entry by this project.",
+      "methodology_note": null
+    }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 2,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 3,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 4,
+      "status": "mixed",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 5,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 6,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 7,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 8,
+      "status": "canon",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 9,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 10,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 11,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 12,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    },
+    {
+      "episode_number": 13,
+      "status": "filler",
+      "citation_ids": [
+        "andreas-manual-crossref-gantz-2026-08-27"
+      ],
+      "source_count": 1
+    }
+  ]
+}

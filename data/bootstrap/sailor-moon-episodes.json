@@ -1,6 +1,6 @@
 {
   "series_title": "Bishoujo Senshi Sailor Moon",
-  "research_status": "COMPLETE — all 46 episodes of Sailor Moon (original 1992 season, before Sailor Moon R) classified canon/filler. 28 filler episodes (2-7, 9, 11-12, 15-18, 20-21, 26-32, 37-41, 43) confirmed by two independently-fetched sources (Looper's direct episode-by-episode list restricted to this season, ScreenRant's spot-checked filler episodes 4/15/31/32 — all four fall within Looper's filler ranges, no contradictions). The classic 90s anime and Takeuchi's manga are widely treated as separate continuities sharing only characters/setting; filler here means 'no manga chapter counterpart', same convention as every other show in this project. Episode titles sourced from Wikipedia's List of Sailor Moon episodes.",
+  "research_status": "COMPLETE — all 46 episodes of Sailor Moon (original 1992 season, before Sailor Moon R) classified canon/filler. 28 filler episodes (2-7, 9, 11-12, 15-18, 20-21, 26-32, 37-41, 43) confirmed by two independently-fetched sources (Looper's direct episode-by-episode list restricted to this season, ScreenRant's spot-checked filler episodes 4/15/31/32 — all four fall within Looper's filler ranges, no contradictions). The classic 90s anime and Takeuchi's manga are widely treated as separate continuities sharing only characters/setting; filler here means 'no manga chapter counterpart', same convention as every other show in this project. Episode titles sourced from Wikipedia's List of Sailor Moon episodes. CORRECTED 2026-08-27: episodes 13, 14, 23, 24, 36, 42 canon→mixed after Andreas's own manual cross-reference review of the full season.",
   "citation_sources": [
     {
       "id": "looper-sailor-moon-filler",
@@ -12,6 +12,12 @@
       "id": "screenrant-sailor-moon-filler",
       "url": "https://screenrant.com/sailor-moon-best-worst-filler-episodes/",
       "description": "ScreenRant's best/worst filler episodes piece, independently confirming episodes 4, 15, 31, and 32 as filler — all consistent with Looper's list.",
+      "methodology_note": null
+    },
+    {
+      "id": "andreas-manual-crossref-sailor-moon-2026-08-27",
+      "url": null,
+      "description": "Andreas's own manual cross-reference review, checked directly against the loaded data as part of the confidence-audit pass.",
       "methodology_note": null
     }
   ],
@@ -138,23 +144,23 @@
     },
     {
       "episode_number": 13,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "looper-sailor-moon-filler",
-        "screenrant-sailor-moon-filler"
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
       ],
-      "source_count": 2,
-      "title": "Fight to the Finish"
+      "source_count": 1,
+      "title": "Fight to the Finish",
+      "status_note": "Corrected canon→mixed after Andreas's own manual cross-reference review (2026-08-27) — a more precise split-the-difference read than the original two-source classification gave."
     },
     {
       "episode_number": 14,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "looper-sailor-moon-filler",
-        "screenrant-sailor-moon-filler"
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
       ],
-      "source_count": 2,
-      "title": "Match Point for Sailor Moon"
+      "source_count": 1,
+      "title": "Match Point for Sailor Moon",
+      "status_note": "Corrected canon→mixed after Andreas's own manual cross-reference review (2026-08-27) — a more precise split-the-difference read than the original two-source classification gave."
     },
     {
       "episode_number": 15,
@@ -238,23 +244,23 @@
     },
     {
       "episode_number": 23,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "looper-sailor-moon-filler",
-        "screenrant-sailor-moon-filler"
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
       ],
-      "source_count": 2,
-      "title": "Molly's Folly"
+      "source_count": 1,
+      "title": "Molly's Folly",
+      "status_note": "Corrected canon→mixed after Andreas's own manual cross-reference review (2026-08-27) — a more precise split-the-difference read than the original two-source classification gave."
     },
     {
       "episode_number": 24,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "looper-sailor-moon-filler",
-        "screenrant-sailor-moon-filler"
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
       ],
-      "source_count": 2,
-      "title": "A Friend in Wolf's Clothing"
+      "source_count": 1,
+      "title": "A Friend in Wolf's Clothing",
+      "status_note": "Corrected canon→mixed after Andreas's own manual cross-reference review (2026-08-27) — a more precise split-the-difference read than the original two-source classification gave."
     },
     {
       "episode_number": 25,
@@ -368,13 +374,13 @@
     },
     {
       "episode_number": 36,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "looper-sailor-moon-filler",
-        "screenrant-sailor-moon-filler"
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
       ],
-      "source_count": 2,
-      "title": "Bad Hair Day"
+      "source_count": 1,
+      "title": "Bad Hair Day",
+      "status_note": "Corrected canon→mixed after Andreas's own manual cross-reference review (2026-08-27) — a more precise split-the-difference read than the original two-source classification gave."
     },
     {
       "episode_number": 37,
@@ -428,13 +434,13 @@
     },
     {
       "episode_number": 42,
-      "status": "canon",
+      "status": "mixed",
       "citation_ids": [
-        "looper-sailor-moon-filler",
-        "screenrant-sailor-moon-filler"
+        "andreas-manual-crossref-sailor-moon-2026-08-27"
       ],
-      "source_count": 2,
-      "title": "Sailor Venus' Past: Minako's Tragic Love"
+      "source_count": 1,
+      "title": "Sailor Venus' Past: Minako's Tragic Love",
+      "status_note": "Corrected canon→mixed after Andreas's own manual cross-reference review (2026-08-27) — a more precise split-the-difference read than the original two-source classification gave."
     },
     {
       "episode_number": 43,

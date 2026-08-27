@@ -996,3 +996,47 @@ by hand — some genuine sourcing gaps worth another look if a better
 guide ever surfaces, some permanent scope exclusions (movies,
 non-manga-based shows) that were never really candidates for this
 project's premise to begin with.
+
+## Post-audit review corrections and franchise completion (2026-08-27)
+
+Andreas worked through the confidence-audit artifact (episode-data-audit)
+and hand-compiled his own cross-referenced filler/canon breakdowns for
+three shows, checking them directly against what was loaded:
+
+- **Gintama** (369 eps) — his list matched the loaded data exactly, 0
+  discrepancies across all 369 episodes. No data change; confirms this
+  show's original single-source loading was correct.
+- **GANTZ First Stage** (13 eps, already loaded) — also matched exactly.
+  His list, however, was continuous numbering across First Stage *and*
+  Second Stage (26 episodes total) — Second Stage had never been loaded
+  as its own catalog entry. Added it: **GANTZ 2** (AniList id 395, 13
+  eps: 7 canon / 1 mixed / 5 filler), confirming the 5-episode filler run
+  the original GANTZ citation note had already flagged as belonging to
+  Second Stage, just never itemized.
+- **Bishoujo Senshi Sailor Moon** (46 eps, already loaded) — 6 real
+  corrections (episodes 13, 14, 23, 24, 36, 42, canon→mixed), applied via
+  `--allow-corrections`. His list was also continuous numbering, this
+  time across the entire 200-episode original run (all five
+  Sailor Moon seasons) — the other 154 episodes belonged to three
+  sequel seasons never in this catalog at all. Added them as new,
+  community-provenance entries (not part of the original manami-project
+  snapshot, so `provenance = 'community'` rather than
+  `manami_bootstrap`) after confirming the season boundaries two ways —
+  the four seasons' real episode counts (46+43+38+39+34 = 200 exactly)
+  and each season's AniList air-date range picking up within days of the
+  previous one's end:
+  - Bishoujo Senshi Sailor Moon R (AniList 740, 43 eps: 15/23/5)
+  - Bishoujo Senshi Sailor Moon S (AniList 532, 38 eps: 17/15/6)
+  - Bishoujo Senshi Sailor Moon SuperS (AniList 1239, 39 eps: 16/23/0)
+  - Bishoujo Senshi Sailor Moon: Sailor Stars (AniList 996, 34 eps: 25/9/0)
+
+  Sailor Moon Crystal (the 2014 reboot) needed no changes — Andreas
+  independently confirmed it has no fillers, matching the already-loaded
+  26/26 all-canon data.
+
+All five new entries and the one correction cite Andreas's own manual
+cross-reference review directly (no single external URL — same citation
+model as a real moderator correction) rather than a fetched guide site.
+Verified against local test-pg before touching production; loaded into
+production via the same throwaway-container pattern as every prior
+batch.

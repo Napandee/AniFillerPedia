@@ -106,6 +106,13 @@ const en = {
   "series.pendingIndicator.title": "Has a pending correction under review",
   "series.pendingIndicator.label": "Pending",
   "series.airingBadge": "Airing",
+  // #126: about-card label/toggle + era-tile date-range framing. The
+  // description text itself stays English-only (sourced content, not UI
+  // chrome — see #106's own scope note), only this chrome is translated.
+  "series.about.label": "About",
+  "series.about.readMore": "Read more",
+  "series.era.range": "{startYear} – {endYear}",
+  "series.era.ongoing": "{startYear} – present",
 
   "lang.switcher.label": "Language",
 };
@@ -185,6 +192,10 @@ const es: Partial<Record<TranslationKey, string>> = {
   "series.pendingIndicator.title": "Tiene una corrección pendiente de revisión",
   "series.pendingIndicator.label": "Pendiente",
   "series.airingBadge": "En emisión",
+  "series.about.label": "Acerca de",
+  "series.about.readMore": "Leer más",
+  "series.era.range": "{startYear} – {endYear}",
+  "series.era.ongoing": "{startYear} – presente",
 
   "lang.switcher.label": "Idioma",
 };
@@ -262,6 +273,10 @@ const hi: Partial<Record<TranslationKey, string>> = {
   "series.pendingIndicator.title": "समीक्षाधीन एक लंबित सुधार है",
   "series.pendingIndicator.label": "लंबित",
   "series.airingBadge": "प्रसारणाधीन",
+  "series.about.label": "परिचय",
+  "series.about.readMore": "और पढ़ें",
+  "series.era.range": "{startYear} – {endYear}",
+  "series.era.ongoing": "{startYear} – अब तक",
 
   "lang.switcher.label": "भाषा",
 };
@@ -339,6 +354,10 @@ const ja: Partial<Record<TranslationKey, string>> = {
   "series.pendingIndicator.title": "審査中の修正提案があります",
   "series.pendingIndicator.label": "審査中",
   "series.airingBadge": "放送中",
+  "series.about.label": "概要",
+  "series.about.readMore": "続きを読む",
+  "series.era.range": "{startYear} – {endYear}",
+  "series.era.ongoing": "{startYear} – 放送中",
 
   "lang.switcher.label": "言語",
 };
@@ -416,6 +435,10 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "series.pendingIndicator.title": "有一个待审核的更正",
   "series.pendingIndicator.label": "待处理",
   "series.airingBadge": "连载中",
+  "series.about.label": "简介",
+  "series.about.readMore": "阅读更多",
+  "series.era.range": "{startYear} – {endYear}",
+  "series.era.ongoing": "{startYear} – 至今",
 
   "lang.switcher.label": "语言",
 };

@@ -5,6 +5,8 @@ by another process (e.g. #4's bootstrap import), since nothing here
 touches a row it didn't create itself.
 """
 
+from datetime import date
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import text
@@ -328,6 +330,56 @@ async def test_series_airing_status_surfaced_on_list_and_detail(client: AsyncCli
         list_response = await client.get("/api/v1/series", params={"anilist_id": 900009})
         item = list_response.json()["items"][0]
         assert item["airing_status"] == "RELEASING"
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_detail_includes_description_and_dates(client: AsyncClient) -> None:
+    """#126: AniList's synced synopsis + air-date range — null until the
+    sync worker has reached this series at least once, same convention as
+    anilist_episode_count/airing_status above. Only exposed on the detail
+    response, never the browse/search list (the about-card/era-tile only
+    render on the series detail page — see CLAUDE.md scope note for #126).
+    """
+    series_id = await _make_series("Theta", anilist_id=900010)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}")
+        assert response.status_code == 200
+        body = response.json()
+        assert body["description"] is None
+        assert body["start_date"] is None
+        assert body["end_date"] is None
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "UPDATE series SET anilist_description = :desc, "
+                        "anilist_start_date = :start, anilist_end_date = :end "
+                        "WHERE id = :sid"
+                    ),
+                    {
+                        "desc": "A cleaned synopsis.",
+                        # asyncpg requires a real date object for a DATE
+                        # column parameter, not an ISO string.
+                        "start": date(1999, 10, 3),
+                        "end": date(2007, 2, 8),
+                        "sid": series_id,
+                    },
+                )
+        response = await client.get(f"/api/v1/series/{series_id}")
+        body = response.json()
+        assert body["description"] == "A cleaned synopsis."
+        assert body["start_date"] == "1999-10-03"
+        assert body["end_date"] == "2007-02-08"
+
+        # Not on the list/browse response — deliberately not bloating it.
+        list_response = await client.get("/api/v1/series", params={"anilist_id": 900010})
+        item = list_response.json()["items"][0]
+        assert "description" not in item
+        assert "start_date" not in item
+        assert "end_date" not in item
     finally:
         await _cleanup_series(series_id)
 

@@ -98,7 +98,16 @@ CREATE TABLE series (
     -- — repositories/series.py's lookup falls back to id when a series has
     -- no slug yet. Generated from title via services/slugs.py; collisions
     -- disambiguated with the series' own numeric id.
-    slug                         TEXT UNIQUE
+    slug                         TEXT UNIQUE,
+    -- #126: AniList's own synopsis + air-date range, synced by the same
+    -- #49 worker/cadence as the fields above. anilist_description is
+    -- cleaned (HTML tags stripped, entities unescaped) before storage —
+    -- see services/anilist_sync.py's clean_anilist_description(). The two
+    -- date columns are only ever set when AniList's {year, month, day} is
+    -- fully complete; a still-airing show simply has a NULL end date.
+    anilist_description          TEXT,
+    anilist_start_date           DATE,
+    anilist_end_date             DATE
 );
 
 -- Alternate/romanized/native-script titles, captured during the one-time

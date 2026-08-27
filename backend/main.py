@@ -24,6 +24,19 @@ app = FastAPI(
     },
 )
 
+# #142: no CORSMiddleware here — a deliberate decision to leave CORS
+# unconfigured for now, not an oversight. Nothing today needs it: the
+# Astro frontend calls this API same-origin (Caddy splits /api/v1/* to
+# this container on the same domain, never a browser-JS cross-origin
+# call), auth is cookie-based session tokens (samesite=lax, httpOnly) —
+# which wouldn't usefully support cross-origin browser calls without
+# further work anyway — and the one speculative future consumer named in
+# CLAUDE.md (a possible AniDex integration) would most plausibly be
+# server-to-server, which CORS doesn't gate at all (it's a browser-
+# enforced restriction; a server calling this API directly is unaffected
+# either way). Revisit if a real browser-based third-party client shows
+# up wanting cross-origin reads — see CLAUDE.md's Decisions Made for the
+# full reasoning and what would justify reopening this.
 app.include_router(health.router, prefix="/api/v1")
 app.include_router(series.router, prefix="/api/v1")
 app.include_router(episodes.router, prefix="/api/v1")

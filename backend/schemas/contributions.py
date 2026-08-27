@@ -7,21 +7,35 @@ from schemas.episodes import CitationOut
 
 class CitationIn(BaseModel):
     url: str | None = None
-    description: str = Field(min_length=1)
+    # #140: bounded, not unbounded free text — the longest real citation
+    # description loaded into production so far (across every
+    # data/bootstrap/*.json file) is 352 chars; 3000 leaves generous
+    # headroom for a genuinely detailed real citation while still capping
+    # the storage-bloat vector an unbounded anonymous field would otherwise
+    # be (see #139's rate-limiting fix, which this complements rather than
+    # replaces — a rate limit alone doesn't bound how big any single
+    # submission can be).
+    description: str = Field(min_length=1, max_length=3000)
     # #83: the field already exists on every citation row (#77) and is
     # already returned to every reader via CitationOut — withholding it
     # from public submissions would be an arbitrary asymmetry, not a
     # deliberate simplification, since the schema already treats every
     # citation identically regardless of who authored it. Optional, same
     # as proposed_note/status_note elsewhere in this form.
-    methodology_note: str | None = None
+    # #140: max_length 5000 — the longest real methodology_note loaded so
+    # far is 509 chars; this field is meant to hold a fuller research
+    # trail than `description`, so it gets more headroom, not the same cap.
+    methodology_note: str | None = Field(default=None, max_length=5000)
 
 
 class ContributionCreate(BaseModel):
     series_id: int
     episode_number: int
     proposed_status: str = Field(pattern="^(canon|filler|mixed)$")
-    proposed_note: str | None = None
+    # #140: max_length 3000 — the longest real status_note loaded so far
+    # (across data/bootstrap/*.json) is 802 chars; 3000 leaves real
+    # headroom without leaving the field unbounded.
+    proposed_note: str | None = Field(default=None, max_length=3000)
     citation: CitationIn
     # Required true, not just present — #21: structural proof of agreement
     # on every submission, anonymous or not.

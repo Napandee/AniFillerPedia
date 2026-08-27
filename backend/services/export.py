@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import repositories.export as export_repo
+import repositories.rate_limits as rate_limits_repo
 from core.security import generate_api_key, hash_api_key
 from schemas.export import (
     ExportAccessResponse,
@@ -16,15 +17,42 @@ from schemas.export import (
 # to, per #22's acceptance criteria ("what terms version" queryable).
 CURRENT_TERMS_VERSION = "cc-by-nc-sa-4.0-2026-08-21"
 
+# #141: this endpoint has no auth of its own (by design — it's how anyone
+# first gets an export API key) and nothing verifies the submitted email
+# is actually reachable, so nothing previously stopped mass key generation.
+# 5 per rolling hour per caller comfortably covers a real person retrying
+# a typo'd email a couple of times, while bounding automated key-farming.
+# Not a tuned number — same "no real abuse data yet" stance as #84/#139's
+# other new limits.
+EXPORT_ACCESS_RATE_LIMIT = 5
+EXPORT_ACCESS_RATE_LIMIT_WINDOW_SECONDS = 60 * 60
+EXPORT_ACCESS_RATE_LIMIT_SCOPE = "export_request_access"
+
 
 async def request_access(
-    session: AsyncSession, *, email: str, license_accepted: bool
+    session: AsyncSession, *, email: str, license_accepted: bool, identifier: str
 ) -> ExportAccessResponse:
     if not license_accepted:
         raise HTTPException(
             status_code=400,
             detail="license_accepted must be true to receive an export API key",
         )
+
+    recent_count = await rate_limits_repo.count_recent(
+        session,
+        scope=EXPORT_ACCESS_RATE_LIMIT_SCOPE,
+        identifier=identifier,
+        window_seconds=EXPORT_ACCESS_RATE_LIMIT_WINDOW_SECONDS,
+    )
+    if recent_count >= EXPORT_ACCESS_RATE_LIMIT:
+        raise HTTPException(
+            status_code=429,
+            detail=(
+                f"You've requested {recent_count} export API keys in the last hour "
+                f"(limit {EXPORT_ACCESS_RATE_LIMIT}). Try again later."
+            ),
+        )
+
     key = generate_api_key()
     await export_repo.insert_api_key_request(
         session,
@@ -33,6 +61,7 @@ async def request_access(
         terms_version=CURRENT_TERMS_VERSION,
         key_hash=hash_api_key(key),
     )
+    await rate_limits_repo.record(session, scope=EXPORT_ACCESS_RATE_LIMIT_SCOPE, identifier=identifier)
     await session.commit()
     return ExportAccessResponse(api_key=key)
 

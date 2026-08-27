@@ -4,6 +4,7 @@ __test_12__ / uses a dedicated test series so cleanup is unambiguous and
 never touches #4's real bootstrap data or another concurrent test's rows.
 """
 
+import asyncio
 import uuid
 
 import pytest
@@ -346,3 +347,133 @@ async def test_mine_scopes_to_caller_excludes_other_users(test_series_id: int) -
     finally:
         await _delete_user(user_a)
         await _delete_user(user_b)
+
+
+@pytest.mark.asyncio
+async def test_concurrent_submissions_for_same_episode_race_safely(test_series_id: int) -> None:
+    """#151: find_pending_for_episode (the #20 pre-check) has a real TOCTOU
+    gap — two genuinely concurrent submissions for the same
+    (series_id, episode_number) can both pass that check, then race on the
+    actual INSERT against contributions_one_pending_per_episode. This must
+    exercise the real race, not a sequential duplicate check (already
+    covered above by test_duplicate_pending_rejected_with_existing_id,
+    which lets the first request fully complete before the second is
+    sent) — so two real concurrent requests are fired via asyncio.gather,
+    same pattern already proven to genuinely race at the DB level by
+    test_moderation.py's test_double_approval_race_is_guarded.
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        responses = await asyncio.gather(
+            client.post(
+                "/api/v1/contributions",
+                json={
+                    "series_id": test_series_id,
+                    "episode_number": 20,
+                    "proposed_status": "canon",
+                    "citation": {"description": "__test_151__ racer A"},
+                    "license_accepted": True,
+                },
+            ),
+            client.post(
+                "/api/v1/contributions",
+                json={
+                    "series_id": test_series_id,
+                    "episode_number": 20,
+                    "proposed_status": "filler",
+                    "citation": {"description": "__test_151__ racer B"},
+                    "license_accepted": True,
+                },
+            ),
+            return_exceptions=True,
+        )
+
+    status_codes = sorted(r.status_code if not isinstance(r, BaseException) else -1 for r in responses)
+    assert status_codes == [201, 409], [
+        r.text if not isinstance(r, BaseException) else repr(r) for r in responses
+    ]
+
+    winner = next(r for r in responses if not isinstance(r, BaseException) and r.status_code == 201)
+    loser = next(r for r in responses if not isinstance(r, BaseException) and r.status_code == 409)
+    # The loser's 409 must point at the winner's real contribution id —
+    # not the pre-existing-but-stale sentinel this endpoint would otherwise
+    # have no choice but to fall back to if the race left nothing findable.
+    assert loser.json()["detail"]["existing_contribution_id"] == winner.json()["id"]
+
+    async with async_session_factory() as session:
+        count = (
+            await session.execute(
+                text("SELECT count(*) FROM contributions WHERE series_id = :sid AND episode_number = 20"),
+                {"sid": test_series_id},
+            )
+        ).scalar_one()
+        assert count == 1  # the loser's caught IntegrityError must never leave a duplicate row
+
+
+@pytest.mark.asyncio
+async def test_episode_number_within_known_range_accepted_and_beyond_it_rejected(
+    test_series_id: int,
+) -> None:
+    """#152: a submitted episode number is validated against the series'
+    own known real episode count (series.anilist_episode_count, #49's
+    AniList sync column) once that count is known. Episode 12 of a
+    declared 12-episode show is a normal accepted submission; episode
+    9999 of the same show is a clean 422, not a silently-accepted pending
+    contribution for an episode that can never really exist.
+    """
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("UPDATE series SET anilist_episode_count = 12 WHERE id = :id"),
+                {"id": test_series_id},
+            )
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        in_range = await client.post(
+            "/api/v1/contributions",
+            json={
+                "series_id": test_series_id,
+                "episode_number": 12,
+                "proposed_status": "canon",
+                "citation": {"description": "__test_152__ in-range episode"},
+                "license_accepted": True,
+            },
+        )
+        assert in_range.status_code == 201, in_range.text
+
+        out_of_range = await client.post(
+            "/api/v1/contributions",
+            json={
+                "series_id": test_series_id,
+                "episode_number": 9999,
+                "proposed_status": "canon",
+                "citation": {"description": "__test_152__ out-of-range episode"},
+                "license_accepted": True,
+            },
+        )
+    assert out_of_range.status_code == 422, out_of_range.text
+    assert out_of_range.json()["detail"]["anilist_episode_count"] == 12
+
+
+@pytest.mark.asyncio
+async def test_episode_number_accepted_when_series_count_unknown(test_series_id: int) -> None:
+    """A series #49 has never synced (NULL anilist_episode_count — the
+    default for every freshly-created test series here, matching a
+    brand-new community proposal or a movie/special with no AniList
+    entry) must never have submissions blocked just because the real
+    count isn't known yet — CLAUDE.md's own guardrail on this exact case.
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/contributions",
+            json={
+                "series_id": test_series_id,
+                "episode_number": 5000,
+                "proposed_status": "canon",
+                "citation": {"description": "__test_152__ unknown-count series"},
+                "license_accepted": True,
+            },
+        )
+    assert response.status_code == 201, response.text

@@ -55,15 +55,21 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/series/{series_id}": {
+    "/api/v1/series/{id_or_slug}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get Series */
-        get: operations["get_series_api_v1_series__series_id__get"];
+        /**
+         * Get Series
+         * @description #116: accepts either a numeric series id (legacy URLs — the
+         *     frontend 301-redirects these to the canonical slug URL, but the API
+         *     itself keeps resolving both indefinitely, since it's a public contract
+         *     other consumers may already depend on) or a slug.
+         */
+        get: operations["get_series_api_v1_series__id_or_slug__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1097,6 +1103,8 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /** Slug */
+            slug: string | null;
             /** Cover Image Url */
             cover_image_url: string | null;
             /** Banner Image Url */
@@ -1140,6 +1148,8 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /** Slug */
+            slug: string | null;
             /** Cover Image Url */
             cover_image_url: string | null;
             /** Banner Image Url */
@@ -1392,12 +1402,12 @@ export interface operations {
             };
         };
     };
-    get_series_api_v1_series__series_id__get: {
+    get_series_api_v1_series__id_or_slug__get: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                series_id: number;
+                id_or_slug: string;
             };
             cookie?: never;
         };

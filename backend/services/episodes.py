@@ -31,7 +31,7 @@ def _row_to_episode_out(row: Row) -> EpisodeOut:
 
 
 async def list_episodes_for_series(session: AsyncSession, series_id: int) -> list[EpisodeOut]:
-    series_row = await series_repo.get_series_by_id(session, series_id)
+    series_row = await series_repo.get_series_by_identifier(session, str(series_id))
     if series_row is None:
         raise HTTPException(status_code=404, detail="Series not found")
     rows = await episodes_repo.list_for_series(session, series_id)

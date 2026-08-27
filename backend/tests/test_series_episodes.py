@@ -366,6 +366,90 @@ async def test_series_detail_includes_related_series(client: AsyncClient) -> Non
 
 
 @pytest.mark.asyncio
+async def test_series_lookup_by_slug_and_id_resolve_the_same_series(client: AsyncClient) -> None:
+    """#116: slug-based series URLs. Both the numeric id and the slug
+    generated from its title must resolve to the identical series.
+    """
+    series_id = await _make_series("SlugLookup", anilist_id=900401)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("UPDATE series SET slug = :slug WHERE id = :id"),
+                    {"slug": f"__test-7__sluglookup-{series_id}", "id": series_id},
+                )
+
+        by_id = await client.get(f"/api/v1/series/{series_id}")
+        assert by_id.status_code == 200
+        assert by_id.json()["id"] == series_id
+
+        by_slug = await client.get(f"/api/v1/series/__test-7__sluglookup-{series_id}")
+        assert by_slug.status_code == 200
+        assert by_slug.json()["id"] == series_id
+        assert by_slug.json()["slug"] == f"__test-7__sluglookup-{series_id}"
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_lookup_by_unknown_slug_404s(client: AsyncClient) -> None:
+    """#116: an identifier that isn't purely numeric is always treated as
+    a slug lookup, never coerced to an id — an unknown slug 404s cleanly
+    rather than erroring.
+    """
+    response = await client.get("/api/v1/series/this-slug-does-not-exist")
+    assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_series_create_generates_slug_with_collision_disambiguation(
+    client: AsyncClient,
+) -> None:
+    """#116: repositories.series.create() (used when a series_proposal is
+    approved) generates a slug the same way the one-time backfill does,
+    including disambiguating a base-slug collision by appending the new
+    row's own id.
+    """
+    import repositories.series as series_repo
+
+    async with async_session_factory() as session:
+        async with session.begin():
+            first = await series_repo.create(
+                session,
+                title=f"{TEST_PREFIX}Collision Show",
+                anilist_id=900402,
+                mal_id=None,
+                anidb_id=None,
+                provenance="community",
+                added_by=None,
+            )
+    try:
+        assert first.slug == "test-7-collision-show"
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                second = await series_repo.create(
+                    session,
+                    # Different title, same slugified form once punctuation
+                    # is stripped — the exact collision scenario #116 calls
+                    # out (e.g. "Fairy Tail" vs "Fairy Tail!" both slugify
+                    # to "fairy-tail").
+                    title=f"{TEST_PREFIX}Collision, Show!!",
+                    anilist_id=900403,
+                    mal_id=None,
+                    anidb_id=None,
+                    provenance="community",
+                    added_by=None,
+                )
+        try:
+            assert second.slug == f"test-7-collision-show-{second.id}"
+        finally:
+            await _cleanup_series(second.id)
+    finally:
+        await _cleanup_series(first.id)
+
+
+@pytest.mark.asyncio
 async def test_series_detail_404() -> None:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

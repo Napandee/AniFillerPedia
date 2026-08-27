@@ -118,7 +118,7 @@ function pageHref(targetPage: number): string {
             {[...recentlyUpdated, ...recentlyUpdated].map((series, i) => (
               <a
                 class="teaser-card"
-                href={getRelativeLocaleUrl(locale, `/series/${series.id}`)}
+                href={getRelativeLocaleUrl(locale, `/series/${series.slug}`)}
                 aria-hidden={i >= recentlyUpdated.length ? "true" : undefined}
                 tabindex={i >= recentlyUpdated.length ? -1 : undefined}
               >
@@ -159,7 +159,7 @@ function pageHref(targetPage: number): string {
       items.length > 0 && (
         <div class="series-grid">
           {items.map((series) => (
-            <a class="grid-card" href={getRelativeLocaleUrl(locale, `/series/${series.id}`)}>
+            <a class="grid-card" href={getRelativeLocaleUrl(locale, `/series/${series.slug}`)}>
               <div class="grid-poster">
                 {series.cover_image_url ? (
                   <img src={series.cover_image_url} alt="" loading="lazy" />

@@ -130,6 +130,39 @@ CREATE TABLE series_synonyms (
     UNIQUE (series_id, synonym)
 );
 
+-- #148: a contributor's suggestion to add a synonym to an ALREADY-
+-- catalogued series — series_synonyms above has no write path beyond the
+-- one-time bootstrap import, so this is what lets it grow post-launch.
+-- Deliberately a small, dedicated table rather than extending
+-- series_proposals (scoped to "propose a NEW series") or reusing
+-- contributions (episode-status-shaped) — see migrations/
+-- 016_add_series_synonym_suggestions.sql for the full scope-decision
+-- writeup and services/synonym_suggestions.py for the approval flow.
+-- Moderator-only approval, not #14's trust-weighted voting — a
+-- single-string suggestion is too small a unit to justify the
+-- contribution_votes/weight-snapshot/auto-promotion machinery.
+-- license_accepted mirrors contributions/series_proposals (CLAUDE.md,
+-- issue #21) — structural proof of agreement on every submission.
+CREATE TABLE series_synonym_suggestions (
+    id            SERIAL PRIMARY KEY,
+    series_id     INTEGER NOT NULL REFERENCES series(id) ON DELETE CASCADE,
+    synonym       TEXT NOT NULL,
+    note          TEXT,   -- optional context for the moderator, not a required citation
+    submitted_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    submitted_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    review_status TEXT NOT NULL DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected')),
+    reviewed_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    reviewed_at   TIMESTAMPTZ,
+    review_note   TEXT,
+    license_accepted BOOLEAN NOT NULL
+);
+
+-- Same one-pending-per-target pattern as #20's
+-- contributions_one_pending_per_episode below.
+CREATE UNIQUE INDEX series_synonym_suggestions_one_pending_per_target
+    ON series_synonym_suggestions (series_id, synonym)
+    WHERE review_status = 'pending';
+
 -- Lightweight "related series" links for shows split across multiple
 -- AniList catalog entries (e.g. Fairy Tail / Fairy Tail (2014) /
 -- Fairy Tail (2018)) — decided 2026-08-22 over a heavier "collection"

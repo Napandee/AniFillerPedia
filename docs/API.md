@@ -30,12 +30,13 @@ to one caller's own data:
 |---|---|
 | `POST /series/{id}/contributions/bulk` | `POST /contributions` (single-episode — anonymous allowed, see [CONTRIBUTING.md](../CONTRIBUTING.md)) |
 | `POST /contributions/{id}/vote` | `POST /series-proposals` (anonymous allowed) |
-| `POST /contributions/{id}/withdraw` (own pending submissions only — anonymous submissions can't be withdrawn) | |
+| `POST /contributions/{id}/withdraw` (own pending submissions only — anonymous submissions can't be withdrawn) | `POST /synonym-suggestions` (anonymous allowed, see [CONTRIBUTING.md](../CONTRIBUTING.md)) |
 | `GET /contributions/mine`, `/mine/votes` | `GET /series/*`, `/episodes/*` (all public reads) |
 | `GET /series-proposals/mine` | `POST /export/request-access` (email-gated, not login-gated) |
-| `GET /users/me`, `DELETE /users/me` | `GET /export` (API-key-gated, not login-gated) |
+| `GET /synonym-suggestions/mine` | `GET /export` (API-key-gated, not login-gated) |
+| `GET /users/me`, `DELETE /users/me` | |
 | `GET /settings/link/{provider}` | `GET /license`, `GET /privacy` |
-| Moderator+: `GET /contributions`, `GET /series-proposals`, every `/approve`, `/reject`, `/bulk-approve`, `/bulk-reject` | |
+| Moderator+: `GET /contributions`, `GET /series-proposals`, `GET /synonym-suggestions`, every `/approve`, `/reject`, `/bulk-approve`, `/bulk-reject` | |
 | Admin+: `GET /admin/users`, `PATCH /admin/users/{id}/role` | |
 
 **How the login flow actually works.** This API has exactly one auth
@@ -374,29 +375,33 @@ the caller needs more than a message to act on it — noted below.
   admin — not the owner — trying to grant the `admin` role), or when
   voting on your own submitted contribution (`POST /contributions/{id}/vote`).
 - **404** on a genuinely missing resource (`series_id`, `episode_id`,
-  `contribution_id`, `series_proposal_id` that doesn't exist), or an
-  unrecognized `review_status` query value on the moderation-queue
-  listings (only `pending` is meaningful today).
+  `contribution_id`, `series_proposal_id`, `suggestion_id` that doesn't
+  exist), or an unrecognized `review_status` query value on the
+  moderation-queue listings (only `pending` is meaningful today).
 - **409** when a write conflicts with existing state — e.g. submitting a
   correction for an episode that already has a pending one (the response
   body's `detail` is an object, `{"message": "...", "existing_contribution_id": <id>}`,
   so you can endorse/dispute it instead of creating a competing
   submission), voting twice on the same contribution, approving/rejecting
-  something that's no longer pending, or approving a series proposal whose
+  something that's no longer pending, approving a series proposal whose
   external ID (`anilist_id`/`mal_id`/`anidb_id`) collides with an
-  already-bootstrapped series.
+  already-bootstrapped series, `POST /synonym-suggestions` for a synonym
+  a series already has recorded, or one that already has an identical
+  suggestion pending (`{"message": "...", "existing_suggestion_id": <id>}`,
+  same shape as the contribution case).
 - **400** specifically on `POST /export/request-access` when
   `license_accepted` isn't `true` — note this is the one submission-style
   endpoint that uses 400 rather than 422 for that same check (an existing
   inconsistency across the API, not a documentation error).
 - **422** on a request that fails validation (missing required field, bad
   enum value, a bulk range submission that's malformed/self-contradictory/
-  oversized), or on `POST /contributions`/`POST /series-proposals` when
-  `license_accepted` isn't `true` — the body follows FastAPI's standard
-  validation-error shape for a pure schema failure, or a plain
-  `{"detail": "..."}` for a business-rule check like `license_accepted`.
+  oversized), or on `POST /contributions`/`POST /series-proposals`/
+  `POST /synonym-suggestions` when `license_accepted` isn't `true` — the
+  body follows FastAPI's standard validation-error shape for a pure
+  schema failure, or a plain `{"detail": "..."}` for a business-rule
+  check like `license_accepted`.
 - **429** on the handful of rate-limited endpoints (anonymous/bulk
-  contribution submission, series-proposal submission, export key
-  requests, the AniList-lookup proxy) — the body names the limit and
-  window, e.g. `"You've made 6 contribution submissions in the last hour
-  (limit 5)."`
+  contribution submission, series-proposal submission, synonym-suggestion
+  submission, export key requests, the AniList-lookup proxy) — the body
+  names the limit and window, e.g. `"You've made 6 contribution
+  submissions in the last hour (limit 5)."`

@@ -17,6 +17,7 @@ from routers import (
     series,
     series_proposals,
     settings,
+    synonym_suggestions,
     users,
 )
 from services.alerting import alert_unhandled_exception
@@ -51,6 +52,12 @@ openapi_tags = [
         "description": "Propose a series that isn't in the catalog yet (optionally with "
         "attached bulk episode data), and the moderator approve/reject flow for it. "
         "Mirrors the contributions workflow above.",
+    },
+    {
+        "name": "synonym-suggestions",
+        "description": "Suggest an alternate/dub/regional title for an already-catalogued "
+        "series, and the moderator approve/reject flow for it (#148). Moderator-only "
+        "approval, not community voting — see services/synonym_suggestions.py for why.",
     },
     {
         "name": "admin",
@@ -149,6 +156,7 @@ app.include_router(users.router, prefix="/api/v1")
 app.include_router(export.router, prefix="/api/v1")
 app.include_router(contributions.router, prefix="/api/v1")
 app.include_router(series_proposals.router, prefix="/api/v1")
+app.include_router(synonym_suggestions.router, prefix="/api/v1")
 app.include_router(anilist_lookup.router, prefix="/api/v1")
 app.include_router(legal.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")

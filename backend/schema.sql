@@ -228,11 +228,16 @@ CREATE TABLE contributions (
     citation_id       INTEGER NOT NULL REFERENCES citations(id),
     submitted_by      INTEGER REFERENCES users(id) ON DELETE SET NULL,
     submitted_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    review_status     TEXT NOT NULL DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected')),
-    resolution_method TEXT CHECK (resolution_method IN ('moderator', 'community_vote')),   -- NULL until resolved
+    -- #149: 'withdrawn' is a submitter withdrawing their own still-pending
+    -- contribution (see migrations/015_add_contribution_withdrawn_status.sql)
+    -- — distinct from 'rejected' so the audit trail shows WHO ended a
+    -- contribution's pending life, not just that it ended.
+    review_status     TEXT NOT NULL DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected', 'withdrawn')),
+    -- 'withdrawn_by_submitter' pairs with review_status = 'withdrawn' above.
+    resolution_method TEXT CHECK (resolution_method IN ('moderator', 'community_vote', 'withdrawn_by_submitter')),   -- NULL until resolved
     reviewed_by       INTEGER REFERENCES users(id) ON DELETE SET NULL,
     reviewed_at       TIMESTAMPTZ,
-    review_note       TEXT,   -- moderator's reason, mainly for rejections
+    review_note       TEXT,   -- moderator's reason, mainly for rejections; NULL for a submitter withdrawal
     -- CC BY-NC-SA structural proof of agreement (CLAUDE.md, issue #21) —
     -- every submission, not a one-time account-level flag: mirrors how
     -- citation_id NOT NULL above already enforces its own guardrail
@@ -348,7 +353,7 @@ CREATE TABLE episodes (
 -- rows here; they never call Telegram/Cloudflare directly.
 CREATE TABLE outbox_events (
     id           BIGSERIAL PRIMARY KEY,
-    event_type   TEXT NOT NULL,   -- 'contribution.submitted' | 'contribution.approved' | 'contribution.rejected' | 'series_proposal.submitted' | 'series_proposal.approved' | ...
+    event_type   TEXT NOT NULL,   -- 'contribution.submitted' | 'contribution.approved' | 'contribution.rejected' | 'contribution.withdrawn' | 'series_proposal.submitted' | 'series_proposal.approved' | ...
     payload      JSONB NOT NULL,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
     processed_at TIMESTAMPTZ   -- NULL until a consumer has handled it

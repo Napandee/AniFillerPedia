@@ -30,6 +30,7 @@ to one caller's own data:
 |---|---|
 | `POST /series/{id}/contributions/bulk` | `POST /contributions` (single-episode — anonymous allowed, see [CONTRIBUTING.md](../CONTRIBUTING.md)) |
 | `POST /contributions/{id}/vote` | `POST /series-proposals` (anonymous allowed) |
+| `POST /contributions/{id}/withdraw` (own pending submissions only — anonymous submissions can't be withdrawn) | |
 | `GET /contributions/mine`, `/mine/votes` | `GET /series/*`, `/episodes/*` (all public reads) |
 | `GET /series-proposals/mine` | `POST /export/request-access` (email-gated, not login-gated) |
 | `GET /users/me`, `DELETE /users/me` | `GET /export` (API-key-gated, not login-gated) |

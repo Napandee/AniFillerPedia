@@ -6,9 +6,12 @@ import services.series as series_service
 from core.conditional import apply_conditional_headers, not_modified
 from core.db import get_session
 from schemas.episodes import EpisodeOut
+from schemas.errors import ErrorDetail
 from schemas.series import SeriesDetailOut, SeriesListOut
 
 router = APIRouter(tags=["series"])
+
+_SERIES_NOT_FOUND = {404: {"model": ErrorDetail, "description": "No series matches this id or slug"}}
 
 
 @router.get("/series", response_model=SeriesListOut)
@@ -22,12 +25,21 @@ async def list_series(
     sort: str | None = Query(default=None, pattern="^(recently_updated)$"),
     session: AsyncSession = Depends(get_session),
 ) -> SeriesListOut:
+    """Search/list the series catalog. Public, unauthenticated.
+
+    `q` matches title and known synonyms (alternate/romanized/native-script
+    titles). A plain call with no `q` and no external id (`anilist_id`/
+    `mal_id`/`anidb_id`) excludes series with zero researched episodes —
+    see docs/API.md for why. Pass `sort=recently_updated` to order by which
+    series had an episode's status most recently approved instead of the
+    default insertion order.
+    """
     return await series_service.search_series(
         session, q, anilist_id, mal_id, anidb_id, limit, offset, sort
     )
 
 
-@router.get("/series/{id_or_slug}", response_model=SeriesDetailOut)
+@router.get("/series/{id_or_slug}", response_model=SeriesDetailOut, responses=_SERIES_NOT_FOUND)
 async def get_series(
     id_or_slug: str,
     request: Request,
@@ -54,7 +66,11 @@ async def get_series(
     return body
 
 
-@router.get("/series/{series_id}/episodes", response_model=list[EpisodeOut])
+@router.get(
+    "/series/{series_id}/episodes",
+    response_model=list[EpisodeOut],
+    responses=_SERIES_NOT_FOUND,
+)
 async def list_series_episodes(
     series_id: int,
     request: Request,

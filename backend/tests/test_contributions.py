@@ -84,7 +84,13 @@ async def _cleanup_series(series_id: int) -> None:
             if contribution_ids:
                 await session.execute(
                     text(
-                        "DELETE FROM outbox_events WHERE event_type = 'contribution.submitted' "
+                        # #149: withdraw tests also leave a
+                        # 'contribution.withdrawn' outbox row behind (see
+                        # services/contributions.py's withdraw_contribution) —
+                        # cleaned up here alongside 'contribution.submitted'
+                        # for the same reason noted above.
+                        "DELETE FROM outbox_events WHERE event_type IN "
+                        "('contribution.submitted', 'contribution.withdrawn') "
                         "AND (payload->>'contribution_id')::int = ANY(:ids)"
                     ),
                     {"ids": contribution_ids},
@@ -477,3 +483,195 @@ async def test_episode_number_accepted_when_series_count_unknown(test_series_id:
             },
         )
     assert response.status_code == 201, response.text
+
+
+@pytest.mark.asyncio
+async def test_withdraw_own_pending_contribution_succeeds(test_series_id: int) -> None:
+    """#149: the core acceptance criterion — a logged-in submitter can
+    withdraw their own still-pending contribution. Confirms both the API
+    response shape and the underlying row's actual review_status/
+    resolution_method, and that #20's one-pending-per-episode index no
+    longer blocks a fresh submission for the same episode afterward (a
+    withdrawn row must behave like a resolved one, not a still-pending one).
+    """
+    user_id = await _make_authenticated_user()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            submit = await client.post(
+                "/api/v1/contributions",
+                json={
+                    "series_id": test_series_id,
+                    "episode_number": 30,
+                    "proposed_status": "canon",
+                    "citation": {"description": "__test_149__ withdraw target"},
+                    "license_accepted": True,
+                },
+            )
+            assert submit.status_code == 201, submit.text
+            contribution_id = submit.json()["id"]
+
+            withdraw = await client.post(f"/api/v1/contributions/{contribution_id}/withdraw")
+            assert withdraw.status_code == 200, withdraw.text
+            body = withdraw.json()
+            assert body["review_status"] == "withdrawn"
+            assert body["resolution_method"] == "withdrawn_by_submitter"
+
+            # A withdrawn row frees up the (series_id, episode_number) slot
+            # for a brand-new submission — the whole point of #20's
+            # partial-unique-index being scoped to WHERE review_status =
+            # 'pending' rather than any resolved state.
+            resubmit = await client.post(
+                "/api/v1/contributions",
+                json={
+                    "series_id": test_series_id,
+                    "episode_number": 30,
+                    "proposed_status": "filler",
+                    "citation": {"description": "__test_149__ resubmission after withdrawal"},
+                    "license_accepted": True,
+                },
+            )
+            assert resubmit.status_code == 201, resubmit.text
+
+        async with async_session_factory() as session:
+            row = (
+                await session.execute(
+                    text(
+                        "SELECT review_status, resolution_method, reviewed_by, reviewed_at "
+                        "FROM contributions WHERE id = :id"
+                    ),
+                    {"id": contribution_id},
+                )
+            ).one()
+            assert row.review_status == "withdrawn"
+            assert row.resolution_method == "withdrawn_by_submitter"
+            assert row.reviewed_by is None  # not a moderator action
+            assert row.reviewed_at is not None
+    finally:
+        await _delete_user(user_id)
+
+
+@pytest.mark.asyncio
+async def test_withdraw_requires_authentication(test_series_id: int) -> None:
+    """Anonymous submission is allowed for POST /contributions, but
+    withdrawal is not offered to anonymous callers at all — there's no
+    persistent identity to prove ownership against (see
+    services/contributions.py's withdraw_contribution docstring).
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        submit = await client.post(
+            "/api/v1/contributions",
+            json={
+                "series_id": test_series_id,
+                "episode_number": 31,
+                "proposed_status": "canon",
+                "citation": {"description": "__test_149__ anonymous submission"},
+                "license_accepted": True,
+            },
+        )
+        assert submit.status_code == 201, submit.text
+        contribution_id = submit.json()["id"]
+
+        withdraw = await client.post(f"/api/v1/contributions/{contribution_id}/withdraw")
+    assert withdraw.status_code == 401, withdraw.text
+
+
+@pytest.mark.asyncio
+async def test_withdraw_by_non_submitter_rejected(test_series_id: int) -> None:
+    """A logged-in user cannot withdraw a contribution someone else
+    submitted, including one submitted anonymously — the ownership check
+    requires an exact submitted_by match, and NULL never equals a real
+    user id in SQL.
+    """
+    other_user_id = await _make_authenticated_user()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            anon_submit = await client.post(
+                "/api/v1/contributions",
+                json={
+                    "series_id": test_series_id,
+                    "episode_number": 32,
+                    "proposed_status": "canon",
+                    "citation": {"description": "__test_149__ anonymous, not withdrawable by another user"},
+                    "license_accepted": True,
+                },
+            )
+            assert anon_submit.status_code == 201, anon_submit.text
+            contribution_id = anon_submit.json()["id"]
+
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(other_user_id))
+            withdraw = await client.post(f"/api/v1/contributions/{contribution_id}/withdraw")
+        assert withdraw.status_code == 403, withdraw.text
+
+        async with async_session_factory() as session:
+            row = (
+                await session.execute(
+                    text("SELECT review_status FROM contributions WHERE id = :id"),
+                    {"id": contribution_id},
+                )
+            ).one()
+            assert row.review_status == "pending"  # the withdraw attempt must not have touched it
+    finally:
+        await _delete_user(other_user_id)
+
+
+@pytest.mark.asyncio
+async def test_withdraw_already_resolved_contribution_rejected(test_series_id: int) -> None:
+    """Withdrawal only applies while a contribution is still pending — once
+    a moderator has approved/rejected it, withdraw is a clean 409, not a
+    silent no-op or a way to retroactively erase a resolved outcome.
+    """
+    user_id = await _make_authenticated_user()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            submit = await client.post(
+                "/api/v1/contributions",
+                json={
+                    "series_id": test_series_id,
+                    "episode_number": 33,
+                    "proposed_status": "canon",
+                    "citation": {"description": "__test_149__ resolved before withdraw attempt"},
+                    "license_accepted": True,
+                },
+            )
+            assert submit.status_code == 201, submit.text
+            contribution_id = submit.json()["id"]
+
+        # Rejected directly at the repo layer (no moderator test account
+        # wired into this file) — sufficient to put the row in a
+        # non-pending state for this test's purpose.
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text(
+                        "UPDATE contributions SET review_status = 'rejected', "
+                        "resolution_method = 'moderator', reviewed_at = now() "
+                        "WHERE id = :id"
+                    ),
+                    {"id": contribution_id},
+                )
+
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            withdraw = await client.post(f"/api/v1/contributions/{contribution_id}/withdraw")
+        assert withdraw.status_code == 409, withdraw.text
+    finally:
+        await _delete_user(user_id)
+
+
+@pytest.mark.asyncio
+async def test_withdraw_nonexistent_contribution_is_404(test_series_id: int) -> None:
+    user_id = await _make_authenticated_user()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            withdraw = await client.post("/api/v1/contributions/999999999/withdraw")
+        assert withdraw.status_code == 404, withdraw.text
+    finally:
+        await _delete_user(user_id)

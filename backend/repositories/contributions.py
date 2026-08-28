@@ -227,6 +227,38 @@ async def reject(
     return result.first()
 
 
+async def withdraw(session: AsyncSession, contribution_id: int, submitted_by: int) -> Row | None:
+    """#149: a submitter withdrawing their own still-pending contribution.
+    Same guarded-UPDATE race protection as approve()/reject() above —
+    `WHERE review_status = 'pending'` means a concurrent moderator approval/
+    rejection or vote-triggered auto-promotion racing this can only ever
+    have one of the two UPDATEs actually match a row. `AND submitted_by =
+    :submitted_by` is the ownership check: an anonymous contribution
+    (submitted_by IS NULL) can never match here regardless of who calls
+    this, since NULL = :submitted_by is never true in SQL — anonymous
+    submissions structurally cannot be withdrawn via this path (see
+    services/contributions.py's docstring for the full reasoning).
+    reviewed_by stays NULL (this isn't a moderator action); resolution_method
+    records 'withdrawn_by_submitter' so it's distinguishable from a
+    moderator rejection at a glance, same spirit as 'community_vote' already
+    distinguishing an auto-promotion from a moderator approval.
+    """
+    result = await session.execute(
+        text(
+            """
+            UPDATE contributions
+            SET review_status = 'withdrawn',
+                resolution_method = 'withdrawn_by_submitter',
+                reviewed_at = now()
+            WHERE id = :id AND review_status = 'pending' AND submitted_by = :submitted_by
+            RETURNING *
+            """
+        ),
+        {"id": contribution_id, "submitted_by": submitted_by},
+    )
+    return result.first()
+
+
 async def insert_vote(
     session: AsyncSession, *, contribution_id: int, voter_id: int, vote: str, weight_at_vote: int
 ) -> Row:

@@ -212,7 +212,7 @@ async def test_submit_duplicate_pending_suggestion_is_409(test_series_id: int) -
 async def test_double_submit_race_is_guarded(test_series_id: int) -> None:
     """Same #20-style guard as contributions — two genuinely concurrent
     submissions for the identical (series_id, synonym) can't both create a
-    pending row; the partial unique index (migrations/015) backstops the
+    pending row; the partial unique index (migrations/016) backstops the
     TOCTOU gap between the pre-check and the INSERT.
     """
     transport = ASGITransport(app=app)

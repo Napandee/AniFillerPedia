@@ -118,7 +118,7 @@ async def submit_synonym_suggestion(
     # Same TOCTOU-closing SAVEPOINT pattern as submit_contribution
     # (services/contributions.py) — the pending-check above has a real
     # race window against a genuinely concurrent identical submission,
-    # closed by the partial unique index (migrations/015) plus catching
+    # closed by the partial unique index (migrations/016) plus catching
     # its IntegrityError here rather than letting it surface as a raw 500.
     try:
         async with session.begin_nested():

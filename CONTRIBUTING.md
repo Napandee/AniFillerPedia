@@ -72,6 +72,33 @@ official chronology guide. "I remember watching it" isn't a citation.
 Prefer sources that state *why* an episode is filler/canon/mixed, not just
 that it is — the reasoning is what makes a claim checkable later.
 
+## Withdrawing a submission
+
+Made a typo in a citation URL, or changed your mind before a moderator or
+the community votes on it? Withdraw your own still-pending contribution
+rather than waiting for it to be rejected:
+
+```
+POST /api/v1/contributions/{contribution_id}/withdraw
+```
+
+- **Requires a logged-in account** — an anonymous submission has no
+  persistent identity to prove ownership against, so it can't be withdrawn
+  this way. If you submitted anonymously and need to correct something,
+  your only option today is to wait for it to be rejected or resolved.
+- Only works on a contribution that's still `pending` and that you
+  yourself submitted — find your own pending contributions via
+  `GET /api/v1/contributions/mine`.
+- Withdrawing frees up the episode for a fresh submission immediately —
+  there's no "wait for rejection" step in between. Resubmit right after
+  withdrawing if you just need to fix something, rather than looking for
+  a separate edit action (there isn't one; withdraw-then-resubmit covers
+  it).
+- A withdrawn contribution stays in the audit trail (`review_status:
+  "withdrawn"`) rather than disappearing — it's a real record of what was
+  proposed and that the submitter pulled it back themselves, distinct
+  from a moderator rejecting it.
+
 ## Bulk submission
 
 For a series where you have a real breakdown covering many episodes — the

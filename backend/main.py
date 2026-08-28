@@ -23,9 +23,99 @@ from services.alerting import alert_unhandled_exception
 
 logger = logging.getLogger(__name__)
 
+# #138: route grouping for /docs — one entry per router module, in the
+# same order routers are mounted below, plus health/legal/settings/
+# anilist-lookup which don't get their own subsection elsewhere in this
+# file. Descriptions are deliberately short (a sentence or two); the real
+# depth lives in each route's own docstring, docs/API.md, and
+# CONTRIBUTING.md, not duplicated here.
+openapi_tags = [
+    {
+        "name": "series",
+        "description": "Public, unauthenticated reads of the series catalog — search, "
+        "detail (by id or slug), and per-series episode lists. See docs/API.md.",
+    },
+    {
+        "name": "episodes",
+        "description": "Public, unauthenticated reads of a single episode and its full "
+        "contribution/review history.",
+    },
+    {
+        "name": "contributions",
+        "description": "Submit and review per-episode filler/canon/mixed corrections — "
+        "single-episode and bulk-range submission, moderator approve/reject, and "
+        "community trust-weighted voting. See CONTRIBUTING.md.",
+    },
+    {
+        "name": "series-proposals",
+        "description": "Propose a series that isn't in the catalog yet (optionally with "
+        "attached bulk episode data), and the moderator approve/reject flow for it. "
+        "Mirrors the contributions workflow above.",
+    },
+    {
+        "name": "admin",
+        "description": "Admin/owner-only user and role management. Not moderation — see "
+        "the contributions/series-proposals routers for the approval queue.",
+    },
+    {
+        "name": "auth",
+        "description": "Cookie-based OAuth login (GitHub, Discord) — the redirect-based "
+        "flow a browser drives. See docs/API.md's Authentication section for what a "
+        "non-browser (server-to-server) caller can and can't do here.",
+    },
+    {
+        "name": "settings",
+        "description": "Authenticated account settings — currently just linking an "
+        "additional OAuth provider to an already-signed-in account.",
+    },
+    {
+        "name": "users",
+        "description": "The signed-in caller's own account — profile/trust-score read, "
+        "self-service GDPR deletion.",
+    },
+    {
+        "name": "export",
+        "description": "The bulk dataset dump — the one part of this API that isn't "
+        "fully open, since a silent anonymous bulk download has weaker license-"
+        "agreement standing than a click-through API-key request does.",
+    },
+    {
+        "name": "legal",
+        "description": "Static/structured legal pages — privacy policy and the dataset's "
+        "CC BY-NC-SA license + attribution/commercial-contact details.",
+    },
+    {
+        "name": "anilist-lookup",
+        "description": "A thin, rate-limited proxy to AniList's own public GraphQL API, "
+        "used by submission forms to pre-fill a title from an AniList id.",
+    },
+    {
+        "name": "health",
+        "description": "Liveness/version check — no auth, no dependencies.",
+    },
+]
+
 app = FastAPI(
     title="AniFillerPedia API",
     version=API_VERSION,
+    description=(
+        "Public read API for AniFillerPedia, a community-editable database of "
+        "anime filler/canon/mixed episode data. Every read endpoint (series, "
+        "episodes, citations, contribution history) is public and unauthenticated "
+        "— no account, no API key, no rate-limit wall for reasonable use. Only "
+        "the bulk `/export` dump requires an API key, and only write endpoints "
+        "that need an accountable identity (voting, bulk submission, moderation, "
+        "admin) require login.\n\n"
+        "Auth is cookie-based OAuth (GitHub/Discord) with no bearer-token "
+        "alternative today — see the Authentication section of "
+        "[docs/API.md](https://github.com/Napandee/AniFillerPedia/blob/master/docs/API.md#authentication) "
+        "before building a non-browser client against a login-gated endpoint.\n\n"
+        "See [docs/API.md](https://github.com/Napandee/AniFillerPedia/blob/master/docs/API.md) "
+        "for a narrative guide with real example requests, and "
+        "[CONTRIBUTING.md](https://github.com/Napandee/AniFillerPedia/blob/master/CONTRIBUTING.md) "
+        "for how the submission/review/voting workflow fits together."
+    ),
+    openapi_tags=openapi_tags,
     # #21: code is MIT, but the DATASET this API serves is CC BY-NC-SA
     # 4.0 with a non-commercial restriction — a plain "MIT" here would be
     # actively misleading about what a consumer may do with the data

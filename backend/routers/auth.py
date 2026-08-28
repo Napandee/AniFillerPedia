@@ -10,6 +10,7 @@ from core.security import (
     create_session_token,
     verify_oauth_state,
 )
+from schemas.errors import ErrorDetail
 from services.auth import AccountLinkConflict, Profile, link_provider_to_current_user, login_or_create_user
 from services.oauth_providers import (
     exchange_code_for_token,
@@ -22,6 +23,8 @@ from services.oauth_providers import (
 router = APIRouter(tags=["auth"])
 
 _VALID_PROVIDERS = {"github", "discord"}
+
+_UNKNOWN_PROVIDER = {404: {"model": ErrorDetail, "description": "Unknown provider (must be github or discord)"}}
 
 
 def _require_valid_provider(provider: str) -> None:
@@ -66,12 +69,28 @@ def _start_oauth_redirect(provider: str, *, link_user_id: int | None, next: str 
     return redirect
 
 
-@router.get("/auth/{provider}/authorize")
+@router.get("/auth/{provider}/authorize", responses=_UNKNOWN_PROVIDER)
 async def authorize(provider: str, next: str | None = Query(default=None)) -> RedirectResponse:
+    """Starts the login flow: redirects the browser to `provider`'s own
+    OAuth consent screen, with a signed, cookie-bound `state` param (see
+    `_start_oauth_redirect`). `provider` is `github` or `discord`. This
+    route (and the whole flow it starts) requires a real browser — see
+    docs/API.md's Authentication section for why there's no non-browser
+    equivalent today. `next`, if given, must be a same-site relative path;
+    it's where the browser lands after `callback` below completes.
+    """
     return _start_oauth_redirect(provider, link_user_id=None, next=next)
 
 
-@router.get("/auth/{provider}/callback", response_model=None)
+@router.get(
+    "/auth/{provider}/callback",
+    response_model=None,
+    responses={
+        **_UNKNOWN_PROVIDER,
+        400: {"model": ErrorDetail, "description": "OAuth state missing/mismatched or invalid/expired"},
+        409: {"model": ErrorDetail, "description": "Provider account already linked to a different user"},
+    },
+)
 async def callback(
     provider: str,
     response: Response,
@@ -80,6 +99,17 @@ async def callback(
     afp_oauth_state: str | None = Cookie(default=None, alias=OAUTH_STATE_COOKIE_NAME),
     session: AsyncSession = Depends(get_session),
 ) -> dict | RedirectResponse:
+    """The redirect target `provider` sends the browser back to after
+    consent. Verifies the signed `state` against the cookie set by
+    `authorize` above (real OAuth CSRF protection, not just signature
+    verification — see `_start_oauth_redirect`'s own comment), exchanges
+    `code` for the provider's profile, then either logs in/creates a user
+    and sets the session cookie (`SESSION_COOKIE_NAME`), or — when this
+    callback is completing a `/settings/link/{provider}` flow instead of a
+    plain login — links the provider to the already-signed-in account. If
+    the original `authorize`/`start_link` call included `next`, redirects
+    there (303); otherwise returns the plain JSON body directly.
+    """
     _require_valid_provider(provider)
 
     # The state param must both (a) be validly signed by us and (b) match
@@ -148,5 +178,8 @@ async def callback(
 
 @router.post("/auth/logout")
 async def logout(response: Response) -> dict:
+    """Clears the session cookie. Idempotent — succeeds identically
+    whether or not the caller was actually signed in.
+    """
     response.delete_cookie(SESSION_COOKIE_NAME, path="/")
     return {"logged_out": True}

@@ -116,6 +116,10 @@ license text and attribution notice in machine-readable form.</p>
 
 @router.get("/privacy", response_class=HTMLResponse)
 async def privacy_policy() -> str:
+    """The project's privacy policy, served as static HTML directly by the
+    API (no frontend page for it) — also the stable public URL Google's
+    OAuth verification review (#24) needs to point at.
+    """
     return _PRIVACY_HTML
 
 

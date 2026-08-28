@@ -30,3 +30,12 @@ class RoleUpdateIn(BaseModel):
             "requires the caller to be the owner."
         )
     )
+
+
+class RoleUpdateOut(BaseModel):
+    """#138: PATCH /admin/users/{id}/role previously had no response_model
+    at all (returned a bare dict) — this documents the real shape.
+    """
+
+    id: int
+    role: str

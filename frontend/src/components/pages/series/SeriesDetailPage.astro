@@ -298,6 +298,15 @@ const structuredData = series
             </details>
           )}
 
+          {/* #148: a real path to grow series_synonyms post-launch —
+              previously only ever written by the one-time bootstrap
+              import. Shown regardless of whether this series already has
+              synonyms, so the first-ever suggestion for a series has
+              somewhere to go too. */}
+          <a class="suggest-synonym-link" href={getRelativeLocaleUrl(locale, `/series/${seriesId}/suggest-synonym`)}>
+            + {t("series.suggestSynonym")}
+          </a>
+
           {series!.related_series.length > 0 && (
             <div class="related-series">
               <span class="related-series-label">{t("series.alsoOnThisSite")}</span>
@@ -847,6 +856,20 @@ const structuredData = series
     color: var(--color-text-muted);
     margin: 8px 4px 0;
     line-height: 1.6;
+  }
+
+  /* #148: a small, quiet text link — this isn't a primary call-to-action
+     like "Submit correction" (episode rows below), just a low-friction
+     path for the rare visitor who happens to know an alternate title. */
+  .suggest-synonym-link {
+    display: inline-block;
+    margin: 8px 24px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+  .suggest-synonym-link:hover {
+    color: var(--color-accent);
   }
 
   /* A show split across multiple real AniList entries (e.g. Fairy Tail /

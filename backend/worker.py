@@ -44,6 +44,13 @@ HANDLERS: dict[str, Callable[[dict], Awaitable[None]]] = {
     "series_proposal.submitted": notify_moderators_new_submission,
     "contribution.approved": purge_series_page_cache,
     "series_proposal.approved": purge_series_page_cache,
+    # #148: same two consumers, reused as-is — notify_moderators_new_
+    # submission's _build_message() gained a synonym_suggestion_id branch,
+    # and purge_series_page_cache already keys purely off payload
+    # {"series_id": ...}, which every one of this event's payloads carries
+    # (a synonym approval changes what a series' own detail page shows).
+    "synonym_suggestion.submitted": notify_moderators_new_submission,
+    "synonym_suggestion.approved": purge_series_page_cache,
 }
 
 

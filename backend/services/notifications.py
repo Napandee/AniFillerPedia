@@ -43,6 +43,12 @@ def _build_message(payload: dict) -> str:
             f"{payload.get('title', '(untitled)')}. "
             f"Review: GET /api/v1/series-proposals?review_status=pending."
         )
+    if "synonym_suggestion_id" in payload:
+        return (
+            f"New synonym suggestion #{payload['synonym_suggestion_id']} — "
+            f"series {payload.get('series_id')}. "
+            f"Review: GET /api/v1/synonym-suggestions?review_status=pending."
+        )
     return f"New submission (unrecognized payload shape): {payload}"
 
 

@@ -1,0 +1,349 @@
+---
+// #148: suggest an alternate/dub/regional title for an already-catalogued
+// series — POST /api/v1/synonym-suggestions. Anonymous or logged in
+// (Astro.locals.user, set by src/middleware.ts), same Turnstile-stub
+// pattern as episodes/[episodeNumber]/submit.astro and propose-series.astro
+// (real Cloudflare site key not provisioned yet — #25).
+//
+// Raw fetch() rather than the typed api client — schema.d.ts hasn't been
+// regenerated to know about this brand-new router yet (same "not
+// regenerating the typed client from a single-page worktree" call
+// moderation.astro's own comment makes for this same endpoint).
+import Layout from "../../../layouts/Layout.astro";
+import Button from "../../../components/Button.astro";
+import LicenseWhyDisclosure from "../../../components/LicenseWhyDisclosure.astro";
+
+const { seriesId } = Astro.params;
+const seriesIdNum = Number(seriesId);
+const hasValidParams = Number.isFinite(seriesIdNum);
+
+const user = Astro.locals.user;
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+type Stage = "form" | "success";
+
+let stage: Stage = "form";
+let errorMessage: string | null = null;
+let existingSuggestionId: number | null = null;
+let successSuggestionId: number | null = null;
+
+let values = {
+  synonym: "",
+  note: "",
+  license_accepted: false,
+};
+
+function formatValidationError(body: unknown): string {
+  if (body && typeof body === "object" && "detail" in body) {
+    const detail = (body as { detail: unknown }).detail;
+    if (typeof detail === "string") {
+      return detail;
+    }
+    if (Array.isArray(detail)) {
+      return detail
+        .map((item) => {
+          if (item && typeof item === "object" && "msg" in item) {
+            const loc = "loc" in item && Array.isArray((item as { loc: unknown }).loc)
+              ? (item as { loc: (string | number)[] }).loc
+              : [];
+            const field = loc.length > 0 ? String(loc[loc.length - 1]) : "field";
+            return `${field}: ${(item as { msg: string }).msg}`;
+          }
+          return "Invalid value.";
+        })
+        .join("; ");
+    }
+  }
+  return "Please check your submission and try again.";
+}
+
+function isDuplicateBody(
+  body: unknown
+): body is { detail: { message: string; existing_suggestion_id: number } } {
+  if (!body || typeof body !== "object" || !("detail" in body)) return false;
+  const detail = (body as { detail: unknown }).detail;
+  return (
+    !!detail &&
+    typeof detail === "object" &&
+    "existing_suggestion_id" in detail &&
+    "message" in detail
+  );
+}
+
+if (hasValidParams && Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  values = {
+    synonym: String(form.get("synonym") ?? "").trim(),
+    note: String(form.get("note") ?? ""),
+    license_accepted: form.get("license_accepted") === "yes",
+  };
+
+  const response = await fetch(`${baseUrl}/api/v1/synonym-suggestions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // Forward the session cookie so an authenticated submission is
+      // attributed to the logged-in user and the backend correctly
+      // skips Turnstile server-side, matching what's shown below.
+      ...(user ? { cookie: Astro.request.headers.get("cookie") ?? "" } : {}),
+    },
+    body: JSON.stringify({
+      series_id: seriesIdNum,
+      synonym: values.synonym,
+      note: values.note.trim() ? values.note.trim() : undefined,
+      license_accepted: values.license_accepted,
+      // TURNSTILE STUB — see episodes/[episodeNumber]/submit.astro's
+      // identical comment; services/turnstile.py short-circuits to
+      // allowed=True while unconfigured (#25).
+      turnstile_token: user ? undefined : "stub-turnstile-token-pending-25",
+    }),
+  });
+
+  const body = await response.json().catch(() => null);
+
+  if (response.ok) {
+    stage = "success";
+    successSuggestionId = body?.id ?? null;
+  } else if (response.status === 409 && isDuplicateBody(body)) {
+    errorMessage = body.detail.message;
+    existingSuggestionId = body.detail.existing_suggestion_id;
+  } else if (response.status === 409) {
+    errorMessage =
+      typeof body?.detail === "string" ? body.detail : "That synonym is already recorded for this series.";
+  } else if (response.status === 404) {
+    errorMessage = "This series could not be found.";
+  } else if (response.status === 422) {
+    errorMessage = formatValidationError(body);
+  } else {
+    errorMessage = "Something went wrong submitting your suggestion — please try again.";
+  }
+}
+---
+
+<Layout title="Suggest a synonym — AniFillerPedia" noindex>
+  {!hasValidParams && (
+    <section class="panel">
+      <p class="lead">This link is missing a valid series reference.</p>
+      <Button href="/" variant="ghost">Back to home</Button>
+    </section>
+  )}
+
+  {hasValidParams && stage === "success" && (
+    <section class="panel success">
+      <div class="success-icon">✓</div>
+      <h1 class="disp">Thanks — pending review!</h1>
+      <p class="lead">
+        Your synonym suggestion{successSuggestionId !== null ? ` (#${successSuggestionId})` : ""} for
+        Series #{seriesIdNum} has been submitted. It'll go live once a moderator approves it.
+      </p>
+      <Button href={`/series/${seriesIdNum}`} variant="primary">Back to series</Button>
+    </section>
+  )}
+
+  {hasValidParams && stage === "form" && (
+    <section class="panel">
+      <h1 class="disp">Suggest a synonym</h1>
+      <p class="subhead">Series #{seriesIdNum}</p>
+      <p class="intro">
+        Know a dub name, a regional title, or another alternate name this series goes by? Suggest it
+        below — a moderator reviews every suggestion before it's added.
+      </p>
+
+      {errorMessage && existingSuggestionId !== null && (
+        <div class="notice notice--duplicate">
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
+      {errorMessage && existingSuggestionId === null && (
+        <div class="notice notice--error">
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
+      <form method="POST">
+        <label class="field">
+          <span>Synonym <span class="required">(required)</span></span>
+          <input
+            type="text"
+            name="synonym"
+            required
+            minlength="1"
+            maxlength="200"
+            placeholder="e.g. an official English dub title, a regional release name..."
+            value={values.synonym}
+          />
+        </label>
+
+        <label class="field">
+          <span>Note for the moderator <span class="optional">(optional)</span></span>
+          <textarea
+            name="note"
+            rows="2"
+            maxlength="500"
+            placeholder="e.g. official English dub title on Crunchyroll..."
+            set:text={values.note}
+          />
+        </label>
+
+        {!user && (
+          <div class="turnstile-slot">
+            <p class="turnstile-note">
+              Verification widget (Cloudflare Turnstile) will appear here once configured — see
+              issue #25. Anonymous submissions are still accepted in the meantime.
+            </p>
+          </div>
+        )}
+
+        {user && (
+          <p class="login-note">
+            Submitting as <strong>{user.display_name ?? "you"}</strong> — no verification widget
+            needed while logged in.
+          </p>
+        )}
+
+        <label class="field field--checkbox">
+          <input type="checkbox" name="license_accepted" value="yes" required checked={values.license_accepted} />
+          <span>
+            I agree this contribution is licensed under
+            {" "}<a href="/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>, per
+            AniFillerPedia's <a href="/data-license" target="_blank" rel="noopener">DATA_LICENSE</a>.
+            <span class="required"> (required)</span>
+            <LicenseWhyDisclosure reason="every suggestion needs traceable proof it was released under this license — that's what keeps the dataset freely reusable, Wikipedia-style." />
+          </span>
+        </label>
+
+        <Button type="submit" variant="primary">Submit suggestion</Button>
+      </form>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 28px 32px;
+    margin: 24px 0;
+  }
+  .success {
+    text-align: center;
+  }
+  .success-icon {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 50%;
+    background: var(--color-status-canon-bg);
+    color: var(--color-status-canon-text);
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 auto 16px;
+  }
+  h1 {
+    color: var(--color-heading);
+    font-size: 22px;
+    margin: 0 0 6px;
+  }
+  .subhead {
+    color: var(--color-text-muted);
+    font-weight: 700;
+    font-size: 13px;
+    margin: 0 0 8px;
+  }
+  .intro {
+    color: var(--color-text-muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0 0 20px;
+  }
+  .lead {
+    color: var(--color-text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .notice {
+    border-radius: var(--radius-card);
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .notice p {
+    margin: 0;
+  }
+  .notice--error {
+    background: var(--color-dispute-bg);
+    color: var(--color-dispute);
+  }
+  .notice--duplicate {
+    background: var(--color-surface-pending);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-status-pending);
+  }
+  .field {
+    display: block;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+  .field span:first-child {
+    display: block;
+    margin-bottom: 6px;
+  }
+  .optional {
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
+  .required {
+    font-weight: 700;
+    color: var(--color-dispute);
+  }
+  input[type="text"],
+  textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: var(--color-text);
+    border: 1px solid var(--color-border-card);
+    border-radius: 10px;
+    padding: 9px 12px;
+    resize: vertical;
+  }
+  .turnstile-slot {
+    border: 1px dashed var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+  }
+  .turnstile-note {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
+  .login-note {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 16px;
+  }
+  .field--checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .field--checkbox input {
+    margin-top: 3px;
+  }
+  .field--checkbox span:first-child {
+    margin-bottom: 0;
+  }
+  .field--checkbox a {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+</style>

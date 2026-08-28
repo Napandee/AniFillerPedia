@@ -30,6 +30,27 @@ type SeriesProposalOut = components["schemas"]["SeriesProposalOut"] & {
   possible_duplicate_matches?: { id: number; title: string; slug: string | null }[];
 };
 
+// #148: synonym-suggestions is a brand-new router — schema.d.ts has no
+// entry for it at all yet (same "not regenerating the typed client from
+// a single-page worktree" call #85/#150 already made above), so this
+// isn't augmenting an existing generated type, it's a plain local
+// interface. The SSR fetch below uses a raw fetch() rather than the
+// typed `api` client for the same reason (openapi-fetch's GET/POST are
+// generic over the known path union in schema.d.ts, which doesn't
+// include this route yet).
+interface SynonymSuggestionOut {
+  id: number;
+  series_id: number;
+  series_title: string | null;
+  series_slug: string | null;
+  synonym: string;
+  note: string | null;
+  submitted_at: string;
+  review_status: string;
+  reviewed_at: string | null;
+  review_note: string | null;
+}
+
 const MODERATOR_ROLES = ["moderator", "admin", "owner"];
 
 const user = Astro.locals.user;
@@ -41,7 +62,7 @@ const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 const cookie = Astro.request.headers.get("cookie") ?? "";
 const api = createApiClient(baseUrl);
 
-const [contributionsResult, proposalsResult] = await Promise.all([
+const [contributionsResult, proposalsResult, synonymSuggestionsResponse] = await Promise.all([
   api.GET("/api/v1/contributions", {
     params: { query: { review_status: "pending" } },
     headers: { cookie },
@@ -50,11 +71,19 @@ const [contributionsResult, proposalsResult] = await Promise.all([
     params: { query: { review_status: "pending" } },
     headers: { cookie },
   }),
+  fetch(`${baseUrl}/api/v1/synonym-suggestions?review_status=pending`, {
+    headers: { cookie },
+  }),
 ]);
 
 const contributions: ContributionOut[] = contributionsResult.data ?? [];
 const proposals: SeriesProposalOut[] = proposalsResult.data ?? [];
-const loadError = Boolean(contributionsResult.error || proposalsResult.error);
+const synonymSuggestions: SynonymSuggestionOut[] = synonymSuggestionsResponse.ok
+  ? await synonymSuggestionsResponse.json()
+  : [];
+const loadError = Boolean(
+  contributionsResult.error || proposalsResult.error || !synonymSuggestionsResponse.ok
+);
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString(undefined, {
@@ -250,6 +279,79 @@ function formatDate(iso: string): string {
         ))}
       </ul>
     </div>
+
+    <div class="panel">
+      <div class="disp panel-title">Pending synonym suggestions <span class="count" id="synonym-count">{synonymSuggestions.length}</span></div>
+      {synonymSuggestions.length === 0 && (
+        <p class="empty" id="synonym-empty">Nothing pending right now.</p>
+      )}
+      {/* #148: same bulk-bar/select-checkbox pattern as the two panels
+          above — moderator-only approval (see services/
+          synonym_suggestions.py for why this isn't community-voted). */}
+      <div class="bulk-bar" id="synonym-bulk-bar" hidden>
+        <label class="select-all">
+          <input type="checkbox" id="synonym-select-all" />
+          <span id="synonym-selected-count">0 selected</span>
+        </label>
+        <button type="button" class="btn btn--approve" id="synonym-bulk-approve">Approve selected</button>
+        <div class="reject-group">
+          <textarea
+            class="review-note"
+            id="synonym-bulk-note"
+            placeholder="Review note (required — applied to every rejected item)"
+            rows="2"
+          ></textarea>
+          <button type="button" class="btn btn--reject" id="synonym-bulk-reject" disabled>Reject selected</button>
+        </div>
+      </div>
+      <ul class="cards" id="synonym-list">
+        {synonymSuggestions.map((s) => (
+          <li class="card" data-kind="synonym" data-id={s.id}>
+            <div class="card-top">
+              <label class="select-one">
+                <input type="checkbox" class="select-checkbox" aria-label="Select this synonym suggestion" />
+              </label>
+              <span class="target disp">
+                {s.series_title ? (
+                  <a
+                    href={s.series_slug ? `/series/${s.series_slug}` : `/series/${s.series_id}`}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {s.series_title}
+                  </a>
+                ) : (
+                  `Series #${s.series_id}`
+                )}
+              </span>
+            </div>
+            <p class="synonym-line">
+              <span class="label">Suggested synonym:</span> <strong>{s.synonym}</strong>
+            </p>
+            {s.note && <p class="note">{s.note}</p>}
+            <div class="meta-row">
+              <span>Submitted {formatDate(s.submitted_at)}</span>
+            </div>
+            <div class="actions">
+              <button type="button" class="btn btn--approve" data-action="approve">
+                Approve
+              </button>
+              <div class="reject-group">
+                <textarea
+                  class="review-note"
+                  placeholder="Review note (required to reject)"
+                  rows="2"
+                ></textarea>
+                <button type="button" class="btn btn--reject" data-action="reject" disabled>
+                  Reject
+                </button>
+              </div>
+            </div>
+            <p class="field-error" hidden>Reject requires a review note — add one above.</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 </Layout>
 
@@ -270,6 +372,11 @@ function formatDate(iso: string): string {
       approve: `${baseUrl}/api/v1/series-proposals/${id}/approve`,
       reject: `${baseUrl}/api/v1/series-proposals/${id}/reject`,
     }),
+    // #148
+    synonym: (id) => ({
+      approve: `${baseUrl}/api/v1/synonym-suggestions/${id}/approve`,
+      reject: `${baseUrl}/api/v1/synonym-suggestions/${id}/reject`,
+    }),
   };
 
   // #3: bulk counterparts — one call per action instead of one per item.
@@ -281,6 +388,11 @@ function formatDate(iso: string): string {
     proposal: {
       approve: `${baseUrl}/api/v1/series-proposals/bulk-approve`,
       reject: `${baseUrl}/api/v1/series-proposals/bulk-reject`,
+    },
+    // #148
+    synonym: {
+      approve: `${baseUrl}/api/v1/synonym-suggestions/bulk-approve`,
+      reject: `${baseUrl}/api/v1/synonym-suggestions/bulk-reject`,
     },
   };
 
@@ -303,9 +415,9 @@ function formatDate(iso: string): string {
   // path too) keep each panel's bulk-bar count/visibility in sync even
   // when an item is removed via its own individual button, not just via
   // a bulk action.
-  const bulkRefresh: Partial<Record<"contrib" | "proposal", () => void>> = {};
+  const bulkRefresh: Partial<Record<"contrib" | "proposal" | "synonym", () => void>> = {};
 
-  function updateEmptyState(kind: "contrib" | "proposal") {
+  function updateEmptyState(kind: "contrib" | "proposal" | "synonym") {
     const list = document.getElementById(`${kind}-list`);
     const empty = document.getElementById(`${kind}-empty`);
     const count = document.getElementById(`${kind}-count`);
@@ -324,13 +436,18 @@ function formatDate(iso: string): string {
   }
 
   function removeCard(card: HTMLLIElement) {
-    const kind = card.dataset.kind === "contribution" ? "contrib" : "proposal";
+    const kind =
+      card.dataset.kind === "contribution"
+        ? "contrib"
+        : card.dataset.kind === "proposal"
+          ? "proposal"
+          : "synonym";
     card.remove();
     updateEmptyState(kind);
   }
 
   async function handleAction(card: HTMLLIElement, action: "approve" | "reject", reviewNote?: string) {
-    const kind = card.dataset.kind as "contribution" | "proposal";
+    const kind = card.dataset.kind as "contribution" | "proposal" | "synonym";
     const id = card.dataset.id as string;
     const endpoints = ENDPOINT[kind](id);
     const url = action === "approve" ? endpoints.approve : endpoints.reject;
@@ -413,11 +530,11 @@ function formatDate(iso: string): string {
     });
   });
 
-  // #3: bulk approve/reject. Each panel (contributions, proposals) tracks
-  // its own selection independently — a checkbox on one panel's cards
-  // never affects the other's bulk bar.
-  type BulkKind = "contrib" | "proposal";
-  type ItemKind = "contribution" | "proposal";
+  // #3: bulk approve/reject. Each panel (contributions, proposals,
+  // synonym suggestions) tracks its own selection independently — a
+  // checkbox on one panel's cards never affects another's bulk bar.
+  type BulkKind = "contrib" | "proposal" | "synonym";
+  type ItemKind = "contribution" | "proposal" | "synonym";
 
   function wireBulkPanel(kind: BulkKind, itemKind: ItemKind) {
     const list = document.getElementById(`${kind}-list`);
@@ -529,6 +646,7 @@ function formatDate(iso: string): string {
 
   wireBulkPanel("contrib", "contribution");
   wireBulkPanel("proposal", "proposal");
+  wireBulkPanel("synonym", "synonym");
 </script>
 
 <style>
@@ -733,6 +851,17 @@ function formatDate(iso: string): string {
   }
   .citation a {
     color: var(--color-accent);
+  }
+  /* #148: same label/value pairing as .citation above, for a synonym
+     suggestion card's own single line of substance. */
+  .synonym-line {
+    font-size: 13px;
+    margin: 0 0 8px;
+  }
+  .synonym-line .label {
+    color: var(--color-text-faint);
+    font-weight: 700;
+    margin-right: 4px;
   }
   .episode-data-summary {
     background: var(--color-surface-pending);

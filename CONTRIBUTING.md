@@ -15,6 +15,10 @@ see [docs/API.md](docs/API.md) instead.
   canon/filler/mixed ranges for many episodes in one go instead of one at a
   time. Requires being logged in — see **Bulk submission** below.
 - **Propose a series** that isn't in the catalog yet.
+- **Suggest a synonym** — an alternate/dub/regional title for a series
+  that's already in the catalog. Reviewed by a moderator directly (see
+  **Suggesting a synonym** below) — it's too small a unit of moderation
+  for the trust-weighted voting used elsewhere on this page.
 - **Endorse or dispute** someone else's pending proposal, if you're
   logged in.
 
@@ -159,9 +163,30 @@ avoid an accidental duplicate. `justification` plays the same role a
 citation does for an episode correction — say why this belongs in the
 catalog, with something checkable.
 
+## Suggesting a synonym
+
+```
+POST /api/v1/synonym-suggestions
+Content-Type: application/json
+
+{
+  "series_id": 42,
+  "synonym": "Some Official Dub Title",
+  "note": "Official English dub title on Crunchyroll",
+  "license_accepted": true
+}
+```
+
+`note` is optional context for the moderator reviewing it — not a
+citation; a synonym is lower-stakes than an episode filler/canon claim,
+so it doesn't need a full source object the way a correction does. This
+one is always resolved by a moderator directly, never by community
+vote — see **How review works** below for why that split exists.
+
 ## How review works
 
-Every submission starts `pending`. It becomes live one of two ways:
+Every submission starts `pending`. Episode corrections and series
+proposals become live one of two ways:
 
 1. **A moderator or admin approves it directly.**
 2. **The community votes it through.** Any logged-in user can endorse or
@@ -195,10 +220,17 @@ any episode: every past proposal, who reviewed it (or that it resolved by
 community vote, with no single reviewer), and every vote cast along the
 way.
 
+**Synonym suggestions are the one exception** — they're always resolved
+by a moderator (or admin/owner) directly, with no community-vote path.
+A suggested alternate title is a single low-stakes string with no
+citation to weigh, so the full trust-weighted voting machinery above
+would be disproportionate for it.
+
 ## Anonymous vs. signed in
 
-You can submit single-episode corrections and series proposals without an
-account — that's intentional, not a gap. What requires being signed in:
+You can submit single-episode corrections, series proposals, and synonym
+suggestions without an account — that's intentional, not a gap. What
+requires being signed in:
 
 - **Voting** (endorse/dispute) — a vote's value comes from being tied to
   an accountable track record, which an anonymous submission structurally
@@ -207,8 +239,9 @@ account — that's intentional, not a gap. What requires being signed in:
   contributions, a materially bigger surface than a single anonymous
   correction; see **Bulk submission** above.
 - **Seeing your own history** — `GET /api/v1/contributions/mine`,
-  `/api/v1/series-proposals/mine`, and `/api/v1/contributions/mine/votes`
-  only make sense for an identifiable account.
+  `/api/v1/series-proposals/mine`, `/api/v1/synonym-suggestions/mine`,
+  and `/api/v1/contributions/mine/votes` only make sense for an
+  identifiable account.
 
 Sign in with GitHub or Discord (`GET /api/v1/auth/{provider}/authorize`).
 Accounts are never merged automatically by matching email — linking a

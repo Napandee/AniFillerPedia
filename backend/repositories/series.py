@@ -208,6 +208,24 @@ async def get_synonyms(session: AsyncSession, series_id: int) -> list[str]:
     return [row.synonym for row in result.fetchall()]
 
 
+async def add_synonym(session: AsyncSession, series_id: int, synonym: str) -> None:
+    """#148: the one real write path into series_synonyms beyond the
+    one-time bootstrap import — called by
+    services/synonym_suggestions.py's approve_synonym_suggestion once a
+    moderator approves a pending suggestion. series_synonyms.UNIQUE
+    (series_id, synonym) is the real backstop against a duplicate (e.g.
+    two suggestions for the identical synonym approved independently, or
+    a suggestion that duplicates a synonym already captured at bootstrap
+    time) — the caller catches IntegrityError and turns it into a clean
+    409, same pattern as approve_series_proposal's anilist_id collision
+    handling.
+    """
+    await session.execute(
+        text("INSERT INTO series_synonyms (series_id, synonym) VALUES (:series_id, :synonym)"),
+        {"series_id": series_id, "synonym": synonym},
+    )
+
+
 async def get_related_series(session: AsyncSession, series_id: int) -> list[Row]:
     result = await session.execute(
         text(

@@ -252,6 +252,34 @@ async def reject_contribution(
 
 
 @router.post(
+    "/contributions/{contribution_id}/withdraw",
+    response_model=ContributionReviewOut,
+    responses={
+        **_NOT_AUTHENTICATED,
+        403: {"model": ErrorDetail, "description": "You did not submit this contribution"},
+        **_CONTRIBUTION_NOT_FOUND_OR_NOT_PENDING,
+    },
+)
+async def withdraw_contribution(
+    contribution_id: int,
+    current_user=Depends(get_current_user),  # noqa: ANN001 - Row, auth required (anonymous submissions can't be withdrawn — see services/contributions.py)
+    session: AsyncSession = Depends(get_session),
+) -> ContributionReviewOut:
+    """#149: withdraw your own still-pending contribution — e.g. to fix a
+    typo'd citation before a moderator/vote resolves it, without waiting on
+    a rejection first. Only the original submitter may withdraw their own
+    contribution, and only while it's still `pending`; find your own
+    pending contributions via `GET /contributions/mine`. Anonymous
+    contributions cannot be withdrawn through this endpoint — there's no
+    persistent identity to check ownership against (see CLAUDE.md /
+    services/contributions.py for why this project doesn't fabricate one).
+    """
+    result = await contributions_service.withdraw_contribution(session, contribution_id, current_user.id)
+    await session.commit()
+    return result
+
+
+@router.post(
     "/contributions/{contribution_id}/vote",
     response_model=VoteCastOut,
     responses={

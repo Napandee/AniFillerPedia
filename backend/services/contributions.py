@@ -534,6 +534,78 @@ async def approve_contribution(
     )
 
 
+async def withdraw_contribution(
+    session: AsyncSession, contribution_id: int, current_user_id: int
+) -> ContributionReviewOut:
+    """#149: a submitter withdrawing their own still-pending contribution —
+    e.g. a typo'd citation URL, or a change of mind before a moderator/vote
+    resolves it, without needing to wait for rejection before resubmitting.
+
+    Scoped to logged-in submitters only, deliberately — an anonymous
+    submission (`contributions.submitted_by IS NULL`) has no persistent
+    identity to prove ownership against. This project has no existing
+    anonymous-ownership mechanism to reuse: #139's rate-limit `identifier`
+    (checked directly, see repositories/rate_limits.py) is an IP address or
+    a coarse per-request signal, never a durable per-submission secret/
+    session token a later request could present as proof "this is the same
+    submitter" — reusing it here would let anyone sharing that submitter's
+    IP (a NAT, a shared network) withdraw their contribution too, which is
+    a worse property than just not offering withdrawal anonymously at all.
+    A clean, honestly-stated limitation rather than a fabricated mechanism:
+    an anonymous submitter who needs to correct a pending submission still
+    has no path here and must wait for it to be rejected (or endorsed/
+    disputed by others) — same as before this issue.
+
+    Withdraw-only, not edit: withdraw-then-resubmit is treated as an
+    acceptable substitute for editing (see #149's own acceptance criteria,
+    "withdraw (or edit)" — at least one required, not both). An edit path
+    would need its own citation-replacement/validation logic distinct from
+    a fresh submission, for a case (fixing a pending contribution before
+    resolution) that resubmission-after-withdrawal already handles just as
+    well, since #20's one-pending-per-episode rule is naturally satisfied
+    the instant this withdrawal takes effect.
+    """
+    withdrawn_row = await contributions_repo.withdraw(session, contribution_id, current_user_id)
+    if withdrawn_row is None:
+        existing = await contributions_repo.get_by_id(session, contribution_id)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="contribution not found")
+        if existing.submitted_by != current_user_id:
+            # 403, not a existence-hiding 404 — consistent with cast_vote's
+            # own "cannot vote on your own submitted contribution" 403
+            # above, and contribution ids/submitters are already public via
+            # an episode's contribution history (CLAUDE.md: "keep public
+            # history non-anonymized"), so a 403 here doesn't leak anything
+            # not already visible elsewhere in this API.
+            raise HTTPException(status_code=403, detail="cannot withdraw a contribution you did not submit")
+        raise HTTPException(
+            status_code=409,
+            detail=f"contribution is not pending (current status: {existing.review_status})",
+        )
+
+    # Same transaction as the UPDATE above (CLAUDE.md Architecture) —
+    # matches reject_contribution's own 'contribution.rejected' write:
+    # no handler is registered for this event_type yet (worker.py's own
+    # comment: an unhandled event_type is deliberately left unprocessed,
+    # not an oversight), but every real state transition a contribution can
+    # make gets a corresponding outbox event, consistently, so a future
+    # handler (e.g. notifying the submitter their withdrawal took effect)
+    # never needs a backfill.
+    await outbox_repo.write(
+        session,
+        event_type="contribution.withdrawn",
+        payload={"contribution_id": withdrawn_row.id},
+    )
+
+    return ContributionReviewOut(
+        id=withdrawn_row.id,
+        review_status=withdrawn_row.review_status,
+        resolution_method=withdrawn_row.resolution_method,
+        reviewed_at=withdrawn_row.reviewed_at,
+        review_note=withdrawn_row.review_note,
+    )
+
+
 async def cast_vote(
     session: AsyncSession, contribution_id: int, voter: Row, vote: str
 ) -> VoteCastOut:

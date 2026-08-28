@@ -914,3 +914,257 @@ async def test_episode_404() -> None:
         assert response.status_code == 404
         history_response = await client.get("/api/v1/episodes/999999999/history")
         assert history_response.status_code == 404
+
+
+# =========================================================================
+# #155: conditional-request (ETag / Last-Modified) support for
+# GET /series/{id} and GET /series/{id}/episodes.
+# =========================================================================
+
+
+@pytest.mark.asyncio
+async def test_series_detail_returns_etag_and_last_modified_headers(
+    client: AsyncClient,
+) -> None:
+    series_id = await _make_series("ConditionalHeaders", anilist_id=900501)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}")
+        assert response.status_code == 200
+        assert response.headers.get("etag")
+        assert response.headers.get("last-modified")
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_detail_if_none_match_returns_304(client: AsyncClient) -> None:
+    series_id = await _make_series("IfNoneMatch304", anilist_id=900502)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}")
+        etag = first.headers["etag"]
+
+        second = await client.get(
+            f"/api/v1/series/{series_id}", headers={"If-None-Match": etag}
+        )
+        assert second.status_code == 304
+        assert second.content == b""
+        # A 304 still carries the same conditional headers (RFC 7232) so a
+        # client can refresh its cached copy's own freshness bookkeeping.
+        assert second.headers["etag"] == etag
+        assert second.headers.get("last-modified") == first.headers.get("last-modified")
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_detail_if_modified_since_returns_304(client: AsyncClient) -> None:
+    series_id = await _make_series("IfModifiedSince304", anilist_id=900503)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}")
+        last_modified = first.headers["last-modified"]
+
+        second = await client.get(
+            f"/api/v1/series/{series_id}", headers={"If-Modified-Since": last_modified}
+        )
+        assert second.status_code == 304
+        assert second.content == b""
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_detail_stale_conditional_headers_return_200_after_episode_change(
+    client: AsyncClient,
+) -> None:
+    """A stale ETag (from before an episode contribution was approved for
+    this series) must NOT 304 — the series detail page's own content
+    (episode count implied elsewhere, but concretely: this is the same
+    "series was updated" signal #42's sort=recently_updated already uses)
+    has genuinely changed.
+    """
+    series_id = await _make_series("StaleAfterEpisode", anilist_id=900504)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}")
+        stale_etag = first.headers["etag"]
+
+        citation_id = await _make_citation()
+        await _make_approved_episode(series_id, 1, citation_id)
+
+        second = await client.get(
+            f"/api/v1/series/{series_id}", headers={"If-None-Match": stale_etag}
+        )
+        assert second.status_code == 200
+        assert second.headers["etag"] != stale_etag
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_series_detail_zero_episode_series_still_gets_stable_conditional_headers(
+    client: AsyncClient,
+) -> None:
+    """A never-researched series (no episodes rows at all, no AniList sync
+    yet) has no MAX(episodes.updated_at)/episode_schedule_synced_at to
+    derive from — must still fall back to a stable value (created_at)
+    rather than erroring or producing a header that changes every request.
+    """
+    series_id = await _make_series("ZeroEpisodeConditional", anilist_id=900505)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}")
+        second = await client.get(f"/api/v1/series/{series_id}")
+        assert first.headers["etag"] == second.headers["etag"]
+
+        third = await client.get(
+            f"/api/v1/series/{series_id}", headers={"If-None-Match": first.headers["etag"]}
+        )
+        assert third.status_code == 304
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_returns_etag_and_last_modified_headers(
+    client: AsyncClient,
+) -> None:
+    series_id = await _make_series("EpisodesConditionalHeaders", anilist_id=900506)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        response = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert response.status_code == 200
+        assert response.headers.get("etag")
+        assert response.headers.get("last-modified")
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_if_none_match_returns_304(client: AsyncClient) -> None:
+    series_id = await _make_series("EpisodesIfNoneMatch304", anilist_id=900507)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}/episodes")
+        etag = first.headers["etag"]
+
+        second = await client.get(
+            f"/api/v1/series/{series_id}/episodes", headers={"If-None-Match": etag}
+        )
+        assert second.status_code == 304
+        assert second.content == b""
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_if_modified_since_returns_304(client: AsyncClient) -> None:
+    series_id = await _make_series("EpisodesIfModifiedSince304", anilist_id=900508)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}/episodes")
+        last_modified = first.headers["last-modified"]
+
+        second = await client.get(
+            f"/api/v1/series/{series_id}/episodes",
+            headers={"If-Modified-Since": last_modified},
+        )
+        assert second.status_code == 304
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_stale_etag_returns_200_after_new_contribution_approved(
+    client: AsyncClient,
+) -> None:
+    """This endpoint's whole point (#155) is a consumer polling to notice
+    exactly this kind of change — a newly-approved contribution changing
+    the episode list — cheaply. A stale ETag from before episode 2 was
+    approved must not 304.
+    """
+    series_id = await _make_series("EpisodesStaleAfterApproval", anilist_id=900509)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}/episodes")
+        stale_etag = first.headers["etag"]
+
+        await _make_approved_episode(series_id, 2, citation_id)
+
+        second = await client.get(
+            f"/api/v1/series/{series_id}/episodes", headers={"If-None-Match": stale_etag}
+        )
+        assert second.status_code == 200
+        assert len(second.json()) == 2
+        assert second.headers["etag"] != stale_etag
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_stale_etag_returns_200_after_status_correction(
+    client: AsyncClient,
+) -> None:
+    """A correction to an already-approved episode's status (not just a
+    brand-new episode number) also bumps episodes.updated_at via upsert()'s
+    ON CONFLICT branch — must invalidate a stale ETag too.
+    """
+    series_id = await _make_series("EpisodesStaleAfterCorrection", anilist_id=900510)
+    citation_id = await _make_citation()
+    await _make_approved_episode(series_id, 1, citation_id)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}/episodes")
+        stale_etag = first.headers["etag"]
+
+        import repositories.episodes as episodes_repo
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                await episodes_repo.upsert(
+                    session,
+                    series_id=series_id,
+                    episode_number=1,
+                    status="filler",
+                    status_note=None,
+                    citation_id=citation_id,
+                    approved_contribution_id=(
+                        await session.execute(
+                            text(
+                                "SELECT approved_contribution_id FROM episodes "
+                                "WHERE series_id = :sid AND episode_number = 1"
+                            ),
+                            {"sid": series_id},
+                        )
+                    ).scalar_one(),
+                )
+
+        second = await client.get(
+            f"/api/v1/series/{series_id}/episodes", headers={"If-None-Match": stale_etag}
+        )
+        assert second.status_code == 200
+        assert second.json()[0]["status"] == "filler"
+        assert second.headers["etag"] != stale_etag
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
+async def test_episodes_list_zero_episode_series_still_gets_stable_conditional_headers(
+    client: AsyncClient,
+) -> None:
+    series_id = await _make_series("EpisodesZeroConditional", anilist_id=900511)
+    try:
+        first = await client.get(f"/api/v1/series/{series_id}/episodes")
+        second = await client.get(f"/api/v1/series/{series_id}/episodes")
+        assert first.status_code == 200
+        assert first.json() == []
+        assert first.headers["etag"] == second.headers["etag"]
+
+        third = await client.get(
+            f"/api/v1/series/{series_id}/episodes",
+            headers={"If-None-Match": first.headers["etag"]},
+        )
+        assert third.status_code == 304
+    finally:
+        await _cleanup_series(series_id)

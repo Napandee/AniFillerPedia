@@ -4,6 +4,8 @@ import was so search could match alternate/native-script titles, not just
 the canonical one (CLAUDE.md Decisions Made).
 """
 
+from datetime import datetime
+
 from sqlalchemy import text
 from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -139,6 +141,51 @@ async def get_series_by_identifier(session: AsyncSession, identifier: str) -> Ro
         {"identifier": int(identifier) if column == "id" else identifier},
     )
     return result.first()
+
+
+async def get_last_modified(session: AsyncSession, series_id: int) -> datetime:
+    """#155: conditional-request support for GET /series/{id}. No column
+    on `series` itself is a real generic "last touched" timestamp (see
+    CLAUDE.md's own #42 comment on this), so this derives one from every
+    column that a series detail response actually surfaces and that can
+    change after the row is first created:
+      * s.created_at — the floor; always present.
+      * s.episode_schedule_synced_at — set to now() on every #49 AniList
+        sync pass that touches this series (repositories/
+        series_episode_schedule.py's mark_synced), which is also what
+        writes anilist_status/episode_count/cover/banner/description/
+        start_date/end_date — i.e. every AniList-sourced field the detail
+        response exposes.
+      * MAX(episodes.updated_at) for this series — bumped by
+        repositories/episodes.py's upsert() on every contribution
+        approval that changes an episode's status/title/citation, which
+        is exactly what #42's own `sort=recently_updated` already treats
+        as "this series was updated."
+    Known, accepted gap (same "near-zero effort first step" framing as
+    #155 itself): a bare series_synonyms/series_relations/slug edit isn't
+    covered — those change essentially only once, at creation or a rare
+    manual backfill, not on an ongoing cadence like the fields above.
+    """
+    row = (
+        await session.execute(
+            text(
+                """
+                SELECT GREATEST(
+                    s.created_at,
+                    COALESCE(s.episode_schedule_synced_at, s.created_at),
+                    COALESCE(
+                        (SELECT MAX(e.updated_at) FROM episodes e WHERE e.series_id = s.id),
+                        s.created_at
+                    )
+                ) AS last_modified
+                FROM series s
+                WHERE s.id = :series_id
+                """
+            ),
+            {"series_id": series_id},
+        )
+    ).one()
+    return row.last_modified
 
 
 async def get_by_anilist_id(session: AsyncSession, anilist_id: int) -> Row | None:

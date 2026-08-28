@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -5,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import repositories.contributions as contributions_repo
 import repositories.episodes as episodes_repo
 import repositories.series as series_repo
+from core.conditional import etag_for
 from schemas.contributions import ContributionHistoryEntry, UserRef, VoteOut
 from schemas.episodes import CitationOut, EpisodeOut
 
@@ -31,11 +34,31 @@ def _row_to_episode_out(row: Row) -> EpisodeOut:
 
 
 async def list_episodes_for_series(session: AsyncSession, series_id: int) -> list[EpisodeOut]:
+    body, _, _ = await list_episodes_for_series_conditional(session, series_id)
+    return body
+
+
+async def list_episodes_for_series_conditional(
+    session: AsyncSession, series_id: int
+) -> tuple[list[EpisodeOut], datetime, str]:
+    """#155: same lookup as list_episodes_for_series() above, plus the
+    derived last-modified timestamp + ETag the router needs to answer a
+    conditional GET without building the full response body.
+    """
     series_row = await series_repo.get_series_by_identifier(session, str(series_id))
     if series_row is None:
         raise HTTPException(status_code=404, detail="Series not found")
     rows = await episodes_repo.list_for_series(session, series_id)
-    return [_row_to_episode_out(row) for row in rows]
+    body = [_row_to_episode_out(row) for row in rows]
+
+    max_updated_row = await episodes_repo.get_max_updated_at(session, series_id)
+    # A series with zero researched episodes has no MAX(updated_at) to
+    # derive from — fall back to the series row's own created_at, same
+    # "nothing to report yet, but still a stable value" convention as
+    # repositories.series.get_last_modified's own COALESCE fallbacks.
+    last_modified = max_updated_row.max_updated_at or series_row.created_at
+    etag = etag_for(last_modified, "series-episodes", series_id)
+    return body, last_modified, etag
 
 
 async def get_episode(session: AsyncSession, episode_id: int) -> EpisodeOut:

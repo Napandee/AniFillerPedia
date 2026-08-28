@@ -38,6 +38,26 @@ async def list_for_series(session: AsyncSession, series_id: int) -> list[Row]:
     return list(result.fetchall())
 
 
+async def get_max_updated_at(session: AsyncSession, series_id: int) -> Row | None:
+    """#155: conditional-request support for GET /series/{id}/episodes.
+    episodes.updated_at is bumped by upsert() below on every contribution
+    approval that changes an episode's status/title/citation — exactly
+    "the episodes list changed" for this endpoint's own payload (status,
+    status_note, title, citation, has_pending_contribution all come from
+    joins keyed off this same row). aired_at (series_episode_schedule) is
+    NOT included: it's a separate, lower-signal sync table (#49) that
+    doesn't drive any of the filler/canon content this project's ETag is
+    meant to let a consumer skip re-fetching — see the caller in
+    services/episodes.py for how the series-has-zero-episodes case (NULL
+    here) is handled.
+    """
+    result = await session.execute(
+        text("SELECT MAX(updated_at) AS max_updated_at FROM episodes WHERE series_id = :series_id"),
+        {"series_id": series_id},
+    )
+    return result.one()
+
+
 async def get_by_id(session: AsyncSession, episode_id: int) -> Row | None:
     result = await session.execute(
         text(f"{_SELECT_WITH_CITATION} WHERE e.id = :id"),

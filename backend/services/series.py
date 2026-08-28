@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import repositories.series as series_repo
+from core.conditional import etag_for
 from schemas.series import SeriesDetailOut, SeriesListOut, SeriesOut
 
 
@@ -27,8 +30,18 @@ async def search_series(
 
 
 async def get_series(session: AsyncSession, identifier: str) -> SeriesDetailOut:
-    """#116: `identifier` is either a numeric series id or a slug — see
-    repositories.series.get_series_by_identifier for how that's resolved.
+    body, _, _ = await get_series_conditional(session, identifier)
+    return body
+
+
+async def get_series_conditional(
+    session: AsyncSession, identifier: str
+) -> tuple[SeriesDetailOut, datetime, str]:
+    """#155: same lookup as get_series() above, plus the derived
+    last-modified timestamp + ETag the router needs to answer a
+    conditional GET (If-None-Match/If-Modified-Since -> 304) without
+    building the full response body. See repositories.series.
+    get_last_modified for exactly which columns feed the timestamp.
     """
     row = await series_repo.get_series_by_identifier(session, identifier)
     if row is None:
@@ -54,10 +67,13 @@ async def get_series(session: AsyncSession, identifier: str) -> SeriesDetailOut:
         next_series = greater[0] if greater else None
         previous_series = lesser[-1] if lesser else None
 
-    return SeriesDetailOut(
+    body = SeriesDetailOut(
         **row._mapping,
         synonyms=synonyms,
         related_series=related_series,
         next_series=next_series,
         previous_series=previous_series,
     )
+    last_modified = await series_repo.get_last_modified(session, series_id)
+    etag = etag_for(last_modified, "series", series_id)
+    return body, last_modified, etag

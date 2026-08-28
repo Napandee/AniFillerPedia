@@ -345,8 +345,16 @@ function formatDate(iso: string): string {
   .status-pill--pending {
     background: var(--color-status-pending);
   }
+  /* #164: white text on raw --color-status-canon (2.28:1, failing AA) —
+     found via a full grep for other consumers of this token while fixing
+     the issue's explicitly-listed locations elsewhere; same root bug, same
+     fix: the light-bg/dark-text "positive" pairing #143/#147 established
+     for the canon status badge — --color-status-canon itself stays
+     untouched, still needed elsewhere at full saturation. Overrides the
+     shared .status-pill's white text. Computed 6.49:1. */
   .status-pill--approved {
-    background: var(--color-status-canon);
+    background: var(--color-status-canon-bg);
+    color: var(--color-status-canon-text);
   }
   .status-pill--rejected {
     background: var(--color-dispute);

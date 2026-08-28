@@ -835,9 +835,14 @@ function formatDate(iso: string): string {
     opacity: 0.5;
     cursor: not-allowed;
   }
+  /* #164: white text on raw --color-endorse (2.28:1, failing AA) switched to
+     the same light-bg/dark-text "positive" pairing this file's own
+     .status-pill--canon already uses (see #143 comment above) —
+     --color-endorse itself stays untouched, still needed elsewhere at full
+     saturation. Computed 6.49:1. */
   .btn--approve {
-    color: #fff;
-    background: var(--color-endorse);
+    color: var(--color-status-canon-text);
+    background: var(--color-status-canon-bg);
   }
   .btn--reject {
     color: #fff;

@@ -355,8 +355,14 @@ const resolutionLabel = (method: string | null) => {
   .status-chip--pending {
     background: var(--color-status-pending);
   }
+  /* #164: white text on raw --color-status-canon (2.28:1, failing AA)
+     switched to the same light-bg/dark-text "positive" pairing #143/#147
+     established for the canon status badge — --color-status-canon itself
+     stays untouched, still needed elsewhere at full saturation. Overrides
+     the base .status-chip's white text. Computed 6.49:1. */
   .status-chip--approved {
-    background: var(--color-status-canon);
+    background: var(--color-status-canon-bg);
+    color: var(--color-status-canon-text);
   }
   .status-chip--rejected {
     background: var(--color-dispute);
@@ -371,8 +377,15 @@ const resolutionLabel = (method: string | null) => {
     border-radius: var(--radius-pill);
     color: #fff;
   }
+  /* #164: white text on raw --color-endorse (2.28:1, failing AA) switched to
+     the same --color-endorse-bg + --color-status-canon-text pairing
+     episodes/[id]/history.astro's own .banner--ok already uses for endorse-
+     related UI (#143) — --color-endorse itself stays untouched, still
+     needed elsewhere at full saturation. Overrides the base .vote-chip's
+     white text. Computed 6.82:1. */
   .vote-chip--endorse {
-    background: var(--color-endorse);
+    background: var(--color-endorse-bg);
+    color: var(--color-status-canon-text);
   }
   .vote-chip--dispute {
     background: var(--color-dispute);

@@ -6,6 +6,7 @@ import services.anilist_lookup as anilist_lookup_service
 from core.db import get_session
 from core.deps import get_current_user_optional, get_rate_limit_identifier
 from schemas.anilist_lookup import AniListLookupOut
+from schemas.errors import ErrorDetail
 
 router = APIRouter(tags=["anilist-lookup"])
 
@@ -22,13 +23,23 @@ ANILIST_LOOKUP_RATE_LIMIT = 30
 ANILIST_LOOKUP_RATE_LIMIT_WINDOW_SECONDS = 60 * 60
 
 
-@router.get("/anilist-lookup/{anilist_id}", response_model=AniListLookupOut)
+@router.get(
+    "/anilist-lookup/{anilist_id}",
+    response_model=AniListLookupOut,
+    responses={429: {"model": ErrorDetail, "description": "Too many AniList lookups this hour"}},
+)
 async def anilist_lookup(
     request: Request,
     anilist_id: int = Path(gt=0),
     current_user=Depends(get_current_user_optional),  # noqa: ANN001 - Row | None, anonymous allowed
     session: AsyncSession = Depends(get_session),
 ) -> AniListLookupOut:
+    """#165: proxies a single lookup to AniList's own public GraphQL API by
+    id — used by submission forms to pre-fill a title on blur. Public,
+    anonymous-allowed, but rate-limited (30/hour per caller) since an
+    unthrottled proxy would let anyone hammer AniList's own API on this
+    project's behalf.
+    """
     identifier = get_rate_limit_identifier(request, current_user)
     recent_count = await rate_limits_repo.count_recent(
         session,

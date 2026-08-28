@@ -29,14 +29,23 @@ browsing/search, a per-series canon/filler/mixed dashboard, every
 contribution/proposal flow, a moderation queue, and admin user management —
 the API isn't the only way in.
 
+Also shipped: UI translated across 5 languages (English, Spanish, Hindi,
+Japanese, Simplified Chinese) via path-based locale routing, a live
+"airing" status badge for still-releasing shows, slug-based series URLs,
+a series description/era-tile overview on the series detail page,
+within-franchise watch-next/previous navigation for series split across
+multiple AniList entries, and production monitoring with Telegram
+alerting.
+
 The dataset itself is real, cited, hand-compiled research (not scraped
 from any single restricted source), targeted using the open-licensed "has
 fillers" tag from
 [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database).
-Fully loaded so far: Naruto, Naruto: Shippuuden, Bleach, One Piece, and
-Fairy Tail (spanning its three real, separately-numbered AniList catalog
-entries). More shows are queued behind these — the catalog itself also
-grows through community series proposals, not just this initial batch.
+Well over 100 series are fully loaded (check `GET /api/v1/series` for the
+live, current count — the catalog keeps growing, so a fixed number here
+would just go stale again). More shows are queued behind these — the
+catalog itself also grows through community series proposals, not just
+this initial batch.
 
 ## Features
 

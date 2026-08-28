@@ -105,7 +105,9 @@ legitimate sources, deliberately not from one restricted site:
 
 ## Data Model
 
-Not yet built. Known requirements, to get right from the start:
+Built and live. Requirements this was built against, kept here as the
+rationale behind the shipped schema (see `backend/schema.sql` for the
+actual current tables/columns):
 
 - Separate the episode-level community-contributed/correctable layer
   (filler/canon status, source citations) from the series catalog — but note
@@ -123,7 +125,8 @@ Not yet built. Known requirements, to get right from the start:
 
 ## Architecture
 
-Not yet built, but the shape is decided (2026-08-20 planning session):
+Built and live, matching the shape decided in the 2026-08-20 planning
+session:
 
 - **API**: FastAPI, `/api/v1/...`, layered routers/services/repositories.
   Public read endpoints (series, episodes, per-episode citation, per-episode
@@ -153,7 +156,15 @@ Not yet built, but the shape is decided (2026-08-20 planning session):
 
 ## Deploy
 
-Not yet decided.
+Decided 2026-08-20, live since 2026-08-21. DigitalOcean Droplet running
+`backend`/`frontend`/`worker`/`postgres`/`caddy` containers; GitHub Actions
+builds and pushes to GHCR on a merge to `master`, path-filtered separately
+for `backend/**` and `frontend/**` per the monorepo split above; a
+self-hosted runner container on the droplet itself pulls the new image and
+restarts (`docker compose pull` + `up -d`) — no webhook, no HMAC, no
+inbound SSH hop. Same build-then-self-hosted-runner-deploys pattern as
+`Napandee/AniDex`. See Decisions Made — Tech stack for the original
+decision record.
 
 ## Guardrails — Non-Negotiable
 

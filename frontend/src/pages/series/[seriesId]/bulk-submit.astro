@@ -325,13 +325,18 @@ const countsByStatus = (entries: BulkEntry[]) => {
   .success {
     text-align: center;
   }
+  /* #164: white text on raw --color-status-canon (2.28:1, failing AA)
+     switched to the same light-bg/dark-text "positive" pairing #143/#147
+     established for the canon status badge — --color-status-canon itself
+     stays untouched, still needed elsewhere at full saturation. Computed
+     6.49:1. */
   .success-icon {
     width: 48px;
     height: 48px;
     line-height: 48px;
     border-radius: 50%;
-    background: var(--color-status-canon);
-    color: #fff;
+    background: var(--color-status-canon-bg);
+    color: var(--color-status-canon-text);
     font-size: 22px;
     font-weight: 800;
     margin: 0 auto 16px;

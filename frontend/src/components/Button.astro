@@ -39,9 +39,15 @@ const Tag = href ? "a" : "button";
     color: #fff;
     background: var(--color-accent);
   }
+  /* #164: white text on raw --color-endorse (2.28:1, failing AA) switched to
+     the same light-bg/dark-text "positive" pairing #143/#147 already
+     established for the canon status badge (StatusBadge.astro,
+     moderation.astro's .status-pill--canon) — --color-endorse itself stays
+     untouched since it's still needed at full saturation for decorative
+     dots/mini-bars elsewhere. Computed 6.49:1. */
   .btn--endorse {
-    color: #fff;
-    background: var(--color-endorse);
+    color: var(--color-status-canon-text);
+    background: var(--color-status-canon-bg);
   }
   .btn--dispute {
     color: #fff;

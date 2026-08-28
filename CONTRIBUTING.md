@@ -186,7 +186,12 @@ account — that's intentional, not a gap. What requires being signed in:
 Sign in with GitHub or Discord (`GET /api/v1/auth/{provider}/authorize`).
 Accounts are never merged automatically by matching email — linking a
 second provider to an existing account is an explicit action you take
-while already signed in, never something that happens for you.
+while already signed in, never something that happens for you. See
+[docs/API.md](docs/API.md#authentication) for exactly how that redirect/
+cookie flow works, and — importantly, if you're building an automated or
+server-to-server integration rather than clicking through a browser —
+its current limitations (no bearer-token/API-key alternative to a real
+browser login today).
 
 ## Your submission and the license
 

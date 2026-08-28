@@ -8,16 +8,24 @@ from core.db import get_session
 from core.deps import get_current_user
 from core.security import SESSION_COOKIE_NAME
 from schemas.auth import UserOut
+from schemas.errors import ErrorDetail
 from services.admin import compute_trust_score
 
 router = APIRouter(tags=["users"])
 
+_NOT_AUTHENTICATED = {401: {"model": ErrorDetail, "description": "Not authenticated"}}
 
-@router.get("/users/me", response_model=UserOut)
+
+@router.get("/users/me", response_model=UserOut, responses=_NOT_AUTHENTICATED)
 async def read_current_user(
     current_user: Row = Depends(get_current_user),
     session: AsyncSession = Depends(get_session),
 ) -> UserOut:
+    """The signed-in caller's own profile, including #43's `trust_score`
+    (the same formula #14's community voting weights votes by) — not
+    available for any other user via this endpoint; see
+    `GET /admin/users` for the admin-only listing of everyone's.
+    """
     # #43: same per-user stats query #14 already added for vote-weight
     # lookups (repositories/admin.py's get_user_stats) — reused here rather
     # than a second implementation of the same aggregate.
@@ -35,7 +43,7 @@ async def read_current_user(
     )
 
 
-@router.delete("/users/me", status_code=204)
+@router.delete("/users/me", status_code=204, responses=_NOT_AUTHENTICATED)
 async def delete_current_user(
     response: Response,
     current_user: Row = Depends(get_current_user),

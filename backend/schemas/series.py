@@ -84,3 +84,35 @@ class SeriesListOut(BaseModel):
     total: int
     limit: int
     offset: int
+
+
+class NeedsResearchItem(BaseModel):
+    """#153: one row of the public "needs research" queue — a series with
+    zero episode rows (`never_researched`), or a series #175's weekly
+    drift worker has flagged as no longer matching AniList's live state
+    (`status_drift` / `episode_count_drift`, read straight from
+    `series.anilist_drift_reason` rather than re-derived here). The
+    issue's own scope note guarantees these two cases never overlap: a
+    drift-flagged series always has episodes to have drifted from, so a
+    row is always exactly one reason, never both.
+    """
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: int
+    title: str
+    slug: str | None
+    reason: str
+    # Null for a never_researched series that's also never been synced by
+    # #49's daily worker yet; populated whenever AniList has been checked
+    # at least once, regardless of which reason this row carries.
+    anilist_episode_count: int | None
+    airing_status: str | None = Field(validation_alias="anilist_status")
+    researched_episode_count: int
+
+
+class NeedsResearchListOut(BaseModel):
+    items: list[NeedsResearchItem]
+    total: int
+    limit: int
+    offset: int

@@ -1,0 +1,311 @@
+---
+// #154: public, read-only "recent changes" feed — every resolved
+// (approved/rejected/withdrawn) episode contribution and series proposal,
+// newest first. Sourced entirely from the existing contributions/
+// series_proposals audit trail (backend/repositories/activity.py); no new
+// writes. The Wikipedia "Recent changes" / OpenStreetMap changesets
+// precedent named in the issue itself.
+//
+// GET /api/v1/activity is a brand-new router path — not in schema.d.ts
+// yet — so this uses a plain fetch() + local interface, same as
+// needs-research.astro / moderation.astro's synonym-suggestions section.
+//
+// English-only, no locale wrapper (matches docs/moderation/contribute
+// precedent).
+import Layout from "../layouts/Layout.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+
+interface ActivityFeedItem {
+  event_type: "contribution" | "series_proposal";
+  id: number;
+  review_status: string;
+  resolution_method: string | null;
+  reviewed_at: string;
+  submitted_at: string;
+  review_note: string | null;
+  series_id: number | null;
+  series_title: string | null;
+  series_slug: string | null;
+  episode_number: number | null;
+  proposed_status: "canon" | "filler" | "mixed" | null;
+  citation_description: string | null;
+  proposal_title: string | null;
+  submitter_display_name: string | null;
+  submitter_github_id: string | null;
+  reviewer_display_name: string | null;
+  reviewer_github_id: string | null;
+}
+
+interface ActivityFeedOut {
+  items: ActivityFeedItem[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+const LIMIT = 30;
+const offsetParam = Number(Astro.url.searchParams.get("offset") ?? "0");
+const offset = Number.isFinite(offsetParam) && offsetParam >= 0 ? offsetParam : 0;
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+let items: ActivityFeedItem[] = [];
+let total = 0;
+let loadError = false;
+
+try {
+  const response = await fetch(`${baseUrl}/api/v1/activity?limit=${LIMIT}&offset=${offset}`);
+  if (response.ok) {
+    const body = (await response.json()) as ActivityFeedOut;
+    items = body.items;
+    total = body.total;
+  } else {
+    loadError = true;
+  }
+} catch {
+  loadError = true;
+}
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+}
+
+function whoName(displayName: string | null, githubId: string | null): string {
+  return displayName ?? (githubId ? `@${githubId}` : "Anonymous");
+}
+
+function eventSummary(item: ActivityFeedItem): string {
+  if (item.event_type === "contribution") {
+    return `Episode ${item.episode_number} of ${item.series_title}`;
+  }
+  return `Series proposal: ${item.proposal_title}`;
+}
+
+function eventHref(item: ActivityFeedItem): string | null {
+  if (item.event_type === "contribution" && item.series_id != null) {
+    return `/series/${item.series_slug ?? item.series_id}`;
+  }
+  return null;
+}
+
+const hasNextPage = offset + LIMIT < total;
+const hasPrevPage = offset > 0;
+const prevOffset = Math.max(0, offset - LIMIT);
+const nextOffset = offset + LIMIT;
+---
+
+<Layout
+  title="Recent Changes — AniFillerPedia"
+  description="A public, reverse-chronological feed of resolved episode-status corrections and series proposals on AniFillerPedia — the full community audit trail, same spirit as Wikipedia's Recent changes."
+>
+  <div class="heading-row">
+    <h1 class="disp page-title">Recent changes</h1>
+    <a class="rss-link" href={`${baseUrl}/api/v1/activity/rss`}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <circle cx="6.18" cy="17.82" r="2.18"></circle>
+        <path d="M4 4.44v3.6c7.75 0 14.04 6.29 14.04 14.04h3.6C21.64 12.7 13.38 4.44 4 4.44z"></path>
+        <path d="M4 11.24v3.6c3.35 0 6.06 2.72 6.06 6.06h3.6c0-5.34-4.33-9.66-9.66-9.66z"></path>
+      </svg>
+      RSS feed
+    </a>
+  </div>
+  <p class="sub">
+    Every resolved (approved, rejected, or withdrawn) community submission, newest first — the
+    full public audit trail behind this dataset.
+  </p>
+
+  {loadError && (
+    <div class="banner banner--error">
+      Could not load the activity feed from the API right now — try reloading.
+    </div>
+  )}
+
+  {!loadError && items.length === 0 && <p class="empty">No resolved activity yet.</p>}
+
+  <ul class="list">
+    {items.map((item) => {
+      const href = eventHref(item);
+      return (
+        <li class="card">
+          <div class="card-top">
+            {href ? (
+              <a class="event-title" href={href}>{eventSummary(item)}</a>
+            ) : (
+              <span class="event-title">{eventSummary(item)}</span>
+            )}
+            <span class={`status-badge status-badge--${item.review_status}`}>{item.review_status}</span>
+          </div>
+          <div class="meta-row">
+            {item.event_type === "contribution" && item.proposed_status && (
+              <StatusBadge status={item.proposed_status} />
+            )}
+            {item.resolution_method && <span class="resolution-note">via {item.resolution_method.replace(/_/g, " ")}</span>}
+          </div>
+          {item.review_note && <p class="review-note">{item.review_note}</p>}
+          <div class="meta-row meta-row--footer">
+            <span>Submitted by {whoName(item.submitter_display_name, item.submitter_github_id)}</span>
+            <span>
+              {item.review_status === "withdrawn" ? "Withdrawn" : "Reviewed"}
+              {item.reviewer_display_name || item.reviewer_github_id
+                ? ` by ${whoName(item.reviewer_display_name, item.reviewer_github_id)}`
+                : ""}
+              {" "}&middot; {formatDate(item.reviewed_at)}
+            </span>
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+
+  {(hasPrevPage || hasNextPage) && (
+    <nav class="pager">
+      {hasPrevPage ? (
+        <a href={`/activity?offset=${prevOffset}`}>&larr; Previous</a>
+      ) : (
+        <span />
+      )}
+      {hasNextPage && <a href={`/activity?offset=${nextOffset}`}>Next &rarr;</a>}
+    </nav>
+  )}
+</Layout>
+
+<style>
+  .heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 4px;
+  }
+  .rss-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .rss-link:hover {
+    text-decoration: underline;
+  }
+  .sub {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+    max-width: 640px;
+  }
+  .banner--error {
+    background: var(--color-dispute-bg);
+    color: var(--color-dispute);
+    border-radius: var(--radius-card);
+    padding: 12px 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .empty {
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+  .list {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card {
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .event-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-heading);
+    text-decoration: none;
+    font-size: 14.5px;
+  }
+  a.event-title:hover {
+    text-decoration: underline;
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: capitalize;
+    white-space: nowrap;
+  }
+  .status-badge--approved {
+    background: var(--color-status-canon-bg);
+    color: var(--color-status-canon-text);
+  }
+  .status-badge--rejected {
+    background: var(--color-dispute-bg);
+    color: var(--color-dispute);
+  }
+  .status-badge--withdrawn {
+    background: var(--color-surface-dark);
+    color: #fff;
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .resolution-note {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: capitalize;
+  }
+  .review-note {
+    font-size: 13px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 8px 12px;
+    margin: 0 0 8px;
+  }
+  .meta-row--footer {
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 24px;
+  }
+  .pager a {
+    color: var(--color-accent);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .pager a:hover {
+    text-decoration: underline;
+  }
+</style>

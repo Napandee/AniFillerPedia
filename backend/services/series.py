@@ -5,7 +5,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 import repositories.series as series_repo
 from core.conditional import etag_for
-from schemas.series import SeriesDetailOut, SeriesListOut, SeriesOut
+from schemas.series import NeedsResearchItem, NeedsResearchListOut, SeriesDetailOut, SeriesListOut, SeriesOut
+
+
+async def list_needs_research(session: AsyncSession, limit: int, offset: int) -> NeedsResearchListOut:
+    rows, total = await series_repo.list_needs_research(session, limit, offset)
+    return NeedsResearchListOut(
+        items=[NeedsResearchItem(**row._mapping) for row in rows],
+        total=total,
+        limit=limit,
+        offset=offset,
+    )
 
 
 async def search_series(

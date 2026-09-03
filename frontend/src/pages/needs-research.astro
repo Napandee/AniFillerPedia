@@ -1,0 +1,248 @@
+---
+// #153: public "needs research" queue — catalog series that need
+// contributor attention, unified across two reasons per the scope note
+// left on the issue by #157's spike: `never_researched` (zero episode
+// rows) and `status_drift`/`episode_count_drift` (#175's weekly AniList
+// drift re-check flagged the series as no longer matching AniList's live
+// state). One query/endpoint/page, not two — see
+// backend/repositories/series.py's list_needs_research.
+//
+// GET /api/v1/series/needs-research is a brand-new router path — not in
+// schema.d.ts yet (the generated typed client) — so this uses a plain
+// fetch() + local interface, same "don't regenerate the shared typed
+// client from a single-page worktree" call moderation.astro's own
+// synonym-suggestions section already made (#148).
+//
+// English-only, no locale wrapper (matches docs/moderation/contribute
+// precedent — #106 only fully localized home + series detail).
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+
+interface NeedsResearchItem {
+  id: number;
+  title: string;
+  slug: string | null;
+  reason: "never_researched" | "status_drift" | "episode_count_drift";
+  anilist_episode_count: number | null;
+  airing_status: string | null;
+  researched_episode_count: number;
+}
+
+interface NeedsResearchListOut {
+  items: NeedsResearchItem[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+const LIMIT = 30;
+const offsetParam = Number(Astro.url.searchParams.get("offset") ?? "0");
+const offset = Number.isFinite(offsetParam) && offsetParam >= 0 ? offsetParam : 0;
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+
+let items: NeedsResearchItem[] = [];
+let total = 0;
+let loadError = false;
+
+try {
+  const response = await fetch(
+    `${baseUrl}/api/v1/series/needs-research?limit=${LIMIT}&offset=${offset}`
+  );
+  if (response.ok) {
+    const body = (await response.json()) as NeedsResearchListOut;
+    items = body.items;
+    total = body.total;
+  } else {
+    loadError = true;
+  }
+} catch {
+  loadError = true;
+}
+
+const REASON_COPY: Record<NeedsResearchItem["reason"], string> = {
+  never_researched: "Never researched",
+  status_drift: "AniList status changed",
+  episode_count_drift: "AniList episode count grew",
+};
+
+const REASON_DETAIL: Record<NeedsResearchItem["reason"], (item: NeedsResearchItem) => string> = {
+  never_researched: () =>
+    "No episode data submitted yet — this series has zero researched episodes.",
+  status_drift: (item) =>
+    `Recorded as finished, but AniList now reports it as ${item.airing_status ?? "no longer finished"} — may have resumed airing.`,
+  episode_count_drift: (item) =>
+    `AniList now lists ${item.anilist_episode_count ?? "more"} episodes, more than the ${item.researched_episode_count} already researched here.`,
+};
+
+function seriesHref(item: NeedsResearchItem): string {
+  return `/series/${item.slug ?? item.id}`;
+}
+
+const hasNextPage = offset + LIMIT < total;
+const hasPrevPage = offset > 0;
+const prevOffset = Math.max(0, offset - LIMIT);
+const nextOffset = offset + LIMIT;
+---
+
+<Layout
+  title="Needs Research — AniFillerPedia"
+  description="Catalog series with no episode data yet, or flagged as out of sync with AniList — submit a filler/canon research pass and help grow AniFillerPedia's open dataset."
+>
+  <h1 class="disp page-title">Needs research</h1>
+  <p class="sub">
+    {total} {total === 1 ? "series" : "series"} in the catalog need contributor attention — either
+    nobody has researched episode data for them yet, or AniList's own live state has drifted from
+    what's recorded here. Pick one and submit a batch via the bulk-submission form.
+  </p>
+
+  {loadError && (
+    <div class="banner banner--error">
+      Could not load the needs-research queue from the API right now — try reloading.
+    </div>
+  )}
+
+  {!loadError && items.length === 0 && (
+    <p class="empty">Nothing needs research right now — every catalog series is either researched and in sync, or the page is empty.</p>
+  )}
+
+  <ul class="list">
+    {items.map((item) => (
+      <li class="card">
+        <div class="card-top">
+          <a class="series-title" href={seriesHref(item)}>{item.title}</a>
+          <span class={`reason-badge reason-badge--${item.reason}`}>{REASON_COPY[item.reason]}</span>
+        </div>
+        <p class="detail">{REASON_DETAIL[item.reason](item)}</p>
+        <div class="card-bottom">
+          <span class="episode-count-note">
+            {item.researched_episode_count} researched
+            {item.anilist_episode_count != null && ` / ${item.anilist_episode_count} on AniList`}
+          </span>
+          <Button href={`/series/${item.id}/bulk-submit`} variant="primary">
+            Submit episode data
+          </Button>
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  {(hasPrevPage || hasNextPage) && (
+    <nav class="pager">
+      {hasPrevPage ? (
+        <a href={`/needs-research?offset=${prevOffset}`}>&larr; Previous</a>
+      ) : (
+        <span />
+      )}
+      {hasNextPage && <a href={`/needs-research?offset=${nextOffset}`}>Next &rarr;</a>}
+    </nav>
+  )}
+</Layout>
+
+<style>
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 4px;
+  }
+  .sub {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+    max-width: 640px;
+  }
+  .banner--error {
+    background: var(--color-dispute-bg);
+    color: var(--color-dispute);
+    border-radius: var(--radius-card);
+    padding: 12px 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .empty {
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+  .list {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card {
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sticker);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .series-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-heading);
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .series-title:hover {
+    text-decoration: underline;
+  }
+  .reason-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .reason-badge--never_researched {
+    background: color-mix(in srgb, var(--color-status-pending) 20%, white);
+    color: var(--color-status-pending);
+  }
+  .reason-badge--status_drift,
+  .reason-badge--episode_count_drift {
+    background: var(--color-status-filler-bg);
+    color: var(--color-status-filler-text);
+  }
+  .detail {
+    font-size: 13px;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin: 0 0 12px;
+  }
+  .card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .episode-count-note {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 24px;
+  }
+  .pager a {
+    color: var(--color-accent);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .pager a:hover {
+    text-decoration: underline;
+  }
+</style>

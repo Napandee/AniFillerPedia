@@ -15,7 +15,19 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 // which already excludes zero-episode stubs per #47 — rather than a
 // separate query, since "worth showing in the public browse grid" and
 // "worth telling Google to index" are the same bar.
-const STATIC_PATHS = ["", "contribute", "docs", "license", "privacy", "export-access", "propose-series"];
+const STATIC_PATHS = [
+  "",
+  "contribute",
+  "docs",
+  "license",
+  "privacy",
+  "export-access",
+  "propose-series",
+  // #153/#154: public, unauthenticated, English-only discovery pages —
+  // same indexability bar as the rest of this list.
+  "needs-research",
+  "activity",
+];
 
 // #106: only home (`""`) and series pages are actually translated in this
 // first cut (per that issue's own scope) — the other STATIC_PATHS entries

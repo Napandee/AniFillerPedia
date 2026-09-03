@@ -96,15 +96,19 @@ services:
       ACCESS_TOKEN: ${GITHUB_RUNNER_ACCESS_TOKEN}
       RUNNER_WORKDIR: /tmp/afp-runner
       EPHEMERAL: "false"
-      # Prevents the exact corruption this project hit twice on
+      # Prevents the exact corruption this project hit repeatedly on
       # 2026-09-03: the runner's own self-update (triggered whenever
       # GitHub's minimum supported version moves past the pulled image's
       # bundled one) races against the container's own teardown after a
       # job completes, leaving Runner.Listener partially
       # written/corrupted. The runner just uses whatever version
       # myoung34/github-runner:latest ships instead of trying to
-      # self-update in place.
-      DISABLE_RUNNER_UPDATE: "true"
+      # self-update in place. DISABLE_AUTO_UPDATE is the variable name
+      # this image's own entrypoint.sh actually checks (confirmed by
+      # reading it directly) — an earlier attempt used
+      # DISABLE_RUNNER_UPDATE, which this image doesn't recognize at all,
+      # so that fix silently never took effect.
+      DISABLE_AUTO_UPDATE: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - runner-work:/tmp/afp-runner

@@ -3,15 +3,21 @@ anifillerpedia.wiki {
 	# Swagger UI / ReDoc / schema — #41's docs page links out to /docs and
 	# /openapi.json directly rather than proxying them through the frontend.
 	# Everything else (the Astro app) falls through to the frontend handle.
+	# #170: encode gzip is scoped to the frontend handle only, not
+	# @backend — Caddy weakens a strong ETag into `W/"...-gzip"` on any
+	# response it actually compresses, which breaks If-None-Match
+	# round-tripping against the API's own strong ETags (#155). The two
+	# API payloads this affects are small, so losing gzip there to keep
+	# ETags byte-exact is the right trade. If-Modified-Since is
+	# untouched either way (Last-Modified isn't affected by encoding).
 	@backend path /api/v1/* /docs /redoc /openapi.json
 	handle @backend {
 		reverse_proxy app:8000
 	}
 	handle {
+		encode gzip
 		reverse_proxy frontend:4321
 	}
-
-	encode gzip
 
 	log {
 		output file /data/access.log

@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 
 from core.version import API_VERSION
 from routers import (
+    activity,
     admin,
     anilist_lookup,
     auth,
@@ -34,7 +35,9 @@ openapi_tags = [
     {
         "name": "series",
         "description": "Public, unauthenticated reads of the series catalog — search, "
-        "detail (by id or slug), and per-series episode lists. See docs/API.md.",
+        "detail (by id or slug), per-series episode lists, and (#153) the "
+        "\"needs research\" queue of series with zero episode data or AniList "
+        "drift. See docs/API.md.",
     },
     {
         "name": "episodes",
@@ -95,6 +98,12 @@ openapi_tags = [
         "name": "anilist-lookup",
         "description": "A thin, rate-limited proxy to AniList's own public GraphQL API, "
         "used by submission forms to pre-fill a title from an AniList id.",
+    },
+    {
+        "name": "activity",
+        "description": "Public, read-only \"recent changes\" feed (#154, JSON and RSS) "
+        "over the existing contributions/series-proposals audit trail — every "
+        "resolved (approved/rejected/withdrawn) submission, newest first.",
     },
     {
         "name": "health",
@@ -160,6 +169,7 @@ app.include_router(synonym_suggestions.router, prefix="/api/v1")
 app.include_router(anilist_lookup.router, prefix="/api/v1")
 app.include_router(legal.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")
+app.include_router(activity.router, prefix="/api/v1")
 
 
 # #17: a genuine unhandled exception (a real 500) alerts via Telegram.

@@ -356,46 +356,96 @@ const structuredData = series
 
           {totalEpisodes > 0 && (
             <div class="stat-cards" id="stat-cards">
-              <button class="stat-card" data-status="canon" data-count={canonCount} type="button">
-                <div class="stat-card-top">
-                  <span class="stat-icon stat-icon--canon">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
-                  </span>
-                  <span class="stat-name">{STATUS_LABELS.canon}</span>
-                  <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
-                </div>
-                <div class="stat-number">{canonCount}</div>
-                <div class="stat-pct">{t("series.pctOfTracked", { pct: pct(canonCount) })}</div>
-                <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--canon" style={`width:${pct(canonCount)}%`} /></div>
-              </button>
+              <div class="stat-card-wrap">
+                <button class="stat-card" data-status="canon" data-count={canonCount} type="button">
+                  <div class="stat-card-top">
+                    <span class="stat-icon stat-icon--canon">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                    </span>
+                    <span class="stat-name">{STATUS_LABELS.canon}</span>
+                    <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                  </div>
+                  <div class="stat-number">{canonCount}</div>
+                  <div class="stat-pct">{t("series.pctOfTracked", { pct: pct(canonCount) })}</div>
+                  <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--canon" style={`width:${pct(canonCount)}%`} /></div>
+                </button>
+                {/* #86: a real sibling control, not nested inside the
+                    <button> above (two interactive elements can't nest) —
+                    see this component's file-header comment for the design
+                    rationale. Its own data-jump-status/data-wrapped-message
+                    carry everything the click-delegated script below needs,
+                    already translated server-side. */}
+                <button
+                  class="stat-jump"
+                  data-jump-status="canon"
+                  data-wrapped-message={t("series.jumpToNext.wrapped", { status: STATUS_LABELS.canon })}
+                  type="button"
+                  aria-label={t("series.jumpToNext", { status: STATUS_LABELS.canon })}
+                  title={t("series.jumpToNext", { status: STATUS_LABELS.canon })}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                </button>
+              </div>
 
-              <button class="stat-card" data-status="filler" data-count={fillerCount} type="button">
-                <div class="stat-card-top">
-                  <span class="stat-icon stat-icon--filler">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2" /></svg>
-                  </span>
-                  <span class="stat-name">{STATUS_LABELS.filler}</span>
-                  <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
-                </div>
-                <div class="stat-number">{fillerCount}</div>
-                <div class="stat-pct">{t("series.pctOfTracked", { pct: pct(fillerCount) })}</div>
-                <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--filler" style={`width:${pct(fillerCount)}%`} /></div>
-              </button>
+              <div class="stat-card-wrap">
+                <button class="stat-card" data-status="filler" data-count={fillerCount} type="button">
+                  <div class="stat-card-top">
+                    <span class="stat-icon stat-icon--filler">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2" /></svg>
+                    </span>
+                    <span class="stat-name">{STATUS_LABELS.filler}</span>
+                    <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                  </div>
+                  <div class="stat-number">{fillerCount}</div>
+                  <div class="stat-pct">{t("series.pctOfTracked", { pct: pct(fillerCount) })}</div>
+                  <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--filler" style={`width:${pct(fillerCount)}%`} /></div>
+                </button>
+                <button
+                  class="stat-jump"
+                  data-jump-status="filler"
+                  data-wrapped-message={t("series.jumpToNext.wrapped", { status: STATUS_LABELS.filler })}
+                  type="button"
+                  aria-label={t("series.jumpToNext", { status: STATUS_LABELS.filler })}
+                  title={t("series.jumpToNext", { status: STATUS_LABELS.filler })}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                </button>
+              </div>
 
-              <button class="stat-card" data-status="mixed" data-count={mixedCount} type="button">
-                <div class="stat-card-top">
-                  <span class="stat-icon stat-icon--mixed">
-                    <svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" /></svg>
-                  </span>
-                  <span class="stat-name">{STATUS_LABELS.mixed}</span>
-                  <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
-                </div>
-                <div class="stat-number">{mixedCount}</div>
-                <div class="stat-pct">{t("series.pctOfTracked", { pct: pct(mixedCount) })}</div>
-                <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--mixed" style={`width:${pct(mixedCount)}%`} /></div>
-              </button>
+              <div class="stat-card-wrap">
+                <button class="stat-card" data-status="mixed" data-count={mixedCount} type="button">
+                  <div class="stat-card-top">
+                    <span class="stat-icon stat-icon--mixed">
+                      <svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" /></svg>
+                    </span>
+                    <span class="stat-name">{STATUS_LABELS.mixed}</span>
+                    <svg class="stat-active-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6" /></svg>
+                  </div>
+                  <div class="stat-number">{mixedCount}</div>
+                  <div class="stat-pct">{t("series.pctOfTracked", { pct: pct(mixedCount) })}</div>
+                  <div class="stat-mini-bar"><div class="stat-mini-fill stat-mini-fill--mixed" style={`width:${pct(mixedCount)}%`} /></div>
+                </button>
+                <button
+                  class="stat-jump"
+                  data-jump-status="mixed"
+                  data-wrapped-message={t("series.jumpToNext.wrapped", { status: STATUS_LABELS.mixed })}
+                  type="button"
+                  aria-label={t("series.jumpToNext", { status: STATUS_LABELS.mixed })}
+                  title={t("series.jumpToNext", { status: STATUS_LABELS.mixed })}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                </button>
+              </div>
             </div>
           )}
+
+          {/* #86: aria-live region for the one case the jump control's own
+              scroll doesn't self-explain — wrapping back to the first
+              match because nothing was left further down the list. Hidden
+              (both visually and from assistive tech) the rest of the
+              time. */}
+          <div class="jump-toast" id="jump-toast" role="status" aria-live="polite" hidden></div>
+
 
           <div class="stat-row">
             <span class="stat-chip">
@@ -612,6 +662,16 @@ const structuredData = series
           }
 
           cardsContainer?.addEventListener("click", (event) => {
+            // #86: the jump control is a real sibling of .stat-card, not a
+            // descendant of it (two nested interactive elements aren't
+            // valid HTML), so it never reaches the filter-toggle branch
+            // below — check for it first and handle it as its own thing.
+            const jumpButton = (event.target as HTMLElement).closest<HTMLElement>(".stat-jump");
+            if (jumpButton) {
+              const status = jumpButton.dataset.jumpStatus;
+              if (status) jumpToNextEpisode(status, jumpButton.dataset.wrappedMessage ?? "");
+              return;
+            }
             const card = (event.target as HTMLElement).closest<HTMLElement>(".stat-card");
             if (!card) return;
             const isActive = card.classList.contains("is-active");
@@ -619,6 +679,72 @@ const structuredData = series
           });
 
           clearButton?.addEventListener("click", () => applyFilter(null));
+
+          // #86: "jump to next episode of this status" — deliberately a
+          // separate control from the click-to-filter stat cards above
+          // (design decision, see the PR/issue), so it never fights with
+          // that behavior over the same click target. Always operates on
+          // the full episode list: any active click-to-filter selection is
+          // cleared first (jumpToNextEpisode -> applyFilter(null)), both so
+          // the target row can never be hidden by an unrelated filter and
+          // so the visitor sees the row in its real surrounding context
+          // rather than an isolated single-status list.
+          const jumpToast = document.getElementById("jump-toast");
+          let jumpToastTimer: ReturnType<typeof window.setTimeout> | undefined;
+
+          function showJumpToast(message: string) {
+            if (!jumpToast || !message) return;
+            jumpToast.textContent = message;
+            jumpToast.hidden = false;
+            window.clearTimeout(jumpToastTimer);
+            jumpToastTimer = window.setTimeout(() => {
+              jumpToast.hidden = true;
+            }, 2400);
+          }
+
+          // Precomputed once — every row's position in document order,
+          // which is also scroll order (the list renders as one column).
+          const rowIndex = new Map<HTMLElement, number>(rows.map((row, i) => [row, i]));
+
+          function jumpToNextEpisode(status: string, wrappedMessage: string) {
+            const matches = rows.filter((row) => row.dataset.status === status);
+            if (matches.length === 0) return;
+
+            applyFilter(null);
+
+            // "Current scroll position" is defined by which rows have
+            // already scrolled fully past the top of the viewport. If none
+            // have (the visitor hasn't scrolled into the episode list at
+            // all yet — e.g. still up at the stat cards), the search
+            // starts from the very first row rather than skipping episode
+            // 1 just because it sits at document position 0.
+            const anyScrolledPast = rows.some((row) => row.getBoundingClientRect().bottom <= 0);
+            let referenceIndex = -1;
+            if (anyScrolledPast) {
+              const firstUnseen = rows.findIndex((row) => row.getBoundingClientRect().top > 0);
+              // firstUnseen === -1 means every row (the whole list) has
+              // already scrolled past — nothing is "next", fall through to
+              // the wrap-around case below.
+              referenceIndex = firstUnseen === -1 ? rows.length : firstUnseen;
+            }
+
+            let target = matches.find((row) => (rowIndex.get(row) ?? -1) > referenceIndex);
+            let wrapped = false;
+            if (!target) {
+              // Reached the end with no more matches — wrap to the first
+              // occurrence in the whole list rather than doing nothing, so
+              // the control always does *something* visible on click.
+              target = matches[0];
+              wrapped = true;
+            }
+
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
+            target.classList.add("jump-target-flash");
+            window.setTimeout(() => target?.classList.remove("jump-target-flash"), 1600);
+
+            if (wrapped) showJumpToast(wrappedMessage);
+          }
 
           // #87: the pending-indicator link lives inside <summary>, so a
           // click on it would otherwise also toggle the parent <details>
@@ -962,7 +1088,18 @@ const structuredData = series
     gap: 12px;
     margin: 16px 24px 0;
   }
+  /* #86: each grid cell is now this wrap, not .stat-card directly — the
+     jump-to-next control is a real sibling <button> positioned over the
+     card's corner (position:relative anchor), never nested inside the
+     card's own <button> (two nested interactive elements aren't valid
+     HTML, and it's what keeps the two controls' click targets from
+     overlapping/fighting in the first place). */
+  .stat-card-wrap {
+    position: relative;
+  }
   .stat-card {
+    display: block;
+    width: 100%;
     background: var(--color-surface);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-sticker);
@@ -972,6 +1109,35 @@ const structuredData = series
     text-align: left;
     font-family: var(--font-body);
     transition: border-color 0.15s ease;
+  }
+  /* #86: a small corner control, deliberately overlapping the card's own
+     edge rather than sitting inside its content area — reads clearly as a
+     second, distinct affordance rather than a fourth stat-card-top item
+     competing for space with the existing active-check mark. */
+  .stat-jump {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    background: var(--color-surface);
+    color: var(--color-accent);
+    box-shadow: var(--shadow-sticker);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .stat-jump:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .stat-jump svg {
+    flex-shrink: 0;
   }
   .stat-card.is-active {
     border-color: var(--color-accent);
@@ -1205,10 +1371,46 @@ const structuredData = series
     content: "\2212\00a0hide";
   }
 
+  /* #86: shown only briefly, only for the wrap-to-first case — see
+     jumpToNextEpisode()/showJumpToast() in the script above. */
+  .jump-toast {
+    margin: 10px 24px 0;
+    background: var(--color-surface-pending);
+    color: var(--color-text);
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    width: fit-content;
+  }
+
   .episode-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  /* #86: a brief highlight on whichever row the jump control just
+     scrolled to, so landing on a row that was already fully visible (a
+     short jump) still gives some visual confirmation something happened,
+     not just an instant, easy-to-miss scroll. */
+  .episode-row.jump-target-flash {
+    animation: jump-flash 1.6s ease;
+  }
+  @keyframes jump-flash {
+    0%,
+    100% {
+      box-shadow: var(--shadow-sticker);
+    }
+    15% {
+      box-shadow: 0 0 0 3px var(--color-accent);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .episode-row.jump-target-flash {
+      animation: none;
+      box-shadow: 0 0 0 3px var(--color-accent);
+    }
   }
 
   .empty-state {

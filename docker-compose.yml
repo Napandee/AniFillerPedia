@@ -1,19 +1,24 @@
-# Production stack for the DO Droplet. Six services: the FastAPI app, its
-# Postgres, the outbox-events worker, the Astro frontend, a self-hosted
-# GitHub Actions runner (so build-app.yml/frontend-deploy.yml can deploy
-# without a webhook/SSH hop), and Caddy for automatic TLS.
+# Production stack for the DO Droplet. Seven services: the FastAPI app, its
+# Postgres, the outbox-events worker, the Astro frontend, the read-only MCP
+# server (#178), a self-hosted GitHub Actions runner (so
+# build-app.yml/frontend-deploy.yml/mcp-deploy.yml can deploy without a
+# webhook/SSH hop), and Caddy for automatic TLS.
 #
 # Unlike AniDex's pattern (raw `docker pull` + `docker run`, no Compose),
 # this project genuinely needs multi-container orchestration on one box —
-# app, Postgres, worker, frontend, and runner all coordinate here. Compose IS
-# the deploy mechanism for this project, not just a container-manager
-# convenience file. See CLAUDE.md Architecture / Decisions Made for why.
+# app, Postgres, worker, frontend, mcp, and runner all coordinate here.
+# Compose IS the deploy mechanism for this project, not just a
+# container-manager convenience file. See CLAUDE.md Architecture /
+# Decisions Made for why.
 #
 # Backend image is built from ./backend (monorepo split — CLAUDE.md
 # Guardrails). The frontend's build context is the repo root, not
 # ./frontend — the one deliberate exception, since #41's docs/contribute
 # pages bake in docs/API.md and CONTRIBUTING.md at build time (see
-# frontend/Dockerfile's own comment for why).
+# frontend/Dockerfile's own comment for why). `mcp`'s build context is
+# ./mcp, same as backend — it's a standalone Python service that only ever
+# calls the public REST API over HTTP (never touches Postgres directly),
+# so it needs nothing from outside its own directory (see mcp/README.md).
 
 services:
   app:
@@ -84,6 +89,28 @@ services:
     ports:
       - "127.0.0.1:4321:4321" # Caddy proxies to this; not exposed directly
 
+  mcp:
+    # #178, Phase 1 of #159's spike decision: read-only MCP tools wrapping
+    # the public REST API. Deliberately its own build/deploy unit (not
+    # folded into `app`) — same monorepo hard-separation guardrail as
+    # backend/frontend, now extended to a third leg (mcp/README.md).
+    build:
+      context: ./mcp
+      dockerfile: Dockerfile
+    image: ghcr.io/napandee/anifillerpedia-mcp:latest
+    container_name: afp-mcp
+    restart: unless-stopped
+    environment:
+      # Internal Docker network hostname — same pattern as the frontend's
+      # own PUBLIC_API_BASE_URL build arg above, except this is a plain
+      # runtime env var (no build-time inlining needed; afp_client.py reads
+      # it at call time via os.environ, see mcp/afp_client.py).
+      AFP_API_BASE_URL: http://app:8000
+    depends_on:
+      - app
+    ports:
+      - "127.0.0.1:8001:8000" # Caddy proxies to this; not exposed directly
+
   runner:
     image: myoung34/github-runner:latest
     container_name: afp-runner
@@ -145,6 +172,7 @@ services:
     depends_on:
       - app
       - frontend
+      - mcp
 
 volumes:
   runner-work:

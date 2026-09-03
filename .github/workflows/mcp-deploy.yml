@@ -1,0 +1,100 @@
+name: Build and deploy MCP server
+
+# Path-filtered on purpose (CLAUDE.md Guardrails — monorepo split),
+# extended to the third top-level directory (#178): must never fire on a
+# backend/-only or frontend/-only change. Mirrors build-app.yml/
+# frontend-deploy.yml's build-then-self-hosted-runner-deploys shape.
+#
+# NOT wired into the Caddyfile yet. This workflow builds/pushes the image
+# and restarts the `mcp` container on every push to master that touches
+# mcp/**, but the container isn't publicly reachable until the Caddyfile
+# change (routing /mcp to it) is reviewed and applied separately — see
+# #178's own explicit "don't merge the Caddyfile change without sign-off"
+# instruction. Safe to have this workflow exist and fire before that:
+# it only ever restarts the `mcp` container itself (--no-deps), the same
+# way frontend-deploy.yml's deploy job doesn't touch caddy/postgres/app/
+# worker/runner either.
+on:
+  push:
+    branches: [master]
+    paths:
+      - "mcp/**"
+      - "docker-compose.yml"
+      - ".github/workflows/mcp-deploy.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set lowercase owner
+        run: echo "OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./mcp
+          file: ./mcp/Dockerfile
+          push: true
+          tags: ghcr.io/${{ env.OWNER }}/anifillerpedia-mcp:latest
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, afp-droplet]
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      # #96: keeps ${{ vars.APPDATA_PATH }}'s checkout (what `docker
+      # compose` below actually reads docker-compose.yml from) in sync
+      # with what just got pushed — see build-app.yml's identical step
+      # for the full root-cause writeup. --ff-only, not `reset --hard`:
+      # fails loudly instead of silently discarding a hand-edit.
+      - name: Fast-forward the droplet's checkout to this commit
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          git fetch origin master
+          git merge --ff-only origin/master
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # --no-deps keeps this from restarting postgres/caddy/app/worker/
+      # frontend/the runner itself on every mcp deploy — same pattern as
+      # build-app.yml's and frontend-deploy.yml's own deploy jobs.
+      - name: Pull new image and restart mcp
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          docker compose pull mcp
+          docker compose up -d --no-deps mcp
+
+      # #17: same deploy-failure alert as build-app.yml's/
+      # frontend-deploy.yml's own `deploy` job — see build-app.yml's
+      # identical step for the full reasoning (scoped to this job via
+      # `if: failure()`, not the whole workflow; TELEGRAM_BOT_TOKEN is
+      # unset today, so curl fails fast rather than hanging; chat ID is
+      # hardcoded, matching backend/core/config.py's own non-secret
+      # default).
+      - name: Alert on deploy failure
+        if: failure()
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="8528154154" \
+            --data-urlencode text="AniFillerPedia: mcp deploy FAILED on ${{ github.sha }} (${{ github.workflow }} / ${{ github.job }}) — https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

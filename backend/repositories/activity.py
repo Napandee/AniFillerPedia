@@ -14,6 +14,21 @@ Public per the same "keep public history non-anonymized" convention
 repositories/contributions.py already documents — submitter/reviewer
 identity is always included when present; NULL naturally covers both
 anonymous submissions and accounts anonymized by deletion.
+
+`reviewed_at IS NOT NULL` on both branches — found live, post-merge, as a
+real 500 (`GET /api/v1/activity` failing Pydantic's `reviewed_at:
+datetime` validation): `data/bootstrap/load_episodes.py`'s one-time
+hand-compiled data-load INSERTs contributions directly with
+`review_status = 'approved'` but never sets `reviewed_at` (it never went
+through the real moderator-approve/community-vote path this column
+exists to timestamp), and thousands of production rows are exactly this
+shape. Excluding them isn't just the type fix — it's the correct
+semantics: this feed is "recent CHANGES" (real community review-workflow
+activity), not the one-time bootstrap seed, and an undated row has no
+correct position in a reverse-chronological-by-reviewed_at ordering
+anyway (Postgres sorts NULL first on DESC, which would have buried real
+activity under thousands of undated bootstrap rows even if the type
+error were relaxed instead of fixed at the source).
 """
 
 from sqlalchemy import text
@@ -49,6 +64,7 @@ _FEED_QUERY = """
         LEFT JOIN users submitter ON submitter.id = co.submitted_by
         LEFT JOIN users reviewer ON reviewer.id = co.reviewed_by
         WHERE co.review_status IN ('approved', 'rejected', 'withdrawn')
+          AND co.reviewed_at IS NOT NULL
 
         UNION ALL
 
@@ -77,6 +93,7 @@ _FEED_QUERY = """
         LEFT JOIN users submitter ON submitter.id = sp.submitted_by
         LEFT JOIN users reviewer ON reviewer.id = sp.reviewed_by
         WHERE sp.review_status IN ('approved', 'rejected')
+          AND sp.reviewed_at IS NOT NULL
     )
 """
 

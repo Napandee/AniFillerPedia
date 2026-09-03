@@ -14,6 +14,17 @@ anifillerpedia.wiki {
 	handle @backend {
 		reverse_proxy app:8000
 	}
+	# #178: the read-only MCP server (Phase 1 of #159's decision), a
+	# separate container from `app` — see docker-compose.yml's `mcp`
+	# service. No `encode gzip` here, matching @backend's own reasoning
+	# above but for a different mechanic: the streamable-http transport is
+	# a long-lived, chunked SSE response (GET) interleaved with plain JSON
+	# POSTs — gzip buffering would sit at odds with that stream staying
+	# incrementally flushed, not just an ETag concern like @backend's.
+	@mcp path /mcp /mcp/*
+	handle @mcp {
+		reverse_proxy mcp:8000
+	}
 	handle {
 		encode gzip
 		reverse_proxy frontend:4321

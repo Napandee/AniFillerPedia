@@ -35,6 +35,8 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 
 const en = {
   "nav.browse": "Browse",
+  "nav.needsResearch": "Needs research",
+  "nav.recentChanges": "Recent changes",
   "nav.reviewQueue": "Review queue",
   "nav.manageUsers": "Manage users",
   "nav.account": "Account",
@@ -129,6 +131,8 @@ export type TranslationKey = keyof typeof en;
 
 const es: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "Explorar",
+  "nav.needsResearch": "Necesita investigación",
+  "nav.recentChanges": "Cambios recientes",
   "nav.reviewQueue": "Cola de revisión",
   "nav.manageUsers": "Gestionar usuarios",
   "nav.account": "Cuenta",
@@ -213,6 +217,8 @@ const es: Partial<Record<TranslationKey, string>> = {
 
 const hi: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "ब्राउज़ करें",
+  "nav.needsResearch": "शोध आवश्यक",
+  "nav.recentChanges": "हाल के बदलाव",
   "nav.reviewQueue": "समीक्षा सूची",
   "nav.manageUsers": "उपयोगकर्ता प्रबंधित करें",
   "nav.account": "खाता",
@@ -297,6 +303,8 @@ const hi: Partial<Record<TranslationKey, string>> = {
 
 const ja: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "閲覧",
+  "nav.needsResearch": "要調査",
+  "nav.recentChanges": "最近の変更",
   "nav.reviewQueue": "レビュー待ち一覧",
   "nav.manageUsers": "ユーザー管理",
   "nav.account": "アカウント",
@@ -381,6 +389,8 @@ const ja: Partial<Record<TranslationKey, string>> = {
 
 const zhCN: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "浏览",
+  "nav.needsResearch": "待研究",
+  "nav.recentChanges": "最近更改",
   "nav.reviewQueue": "审核队列",
   "nav.manageUsers": "管理用户",
   "nav.account": "账户",

@@ -113,6 +113,58 @@ async def search_series(
     return list(rows), total
 
 
+async def list_needs_research(
+    session: AsyncSession, limit: int, offset: int
+) -> tuple[list[Row], int]:
+    """#153: the unified "needs research" queue — a UNION of #175's
+    drift-flagged series (`anilist_drift_flagged_at IS NOT NULL`, reason
+    read straight from `anilist_drift_reason`) and series with zero
+    `episodes` rows (`never_researched`). Built as one query per the
+    scope note on #153 itself (folded in from #157's spike) rather than
+    two separate endpoints/pages — a never-researched series can never
+    also be drift-flagged (it has no episodes to drift from), so the two
+    cases never overlap and there's no double-counting to reconcile.
+    """
+    where = "COALESCE(ep.episode_count, 0) = 0 OR s.anilist_drift_flagged_at IS NOT NULL"
+
+    total = (
+        await session.execute(
+            text(
+                f"""
+                SELECT count(*)
+                FROM series s
+                LEFT JOIN (
+                    SELECT series_id, count(*) AS episode_count FROM episodes GROUP BY series_id
+                ) ep ON ep.series_id = s.id
+                WHERE {where}
+                """
+            )
+        )
+    ).scalar_one()
+
+    rows = (
+        await session.execute(
+            text(
+                f"""
+                SELECT s.id, s.title, s.slug, s.anilist_episode_count, s.anilist_status,
+                       COALESCE(ep.episode_count, 0) AS researched_episode_count,
+                       COALESCE(s.anilist_drift_reason, 'never_researched') AS reason
+                FROM series s
+                LEFT JOIN (
+                    SELECT series_id, count(*) AS episode_count FROM episodes GROUP BY series_id
+                ) ep ON ep.series_id = s.id
+                WHERE {where}
+                ORDER BY s.title
+                LIMIT :limit OFFSET :offset
+                """
+            ),
+            {"limit": limit, "offset": offset},
+        )
+    ).fetchall()
+
+    return list(rows), total
+
+
 async def get_series_by_identifier(session: AsyncSession, identifier: str) -> Row | None:
     """#116: `identifier` is either a numeric series id (legacy/internal
     lookups, e.g. episode/contribution rows that only carry series_id) or

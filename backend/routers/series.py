@@ -7,11 +7,30 @@ from core.conditional import apply_conditional_headers, not_modified
 from core.db import get_session
 from schemas.episodes import EpisodeOut
 from schemas.errors import ErrorDetail
-from schemas.series import SeriesDetailOut, SeriesListOut
+from schemas.series import NeedsResearchListOut, SeriesDetailOut, SeriesListOut
 
 router = APIRouter(tags=["series"])
 
 _SERIES_NOT_FOUND = {404: {"model": ErrorDetail, "description": "No series matches this id or slug"}}
+
+
+@router.get("/series/needs-research", response_model=NeedsResearchListOut)
+async def list_needs_research(
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+    session: AsyncSession = Depends(get_session),
+) -> NeedsResearchListOut:
+    """#153: the public "needs research" queue — catalog series that need
+    contributor attention, each with why (`never_researched`,
+    `status_drift`, or `episode_count_drift`). Public, unauthenticated,
+    same trust level as `GET /series`'s own browse/search.
+
+    Declared before `GET /series/{id_or_slug}` below so "needs-research"
+    is matched as this literal path, not swallowed by the slug/id
+    catch-all — FastAPI/Starlette route matching is registration-order
+    dependent for two routes on the same prefix.
+    """
+    return await series_service.list_needs_research(session, limit, offset)
 
 
 @router.get("/series", response_model=SeriesListOut)

@@ -10,6 +10,13 @@ If you want to *submit* corrections or propose series, see
 [CONTRIBUTING.md](../CONTRIBUTING.md) instead — this page is about reading
 the data.
 
+**Using an AI client instead of calling this REST API directly?** See
+[`mcp/README.md`](../mcp/README.md) — a read-only
+[MCP](https://modelcontextprotocol.io) server wrapping the same public
+endpoints below as 5 tools (`search_series`, `get_series`, `get_episodes`,
+`get_episode`, `get_license`), reachable over HTTP/SSE rather than a
+locally-spawned process.
+
 ## Base URL
 
 ```

@@ -165,6 +165,43 @@ async def test_withdrawn_contribution_appears_in_feed(client: AsyncClient) -> No
 
 
 @pytest.mark.asyncio
+async def test_bootstrap_loaded_contribution_without_reviewed_at_is_excluded(client: AsyncClient) -> None:
+    """Regression test for a real production 500 found post-merge:
+    data/bootstrap/load_episodes.py's one-time hand-compiled data load
+    INSERTs contributions directly with review_status='approved' but
+    never sets reviewed_at (it never went through the real moderator-
+    approve/community-vote path) — thousands of production rows are
+    exactly this shape. The feed must exclude them (see
+    repositories/activity.py's own docstring), not crash on them.
+    """
+    series_id = await _make_series("BootstrapNoReviewedAt", 991_154_006)
+    citation_id = await _make_citation()
+    async with async_session_factory() as session:
+        async with session.begin():
+            contribution_id = (
+                await session.execute(
+                    text(
+                        """
+                        INSERT INTO contributions
+                            (series_id, episode_number, proposed_status, citation_id,
+                             submitted_by, review_status, resolution_method, license_accepted)
+                        VALUES (:sid, 1, 'canon', :cid, NULL, 'approved', 'moderator', true)
+                        RETURNING id
+                        """
+                    ),
+                    {"sid": series_id, "cid": citation_id},
+                )
+            ).scalar_one()
+    try:
+        response = await client.get("/api/v1/activity", params={"limit": 100})
+        assert response.status_code == 200
+        items = response.json()["items"]
+        assert not any(i["event_type"] == "contribution" and i["id"] == contribution_id for i in items)
+    finally:
+        await _cleanup_contribution_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_pending_contribution_does_not_appear_in_feed(client: AsyncClient) -> None:
     series_id = await _make_series("PendingContrib", 991_154_003)
     citation_id = await _make_citation()

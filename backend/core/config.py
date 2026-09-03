@@ -23,6 +23,14 @@ class Settings(BaseSettings):
     # react within seconds like the outbox poller above.
     episode_schedule_sync_interval_seconds: int = 60 * 60 * 24
 
+    # #175 — third, independently-paced worker loop: a weekly, lightweight
+    # re-check of series already marked anilist_status = 'FINISHED' (which
+    # the daily sync above otherwise stops re-fetching forever). Weekly,
+    # not daily: a FINISHED show resuming from hiatus is a rare event, and
+    # the whole point of this loop is to be cheap since it's expected to
+    # almost always come back unchanged.
+    finished_series_drift_check_interval_seconds: int = 60 * 60 * 24 * 7
+
     # Auth (#8) — GitHub + Discord OAuth. Real values don't exist yet
     # (#25, still open) — routes work structurally without them, live
     # provider round-trips can't be verified until then.

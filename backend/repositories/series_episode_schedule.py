@@ -65,6 +65,82 @@ async def upsert_schedule(
         )
 
 
+async def list_finished_series_for_drift_check(session: AsyncSession) -> list[Row]:
+    """#175: every series AniList has ever reported FINISHED — the
+    candidate set for the weekly drift-recheck loop, independent of
+    list_series_needing_sync() above (which actively EXCLUDES these once
+    FINISHED, by design, for the daily sync).
+
+    max_researched_episode is this project's own highest researched
+    episode number for the series (episodes.episode_number), used
+    alongside anilist_episode_count to compute the "known baseline" a
+    freshly-fetched AniList episode count is compared against — a series
+    can have more AniList-known episodes than this project has actually
+    researched yet, which is real drift even if anilist_episode_count
+    itself is already stale/lower.
+
+    previous_drift_reason is included so the caller can tell whether this
+    cycle's result is actually a STATE CHANGE (newly flagged, newly
+    cleared, or the reason itself changed) versus confirming an
+    already-known state — used only for the cycle's own return-count/log
+    line, never for the drift decision itself.
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT s.id,
+                   s.anilist_id,
+                   s.anilist_episode_count,
+                   s.anilist_drift_reason AS previous_drift_reason,
+                   COALESCE(MAX(e.episode_number), 0) AS max_researched_episode
+            FROM series s
+            LEFT JOIN episodes e ON e.series_id = s.id
+            WHERE s.anilist_status = 'FINISHED'
+              AND s.anilist_id IS NOT NULL
+            GROUP BY s.id, s.anilist_id, s.anilist_episode_count, s.anilist_drift_reason
+            ORDER BY s.id
+            """
+        )
+    )
+    return list(result.fetchall())
+
+
+async def set_drift_flag(session: AsyncSession, *, series_id: int, reason: str) -> None:
+    """reason: 'status_drift' | 'episode_count_drift' — see schema.sql's
+    CHECK constraint on series.anilist_drift_reason.
+    """
+    await session.execute(
+        text(
+            """
+            UPDATE series
+            SET anilist_drift_flagged_at = now(),
+                anilist_drift_reason = :reason
+            WHERE id = :series_id
+            """
+        ),
+        {"series_id": series_id, "reason": reason},
+    )
+
+
+async def clear_drift_flag(session: AsyncSession, *, series_id: int) -> None:
+    """A later re-check found the series is no longer drifted (e.g.
+    AniList briefly glitched then reported FINISHED again) — clears a
+    previously-set flag back to NULL rather than leaving it stale. A
+    no-op (0 rows changed meaningfully) if the series wasn't flagged.
+    """
+    await session.execute(
+        text(
+            """
+            UPDATE series
+            SET anilist_drift_flagged_at = NULL,
+                anilist_drift_reason = NULL
+            WHERE id = :series_id
+            """
+        ),
+        {"series_id": series_id},
+    )
+
+
 async def mark_synced(
     session: AsyncSession,
     *,

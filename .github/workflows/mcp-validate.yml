@@ -77,13 +77,18 @@ jobs:
             -e AFP_API_BASE_URL=https://anifillerpedia.wiki/api/v1 \
             anifillerpedia-mcp:pr-test
 
+          # `if curl -sf ...; then` directly, not `status=$(curl ...)` —
+          # the latter trips this step's own `set -e` the moment curl
+          # returns non-zero (e.g. connection-refused during the
+          # container's brief startup window), aborting the retry loop
+          # on its very first iteration before it can ever retry. Same
+          # pattern as pr-validate.yml's own smoke-test step.
           ok=""
           for i in $(seq 1 30); do
-            status=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:8000/mcp \
+            if curl -sf -o /dev/null -X POST http://localhost:8000/mcp \
               -H "Content-Type: application/json" \
               -H "Accept: application/json, text/event-stream" \
-              -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2026-07-28","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"0"}}}')
-            if [ "$status" = "200" ]; then
+              -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2026-07-28","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"0"}}}'; then
               ok=1
               break
             fi

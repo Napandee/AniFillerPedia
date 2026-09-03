@@ -40,6 +40,14 @@ const authorizeHref = (provider: "github" | "discord") =>
   <a class="disp brand" href={getRelativeLocaleUrl(locale, "/")}>AniFillerPedia</a>
   <nav>
     <a href={getRelativeLocaleUrl(locale, "/")}>{t("nav.browse")}</a>
+    {/* #153/#154: public discovery pages — English-only (no locale
+        wrapper page exists for either, matching the docs/moderation/
+        contribute precedent), so both links point at the bare,
+        unprefixed path regardless of the current locale rather than
+        going through getRelativeLocaleUrl (which would 404 by prefixing
+        a locale segment neither route has a page for). */}
+    <a href="/needs-research">{t("nav.needsResearch")}</a>
+    <a href="/activity">{t("nav.recentChanges")}</a>
     {user && ["moderator", "admin", "owner"].includes(user.role) && (
       <a href={getRelativeLocaleUrl(locale, "/moderation")}>{t("nav.reviewQueue")}</a>
     )}

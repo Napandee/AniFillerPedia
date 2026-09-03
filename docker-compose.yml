@@ -95,7 +95,16 @@ services:
       LABELS: self-hosted,afp-droplet
       ACCESS_TOKEN: ${GITHUB_RUNNER_ACCESS_TOKEN}
       RUNNER_WORKDIR: /tmp/afp-runner
-      EPHEMERAL: "false"
+      # No EPHEMERAL variable here — deliberately, not an oversight
+      # (2026-09-03). This image's entrypoint.sh checks whether the
+      # variable is SET AT ALL (`[ -n "${EPHEMERAL}" ]`), not its value,
+      # so the previous `EPHEMERAL: "false"` was silently enabling
+      # ephemeral (fresh-container-per-job) mode the whole time despite
+      # clearly intending persistent mode. Confirmed by reading the
+      # entrypoint directly inside the running container. Omitting the
+      # variable entirely is the only way to actually get persistent
+      # mode with this image.
+      #
       # Prevents the exact corruption this project hit repeatedly on
       # 2026-09-03: the runner's own self-update (triggered whenever
       # GitHub's minimum supported version moves past the pulled image's

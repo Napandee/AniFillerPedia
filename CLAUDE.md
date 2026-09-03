@@ -321,10 +321,16 @@ decision record.
   vote can cross the threshold alone, or several lower-trust users' votes
   can combine to). `trust_score` is anchored primarily to track record, not
   raw likes (likes are gameable via sockpuppets; "past submissions verified
-  correct" isn't): `approved_count + likes_received × small_weight −
-  rejected_count × penalty`, with rejection costing more than approval earns
-  to discourage low-effort spam — exact weights/threshold still tunable,
-  not finalized. Schema: `contributions.submitted_by` becomes nullable,
+  correct" isn't): originally specified as `approved_count + likes_received
+  × small_weight − rejected_count × penalty`, but no `likes` mechanism
+  exists anywhere in the schema — the shipped formula
+  (`services/admin.py::compute_trust_score`) is
+  `approved_count − rejected_count × REJECTION_PENALTY`, with the likes
+  term simply never implemented (the code's own docstring discloses this;
+  this doc previously didn't, which was the actual gap — noted 2026-09-03
+  after an independent review caught the drift). Rejection costs more than
+  approval earns, to discourage low-effort spam — exact weights/threshold
+  still tunable, not finalized. Schema: `contributions.submitted_by` becomes nullable,
   gains `resolution_method` (`'moderator'` | `'community_vote'`); new
   `contribution_votes` table (`contribution_id`, `voter_id`, `vote`
   endorse/dispute, `weight_at_vote` — snapshotted so later trust changes

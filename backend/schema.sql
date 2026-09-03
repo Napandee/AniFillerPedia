@@ -114,7 +114,19 @@ CREATE TABLE series (
     -- for series already grouped via series_relations below.
     -- services/series.py's get_series() uses this to compute next_series/
     -- previous_series among the current series' own related-series group.
-    sequence_order               INTEGER
+    sequence_order               INTEGER,
+    -- #175: a third, weekly worker loop re-checks every anilist_status =
+    -- 'FINISHED' series (which the daily #49 sync above otherwise stops
+    -- re-fetching forever) and flags it here if AniList's live status is
+    -- no longer FINISHED, or its live episode count now exceeds what this
+    -- project has recorded. NULL means "no drift currently detected" —
+    -- cleared back to NULL on a later re-check that finds the series is
+    -- no longer drifted, so this always reflects current state, not a
+    -- historical flag. Consumed by #153's "needs research" queue later,
+    -- not by anything in this schema/worker itself.
+    anilist_drift_flagged_at     TIMESTAMPTZ,
+    anilist_drift_reason         TEXT
+        CHECK (anilist_drift_reason IN ('status_drift', 'episode_count_drift'))
 );
 
 -- Alternate/romanized/native-script titles, captured during the one-time

@@ -22,7 +22,10 @@ from core.config import get_settings
 from core.db import async_session_factory
 from repositories.outbox import fetch_unprocessed_batch, mark_processed
 from services.alerting import alert_unhandled_exception
-from services.anilist_sync import run_episode_schedule_sync_forever
+from services.anilist_sync import (
+    run_episode_schedule_sync_forever,
+    run_finished_series_drift_check_forever,
+)
 from services.cache_purge import purge_series_page_cache
 from services.notifications import notify_moderators_new_submission
 
@@ -98,13 +101,21 @@ async def run_forever() -> None:
         await asyncio.sleep(settings.worker_poll_interval_seconds)
 
 
-async def run_both_forever() -> None:
+async def run_all_forever() -> None:
     """#49: runs the outbox poller and the AniList episode-schedule sync
-    as two independent loops in the same container/process, each on its
-    own cadence — no new container or infrastructure needed for this.
+    as independent loops in the same container/process, each on its own
+    cadence — no new container or infrastructure needed for this.
+
+    #175: renamed from run_both_forever() to accommodate a third loop —
+    the weekly finished-series drift re-check — alongside the original
+    two. Still one asyncio.gather, still one container/process.
     """
-    await asyncio.gather(run_forever(), run_episode_schedule_sync_forever())
+    await asyncio.gather(
+        run_forever(),
+        run_episode_schedule_sync_forever(),
+        run_finished_series_drift_check_forever(),
+    )
 
 
 if __name__ == "__main__":
-    asyncio.run(run_both_forever())
+    asyncio.run(run_all_forever())

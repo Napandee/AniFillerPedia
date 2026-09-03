@@ -38,8 +38,11 @@ import httpx
 from core.config import get_settings
 from core.db import async_session_factory
 from repositories.series_episode_schedule import (
+    clear_drift_flag,
+    list_finished_series_for_drift_check,
     list_series_needing_sync,
     mark_synced,
+    set_drift_flag,
     upsert_schedule,
 )
 
@@ -356,3 +359,166 @@ async def run_episode_schedule_sync_forever() -> None:
         except Exception:
             logger.exception("error during episode schedule sync cycle — continuing")
         await asyncio.sleep(settings.episode_schedule_sync_interval_seconds)
+
+
+# --- #175: weekly drift re-check for series already marked FINISHED -------
+#
+# list_series_needing_sync() above permanently drops a series from the
+# DAILY sync once anilist_status = 'FINISHED' — correct for cost (a
+# genuinely finished show's schedule never changes again), but it means a
+# real status change afterward (a show resuming from hiatus, more episodes
+# added) is never re-detected. This is a second, independent, much cheaper
+# query + loop specifically for that case: it re-checks every FINISHED
+# series on a weekly cadence, but fetches only `status` + `episodes` — not
+# coverImage/bannerImage/description/airingSchedule — since it's expected
+# to almost always come back unchanged.
+
+_DRIFT_CHECK_QUERY = """
+query ($id: Int) {
+  Media(id: $id, type: ANIME) {
+    status
+    episodes
+  }
+}
+"""
+
+
+async def _fetch_finished_series_status(
+    client: httpx.AsyncClient, anilist_id: int
+) -> tuple[str | None, int | None]:
+    """Returns (status, episode_count) for one series' lightweight #175
+    re-check — deliberately not reusing _fetch_schedule above, which
+    fetches several extra fields this check has no use for and paginates
+    airingSchedule, neither of which this query even requests. Mirrors
+    _fetch_schedule's own retry/429-backoff pattern exactly (same
+    _RATE_LIMIT_MAX_RETRIES / _RATE_LIMIT_RETRY_DELAY_SECONDS constants),
+    minus the pagination loop, since this query has nothing to paginate.
+
+    Never raises — a request failure, non-200, or malformed/empty body
+    all come back as (None, None), the same "treat like no data"
+    convention _fetch_schedule uses.
+    """
+    retries = 0
+    while True:
+        try:
+            response = await client.post(
+                ANILIST_ENDPOINT,
+                json={"query": _DRIFT_CHECK_QUERY, "variables": {"id": anilist_id}},
+                timeout=10.0,
+            )
+            if response.status_code == 429 and retries < _RATE_LIMIT_MAX_RETRIES:
+                retries += 1
+                logger.warning(
+                    "AniList rate-limited during drift check (anilist_id=%s, attempt %s/%s) — backing off %ss",
+                    anilist_id,
+                    retries,
+                    _RATE_LIMIT_MAX_RETRIES,
+                    _RATE_LIMIT_RETRY_DELAY_SECONDS,
+                )
+                await asyncio.sleep(_RATE_LIMIT_RETRY_DELAY_SECONDS)
+                continue
+            if response.status_code != 200:
+                return None, None
+            body = response.json()
+            media = (body or {}).get("data", {}).get("Media")
+            if not media:
+                return None, None
+            return media.get("status"), media.get("episodes")
+        except (httpx.HTTPError, ValueError):
+            logger.exception("AniList drift-check fetch failed for anilist_id=%s", anilist_id)
+            return None, None
+
+
+def _detect_drift(
+    *,
+    live_status: str | None,
+    live_episode_count: int | None,
+    recorded_episode_count: int | None,
+    max_researched_episode: int,
+) -> str | None:
+    """Pure decision function (#175's drift definition) — kept separate
+    from the fetch/DB-write plumbing so it's trivially unit-testable.
+    Returns the drift reason ('status_drift' | 'episode_count_drift') or
+    None if no drift is detected. A None live_status (the fetch itself
+    failed) is treated as "nothing learned this cycle" by the caller, not
+    routed through this function at all — see check_finished_series_drift.
+
+    status_drift takes priority: a series that's no longer FINISHED at
+    all is the more fundamental change, and checking it first means an
+    episode-count comparison never even needs to run for that case.
+    """
+    if live_status is not None and live_status != "FINISHED":
+        return "status_drift"
+    if live_episode_count is not None:
+        known_baseline = max(recorded_episode_count or 0, max_researched_episode)
+        if live_episode_count > known_baseline:
+            return "episode_count_drift"
+    return None
+
+
+async def check_finished_series_drift() -> int:
+    """One weekly drift-check cycle. Returns how many series had their
+    drift-flag STATE actually change this cycle (newly flagged, newly
+    cleared, or reason changed) — not how many were checked, since almost
+    every cycle is expected to find nothing (matching this module's own
+    "log only when something real happened" convention, e.g.
+    sync_episode_schedules' "if synced: logger.info(...)" above).
+
+    Opens its own DB transaction per series, same reasoning as
+    sync_episode_schedules: a slow/hung AniList request never holds a
+    long-lived transaction open, and one series' failure can't roll back
+    another's already-committed flag update.
+    """
+    async with async_session_factory() as session:
+        async with session.begin():
+            candidates = await list_finished_series_for_drift_check(session)
+
+    if not candidates:
+        return 0
+
+    changed = 0
+    async with httpx.AsyncClient() as client:
+        for series in candidates:
+            live_status, live_episode_count = await _fetch_finished_series_status(
+                client, series.anilist_id
+            )
+            if live_status is None:
+                # Fetch failed outright — never touch the existing flag on
+                # a failed check, same "no data = no change" convention
+                # used throughout this module.
+                await asyncio.sleep(_REQUEST_DELAY_SECONDS)
+                continue
+
+            reason = _detect_drift(
+                live_status=live_status,
+                live_episode_count=live_episode_count,
+                recorded_episode_count=series.anilist_episode_count,
+                max_researched_episode=series.max_researched_episode,
+            )
+
+            async with async_session_factory() as session:
+                async with session.begin():
+                    if reason is not None:
+                        await set_drift_flag(session, series_id=series.id, reason=reason)
+                    else:
+                        await clear_drift_flag(session, series_id=series.id)
+            if reason != series.previous_drift_reason:
+                changed += 1
+            await asyncio.sleep(_REQUEST_DELAY_SECONDS)
+    return changed
+
+
+async def run_finished_series_drift_check_forever() -> None:
+    settings = get_settings()
+    logger.info(
+        "finished-series drift check starting: interval=%ss",
+        settings.finished_series_drift_check_interval_seconds,
+    )
+    while True:
+        try:
+            changed = await check_finished_series_drift()
+            if changed:
+                logger.info("finished-series drift state changed for %s series", changed)
+        except Exception:
+            logger.exception("error during finished-series drift check cycle — continuing")
+        await asyncio.sleep(settings.finished_series_drift_check_interval_seconds)

@@ -13,15 +13,42 @@
 # Listing Cloudflare's published IP ranges here (https://www.cloudflare.com/
 # ips/, current as of 2026-09-04 — refresh periodically, they change rarely)
 # tells Caddy which peers are legitimate upstream hops it can trust to have
-# set X-Forwarded-For honestly. For any connection whose actual TCP peer is
-# NOT in this list — including someone bypassing Cloudflare entirely and
+# set forwarding headers honestly. For any connection whose actual TCP peer
+# is NOT in this list — including someone bypassing Cloudflare entirely and
 # connecting straight to the droplet's own IP with a forged
 # X-Forwarded-For/CF-Connecting-IP header, since nothing else here blocks
-# that — Caddy discards any inbound X-Forwarded-For and starts a fresh one
-# from the real peer address instead of trusting it. This is what actually
-# closes the spoofing hole; it's a network-level check (who really
-# connected), not a header-content check (which is exactly what's
-# spoofable).
+# that — Caddy ignores whatever forwarding headers it sent and uses the
+# real peer address instead. This is what actually closes the spoofing
+# hole; it's a network-level check (who really connected), not a
+# header-content check (which is exactly what's spoofable).
+#
+# `client_ip_headers CF-Connecting-IP` — added after a REAL bug caught live
+# during post-merge verification (2026-09-04), not part of the original
+# design: with the default `client_ip_headers` (X-Forwarded-For), Caddy
+# resolved the "trusted client IP" to one of Cloudflare's own internal hop
+# addresses (e.g. 172.71.178.125, 162.158.216.86 — both themselves inside
+# the trusted ranges above) instead of the real originating visitor.
+# Root cause: Cloudflare's edge network can involve more than one internal
+# hop before reaching this origin, and every one of those hops' addresses
+# also falls inside Cloudflare's own published ranges — so Caddy's
+# right-to-left X-Forwarded-For walk (skipping entries it recognizes as
+# trusted proxies) never finds a clearly "untrusted, therefore real"
+# entry to stop at, and keeps walking into Cloudflare's own internal
+# network as if it were the client. Confirmed directly: two requests sent
+# with deliberately different spoofed X-Forwarded-For values, both
+# correctly ignored (neither spoofed value ever reached
+# rate_limit_events.identifier — the actual spoofing vulnerability #185
+# exists for was already closed), but each request also resolved to a
+# different Cloudflare-owned address rather than any real, consistent
+# per-visitor IP — as bad for rate-limiting's actual purpose as the
+# original bug, just a different failure mode. Cloudflare's own docs
+# recommend CF-Connecting-IP specifically for this reason: their edge
+# sets it exactly once, authoritatively, to the true original client IP,
+# regardless of how many internal CF-to-CF hops happen afterward — no
+# chain-walking needed. Still gated by the same trusted_proxies peer
+# check above: a request that bypasses Cloudflare and forges this header
+# directly is unaffected, since Caddy only honors it when the actual TCP
+# peer is a genuine Cloudflare address.
 {
 	servers {
 		trusted_proxies static \
@@ -31,6 +58,7 @@
  104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 \
  2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 \
  2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+		client_ip_headers CF-Connecting-IP
 	}
 }
 

@@ -11,8 +11,7 @@ async def test_health() -> None:
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/api/v1/health")
     assert response.status_code == 200
-    # DELIBERATE BREAK for #188 CI-wiring verification — reverted before merge.
-    assert response.json() == {"status": "definitely-not-ok"}
+    assert response.json() == {"status": "ok"}
 
 
 @pytest.mark.asyncio

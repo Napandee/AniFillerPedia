@@ -25,11 +25,18 @@ const nextParam = Astro.url.searchParams.get("next");
 const isSafeNext = nextParam !== null && nextParam.startsWith("/") && !nextParam.startsWith("//");
 const next = isSafeNext ? nextParam : "/";
 
-const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
-// Reuses Header.astro's exact authorizeHref construction (same query
-// param, same endpoint shape) rather than inventing a new one.
+// Final-review fix (C1): deliberately a RELATIVE path, not
+// `${import.meta.env.PUBLIC_API_BASE_URL}/...`. Vite inlines that env var
+// at BUILD time, and frontend/Dockerfile's build-arg default is the
+// internal Docker hostname `http://app:8000` — unreachable from a real
+// browser, mixed content on an HTTPS page, and blocked by the Caddyfile's
+// `connect-src 'self'` CSP regardless. Caddy already routes /api/v1/* to
+// the backend on the same public origin, so a relative path is
+// same-origin and needs no CORS. This href is followed by the visitor's
+// browser, so it must be browser-resolvable — same rule as the fetch
+// calls in the client <script> below.
 const authorizeHref = (provider: "github" | "discord") =>
-  `${baseUrl}/api/v1/auth/${provider}/authorize?next=${encodeURIComponent(next)}`;
+  `/api/v1/auth/${provider}/authorize?next=${encodeURIComponent(next)}`;
 ---
 
 <Layout
@@ -76,10 +83,15 @@ const authorizeHref = (provider: "github" | "discord") =>
   // Vanilla progressive enhancement — no client framework in this codebase
   // (Astro islands are reserved for when one is actually needed), matching
   // moderation.astro/propose-series.astro's own client-script convention.
-  // `baseUrl` is read the same way those do (a plain <script>, not
-  // define:vars — this project has no define:vars precedent anywhere, and
-  // import.meta.env substitution needs a Vite-processed script to work).
-  const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+  //
+  // Final-review fix (C1): this browser-side code deliberately does NOT
+  // read import.meta.env.PUBLIC_API_BASE_URL. Vite inlines that at build
+  // time, and the production image's build-arg default is the internal
+  // Docker hostname `http://app:8000` — which a real browser cannot
+  // resolve, is mixed content on an HTTPS page, and is blocked by the
+  // Caddyfile's `connect-src 'self'` CSP anyway. Every request below uses
+  // a relative /api/v1/... path instead: Caddy routes /api/v1/* to the
+  // backend on the same public origin, so it's same-origin and CORS-free.
 
   const form = document.getElementById("login-form") as HTMLFormElement;
   const tabLogin = document.getElementById("tab-login") as HTMLButtonElement;
@@ -139,7 +151,7 @@ const authorizeHref = (provider: "github" | "discord") =>
 
     let response: Response;
     try {
-      response = await fetch(`${baseUrl}${path}`, {
+      response = await fetch(path, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

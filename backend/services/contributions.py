@@ -137,13 +137,29 @@ async def submit_contribution(
             },
         )
 
-    citation_row = await citations_repo.create(
-        session,
-        url=payload.citation.url,
-        description=payload.citation.description,
-        submitted_by=current_user.id if current_user else None,
-        methodology_note=payload.citation.methodology_note,
-    )
+    # #205: get_or_create (not create) — reuses an existing citation for
+    # this series if this exact source combo has been cited before, and
+    # rejects a source_count that disagrees with what's already on record
+    # for it, rather than silently writing a second, inconsistent row.
+    try:
+        citation_row = await citations_repo.get_or_create(
+            session,
+            series_id=payload.series_id,
+            url=payload.citation.url,
+            description=payload.citation.description,
+            submitted_by=current_user.id if current_user else None,
+            methodology_note=payload.citation.methodology_note,
+            source_count=payload.citation.source_count,
+        )
+    except citations_repo.SourceCountConflict as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"This exact source is already cited for this series with "
+                f"source_count={exc.existing_source_count} — "
+                f"{exc.proposed_source_count} was submitted, which conflicts with it."
+            ),
+        ) from exc
 
     # #151: same TOCTOU gap the security review (#89) already fixed for the
     # bulk path (create_bulk_contributions_for_series below) — the
@@ -306,13 +322,29 @@ async def create_bulk_contributions_for_series(
 
     created: list[BulkCreatedEntry] = []
     if to_create:
-        citation_row = await citations_repo.create(
-            session,
-            url=citation.url,
-            description=citation.description,
-            submitted_by=submitted_by,
-            methodology_note=citation.methodology_note,
-        )
+        # #205: same shared get_or_create as the single-episode path above
+        # — one citation shared across the whole batch, reused if this
+        # exact combo already exists for the series, conflict-checked the
+        # same way regardless of which path created it.
+        try:
+            citation_row = await citations_repo.get_or_create(
+                session,
+                series_id=series_id,
+                url=citation.url,
+                description=citation.description,
+                submitted_by=submitted_by,
+                methodology_note=citation.methodology_note,
+                source_count=citation.source_count,
+            )
+        except citations_repo.SourceCountConflict as exc:
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    f"This exact source is already cited for this series with "
+                    f"source_count={exc.existing_source_count} — "
+                    f"{exc.proposed_source_count} was submitted, which conflicts with it."
+                ),
+            ) from exc
         for episode_number, status in sorted(to_create.items()):
             # Security review (#89): the pre-check above has a real TOCTOU
             # gap — a concurrent submission could create a pending
@@ -499,6 +531,12 @@ async def _promote_to_episode_and_notify(session: AsyncSession, approved_row: Ro
         approved_contribution_id=approved_row.id,
     )
 
+    # #189: the cache-purge consumer (services/cache_purge.py) needs the
+    # series' slug, not just its numeric id, to purge the real (slug-based,
+    # #116) live URL — embedded here rather than looked up by the consumer
+    # itself, same as every other piece of context an outbox payload
+    # already carries for its handler.
+    series_slug = await series_repo.get_slug_by_id(session, approved_row.series_id)
     await outbox_repo.write(
         session,
         event_type="contribution.approved",
@@ -506,6 +544,7 @@ async def _promote_to_episode_and_notify(session: AsyncSession, approved_row: Ro
             "contribution_id": approved_row.id,
             "series_id": approved_row.series_id,
             "episode_number": approved_row.episode_number,
+            "slug": series_slug,
         },
     )
 

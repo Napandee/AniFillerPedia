@@ -139,7 +139,7 @@ anifillerpedia.wiki {
 		# clients that don't parse CSP frame directives): closes the
 		# clickjacking gap #186 flagged against contribute.astro/
 		# propose-series.astro/moderation/admin.
-		header Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-M6Cuk2FFQBCp22YeSZqrXki3fef9XcL2wzySAh4+J5k=' 'sha256-ZmJM6Tl01dZrC+lFQ431fOs2I92cdK0KAvAiBxOH6EU=' 'sha256-bpBxy6wc20yfG0VBfDOGNLQUEegmy+4Va9X1F4G3HgY=' 'sha256-UfKLzF4zeLAfkHOgiJCRm2ua8jNT0k8x6PEOWzkpJCw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.anilist.co; connect-src 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+		header Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-M6Cuk2FFQBCp22YeSZqrXki3fef9XcL2wzySAh4+J5k=' 'sha256-ZmJM6Tl01dZrC+lFQ431fOs2I92cdK0KAvAiBxOH6EU=' 'sha256-bpBxy6wc20yfG0VBfDOGNLQUEegmy+4Va9X1F4G3HgY=' 'sha256-UfKLzF4zeLAfkHOgiJCRm2ua8jNT0k8x6PEOWzkpJCw=' 'sha256-u2zF34XgOkyw7pD3YKqXNfHvAdwv/Vgl9y9iOFk2omM=' 'sha256-aoaRBAF8+wlPtRJYMg5YEFi+awTbcLw3WCCXkh5ZkP0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.anilist.co; connect-src 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
 	}
 
 	# #186: baseline security headers that DON'T conflict with Swagger

@@ -1,0 +1,355 @@
+---
+// #221: daily Cloudflare traffic-analytics rollup dashboard — implements
+// #219's decision (admin/owner-gated, daily rollups only, no client-side
+// beacon). Access control mirrors admin/users.astro exactly: this page's
+// own role check is a UI convenience only, the backend's require_admin
+// gate on GET /api/v1/admin/traffic is the real enforcement layer.
+//
+// Deliberately plain HTML tables, not a charting library — this project
+// has no existing charting dependency anywhere in the frontend, and
+// #221's own scope says "simple charts/tables, not a big visualization
+// investment for v1."
+import Layout from "../../layouts/Layout.astro";
+import { createApiClient } from "../../api/client";
+
+const user = Astro.locals.user;
+if (!user || !["admin", "owner"].includes(user.role)) {
+  return Astro.redirect("/");
+}
+
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const cookie = Astro.request.headers.get("cookie") ?? "";
+const api = createApiClient(baseUrl);
+
+const { data, error } = await api.GET("/api/v1/admin/traffic", {
+  params: { query: { limit: 30 } },
+  headers: { cookie },
+});
+
+const rollups = data?.items ?? [];
+// Two distinct reasons this can legitimately be empty, both real v1
+// states rather than errors: CLOUDFLARE_ANALYTICS_API_TOKEN isn't
+// provisioned yet (external-account checklist, CLAUDE.local.md), or the
+// daily worker loop simply hasn't completed a cycle yet. There's no way
+// for this page to tell which from here, so the message below covers
+// both rather than guessing.
+const hasData = rollups.length > 0;
+const latest = hasData ? rollups[0] : null;
+
+function formatDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  return Number.isNaN(d.getTime())
+    ? iso
+    : d.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" });
+}
+
+function formatNumber(n: number): string {
+  return n.toLocaleString("en-GB");
+}
+---
+
+<Layout title="Traffic analytics — AniFillerPedia" noindex>
+  <section class="panel">
+    <h1 class="disp">Traffic analytics</h1>
+    <p class="sub">
+      Daily rollups from Cloudflare's own zone analytics — covers both the site and the
+      API, admin/owner only. See <a href="https://github.com/Napandee/AniFillerPedia/issues/221">#221</a>
+      for how this is built.
+    </p>
+
+    {error && <p class="error">Could not load traffic data from the backend.</p>}
+
+    {!error && !hasData && (
+      <div class="empty-state">
+        <p class="empty-title">No traffic data yet</p>
+        <p class="empty-body">
+          Either the Cloudflare analytics API token hasn't been configured yet, or the
+          daily rollup worker loop hasn't completed its first cycle. Once both are true,
+          the most recent 30 days will appear here automatically — nothing else to do on
+          this page.
+        </p>
+      </div>
+    )}
+
+    {!error && hasData && latest && (
+      <>
+        <div class="latest-summary">
+          <div class="stat-card">
+            <span class="stat-label">Latest rollup</span>
+            <span class="stat-value">{formatDate(latest.rollup_date)}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Requests (24h)</span>
+            <span class="stat-value">{formatNumber(latest.total_requests)}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Days of history</span>
+            <span class="stat-value">{rollups.length}</span>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="table-block">
+            <h2>Top paths — {formatDate(latest.rollup_date)}</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Path</th>
+                    <th>Kind</th>
+                    <th>Requests</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {latest.top_paths.map((p) => (
+                    <tr>
+                      <td class="mono">{p.path}</td>
+                      <td>
+                        <span class:list={["kind-chip", `kind-${p.path_kind}`]}>{p.path_kind}</span>
+                      </td>
+                      <td>{formatNumber(p.count)}</td>
+                    </tr>
+                  ))}
+                  {latest.top_paths.length === 0 && (
+                    <tr><td colspan="3" class="empty-cell">No path data for this day.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-block">
+            <h2>Status codes</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Status</th><th>Requests</th></tr>
+                </thead>
+                <tbody>
+                  {latest.status_breakdown.map((s) => (
+                    <tr>
+                      <td>
+                        <span class:list={["status-chip", s.status >= 500 ? "status-5xx" : s.status >= 400 ? "status-4xx" : "status-2xx"]}>
+                          {s.status}
+                        </span>
+                      </td>
+                      <td>{formatNumber(s.count)}</td>
+                    </tr>
+                  ))}
+                  {latest.status_breakdown.length === 0 && (
+                    <tr><td colspan="2" class="empty-cell">No status data for this day.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <h2 class="second-heading">Top countries</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Country</th><th>Requests</th></tr>
+                </thead>
+                <tbody>
+                  {latest.top_countries.map((c) => (
+                    <tr>
+                      <td>{c.country}</td>
+                      <td>{formatNumber(c.count)}</td>
+                    </tr>
+                  ))}
+                  {latest.top_countries.length === 0 && (
+                    <tr><td colspan="2" class="empty-cell">No country data for this day.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-block history-block">
+          <h2>Recent history</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Date</th><th>Requests</th></tr>
+              </thead>
+              <tbody>
+                {rollups.map((r) => (
+                  <tr>
+                    <td>{formatDate(r.rollup_date)}</td>
+                    <td>{formatNumber(r.total_requests)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-panel);
+    padding: 28px 32px;
+  }
+  h1 {
+    font-size: 22px;
+    color: var(--color-heading);
+    margin: 0 0 4px;
+  }
+  .sub {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 0 0 20px;
+  }
+  .sub a {
+    color: var(--color-accent);
+  }
+  .error {
+    background: var(--color-surface-pending);
+    color: var(--color-dispute);
+    border: 1px solid var(--color-dispute);
+    border-radius: var(--radius-card);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    border: 1px dashed var(--color-border-card);
+    border-radius: var(--radius-card);
+  }
+  .empty-title {
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--color-heading);
+    margin: 0 0 6px;
+  }
+  .empty-body {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    max-width: 46ch;
+    margin: 0 auto;
+  }
+  .latest-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 12px 18px;
+    min-width: 140px;
+  }
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 800;
+    color: var(--color-text-faint);
+  }
+  .stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-heading);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 780px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .table-block h2 {
+    font-size: 14px;
+    color: var(--color-heading);
+    margin: 0 0 10px;
+  }
+  .second-heading {
+    margin-top: 20px;
+  }
+  .table-wrap {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    color: var(--color-text-faint);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 800;
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--color-border-divider);
+    white-space: nowrap;
+  }
+  td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--color-border-divider);
+    color: var(--color-text);
+  }
+  td.mono {
+    font-family: monospace;
+    font-size: 12px;
+  }
+  .empty-cell {
+    text-align: center;
+    color: var(--color-text-faint);
+    padding: 16px;
+  }
+  .kind-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    background: var(--color-trust-chip-bg);
+    color: var(--color-text-muted);
+  }
+  .kind-api {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .status-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    font-size: 12px;
+  }
+  .status-2xx {
+    background: var(--color-trust-chip-bg);
+    color: var(--color-text-muted);
+  }
+  .status-4xx {
+    background: var(--color-surface-pending);
+    color: var(--color-accent-gold);
+  }
+  .status-5xx {
+    background: var(--color-surface-pending);
+    color: var(--color-dispute);
+  }
+  .history-block {
+    max-width: 420px;
+  }
+</style>

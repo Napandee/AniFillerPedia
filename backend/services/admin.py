@@ -21,10 +21,16 @@ import fastapi
 
 from repositories import admin as admin_repo
 from repositories import outbox as outbox_repo
+from repositories import traffic_analytics as traffic_repo
 from schemas.admin import (
     AdminUserListOut,
     AdminUserOut,
     SuspensionUpdateOut,
+    TrafficCountryEntryOut,
+    TrafficPathEntryOut,
+    TrafficRollupListOut,
+    TrafficRollupOut,
+    TrafficStatusEntryOut,
     VoteClusteringPairOut,
     VoteClusteringReportOut,
 )
@@ -160,3 +166,26 @@ async def get_vote_clustering_report(
         for row in rows
     ]
     return VoteClusteringReportOut(items=items, min_reciprocal_count=min_reciprocal_count)
+
+
+async def list_traffic_rollups(session, limit: int) -> TrafficRollupListOut:
+    """#221: the admin traffic dashboard's only real query — most recent
+    `limit` days of Cloudflare-sourced rollups, newest first. An empty
+    `items` list is a legitimate, expected v1 state (no token configured
+    yet, or the daily loop hasn't run yet) — the frontend page renders its
+    own explicit "no data yet" message for that case rather than treating
+    it as an error.
+    """
+    rows = await traffic_repo.list_daily_rollups(session, limit)
+    items = [
+        TrafficRollupOut(
+            rollup_date=row.rollup_date.isoformat(),
+            total_requests=row.total_requests,
+            top_paths=[TrafficPathEntryOut(**entry) for entry in row.top_paths],
+            status_breakdown=[TrafficStatusEntryOut(**entry) for entry in row.status_breakdown],
+            top_countries=[TrafficCountryEntryOut(**entry) for entry in row.top_countries],
+            created_at=row.created_at.isoformat(),
+        )
+        for row in rows
+    ]
+    return TrafficRollupListOut(items=items)

@@ -68,6 +68,21 @@ import os
 import sys
 from pathlib import Path
 
+# #205: reuse the exact same source_count-conflict RULE the live backend's
+# repositories/citations.py::get_or_create() now enforces for every real
+# submission path, rather than keeping an independently-maintained copy of
+# this comparison in this script. backend/repositories/citation_consistency.py
+# has zero dependencies beyond the stdlib specifically so this sys.path
+# trick works without needing sqlalchemy (or anything else backend/ uses)
+# installed in whatever environment runs this script — see that module's
+# own docstring for the production throwaway-container mounting implication.
+_BACKEND_DIR = Path(__file__).resolve().parent.parent.parent / "backend"
+if str(_BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(_BACKEND_DIR))
+from repositories.citation_consistency import (  # noqa: E402
+    source_count_conflicts as _source_count_conflict_check,
+)
+
 
 def get_database_url() -> str:
     url = os.environ.get("DATABASE_URL")
@@ -152,7 +167,7 @@ def main() -> None:
         cached = citation_by_combo.get(combo)
         if cached is not None:
             citation_id, existing_source_count = cached
-            if existing_source_count != source_count:
+            if _source_count_conflict_check(existing_source_count, source_count):
                 source_count_conflicts.append((episode_number, combo, existing_source_count, source_count))
             return citation_id
 
@@ -183,7 +198,7 @@ def main() -> None:
         existing_rows = cur.fetchall()
         if existing_rows:
             citation_id, existing_source_count = existing_rows[0]
-            if existing_source_count != source_count:
+            if _source_count_conflict_check(existing_source_count, source_count):
                 source_count_conflicts.append((episode_number, combo, existing_source_count, source_count))
             citation_by_combo[combo] = (citation_id, existing_source_count)
             citations_reused_from_db += 1

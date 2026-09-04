@@ -27,12 +27,19 @@ async def write(session: AsyncSession, *, event_type: str, payload: dict[str, An
 
 
 async def fetch_unprocessed_batch(session: AsyncSession, limit: int) -> list[Row]:
+    """#195: excludes dead-lettered rows (failed_at IS NOT NULL) as well as
+    already-processed ones — a dead-lettered event has permanently given up
+    (see mark_dead_lettered below) and must stop being re-fetched every
+    poll cycle, which is what makes dead-lettering actually take a poisoned
+    event OUT of the queue rather than just labeling it while it keeps
+    getting retried forever anyway.
+    """
     result = await session.execute(
         text(
             """
-            SELECT id, event_type, payload, created_at
+            SELECT id, event_type, payload, created_at, retry_count
             FROM outbox_events
-            WHERE processed_at IS NULL
+            WHERE processed_at IS NULL AND failed_at IS NULL
             ORDER BY id
             FOR UPDATE SKIP LOCKED
             LIMIT :limit
@@ -46,5 +53,33 @@ async def fetch_unprocessed_batch(session: AsyncSession, limit: int) -> list[Row
 async def mark_processed(session: AsyncSession, event_id: int) -> None:
     await session.execute(
         text("UPDATE outbox_events SET processed_at = now() WHERE id = :id"),
+        {"id": event_id},
+    )
+
+
+async def increment_retry_count(session: AsyncSession, event_id: int) -> int:
+    """#195: called when a handler raises for this event — records the
+    failed attempt and returns the new total so the caller (worker.py) can
+    decide whether this attempt crossed the dead-letter threshold.
+    """
+    result = await session.execute(
+        text(
+            "UPDATE outbox_events SET retry_count = retry_count + 1 "
+            "WHERE id = :id RETURNING retry_count"
+        ),
+        {"id": event_id},
+    )
+    return result.scalar_one()
+
+
+async def mark_dead_lettered(session: AsyncSession, event_id: int) -> None:
+    """#195: sets an event aside after it has exhausted its retry budget —
+    fetch_unprocessed_batch above excludes it from now on, so it stops
+    head-of-line-blocking everything behind it, while the row itself (and
+    its failed_at/retry_count) stays in the table, queryable, rather than
+    being silently dropped.
+    """
+    await session.execute(
+        text("UPDATE outbox_events SET failed_at = now() WHERE id = :id"),
         {"id": event_id},
     )

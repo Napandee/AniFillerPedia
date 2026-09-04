@@ -49,6 +49,12 @@ let values = {
   // #83: optional — the same short-description/fuller-research-trail
   // split #77 built for hand-compiled data, now available here too.
   citation_methodology_note: "",
+  // #204: how many independent sources back this citation — the same
+  // shape the bootstrap loader has always used, now available to real
+  // submissions. Defaults to "1" (a single source) matching CitationIn's
+  // own default; kept as a string here since it round-trips through a
+  // form field, parsed to a number only when building the request body.
+  citation_source_count: "1",
   license_accepted: false,
 };
 
@@ -104,6 +110,7 @@ if (hasValidParams && Astro.request.method === "POST") {
     citation_url: String(form.get("citation_url") ?? ""),
     citation_description: String(form.get("citation_description") ?? ""),
     citation_methodology_note: String(form.get("citation_methodology_note") ?? ""),
+    citation_source_count: String(form.get("citation_source_count") ?? "1"),
     license_accepted: form.get("license_accepted") === "yes",
   };
 
@@ -120,6 +127,13 @@ if (hasValidParams && Astro.request.method === "POST") {
         methodology_note: values.citation_methodology_note.trim()
           ? values.citation_methodology_note.trim()
           : undefined,
+        // #204: falls back to 1 (a single source, matching CitationIn's
+        // own default) for an empty/invalid field, rather than sending
+        // something its ge=1 constraint would reject.
+        source_count:
+          Number.isInteger(Number(values.citation_source_count)) && Number(values.citation_source_count) >= 1
+            ? Number(values.citation_source_count)
+            : 1,
       },
       license_accepted: values.license_accepted,
       // TURNSTILE STUB: no real Cloudflare Turnstile site key is
@@ -257,6 +271,20 @@ if (hasValidParams && Astro.request.method === "POST") {
             placeholder="e.g. cross-referenced against a second independent thread, noted any disagreement and how it was resolved..."
             set:text={values.citation_methodology_note}
           />
+        </label>
+
+        <label class="field field--narrow">
+          <span>Independent sources backing this <span class="optional">(optional)</span></span>
+          <input
+            type="number"
+            name="citation_source_count"
+            min="1"
+            step="1"
+            value={values.citation_source_count}
+          />
+          <span class="field-hint">
+            Leave at 1 unless you genuinely cross-referenced more than one independent source.
+          </span>
         </label>
 
         {!user && (
@@ -413,8 +441,21 @@ if (hasValidParams && Astro.request.method === "POST") {
     font-weight: 700;
     color: var(--color-dispute);
   }
+  /* #204: independent-sources count field — narrow, since it's a small
+     integer, not a full-width text field like everything else here. */
+  .field--narrow input[type="number"] {
+    width: 90px;
+  }
+  .field-hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
   input[type="text"],
   input[type="url"],
+  input[type="number"],
   textarea {
     width: 100%;
     font-family: var(--font-body);

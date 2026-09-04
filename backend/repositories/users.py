@@ -110,6 +110,20 @@ async def find_by_email_local(session: AsyncSession, email: str) -> Row | None:
     return result.one_or_none()
 
 
+async def owner_exists(session: AsyncSession) -> bool:
+    """True when any row already holds role = 'owner'.
+
+    Backs the email-keyed bootstrap-owner guard in services/auth.py: a
+    local signup email is attacker-controlled free text (unlike a GitHub
+    provider_id, which requires actually controlling that account), so
+    the email bootstrap must only ever fire while no owner exists at all.
+    """
+    result = await session.execute(
+        text("SELECT EXISTS (SELECT 1 FROM users WHERE role = 'owner')")
+    )
+    return bool(result.scalar())
+
+
 async def link_provider(
     session: AsyncSession, *, user_id: int, provider: str, provider_id: str
 ) -> None:

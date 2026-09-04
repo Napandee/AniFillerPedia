@@ -81,6 +81,38 @@ def get_rate_limit_identifier(request: Request, current_user: Row | None) -> str
     return f"ip:{host}"
 
 
+def ensure_not_suspended(current_user: Row | None) -> None:
+    """#209: a suspended account cannot submit or vote. A single shared
+    check rather than duplicating the `suspended_at IS NOT NULL` test at
+    every write-path call site — used both directly (the anonymous-
+    allowed submission endpoints, which resolve their caller via
+    get_current_user_optional and so can't express this as a dependency)
+    and via require_active_user below (the login-required endpoints).
+    No-ops for an anonymous caller (current_user is None) — suspension is
+    an account-level restriction, and an anonymous submission has no
+    account to suspend in the first place. Deliberately does NOT block
+    reading or GDPR-rights endpoints (GET /users/me, GET /users/me/export,
+    DELETE /users/me) — only the write paths named in #209's scope
+    (submitting contributions/series-proposals/synonym-suggestions,
+    voting) call this.
+    """
+    if current_user is not None and current_user.suspended_at is not None:
+        raise HTTPException(status_code=403, detail="This account has been suspended.")
+
+
+async def require_active_user(current_user: Row = Depends(get_current_user)) -> Row:
+    """Same as get_current_user, plus #209's suspension check — for
+    endpoints that require login AND an active (non-suspended) account:
+    voting and bulk contribution submission. (The single-episode
+    contribution/series-proposal/synonym-suggestion submission endpoints
+    accept anonymous callers via get_current_user_optional instead, so
+    they call ensure_not_suspended directly in the handler rather than
+    depending on this.)
+    """
+    ensure_not_suspended(current_user)
+    return current_user
+
+
 async def require_owner(current_user: Row = Depends(get_current_user)) -> Row:
     """Owner-only tier (decided 2026-08-21, CLAUDE.md) — strictly above
     admin, and structurally unreachable via the role-promotion endpoint

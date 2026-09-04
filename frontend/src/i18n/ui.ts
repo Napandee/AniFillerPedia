@@ -46,6 +46,7 @@ const en = {
 
   "footer.license": "License",
   "footer.privacy": "Privacy",
+  "footer.tos": "Terms",
 
   "meta.defaultDescription":
     "AniFillerPedia is an open, community-editable database of anime filler and canon episodes — find out which episodes you can skip, and which you can't.",
@@ -148,6 +149,7 @@ const es: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "Licencia",
   "footer.privacy": "Privacidad",
+  "footer.tos": "Términos",
 
   "meta.defaultDescription":
     "AniFillerPedia es una base de datos abierta y editable por la comunidad sobre episodios de relleno y canon de anime — descubre qué episodios puedes saltarte y cuáles no.",
@@ -236,6 +238,7 @@ const hi: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "लाइसेंस",
   "footer.privacy": "गोपनीयता",
+  "footer.tos": "नियम एवं शर्तें",
 
   "meta.defaultDescription":
     "AniFillerPedia एनीमे के फिलर और कैनन एपिसोड की एक खुली, समुदाय-संपादनीय डेटाबेस है — जानें कौन-से एपिसोड छोड़े जा सकते हैं और कौन-से नहीं।",
@@ -324,6 +327,7 @@ const ja: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "ライセンス",
   "footer.privacy": "プライバシー",
+  "footer.tos": "利用規約",
 
   "meta.defaultDescription":
     "AniFillerPediaは、アニメのフィラー回とカノン回を誰でも編集できるオープンなデータベースです — どの回を飛ばせて、どの回は飛ばせないかがわかります。",
@@ -412,6 +416,7 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "许可协议",
   "footer.privacy": "隐私政策",
+  "footer.tos": "服务条款",
 
   "meta.defaultDescription":
     "AniFillerPedia 是一个开放的、可由社区编辑的动漫填充集与原著集数据库 — 让你知道哪些集数可以跳过，哪些不能。",

@@ -114,6 +114,138 @@ license text and attribution notice in machine-readable form.</p>
 """
 
 
+_TOS_HTML = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Terms of Service — AniFillerPedia</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; } h2 { font-size: 1.15rem; margin-top: 2rem; }
+  code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 3px; }
+</style>
+</head>
+<body>
+<h1>Terms of Service</h1>
+<p><em>Last updated 2026-09-04.</em></p>
+
+<p>This page covers using and contributing to AniFillerPedia the service —
+account conduct, moderation, and what happens if something goes wrong. It's
+separate from two other documents: the
+<a href="https://github.com/Napandee/AniFillerPedia/blob/master/DATA_LICENSE">DATA_LICENSE</a>
+(the terms covering reuse of the dataset itself) and the
+<a href="/api/v1/privacy">privacy policy</a> (what personal data we
+collect and why). If you're looking for how to actually submit a
+correction or proposal, see
+<a href="https://github.com/Napandee/AniFillerPedia/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
+
+<h2>What this service is</h2>
+<p>AniFillerPedia is a community-editable database of anime filler/canon
+episode data, free to read and free to contribute to. Reading and
+contributing require no account; some actions (voting, bulk submission,
+seeing your own history) require signing in with GitHub or Discord. We
+provide this as-is, at no cost, with no uptime guarantee &mdash; see
+"Disclaimer &amp; liability" below.</p>
+
+<h2>Contributor conduct</h2>
+<p>By submitting a correction, series proposal, or synonym suggestion
+(anonymously or signed in), you agree to:</p>
+<ul>
+  <li>Submit content you believe is accurate, backed by a real, checkable
+  citation &mdash; not a guess dressed up as a citation.</li>
+  <li>Not submit spam, harassment, or content unrelated to anime filler/
+  canon data.</li>
+  <li>Not attempt to game the trust-weighted voting system (e.g.
+  coordinating multiple accounts to endorse each other's submissions) or
+  otherwise circumvent the moderation/approval workflow this project is
+  built around.</li>
+  <li>Not attempt to bypass rate limits, Turnstile verification, or any
+  other anti-abuse mechanism.</li>
+</ul>
+<p>Submitting a contribution also means agreeing to license it under
+CC&nbsp;BY-NC-SA 4.0, same as the rest of the dataset &mdash; see
+<code>license_accepted</code> in <a href="https://github.com/Napandee/AniFillerPedia/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
+for how that's captured per-submission.</p>
+
+<h2>Our rights</h2>
+<p>We reserve the right to, at our discretion and without prior notice:</p>
+<ul>
+  <li>Reject, edit, or remove any contribution, series proposal, or
+  synonym suggestion, whether pending or already approved &mdash; the
+  normal moderation workflow already covers rejection of pending items;
+  this also covers removing something after the fact if it turns out to
+  be wrong, abusive, or in breach of these terms.</li>
+  <li>Suspend or terminate an account's access to write actions
+  (submitting, voting) for a violation of these terms &mdash; see
+  "Account suspension" below for how that actually works.</li>
+  <li>Change or discontinue any part of the service, including the API,
+  at any time. We'll try to give notice for anything that would break
+  existing integrations, but can't guarantee it.</li>
+</ul>
+
+<h2>Account suspension</h2>
+<p>An admin or owner may suspend an account that violates the conduct
+expectations above. A suspended account can no longer submit
+contributions, series proposals, or synonym suggestions, and can no
+longer vote &mdash; but can still read every public page and endpoint,
+and still retains full GDPR rights over their own account: viewing
+<code>GET /api/v1/users/me</code>, exporting the full bundle via
+<code>GET /api/v1/users/me/export</code>, and deleting the account via
+<code>DELETE /api/v1/users/me</code> all keep working while suspended.
+Suspension is not a way to strip someone's own data rights, only a way to
+stop further submissions/votes from an account.</p>
+<p>There's no formal appeals process at this project's current size (see
+"What this doesn't cover" below) &mdash; if you believe a suspension was
+made in error, open an issue on the
+<a href="https://github.com/Napandee/AniFillerPedia">GitHub repo</a>.</p>
+
+<h2>Disclaimer &amp; liability</h2>
+<p>This is a small, community-maintained, non-commercial project. The
+service (the site, the API, the moderation workflow) is provided
+"as is," without warranty of any kind, express or implied &mdash; we don't
+guarantee it will be available, error-free, or fit for any particular
+purpose. To the maximum extent permitted by law, we aren't liable for any
+damages arising from your use of, or inability to use, the service.</p>
+<p>This is distinct from the <a href="https://github.com/Napandee/AniFillerPedia/blob/master/DATA_LICENSE">DATA_LICENSE</a>'s
+own "as is" warranty disclaimer, which covers the accuracy of the
+filler/canon <em>data itself</em> &mdash; this section covers the
+<em>service</em> that hosts and serves it.</p>
+
+<h2>What this doesn't cover</h2>
+<p>A full moderation-appeals process, arbitration terms, or jurisdiction-
+specific legal boilerplate &mdash; not needed for a project at this size
+today. This document, like the rest of this project's legal text, is a
+considered good-faith position, not lawyer-reviewed legal advice (same
+honesty flag as <a href="/api/v1/license">GET /license</a> and the
+privacy policy carry).</p>
+
+<h2>Changes to these terms</h2>
+<p>We may update this page as the project grows. Material changes will be
+reflected in the "Last updated" date above; check
+<a href="https://github.com/Napandee/AniFillerPedia/commits/master/backend/routers/legal.py">this file's
+own git history</a> for the exact diff of any change.</p>
+
+<h2>Questions</h2>
+<p>Open an issue at
+<a href="https://github.com/Napandee/AniFillerPedia">github.com/Napandee/AniFillerPedia</a>.</p>
+</body>
+</html>
+"""
+
+
+@router.get("/tos", response_class=HTMLResponse)
+async def terms_of_service() -> str:
+    """#209: Terms of Service / acceptable-use policy, served as static
+    HTML directly by the API (no frontend page to hand-copy the prose
+    into), same pattern as `GET /privacy` above. Covers contributor
+    conduct, our right to remove content/reject contributions/terminate
+    access, the account-suspension mechanism (routers/admin.py's
+    PATCH /admin/users/{id}/suspension), and a service-level liability
+    disclaimer distinct from DATA_LICENSE's own data-only one.
+    """
+    return _TOS_HTML
+
+
 @router.get("/privacy", response_class=HTMLResponse)
 async def privacy_policy() -> str:
     """The project's privacy policy, served as static HTML directly by the

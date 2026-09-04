@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Cookie, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Cookie, Depends, HTTPException, Query, Request, Response, status
 from fastapi.responses import RedirectResponse
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
@@ -10,8 +11,18 @@ from core.security import (
     create_session_token,
     verify_oauth_state,
 )
+from repositories.rate_limits import count_recent, record
+from schemas.auth import LocalLoginIn, LocalSignupIn
 from schemas.errors import ErrorDetail
-from services.auth import AccountLinkConflict, Profile, link_provider_to_current_user, login_or_create_user
+from services.auth import (
+    AccountLinkConflict,
+    EmailAlreadyRegistered,
+    Profile,
+    link_provider_to_current_user,
+    login_local_user,
+    login_or_create_user,
+    signup_local_user,
+)
 from services.oauth_providers import (
     exchange_code_for_token,
     fetch_provider_profile,
@@ -174,6 +185,107 @@ async def callback(
     if next_path:
         return RedirectResponse(url=next_path, status_code=status.HTTP_303_SEE_OTHER)
     return {"id": user.id, "display_name": user.display_name, "role": user.role}
+
+
+_LOGIN_RATE_LIMIT_WINDOW_SECONDS = 300  # 5 minutes
+_LOGIN_RATE_LIMIT_MAX_ATTEMPTS = 10
+_SIGNUP_RATE_LIMIT_WINDOW_SECONDS = 3600  # 1 hour
+_SIGNUP_RATE_LIMIT_MAX_ATTEMPTS = 5
+
+
+@router.post(
+    "/auth/local/signup",
+    responses={409: {"model": ErrorDetail, "description": "Email already registered"}},
+)
+async def local_signup(
+    payload: LocalSignupIn,
+    request: Request,
+    response: Response,
+    session: AsyncSession = Depends(get_session),
+) -> dict:
+    """Real email+password signup — coexists with OAuth login, does not
+    replace it. No email verification in v1 (see the design spec's
+    explicitly-deferred list) — the account is active immediately.
+    """
+    ip_identifier = f"ip:{request.client.host if request.client else 'unknown'}"
+    async with session.begin():
+        recent = await count_recent(
+            session,
+            scope="local_signup",
+            identifier=ip_identifier,
+            window_seconds=_SIGNUP_RATE_LIMIT_WINDOW_SECONDS,
+        )
+        if recent >= _SIGNUP_RATE_LIMIT_MAX_ATTEMPTS:
+            raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="too many signup attempts")
+        await record(session, scope="local_signup", identifier=ip_identifier)
+        # #221 review: signup_local_user's own duplicate check is
+        # check-then-insert (TOCTOU) — two concurrent signups for the same
+        # email can both pass it and both attempt the insert; the loser
+        # hits the partial unique index (migration 021) at the DB level,
+        # not the clean EmailAlreadyRegistered exception. Wrapped in a
+        # SAVEPOINT (begin_nested), same idiom as services/contributions.py's
+        # one-pending-contribution-per-episode race — lets the outer
+        # transaction (and this request's rate-limit record() above) commit
+        # cleanly even when the insert itself is rolled back.
+        try:
+            async with session.begin_nested():
+                user = await signup_local_user(
+                    session, email=payload.email, password=payload.password, display_name=payload.display_name
+                )
+        except EmailAlreadyRegistered as exc:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+        except IntegrityError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT, detail=f"{payload.email} is already registered"
+            ) from exc
+    response.set_cookie(
+        SESSION_COOKIE_NAME,
+        create_session_token(user.id),
+        httponly=True,
+        samesite="lax",
+        secure=True,
+        path="/",
+    )
+    return {"id": user.id, "email": user.email, "display_name": user.display_name, "role": user.role}
+
+
+@router.post(
+    "/auth/local/login",
+    responses={401: {"model": ErrorDetail, "description": "Invalid email or password"}},
+)
+async def local_login(
+    payload: LocalLoginIn,
+    request: Request,
+    response: Response,
+    session: AsyncSession = Depends(get_session),
+) -> dict:
+    # Keyed on email+IP together, not IP alone — this slows down
+    # credential-stuffing against one targeted account without
+    # collateral-blocking every other login attempt sharing that IP
+    # (an office network, a VPN exit node, etc.), per the design spec.
+    rate_identifier = f"login:{payload.email}:{request.client.host if request.client else 'unknown'}"
+    async with session.begin():
+        recent = await count_recent(
+            session,
+            scope="local_login",
+            identifier=rate_identifier,
+            window_seconds=_LOGIN_RATE_LIMIT_WINDOW_SECONDS,
+        )
+        if recent >= _LOGIN_RATE_LIMIT_MAX_ATTEMPTS:
+            raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="too many login attempts")
+        await record(session, scope="local_login", identifier=rate_identifier)
+        user = await login_local_user(session, email=payload.email, password=payload.password)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid email or password")
+    response.set_cookie(
+        SESSION_COOKIE_NAME,
+        create_session_token(user.id),
+        httponly=True,
+        samesite="lax",
+        secure=True,
+        path="/",
+    )
+    return {"id": user.id, "email": user.email, "display_name": user.display_name, "role": user.role}
 
 
 @router.post("/auth/logout")

@@ -240,3 +240,127 @@ async def test_login_local_user_fails_for_unknown_email() -> None:
                 session, email=_unique_email(), password="anything"
             )
         assert user is None
+
+
+from httpx import ASGITransport, AsyncClient
+
+from main import app
+
+
+@pytest.mark.asyncio
+async def test_signup_endpoint_creates_account_and_sets_session_cookie() -> None:
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "a real password", "display_name": "New User"},
+            )
+        assert response.status_code == 200
+        assert "afp_session" in response.cookies
+        body = response.json()
+        assert body["email"] == email
+        assert body["role"] == "contributor"
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_endpoint_rejects_duplicate_email_with_409() -> None:
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "first password", "display_name": "First"},
+            )
+            response = await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "second password", "display_name": "Second"},
+            )
+        assert response.status_code == 409
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_endpoint_rejects_short_password_with_422() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/auth/local/signup",
+            json={"email": _unique_email(), "password": "short", "display_name": "Tester"},
+        )
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_login_endpoint_succeeds_and_sets_session_cookie() -> None:
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "correct password", "display_name": "Tester"},
+            )
+            response = await client.post(
+                "/api/v1/auth/local/login",
+                json={"email": email, "password": "correct password"},
+            )
+        assert response.status_code == 200
+        assert "afp_session" in response.cookies
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_login_endpoint_rejects_wrong_password_with_401() -> None:
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "correct password", "display_name": "Tester"},
+            )
+            response = await client.post(
+                "/api/v1/auth/local/login",
+                json={"email": email, "password": "wrong password"},
+            )
+        assert response.status_code == 401
+        assert "afp_session" not in response.cookies
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_login_endpoint_rate_limits_repeated_failed_attempts() -> None:
+    """Mirrors this project's existing rate-limit test shape
+    (test_rate_limits_and_validation.py's #139 anonymous-submission
+    rate-limit tests) rather than inventing a new pattern. Threshold here
+    is 10 attempts/300s (_LOGIN_RATE_LIMIT_MAX_ATTEMPTS in routers/auth.py)
+    — range(12) trips it on the 11th attempt, same scale as this
+    codebase's existing rate-limit thresholds (#139's 20/hour,
+    #84/#141's 10-count seeded checks)."""
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "correct password", "display_name": "Tester"},
+            )
+            responses = []
+            for _ in range(12):
+                responses.append(
+                    await client.post(
+                        "/api/v1/auth/local/login",
+                        json={"email": email, "password": "wrong password"},
+                    )
+                )
+        assert any(r.status_code == 429 for r in responses)
+    finally:
+        await _delete_user_by_email(email)

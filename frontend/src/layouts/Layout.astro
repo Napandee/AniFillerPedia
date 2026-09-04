@@ -78,9 +78,17 @@ const ogImage = image ? new URL(image, Astro.site).toString() : undefined;
     {structuredDataJson && <script type="application/ld+json" is:inline set:html={structuredDataJson} />}
   </head>
   <body>
+    {/* #201: skip-to-content link — visually hidden until focused (see the
+        .skip-link rule below), first focusable element on every page via
+        this shared layout. Tab-then-Enter from page load now lands focus
+        on <main> directly, instead of a keyboard user having to tab
+        through the full header nav (base links + role-gated moderator/
+        admin links + identity + language switcher) on every single page
+        load just to reach page content. */}
+    <a class="skip-link" href="#main-content">{t("common.skipToContent")}</a>
     <div class="shell">
       <Header />
-      <main>
+      <main id="main-content" tabindex="-1">
         <slot />
       </main>
       <Footer />
@@ -112,6 +120,31 @@ const ogImage = image ? new URL(image, Astro.site).toString() : undefined;
   :focus-visible {
     outline: 3px solid var(--color-accent);
     outline-offset: 2px;
+  }
+
+  /* #201: standard "visually hidden until focused" skip-link treatment —
+     off-screen (not display:none/visibility:hidden, which would remove it
+     from the accessibility tree and make it untabbable in the first
+     place) until it receives keyboard focus, then pinned to the top-left
+     corner above everything else. */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 8px;
+    z-index: 100;
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 13px;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sticker);
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    top: 8px;
   }
 </style>
 

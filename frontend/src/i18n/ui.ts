@@ -35,6 +35,7 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 
 const en = {
   "nav.browse": "Browse",
+  "nav.contribute": "Contribute",
   "nav.needsResearch": "Needs research",
   "nav.recentChanges": "Recent changes",
   "nav.reviewQueue": "Review queue",
@@ -43,10 +44,16 @@ const en = {
   "nav.logOut": "Log out",
   "nav.logInGithub": "Log in with GitHub",
   "nav.logInDiscord": "Discord",
+  "nav.menu": "Menu",
 
   "footer.license": "License",
   "footer.privacy": "Privacy",
   "footer.tos": "Terms",
+  "footer.contribute": "Contribute",
+  "footer.exportAccess": "API access",
+
+  "common.backToTop": "Back to top",
+  "common.skipToContent": "Skip to content",
 
   "meta.defaultDescription":
     "AniFillerPedia is an open, community-editable database of anime filler and canon episodes — find out which episodes you can skip, and which you can't.",
@@ -56,6 +63,9 @@ const en = {
     "Free, community-edited filler and canon episode guides for anime — Naruto, Bleach, One Piece, Fairy Tail, and more. See exactly which episodes to skip and which adapt the real story, every claim cited.",
   "home.headline": "Know what's canon<br />before you watch!",
   "home.tagline": "Built by fans, checked by fans — cited every step of the way.",
+  // #200: shown when moderation.astro/account.astro redirects here after
+  // bouncing a logged-out visitor — see HomePage.astro's own comment.
+  "home.notice.loginRequired": "Please log in to continue — you were redirected because that page requires an account.",
   "home.proposeCta.strong": "Something's missing?",
   "home.proposeCta.rest": "Add it here — just a name, and an AniList ID if you have one.",
   "home.reviewTeaser.pending_one": "{count} contribution pending review",
@@ -138,6 +148,7 @@ export type TranslationKey = keyof typeof en;
 
 const es: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "Explorar",
+  "nav.contribute": "Contribuir",
   "nav.needsResearch": "Necesita investigación",
   "nav.recentChanges": "Cambios recientes",
   "nav.reviewQueue": "Cola de revisión",
@@ -146,10 +157,16 @@ const es: Partial<Record<TranslationKey, string>> = {
   "nav.logOut": "Cerrar sesión",
   "nav.logInGithub": "Iniciar sesión con GitHub",
   "nav.logInDiscord": "Discord",
+  "nav.menu": "Menú",
 
   "footer.license": "Licencia",
   "footer.privacy": "Privacidad",
   "footer.tos": "Términos",
+  "footer.contribute": "Contribuir",
+  "footer.exportAccess": "Acceso a la API",
+
+  "common.backToTop": "Volver arriba",
+  "common.skipToContent": "Saltar al contenido",
 
   "meta.defaultDescription":
     "AniFillerPedia es una base de datos abierta y editable por la comunidad sobre episodios de relleno y canon de anime — descubre qué episodios puedes saltarte y cuáles no.",
@@ -159,6 +176,7 @@ const es: Partial<Record<TranslationKey, string>> = {
     "Guías gratuitas y editadas por la comunidad sobre episodios de relleno y canon de anime — Naruto, Bleach, One Piece, Fairy Tail y más. Descubre exactamente qué episodios saltarte y cuáles siguen la historia real, con cada afirmación citada.",
   "home.headline": "Descubre qué es canon<br />antes de verlo!",
   "home.tagline": "Hecho por fans, verificado por fans — con citas en cada paso.",
+  "home.notice.loginRequired": "Inicia sesión para continuar — fuiste redirigido porque esa página requiere una cuenta.",
   "home.proposeCta.strong": "¿Falta algo?",
   "home.proposeCta.rest": "Añádelo aquí — solo un nombre, y un ID de AniList si lo tienes.",
   "home.reviewTeaser.pending_one": "{count} contribución pendiente de revisión",
@@ -227,6 +245,7 @@ const es: Partial<Record<TranslationKey, string>> = {
 
 const hi: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "ब्राउज़ करें",
+  "nav.contribute": "योगदान करें",
   "nav.needsResearch": "शोध आवश्यक",
   "nav.recentChanges": "हाल के बदलाव",
   "nav.reviewQueue": "समीक्षा सूची",
@@ -235,10 +254,16 @@ const hi: Partial<Record<TranslationKey, string>> = {
   "nav.logOut": "लॉग आउट करें",
   "nav.logInGithub": "GitHub से लॉग इन करें",
   "nav.logInDiscord": "Discord",
+  "nav.menu": "मेनू",
 
   "footer.license": "लाइसेंस",
   "footer.privacy": "गोपनीयता",
   "footer.tos": "नियम एवं शर्तें",
+  "footer.contribute": "योगदान करें",
+  "footer.exportAccess": "API पहुंच",
+
+  "common.backToTop": "ऊपर वापस जाएँ",
+  "common.skipToContent": "सामग्री पर जाएँ",
 
   "meta.defaultDescription":
     "AniFillerPedia एनीमे के फिलर और कैनन एपिसोड की एक खुली, समुदाय-संपादनीय डेटाबेस है — जानें कौन-से एपिसोड छोड़े जा सकते हैं और कौन-से नहीं।",
@@ -248,6 +273,7 @@ const hi: Partial<Record<TranslationKey, string>> = {
     "एनीमे के लिए मुफ़्त, समुदाय-संपादित फिलर और कैनन एपिसोड गाइड — नारुतो, ब्लीच, वन पीस, फेयरी टेल, और अन्य। जानें कौन-से एपिसोड छोड़े जा सकते हैं और कौन-से असली कहानी को आगे बढ़ाते हैं, हर दावे के स्रोत सहित।",
   "home.headline": "देखने से पहले जानें<br />क्या कैनन है!",
   "home.tagline": "प्रशंसकों द्वारा बनाया गया, प्रशंसकों द्वारा जाँचा गया — हर कदम पर स्रोत के साथ।",
+  "home.notice.loginRequired": "जारी रखने के लिए लॉग इन करें — आपको इसलिए भेजा गया क्योंकि उस पृष्ठ के लिए खाता आवश्यक है।",
   "home.proposeCta.strong": "कुछ छूट रहा है?",
   "home.proposeCta.rest": "इसे यहाँ जोड़ें — बस एक नाम, और यदि आपके पास हो तो एक AniList ID।",
   "home.reviewTeaser.pending_one": "{count} योगदान समीक्षा हेतु लंबित",
@@ -316,6 +342,7 @@ const hi: Partial<Record<TranslationKey, string>> = {
 
 const ja: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "閲覧",
+  "nav.contribute": "貢献する",
   "nav.needsResearch": "要調査",
   "nav.recentChanges": "最近の変更",
   "nav.reviewQueue": "レビュー待ち一覧",
@@ -324,10 +351,16 @@ const ja: Partial<Record<TranslationKey, string>> = {
   "nav.logOut": "ログアウト",
   "nav.logInGithub": "GitHubでログイン",
   "nav.logInDiscord": "Discord",
+  "nav.menu": "メニュー",
 
   "footer.license": "ライセンス",
   "footer.privacy": "プライバシー",
   "footer.tos": "利用規約",
+  "footer.contribute": "貢献する",
+  "footer.exportAccess": "APIアクセス",
+
+  "common.backToTop": "トップに戻る",
+  "common.skipToContent": "コンテンツへスキップ",
 
   "meta.defaultDescription":
     "AniFillerPediaは、アニメのフィラー回とカノン回を誰でも編集できるオープンなデータベースです — どの回を飛ばせて、どの回は飛ばせないかがわかります。",
@@ -337,6 +370,7 @@ const ja: Partial<Record<TranslationKey, string>> = {
     "ナルト、BLEACH、ワンピース、フェアリーテイルなど、アニメのフィラー・カノン回ガイドを無料でコミュニティが編集。どの回を飛ばせて、どの回が本編に沿っているかが一目でわかり、すべての情報に出典があります。",
   "home.headline": "見る前に、何がカノンか<br />知っておこう！",
   "home.tagline": "ファンによって作られ、ファンによって検証された — すべての情報に出典付き。",
+  "home.notice.loginRequired": "続けるにはログインしてください — アカウントが必要なページだったため、こちらにリダイレクトされました。",
   "home.proposeCta.strong": "作品が見つかりませんか？",
   "home.proposeCta.rest": "ここから追加できます — 名前だけでOK、AniList IDがあればなお良し。",
   "home.reviewTeaser.pending_one": "{count}件の投稿がレビュー待ちです",
@@ -405,6 +439,7 @@ const ja: Partial<Record<TranslationKey, string>> = {
 
 const zhCN: Partial<Record<TranslationKey, string>> = {
   "nav.browse": "浏览",
+  "nav.contribute": "贡献",
   "nav.needsResearch": "待研究",
   "nav.recentChanges": "最近更改",
   "nav.reviewQueue": "审核队列",
@@ -413,10 +448,16 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "nav.logOut": "退出登录",
   "nav.logInGithub": "使用 GitHub 登录",
   "nav.logInDiscord": "Discord",
+  "nav.menu": "菜单",
 
   "footer.license": "许可协议",
   "footer.privacy": "隐私政策",
   "footer.tos": "服务条款",
+  "footer.contribute": "贡献",
+  "footer.exportAccess": "API 访问",
+
+  "common.backToTop": "返回顶部",
+  "common.skipToContent": "跳到内容",
 
   "meta.defaultDescription":
     "AniFillerPedia 是一个开放的、可由社区编辑的动漫填充集与原著集数据库 — 让你知道哪些集数可以跳过，哪些不能。",
@@ -426,6 +467,7 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
     "免费的、由社区编辑的动漫填充集与原著集指南 —— 火影忍者、死神、海贼王、妖精的尾巴等。准确了解哪些集数可以跳过，哪些真正推进原著剧情，每一条信息都附有来源。",
   "home.headline": "开始观看前<br />先了解什么是原著剧情！",
   "home.tagline": "由粉丝制作，由粉丝核实 —— 每一步都有据可查。",
+  "home.notice.loginRequired": "请登录以继续 —— 你被重定向到这里，是因为那个页面需要账户。",
   "home.proposeCta.strong": "找不到你想要的作品？",
   "home.proposeCta.rest": "在这里添加它 —— 只需名称，如果有 AniList ID 就更好了。",
   "home.reviewTeaser.pending_one": "{count} 条贡献待审核",

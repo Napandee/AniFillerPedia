@@ -21,6 +21,7 @@ const STATIC_PATHS = [
   "docs/guide",
   "license",
   "privacy",
+  "tos",
   "export-access",
   "propose-series",
   // #153/#154: public, unauthenticated, English-only discovery pages —

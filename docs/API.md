@@ -17,7 +17,7 @@ https://anifillerpedia.wiki/api/v1
 ```
 
 Every endpoint below is relative to that. All responses are JSON except
-`GET /privacy` (HTML).
+`GET /privacy` and `GET /tos` (HTML).
 
 ## Authentication
 
@@ -34,10 +34,10 @@ to one caller's own data:
 | `GET /contributions/mine`, `/mine/votes` | `GET /series/*`, `/episodes/*` (all public reads) |
 | `GET /series-proposals/mine` | `POST /export/request-access` (email-gated, not login-gated) |
 | `GET /synonym-suggestions/mine` | `GET /export` (API-key-gated, not login-gated) |
-| `GET /users/me`, `DELETE /users/me` | |
-| `GET /settings/link/{provider}` | `GET /license`, `GET /privacy` |
-| Moderator+: `GET /contributions`, `GET /series-proposals`, `GET /synonym-suggestions`, every `/approve`, `/reject`, `/bulk-approve`, `/bulk-reject` | |
-| Admin+: `GET /admin/users`, `PATCH /admin/users/{id}/role` | |
+| `GET /users/me`, `GET /users/me/export`, `DELETE /users/me` | |
+| `GET /settings/link/{provider}` | `GET /license`, `GET /privacy`, `GET /tos` |
+| Moderator+: `GET /contributions`, `GET /series-proposals`, `GET /synonym-suggestions`, every `/approve`, `/reject`, `/bulk-approve`, `/bulk-reject`, `GET /admin/vote-clustering-report` | |
+| Admin+: `GET /admin/users`, `PATCH /admin/users/{id}/role`, `PATCH /admin/users/{id}/suspension` | |
 
 **How the login flow actually works.** This API has exactly one auth
 mechanism today: a browser-driven, cookie-based OAuth redirect. There is
@@ -353,6 +353,23 @@ separate commercial agreement, see [DATA_LICENSE](../DATA_LICENSE)) and
 where to reach out about commercial use. The code powering this API is
 separately licensed [MIT](../LICENSE) — the split matters, see
 `DATA_LICENSE`'s own explanation of why.
+
+## Terms of Service
+
+```
+GET /tos
+```
+
+HTML page covering account conduct, our right to remove content/suspend
+accounts, and a service-level liability disclaimer — distinct from
+`DATA_LICENSE`'s own data-only warranty disclaimer above and from the
+[privacy policy](/api/v1/privacy)'s personal-data scope. A suspended
+account (admin/owner-only, `PATCH /admin/users/{id}/suspension`) is
+blocked from submitting/voting but keeps full read and GDPR-rights
+access — `GET /users/me/export` (see the Authentication table above)
+bundles a caller's own profile plus everything they've submitted/voted
+on into one response, for the same GDPR right-of-access reason
+`DELETE /users/me` exists for erasure.
 
 ## Errors
 

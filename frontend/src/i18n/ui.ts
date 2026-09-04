@@ -48,6 +48,7 @@ const en = {
 
   "footer.license": "License",
   "footer.privacy": "Privacy",
+  "footer.tos": "Terms",
   "footer.contribute": "Contribute",
   "footer.exportAccess": "API access",
 
@@ -160,6 +161,7 @@ const es: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "Licencia",
   "footer.privacy": "Privacidad",
+  "footer.tos": "Términos",
   "footer.contribute": "Contribuir",
   "footer.exportAccess": "Acceso a la API",
 
@@ -256,6 +258,7 @@ const hi: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "लाइसेंस",
   "footer.privacy": "गोपनीयता",
+  "footer.tos": "नियम एवं शर्तें",
   "footer.contribute": "योगदान करें",
   "footer.exportAccess": "API पहुंच",
 
@@ -352,6 +355,7 @@ const ja: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "ライセンス",
   "footer.privacy": "プライバシー",
+  "footer.tos": "利用規約",
   "footer.contribute": "貢献する",
   "footer.exportAccess": "APIアクセス",
 
@@ -448,6 +452,7 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
 
   "footer.license": "许可协议",
   "footer.privacy": "隐私政策",
+  "footer.tos": "服务条款",
   "footer.contribute": "贡献",
   "footer.exportAccess": "API 访问",
 

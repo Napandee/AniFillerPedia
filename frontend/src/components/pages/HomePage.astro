@@ -140,7 +140,7 @@ const loginRequiredNotice = Astro.url.searchParams.get("notice") === "login_requ
             {[...recentlyUpdated, ...recentlyUpdated].map((series, i) => (
               <a
                 class="teaser-card"
-                href={getRelativeLocaleUrl(locale, `/series/${series.slug}`)}
+                href={getRelativeLocaleUrl(locale, `/series/${series.slug ?? series.id}`)}
                 aria-hidden={i >= recentlyUpdated.length ? "true" : undefined}
                 tabindex={i >= recentlyUpdated.length ? -1 : undefined}
               >
@@ -181,7 +181,7 @@ const loginRequiredNotice = Astro.url.searchParams.get("notice") === "login_requ
       items.length > 0 && (
         <div class="series-grid">
           {items.map((series) => (
-            <a class="grid-card" href={getRelativeLocaleUrl(locale, `/series/${series.slug}`)}>
+            <a class="grid-card" href={getRelativeLocaleUrl(locale, `/series/${series.slug ?? series.id}`)}>
               <div class="grid-poster">
                 {series.cover_image_url ? (
                   <img src={series.cover_image_url} alt="" loading="lazy" />

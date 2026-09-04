@@ -1,15 +1,17 @@
 """Signed-token helpers backing the session cookie and the OAuth `state`
-parameter, plus API-key generation/hashing for #22's export gate. Session
+parameter, plus API-key generation/hashing for #22's export gate and
+password hashing for #224's email+password authentication. Session
 tokens use itsdangerous — HMAC-signed, tamper-evident, with a built-in
 expiry check. No server-side session table (see core/config.py's
-session_secret_key docstring for why).
+session_secret_key docstring for why). Passwords use argon2id, a modern
+adaptive hash resistant to brute-forcing even after database leaks.
 """
 
 import hashlib
 import secrets
 
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
+from argon2.exceptions import InvalidHashError, VerificationError
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 
 from core.config import get_settings
@@ -89,12 +91,15 @@ def hash_password(password: str) -> str:
     return _password_hasher.hash(password)
 
 
-def verify_password(password: str, password_hash: str) -> bool:
-    """Never raises on a wrong password — VerifyMismatchError is the
-    library's expected signal for "doesn't match," not an error state
-    calling code needs to handle specially.
+def verify_password(password: str, password_hash: str | None) -> bool:
+    """Never raises, regardless of password_hash state — handles None/empty/
+    malformed/garbage hashes safely, and VerifyMismatchError on a genuine
+    password mismatch. Safe to call with untrusted input (e.g. a NULL
+    password_hash from an OAuth-only account, or corrupted DB content).
     """
+    if not password_hash:
+        return False
     try:
         return _password_hasher.verify(password_hash, password)
-    except VerifyMismatchError:
+    except (InvalidHashError, VerificationError):
         return False

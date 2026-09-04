@@ -337,6 +337,38 @@ async def test_login_endpoint_rejects_wrong_password_with_401() -> None:
 
 
 @pytest.mark.asyncio
+async def test_signup_endpoint_rate_limits_repeated_duplicate_email_attempts() -> None:
+    """#221 fix-round-1: a duplicate-email signup attempt must still count
+    against the signup rate limit, not just a successful one — otherwise
+    an attacker can probe unlimited duplicate emails "for free" since
+    each probe returns a clean 409 without ever touching the limit.
+    Threshold is 5 attempts/3600s (_SIGNUP_RATE_LIMIT_MAX_ATTEMPTS in
+    routers/auth.py): 1 real signup + up to 5 duplicate-email probes
+    should trip 429 well within that budget."""
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            first = await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "correct password", "display_name": "Tester"},
+            )
+            assert first.status_code == 200
+            responses = []
+            for _ in range(6):
+                responses.append(
+                    await client.post(
+                        "/api/v1/auth/local/signup",
+                        json={"email": email, "password": "some other password", "display_name": "Tester"},
+                    )
+                )
+        assert all(r.status_code in (409, 429) for r in responses)
+        assert any(r.status_code == 429 for r in responses)
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
 async def test_login_endpoint_rate_limits_repeated_failed_attempts() -> None:
     """Mirrors this project's existing rate-limit test shape
     (test_rate_limits_and_validation.py's #139 anonymous-submission

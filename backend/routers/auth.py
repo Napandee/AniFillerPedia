@@ -208,6 +208,22 @@ async def local_signup(
     explicitly-deferred list) — the account is active immediately.
     """
     ip_identifier = f"ip:{request.client.host if request.client else 'unknown'}"
+    # #221 fix-round-1: count_recent + record() run in their OWN
+    # transaction, committed here before the guarded insert below is even
+    # attempted — deliberately NOT one shared `session.begin()` block with
+    # the insert. A prior version had both in one block; when the insert
+    # failed (duplicate email) and raised HTTPException, that exception
+    # propagated through the outer block's __aexit__ and rolled back the
+    # ENTIRE transaction — silently undoing the record() call too, so a
+    # duplicate-email probe never counted against the limit and could be
+    # retried indefinitely. This is a deliberate divergence from
+    # services/contributions.py's own ordering (which records only AFTER
+    # its guarded insert succeeds, so a failed attempt there never counts)
+    # — the design spec is silent on whether a failed signup attempt
+    # should count, and for an abuse-prevention limiter specifically meant
+    # to slow bulk fake-account creation, the safer default is that EVERY
+    # attempt counts, successful or not, so an attacker can't probe
+    # unlimited duplicate emails "for free."
     async with session.begin():
         recent = await count_recent(
             session,
@@ -218,15 +234,17 @@ async def local_signup(
         if recent >= _SIGNUP_RATE_LIMIT_MAX_ATTEMPTS:
             raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="too many signup attempts")
         await record(session, scope="local_signup", identifier=ip_identifier)
-        # #221 review: signup_local_user's own duplicate check is
-        # check-then-insert (TOCTOU) — two concurrent signups for the same
-        # email can both pass it and both attempt the insert; the loser
-        # hits the partial unique index (migration 021) at the DB level,
-        # not the clean EmailAlreadyRegistered exception. Wrapped in a
-        # SAVEPOINT (begin_nested), same idiom as services/contributions.py's
-        # one-pending-contribution-per-episode race — lets the outer
-        # transaction (and this request's rate-limit record() above) commit
-        # cleanly even when the insert itself is rolled back.
+
+    async with session.begin():
+        # signup_local_user's own duplicate check is check-then-insert
+        # (TOCTOU) — two concurrent signups for the same email can both
+        # pass it and both attempt the insert; the loser hits the partial
+        # unique index (migration 021) at the DB level, not the clean
+        # EmailAlreadyRegistered exception. Wrapped in a SAVEPOINT
+        # (begin_nested), same idiom as services/contributions.py's
+        # one-pending-contribution-per-episode race — lets this
+        # transaction commit cleanly (a no-op, since there's nothing else
+        # in it) even when the insert itself is rolled back.
         try:
             async with session.begin_nested():
                 user = await signup_local_user(

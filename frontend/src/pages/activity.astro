@@ -14,6 +14,7 @@
 // precedent).
 import Layout from "../layouts/Layout.astro";
 import StatusBadge from "../components/StatusBadge.astro";
+import BackToTop from "../components/BackToTop.astro";
 
 interface ActivityFeedItem {
   event_type: "contribution" | "series_proposal";
@@ -167,6 +168,8 @@ const nextOffset = offset + LIMIT;
       {hasNextPage && <a href={`/activity?offset=${nextOffset}`}>Next &rarr;</a>}
     </nav>
   )}
+
+  <BackToTop />
 </Layout>
 
 <style>

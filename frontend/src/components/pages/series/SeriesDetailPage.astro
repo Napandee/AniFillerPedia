@@ -24,6 +24,7 @@ import Layout from "../../../layouts/Layout.astro";
 import StatusBadge from "../../StatusBadge.astro";
 import Button from "../../Button.astro";
 import CoverFallback from "../../CoverFallback.astro";
+import BackToTop from "../../BackToTop.astro";
 import { resolveLocale, useTranslations } from "../../../i18n/utils";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import type { SeriesDetailResolution, EpisodeOut } from "../../../lib/seriesDetail";
@@ -263,10 +264,15 @@ const structuredData = series
               )}
             </div>
             <div class="title-block">
-              <div class="disp title">
+              {/* #197: a real <h1> — this is the series detail page's own
+                  page title, previously a plain <div> with zero heading
+                  elements anywhere on the page. Element change only
+                  (div -> h1); ".title" is a class selector below, so the
+                  existing visual styling carries over unchanged. */}
+              <h1 class="disp title">
                 {series!.title}
                 {series!.airing_status === "RELEASING" && <span class="airing-badge">{t("series.airingBadge")}</span>}
-              </div>
+              </h1>
             </div>
             {eraLine !== null && (
               <div class="era-tile">
@@ -755,6 +761,10 @@ const structuredData = series
             link.addEventListener("click", (event) => event.stopPropagation());
           }
         </script>
+
+        {/* #210: only on the "found" branch — the not-found state above has
+            no long list to scroll back up from. */}
+        <BackToTop label={t("common.backToTop")} />
       </>
     )
   }
@@ -835,7 +845,9 @@ const structuredData = series
   .title {
     font-size: 26px;
     font-weight: 800;
-    color: #fff8f2;
+    /* #201: was hardcoded #fff8f2, byte-identical to --color-bg — promoted
+       to the token so this color has one source of truth. */
+    color: var(--color-bg);
     line-height: 1.15;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
@@ -866,12 +878,15 @@ const structuredData = series
     display: flex;
     align-items: center;
     gap: 7px;
-    background: #2b1220;
+    /* #201: was hardcoded #2b1220/#fff8f2 — background is a genuinely new
+       color, promoted to --color-era-tile-bg; text is the same --color-bg
+       value the .title fix above just promoted. */
+    background: var(--color-era-tile-bg);
     border-radius: 14px;
     padding: 9px 16px;
     font-size: 12.5px;
     font-weight: 700;
-    color: #fff8f2;
+    color: var(--color-bg);
     flex-shrink: 0;
   }
   .era-tile svg {
@@ -920,11 +935,14 @@ const structuredData = series
     list-style: none;
     padding: 2px 8px;
     border-radius: var(--radius-pill);
-    background: #ffe1f0;
+    /* #201: was hardcoded #ffe1f0, byte-identical to --color-trust-chip-bg
+       (same pale-pink pill background used elsewhere for this same
+       "quiet secondary disclosure" role, e.g. moderation.astro's .count). */
+    background: var(--color-trust-chip-bg);
     margin-left: 4px;
   }
   .about-more summary:hover {
-    background: #ffd0e6;
+    background: var(--color-trust-chip-bg-hover);
   }
   .about-more summary::-webkit-details-marker {
     display: none;
@@ -1244,8 +1262,11 @@ const structuredData = series
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #fff1e2;
-    color: #c96a12;
+    /* #201: was hardcoded #fff1e2/#c96a12 — a genuinely new warm-amber
+       pairing (distinct from the --color-status-filler-* family), now
+       promoted to its own tokens rather than a per-component literal. */
+    background: var(--color-filter-chip-bg);
+    color: var(--color-filter-chip-text);
     font-size: 12.5px;
     font-weight: 800;
     padding: 7px 14px;
@@ -1347,10 +1368,12 @@ const structuredData = series
     list-style: none;
     padding: 2px 8px;
     border-radius: var(--radius-pill);
-    background: #ffe1f0;
+    /* #201: same duplicate-of-token drift as .about-more summary above —
+       was hardcoded #ffe1f0, byte-identical to --color-trust-chip-bg. */
+    background: var(--color-trust-chip-bg);
   }
   .range-more summary:hover {
-    background: #ffd0e6;
+    background: var(--color-trust-chip-bg-hover);
   }
   .range-more summary::-webkit-details-marker {
     display: none;
@@ -1475,7 +1498,9 @@ const structuredData = series
     white-space: nowrap;
   }
   a.pending-indicator:hover {
-    background: #ffd0e6;
+    /* #201: same --color-trust-chip-bg-hover promotion as .about-more/
+       .range-more's summary hover states above. */
+    background: var(--color-trust-chip-bg-hover);
   }
   a.pending-indicator svg {
     flex-shrink: 0;

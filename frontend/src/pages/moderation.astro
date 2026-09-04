@@ -27,7 +27,7 @@ type SeriesProposalOut = components["schemas"]["SeriesProposalOut"] & {
   // #150: same "schema.d.ts hasn't been regenerated" situation as
   // episode_data above — augmented locally, drop this augmentation once
   // schema.d.ts picks the field up on its own.
-  possible_duplicate_matches?: { id: number; title: string; slug: string | null }[];
+  possible_duplicate_matches?: { id: number; title: string; slug?: string | null }[];
 };
 
 // #148: synonym-suggestions is a brand-new router — schema.d.ts has no

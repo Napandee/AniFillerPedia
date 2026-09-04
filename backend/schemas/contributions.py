@@ -1,12 +1,28 @@
 from datetime import datetime
+from urllib.parse import urlsplit
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from schemas.episodes import CitationOut
 
+# #184: scheme allowlist for any user-submitted citation URL — rejecting
+# everything but http(s) at the Pydantic layer is what actually closes the
+# stored-XSS hole (a `javascript:` URI submitted as citation.url, stored
+# verbatim, and rendered as a raw <a href={citation.url}> on several pages
+# including one with no auth requirement at all — see issue #184). Kept as
+# a module-level constant so the DB-level CHECK constraint added in the
+# same migration (see migrations/018_*.sql) and this validator can be
+# reasoned about together rather than the allowlist living in two places
+# that could silently drift.
+ALLOWED_CITATION_URL_SCHEMES = {"http", "https"}
+
 
 class CitationIn(BaseModel):
-    url: str | None = None
+    # #184: max_length matches #140's own cap on `description` below (not
+    # a new invented number) — a real citation URL is never anywhere close
+    # to 3000 chars, but this bounds the same storage-bloat vector #140
+    # already reasoned about for the other citation fields, consistently.
+    url: str | None = Field(default=None, max_length=3000)
     # #140: bounded, not unbounded free text — the longest real citation
     # description loaded into production so far (across every
     # data/bootstrap/*.json file) is 352 chars; 3000 leaves generous
@@ -26,6 +42,29 @@ class CitationIn(BaseModel):
     # far is 509 chars; this field is meant to hold a fuller research
     # trail than `description`, so it gets more headroom, not the same cap.
     methodology_note: str | None = Field(default=None, max_length=5000)
+    # #204: how many independent sources back this citation — the exact
+    # shape the bootstrap loader (data/bootstrap/load_episodes.py) has
+    # always used, now exposed to real community submissions too. Every
+    # "N sources agree" corroboration badge live today exists only because
+    # bootstrap tooling authored it directly against the DB; without this
+    # field a real contributor genuinely cross-referencing two independent
+    # sources had no way to express that. Defaults to 1 (a single source),
+    # matching citations.source_count's own DB default (#74) — ge=1 since
+    # zero/negative sources backing a citation isn't meaningful.
+    source_count: int = Field(default=1, ge=1)
+
+    @field_validator("url")
+    @classmethod
+    def _validate_url_scheme(cls, value: str | None) -> str | None:
+        if value is None or value == "":
+            return value
+        scheme = urlsplit(value).scheme.lower()
+        if scheme not in ALLOWED_CITATION_URL_SCHEMES:
+            raise ValueError(
+                f"citation url must use one of {sorted(ALLOWED_CITATION_URL_SCHEMES)} "
+                f"(got scheme {scheme!r})"
+            )
+        return value
 
 
 class ContributionCreate(BaseModel):

@@ -274,13 +274,21 @@ services:
         max-file: "3"
     healthcheck:
       # caddy:2-alpine has both curl and wget — check Caddy's own admin
-      # API (localhost:2019, not published via `ports:` above, only
+      # API (127.0.0.1:2019, not published via `ports:` above, only
       # reachable from inside the container) rather than round-tripping
       # through the full site config to app/frontend. This deliberately
       # tests only "is Caddy itself responsive," the same separation of
       # concerns postgres's own pg_isready check already uses — app's and
       # frontend's healthchecks above already cover whether they're up.
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:2019/config/"]
+      # Real bug caught live post-merge (2026-09-04) and fixed here: using
+      # `localhost` instead of `127.0.0.1` failed every check with
+      # "Connection refused" — Alpine's wget resolves `localhost` to `::1`
+      # first, but Caddy's admin API only binds IPv4 127.0.0.1, so the
+      # IPv6 attempt was refused and nothing fell back to IPv4. Confirmed
+      # via `docker exec afp-caddy netstat -tlnp` (127.0.0.1:2019 genuinely
+      # listening) and a manual `wget` from inside the running container
+      # before changing this.
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:2019/config/"]
       interval: 30s
       timeout: 5s
       retries: 3

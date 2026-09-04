@@ -8,12 +8,16 @@ session_secret_key docstring for why).
 import hashlib
 import secrets
 
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 
 from core.config import get_settings
 
 SESSION_COOKIE_NAME = "afp_session"
 OAUTH_STATE_COOKIE_NAME = "afp_oauth_state"
+
+_password_hasher = PasswordHasher()
 
 
 def _serializer(salt: str) -> URLSafeTimedSerializer:
@@ -72,3 +76,25 @@ def hash_api_key(key: str) -> str:
     query instead of needing to re-derive a slow hash on every /export call.
     """
     return hashlib.sha256(key.encode("utf-8")).hexdigest()
+
+
+def hash_password(password: str) -> str:
+    """argon2id, not sha256/bcrypt — unlike hash_api_key above (a
+    high-entropy generated token, where a fast hash is correct and
+    standard), a human-chosen password has low entropy and needs an
+    adaptive, deliberately-slow hash to resist brute-forcing even after
+    a full database leak. PasswordHasher() defaults to argon2id with
+    reasonable time/memory cost parameters.
+    """
+    return _password_hasher.hash(password)
+
+
+def verify_password(password: str, password_hash: str) -> bool:
+    """Never raises on a wrong password — VerifyMismatchError is the
+    library's expected signal for "doesn't match," not an error state
+    calling code needs to handle specially.
+    """
+    try:
+        return _password_hasher.verify(password_hash, password)
+    except VerifyMismatchError:
+        return False

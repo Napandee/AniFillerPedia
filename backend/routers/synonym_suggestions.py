@@ -5,6 +5,7 @@ import services.synonym_suggestions as synonym_suggestions_service
 import services.turnstile as turnstile_service
 from core.db import get_session
 from core.deps import (
+    ensure_not_suspended,
     get_current_user,
     get_current_user_optional,
     get_rate_limit_identifier,
@@ -55,6 +56,10 @@ async def submit_synonym_suggestion(
     `POST /series-proposals`) — moderator approval is what promotes it
     into the live `series_synonyms` table, never a direct write.
     """
+    # #209: blocks a logged-in-but-suspended caller before Turnstile runs;
+    # no-op for an anonymous caller (current_user is None).
+    ensure_not_suspended(current_user)
+
     if current_user is None:
         allowed = await turnstile_service.verify(payload.turnstile_token)
         if not allowed:

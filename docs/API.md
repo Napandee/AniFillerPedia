@@ -87,6 +87,52 @@ service-account/bearer-token path as a real, scoped addition to design —
 not something to work around by scripting the cookie flow against a real
 human-owned account.
 
+### Local (email+password) auth
+
+A second, non-OAuth way to get the same `afp_session` cookie described
+above — added because neither OAuth provider is provisioned in production
+yet (see the project's own operational notes), so the browser-redirect
+flow above currently has no real login path to actually complete. This
+coexists with OAuth; it doesn't replace it, and a user can have both a
+local password and a linked OAuth identity on the same account over time.
+
+```
+POST /auth/local/signup
+{"email": "person@example.com", "password": "a real password", "display_name": "Person"}
+```
+
+Creates a new local account and immediately signs it in — no email
+verification step exists in v1 (a deliberate scope decision, matching
+this project's general bias against building for demand that doesn't
+exist yet), so the account is usable the moment this call returns.
+`password` must be at least 8 characters (rejected with `422` otherwise,
+the same structured validation-error shape every other endpoint's
+`pydantic` validation produces). On success (`200`), the response sets
+`afp_session` exactly as OAuth's `callback` does, and returns
+`{"id", "email", "display_name", "role"}` — a brand-new local account
+always starts as `role: "contributor"` (unless its email matches the
+bootstrap-owner env var, same convention as OAuth's own bootstrap path).
+
+`409` if the email is already registered as a local account — the
+response never distinguishes "already registered" from any other
+failure reason beyond that one documented case, so a caller can rely on
+`409` specifically meaning "sign in instead," and nothing else about an
+email's registration status is disclosed. Also rate-limited: `429` after
+5 signup attempts from the same IP within an hour.
+
+```
+POST /auth/local/login
+{"email": "person@example.com", "password": "a real password"}
+```
+
+`200` and the same `afp_session` cookie/body shape as signup on success.
+`401` on any failure — wrong password *and* unknown email both return the
+identical `401`, deliberately: this endpoint never discloses whether a
+given email is registered at all. Rate-limited per email+IP pair (not IP
+alone, so one heavily-trafficked IP can't collateral-block logins for
+every account behind it): `429` after 10 failed attempts for the same
+email+IP within a 5-minute window.
+
 ## Series
 
 ### Search / list series

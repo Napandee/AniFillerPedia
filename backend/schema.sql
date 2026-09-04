@@ -40,7 +40,10 @@ CREATE TABLE users (
     github_id     TEXT UNIQUE,
     discord_id    TEXT UNIQUE,
     google_id     TEXT UNIQUE,   -- nullable, reserved for issue #24 (Google OAuth, post-launch, not yet implemented)
-    email         TEXT,          -- from whichever provider supplied it; never the login key
+    email         TEXT,          -- from whichever provider supplied it for OAuth-only rows;
+                                  -- for local (password-having) rows, this IS the login key
+                                  -- (see users_email_unique_when_local below)
+    password_hash TEXT,
     display_name  TEXT,
     avatar_url    TEXT,
     -- 'owner' is a distinct tier above 'admin' (decided 2026-08-21, see
@@ -68,6 +71,10 @@ CREATE TABLE users (
     suspended_at      TIMESTAMPTZ,
     suspended_reason  TEXT
 );
+
+CREATE UNIQUE INDEX users_email_unique_when_local
+    ON users (email)
+    WHERE password_hash IS NOT NULL;
 
 -- =========================================================================
 -- SERIES CATALOG (community-grown — see header note above)

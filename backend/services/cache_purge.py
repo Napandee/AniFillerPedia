@@ -2,7 +2,7 @@
 Astro frontend's SSR pages (short edge-cache TTL, CLAUDE.md Architecture)
 reflect an approval immediately rather than waiting on TTL expiry.
 Registered into worker.py's HANDLERS for `contribution.approved` /
-`series_proposal.approved`.
+`series_proposal.approved` / `synonym_suggestion.approved`.
 
 Same never-raise design as services/notifications.py — see that module's
 docstring for why (a raising handler rolls back the whole shared-batch
@@ -15,6 +15,18 @@ zone 090a6d6b91e55f92740f23bad2c11de6 succeeded) — what's NOT verified is
 this exact code path end-to-end inside the deployed app, since
 CLOUDFLARE_API_TOKEN isn't provisioned yet (external-account checklist,
 CLAUDE.local.md).
+
+#189: this used to build a numeric `/series/{series_id}` URL, which #116's
+slug-based routing left stale — `frontend/src/pages/series/[slug].astro`
+is the only real route now, so a purge built against the numeric URL was
+purging a path Cloudflare never actually cached, silently defeating the
+whole "approved changes show up immediately" premise the outbox pattern
+exists to deliver here. Fixed by having every write site that emits an
+event this handler consumes embed the series' own `slug` directly in the
+outbox payload (see services/contributions.py, services/series_proposals.py,
+services/synonym_suggestions.py) — cheaper and simpler than this handler
+doing its own DB lookup per event, and it's how outbox payloads already
+carry every other piece of context a handler needs (CLAUDE.md Architecture).
 """
 
 import logging
@@ -28,26 +40,40 @@ logger = logging.getLogger(__name__)
 CLOUDFLARE_API_BASE = "https://api.cloudflare.com/client/v4"
 
 
+def build_series_purge_url(payload: dict, base_url: str) -> str | None:
+    """Pure URL-building step, split out of purge_series_page_cache so a
+    test can confirm the right path gets built for a series with a known
+    slug without needing to mock an HTTP call (#189's own acceptance
+    criteria). Returns None when the payload carries no slug to purge —
+    the caller logs and no-ops in that case.
+    """
+    slug = payload.get("slug")
+    if not slug:
+        return None
+    return f"{base_url}/series/{slug}"
+
+
 async def purge_series_page_cache(payload: dict) -> None:
     settings = get_settings()
     series_id = payload.get("series_id")
-    if series_id is None:
-        logger.warning("cache-purge handler received a payload with no series_id: %s — nothing to purge", payload)
+
+    url_to_purge = build_series_purge_url(payload, settings.public_site_base_url)
+    if url_to_purge is None:
+        logger.warning(
+            "cache-purge handler received a payload with no series slug "
+            "(series_id=%s): %s — nothing to purge",
+            series_id,
+            payload,
+        )
         return
 
     if not settings.cloudflare_api_token:
         logger.warning(
-            "CLOUDFLARE_API_TOKEN not set — cache purge skipped for series_id=%s "
+            "CLOUDFLARE_API_TOKEN not set — cache purge skipped for %s "
             "(structurally ready, not live-configured yet)",
-            series_id,
+            url_to_purge,
         )
         return
-
-    # Purges both the series page and its episode-list variant — Astro's
-    # actual route shape isn't decided yet (Phase 5 unbuilt), so this
-    # purges the plausible URL now and should be revisited once real
-    # frontend routes exist.
-    url_to_purge = f"{settings.public_site_base_url}/series/{series_id}"
 
     try:
         async with httpx.AsyncClient(timeout=10) as client:

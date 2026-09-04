@@ -201,10 +201,19 @@ async def approve_series_proposal(
         )
         episode_contributions_created = len(bulk_result.created)
 
+    # #189: series_id + slug added so the cache-purge consumer can build
+    # the real (slug-based, #116) URL — this payload previously carried
+    # neither, so approving a series proposal never purged anything at all
+    # regardless of the numeric-vs-slug bug this same fix addresses.
     await outbox_repo.write(
         session,
         event_type="series_proposal.approved",
-        payload={"series_proposal_id": approved_row.id, "title": approved_row.title},
+        payload={
+            "series_proposal_id": approved_row.id,
+            "title": approved_row.title,
+            "series_id": new_series_row.id,
+            "slug": new_series_row.slug,
+        },
     )
 
     return SeriesProposalReviewOut(

@@ -11,7 +11,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Health */
+        /**
+         * Health
+         * @description Liveness check — no auth, no database dependency. Used by the
+         *     deploy pipeline's post-deploy smoke test (pr-validate.yml) and by
+         *     anything else that just needs to know the API process is up.
+         */
         get: operations["health_api_v1_health_get"];
         put?: never;
         post?: never;
@@ -28,8 +33,39 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Version */
+        /**
+         * Version
+         * @description The currently-deployed API version string.
+         */
         get: operations["version_api_v1_version_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series/needs-research": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Needs Research
+         * @description #153: the public "needs research" queue — catalog series that need
+         *     contributor attention, each with why (`never_researched`,
+         *     `status_drift`, or `episode_count_drift`). Public, unauthenticated,
+         *     same trust level as `GET /series`'s own browse/search.
+         *
+         *     Declared before `GET /series/{id_or_slug}` below so "needs-research"
+         *     is matched as this literal path, not swallowed by the slug/id
+         *     catch-all — FastAPI/Starlette route matching is registration-order
+         *     dependent for two routes on the same prefix.
+         */
+        get: operations["list_needs_research_api_v1_series_needs_research_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -45,7 +81,17 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Series */
+        /**
+         * List Series
+         * @description Search/list the series catalog. Public, unauthenticated.
+         *
+         *     `q` matches title and known synonyms (alternate/romanized/native-script
+         *     titles). A plain call with no `q` and no external id (`anilist_id`/
+         *     `mal_id`/`anidb_id`) excludes series with zero researched episodes —
+         *     see docs/API.md for why. Pass `sort=recently_updated` to order by which
+         *     series had an episode's status most recently approved instead of the
+         *     default insertion order.
+         */
         get: operations["list_series_api_v1_series_get"];
         put?: never;
         post?: never;
@@ -68,6 +114,12 @@ export interface paths {
          *     frontend 301-redirects these to the canonical slug URL, but the API
          *     itself keeps resolving both indefinitely, since it's a public contract
          *     other consumers may already depend on) or a slug.
+         *
+         *     #155: conditional-request support — a caller sending a matching
+         *     If-None-Match/If-Modified-Since gets a bare 304 instead of the full
+         *     body; everyone else gets ETag/Last-Modified on the normal 200 so a
+         *     later poll can do the same. See services.series.get_series_conditional
+         *     for what the timestamp/ETag are derived from.
          */
         get: operations["get_series_api_v1_series__id_or_slug__get"];
         put?: never;
@@ -85,7 +137,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Series Episodes */
+        /**
+         * List Series Episodes
+         * @description #155: same conditional-request support as GET /series/{id} above,
+         *     derived from MAX(episodes.updated_at) for this series instead — see
+         *     services.episodes.list_episodes_for_series_conditional.
+         */
         get: operations["list_series_episodes_api_v1_series__series_id__episodes_get"];
         put?: never;
         post?: never;
@@ -102,7 +159,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Episode */
+        /**
+         * Get Episode
+         * @description Public, unauthenticated. Same shape as one entry from
+         *     `GET /series/{id}/episodes` — the current, live-authoritative status
+         *     for this episode, not its history (see the /history route below).
+         */
         get: operations["get_episode_api_v1_episodes__episode_id__get"];
         put?: never;
         post?: never;
@@ -119,7 +181,14 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Episode History */
+        /**
+         * Get Episode History
+         * @description Every contribution ever submitted for this episode — not just the
+         *     current live one — including each one's review outcome and any
+         *     community votes cast on it. Public, unauthenticated: this project
+         *     doesn't anonymize active contributors, only accounts that have been
+         *     deleted (see the privacy policy).
+         */
         get: operations["get_episode_history_api_v1_episodes__episode_id__history_get"];
         put?: never;
         post?: never;
@@ -136,7 +205,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Authorize */
+        /**
+         * Authorize
+         * @description Starts the login flow: redirects the browser to `provider`'s own
+         *     OAuth consent screen, with a signed, cookie-bound `state` param (see
+         *     `_start_oauth_redirect`). `provider` is `github` or `discord`. This
+         *     route (and the whole flow it starts) requires a real browser — see
+         *     docs/API.md's Authentication section for why there's no non-browser
+         *     equivalent today. `next`, if given, must be a same-site relative path;
+         *     it's where the browser lands after `callback` below completes.
+         */
         get: operations["authorize_api_v1_auth__provider__authorize_get"];
         put?: never;
         post?: never;
@@ -153,7 +231,19 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Callback */
+        /**
+         * Callback
+         * @description The redirect target `provider` sends the browser back to after
+         *     consent. Verifies the signed `state` against the cookie set by
+         *     `authorize` above (real OAuth CSRF protection, not just signature
+         *     verification — see `_start_oauth_redirect`'s own comment), exchanges
+         *     `code` for the provider's profile, then either logs in/creates a user
+         *     and sets the session cookie (`SESSION_COOKIE_NAME`), or — when this
+         *     callback is completing a `/settings/link/{provider}` flow instead of a
+         *     plain login — links the provider to the already-signed-in account. If
+         *     the original `authorize`/`start_link` call included `next`, redirects
+         *     there (303); otherwise returns the plain JSON body directly.
+         */
         get: operations["callback_api_v1_auth__provider__callback_get"];
         put?: never;
         post?: never;
@@ -172,7 +262,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Logout */
+        /**
+         * Logout
+         * @description Clears the session cookie. Idempotent — succeeds identically
+         *     whether or not the caller was actually signed in.
+         */
         post: operations["logout_api_v1_auth_logout_post"];
         delete?: never;
         options?: never;
@@ -187,7 +281,14 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Start Link */
+        /**
+         * Start Link
+         * @description Starts the same OAuth redirect as `GET /auth/{provider}/authorize`,
+         *     but for linking an additional provider to the CALLER's already-
+         *     signed-in account rather than logging in — requires auth. Never
+         *     auto-links by email match; this explicit, authenticated route is the
+         *     only way an account gains a second linked provider (CLAUDE.md).
+         */
         get: operations["start_link_api_v1_settings_link__provider__get"];
         put?: never;
         post?: never;
@@ -204,7 +305,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Read Current User */
+        /**
+         * Read Current User
+         * @description The signed-in caller's own profile, including #43's `trust_score`
+         *     (the same formula #14's community voting weights votes by) — not
+         *     available for any other user via this endpoint; see
+         *     `GET /admin/users` for the admin-only listing of everyone's.
+         */
         get: operations["read_current_user_api_v1_users_me_get"];
         put?: never;
         post?: never;
@@ -232,7 +339,14 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Request Export Access */
+        /**
+         * Request Export Access
+         * @description Issues a new `/export` API key. No auth of its own — this is how
+         *     anyone first gets a key — so it's rate-limited purely by IP rather than
+         *     by an account. `license_accepted` must be true; the returned key is
+         *     shown exactly once and can't be retrieved again (see the response's
+         *     own `note` field).
+         */
         post: operations["request_export_access_api_v1_export_request_access_post"];
         delete?: never;
         options?: never;
@@ -247,7 +361,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Export */
+        /**
+         * Get Export
+         * @description The one non-public endpoint in the read API — a full dataset dump
+         *     (every series and episode) plus an embedded attribution manifest, since
+         *     a downloaded file is disconnected from these live docs. Requires the
+         *     `X-API-Key` header, obtained from `POST /export/request-access`.
+         */
         get: operations["get_export_api_v1_export_get"];
         put?: never;
         post?: never;
@@ -286,10 +406,26 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Pending Contributions */
+        /**
+         * List Pending Contributions
+         * @description #13: the moderation queue — every contribution currently pending
+         *     review. Moderator/admin/owner only. `review_status` is accepted but
+         *     only the default `pending` is meaningful right now; anything else
+         *     404s rather than silently returning an empty list, so a caller finds
+         *     out immediately if they typo'd it.
+         */
         get: operations["list_pending_contributions_api_v1_contributions_get"];
         put?: never;
-        /** Submit Contribution */
+        /**
+         * Submit Contribution
+         * @description Propose a status (canon/filler/mixed) for one episode, with a
+         *     citation. Anonymous submission is allowed by design (CLAUDE.md) — an
+         *     anonymous caller needs a Turnstile token instead of login; an
+         *     authenticated one skips Turnstile entirely. Rejected with 409 if the
+         *     episode already has a pending contribution (#20's one-pending-per-
+         *     episode rule) — endorse/dispute that one instead via
+         *     `POST /contributions/{id}/vote`.
+         */
         post: operations["submit_contribution_api_v1_contributions_post"];
         delete?: never;
         options?: never;
@@ -306,7 +442,17 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Submit Bulk Contributions */
+        /**
+         * Submit Bulk Contributions
+         * @description #80: submit canon/filler/mixed episode RANGES for a series in one
+         *     call (range notation, e.g. `"1-44, 48-49"`), sharing one citation
+         *     across the whole batch — instead of one `POST /contributions` per
+         *     episode. Requires login (unlike the single-episode path): one call
+         *     here can create hundreds of pending contributions at once. Set
+         *     `dry_run: true` to see exactly what would happen (parsed counts,
+         *     which episodes would be skipped as already-pending) without writing
+         *     anything.
+         */
         post: operations["submit_bulk_contributions_api_v1_series__series_id__contributions_bulk_post"];
         delete?: never;
         options?: never;
@@ -321,7 +467,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** My Contributions */
+        /**
+         * My Contributions
+         * @description Every contribution the CALLER has submitted, regardless of review
+         *     status — requires login (an anonymous submission has no account to
+         *     list this against).
+         */
         get: operations["my_contributions_api_v1_contributions_mine_get"];
         put?: never;
         post?: never;
@@ -338,7 +489,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** My Votes */
+        /**
+         * My Votes
+         * @description #30: votes-cast counterpart to `/contributions/mine` above — every
+         *     endorse/dispute vote the caller has cast, with enough context (series
+         *     title, episode, current resolution) to render without a follow-up
+         *     request per row.
+         */
         get: operations["my_votes_api_v1_contributions_mine_votes_get"];
         put?: never;
         post?: never;
@@ -357,7 +514,14 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Bulk Approve Contributions */
+        /**
+         * Bulk Approve Contributions
+         * @description #92: approve up to 500 pending contributions in one call. Moderator/
+         *     admin/owner only. Never fails wholesale on one bad id — each id in
+         *     `ids` gets its own `ok`/`detail` outcome in the result, same per-id
+         *     error text `POST /contributions/{id}/approve` would give individually
+         *     (e.g. "not found" or "not pending").
+         */
         post: operations["bulk_approve_contributions_api_v1_contributions_bulk_approve_post"];
         delete?: never;
         options?: never;
@@ -374,7 +538,12 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Bulk Reject Contributions */
+        /**
+         * Bulk Reject Contributions
+         * @description Same shape as `POST /contributions/bulk-approve`, but rejecting —
+         *     with one shared `review_note` reason applied to every id in the batch
+         *     rather than a per-item note. Moderator/admin/owner only.
+         */
         post: operations["bulk_reject_contributions_api_v1_contributions_bulk_reject_post"];
         delete?: never;
         options?: never;
@@ -391,7 +560,12 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Approve Contribution */
+        /**
+         * Approve Contribution
+         * @description Directly approve a pending contribution — the moderator half of
+         *     #13's two approval paths (the other being #14's community vote
+         *     threshold below). Moderator/admin/owner only.
+         */
         post: operations["approve_contribution_api_v1_contributions__contribution_id__approve_post"];
         delete?: never;
         options?: never;
@@ -408,8 +582,39 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Reject Contribution */
+        /**
+         * Reject Contribution
+         * @description Directly reject a pending contribution, with a required
+         *     `review_note` explaining why. Moderator/admin/owner only.
+         */
         post: operations["reject_contribution_api_v1_contributions__contribution_id__reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contributions/{contribution_id}/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Withdraw Contribution
+         * @description #149: withdraw your own still-pending contribution — e.g. to fix a
+         *     typo'd citation before a moderator/vote resolves it, without waiting on
+         *     a rejection first. Only the original submitter may withdraw their own
+         *     contribution, and only while it's still `pending`; find your own
+         *     pending contributions via `GET /contributions/mine`. Anonymous
+         *     contributions cannot be withdrawn through this endpoint — there's no
+         *     persistent identity to check ownership against (see CLAUDE.md /
+         *     services/contributions.py for why this project doesn't fabricate one).
+         */
+        post: operations["withdraw_contribution_api_v1_contributions__contribution_id__withdraw_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -425,8 +630,44 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Vote On Contribution */
+        /**
+         * Vote On Contribution
+         * @description #14: the second approval path (CLAUDE.md) — endorse or dispute a
+         *     pending contribution. Open to any logged-in user, not just
+         *     moderators; anonymous voting is not offered, since a vote's value
+         *     comes from being weighted by the voter's own accountable
+         *     `trust_score`. A submitter cannot vote on their own contribution, and
+         *     each account gets one vote per contribution. Once cumulative weighted
+         *     endorsement crosses the auto-approval threshold, the contribution
+         *     promotes automatically — no moderator click needed.
+         */
         post: operations["vote_on_contribution_api_v1_contributions__contribution_id__vote_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/series-proposals/check-title": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check Title For Duplicates
+         * @description #150: pre-submission duplicate hint — the propose-series form calls
+         *     this on Title-field blur, same "possible match" pattern #165's
+         *     anilist-lookup endpoint uses for the ID-present path. Public/
+         *     unauthenticated (a plain read against our own catalog, same trust
+         *     level as GET /series's own search) and never errors on an empty/
+         *     unmatched title — an empty result is a completely normal outcome, not
+         *     a client mistake.
+         */
+        get: operations["check_title_for_duplicates_api_v1_series_proposals_check_title_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -440,10 +681,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Pending Series Proposals */
+        /**
+         * List Pending Series Proposals
+         * @description The moderation queue for series proposals — mirrors
+         *     `GET /contributions`'s own review_status behavior exactly. Moderator/
+         *     admin/owner only.
+         */
         get: operations["list_pending_series_proposals_api_v1_series_proposals_get"];
         put?: never;
-        /** Submit Series Proposal */
+        /**
+         * Submit Series Proposal
+         * @description Propose a series that isn't in the catalog yet. Anonymous
+         *     submission is allowed (needs a Turnstile token instead of login,
+         *     same as `POST /contributions`). Optionally carries `episode_data`
+         *     (#85) — the same canon/mixed/filler-range shorthand as
+         *     `POST /series/{id}/contributions/bulk` — held on the proposal until a
+         *     moderator approves it, at which point the series row and the real
+         *     bulk contributions are created together in one transaction; rejecting
+         *     the proposal discards the attached data.
+         */
         post: operations["submit_series_proposal_api_v1_series_proposals_post"];
         delete?: never;
         options?: never;
@@ -458,7 +714,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** My Series Proposals */
+        /**
+         * My Series Proposals
+         * @description Every series proposal the CALLER has submitted, regardless of
+         *     review status. Requires login.
+         */
         get: operations["my_series_proposals_api_v1_series_proposals_mine_get"];
         put?: never;
         post?: never;
@@ -477,7 +737,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Bulk Approve Series Proposals */
+        /**
+         * Bulk Approve Series Proposals
+         * @description Same shape as `POST /contributions/bulk-approve`, for series
+         *     proposals instead. Moderator/admin/owner only.
+         */
         post: operations["bulk_approve_series_proposals_api_v1_series_proposals_bulk_approve_post"];
         delete?: never;
         options?: never;
@@ -494,7 +758,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Bulk Reject Series Proposals */
+        /**
+         * Bulk Reject Series Proposals
+         * @description Same shape as `POST /contributions/bulk-reject`, for series
+         *     proposals instead. Moderator/admin/owner only.
+         */
         post: operations["bulk_reject_series_proposals_api_v1_series_proposals_bulk_reject_post"];
         delete?: never;
         options?: never;
@@ -511,7 +779,14 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Approve Series Proposal */
+        /**
+         * Approve Series Proposal
+         * @description Approves the proposal and creates the real `series` catalog row.
+         *     #85: if the proposal carried attached `episode_data`, this also
+         *     creates the real bulk contributions against the new series in the
+         *     same transaction — see `POST /series-proposals` for how that data
+         *     gets attached. Moderator/admin/owner only.
+         */
         post: operations["approve_series_proposal_api_v1_series_proposals__series_proposal_id__approve_post"];
         delete?: never;
         options?: never;
@@ -528,8 +803,169 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Reject Series Proposal */
+        /**
+         * Reject Series Proposal
+         * @description Rejects the proposal, with a required `review_note` explaining
+         *     why. Any attached `episode_data` is discarded for free — it never
+         *     became more than JSON on the now-rejected row. Moderator/admin/owner
+         *     only.
+         */
         post: operations["reject_series_proposal_api_v1_series_proposals__series_proposal_id__reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/synonym-suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Pending Synonym Suggestions
+         * @description The moderation queue for synonym suggestions — mirrors
+         *     `GET /contributions`/`GET /series-proposals`'s own review_status
+         *     behavior exactly. Moderator/admin/owner only.
+         */
+        get: operations["list_pending_synonym_suggestions_api_v1_synonym_suggestions_get"];
+        put?: never;
+        /**
+         * Submit Synonym Suggestion
+         * @description #148: suggest an alternate/dub/regional title for an already-
+         *     catalogued series. Anonymous submission is allowed (needs a Turnstile
+         *     token instead of login, same as `POST /contributions` and
+         *     `POST /series-proposals`) — moderator approval is what promotes it
+         *     into the live `series_synonyms` table, never a direct write.
+         */
+        post: operations["submit_synonym_suggestion_api_v1_synonym_suggestions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/synonym-suggestions/mine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * My Synonym Suggestions
+         * @description Every synonym suggestion the CALLER has submitted, regardless of
+         *     review status. Requires login (mirrors GET /series-proposals/mine).
+         */
+        get: operations["my_synonym_suggestions_api_v1_synonym_suggestions_mine_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/synonym-suggestions/bulk-approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk Approve Synonym Suggestions
+         * @description Same shape as the contributions/series-proposals bulk-approve
+         *     endpoints. Moderator/admin/owner only.
+         */
+        post: operations["bulk_approve_synonym_suggestions_api_v1_synonym_suggestions_bulk_approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/synonym-suggestions/bulk-reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bulk Reject Synonym Suggestions */
+        post: operations["bulk_reject_synonym_suggestions_api_v1_synonym_suggestions_bulk_reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/synonym-suggestions/{suggestion_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Approve Synonym Suggestion
+         * @description Approves the suggestion and inserts the real row into
+         *     `series_synonyms`. Moderator/admin/owner only.
+         */
+        post: operations["approve_synonym_suggestion_api_v1_synonym_suggestions__suggestion_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/synonym-suggestions/{suggestion_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reject Synonym Suggestion
+         * @description Rejects the suggestion, with a required `review_note`. Moderator/
+         *     admin/owner only.
+         */
+        post: operations["reject_synonym_suggestion_api_v1_synonym_suggestions__suggestion_id__reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/anilist-lookup/{anilist_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Anilist Lookup
+         * @description #165: proxies a single lookup to AniList's own public GraphQL API by
+         *     id — used by submission forms to pre-fill a title on blur. Public,
+         *     anonymous-allowed, but rate-limited (30/hour per caller) since an
+         *     unthrottled proxy would let anyone hammer AniList's own API on this
+         *     project's behalf.
+         */
+        get: operations["anilist_lookup_api_v1_anilist_lookup__anilist_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -543,7 +979,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Privacy Policy */
+        /**
+         * Privacy Policy
+         * @description The project's privacy policy, served as static HTML directly by the
+         *     API (no frontend page for it) — also the stable public URL Google's
+         *     OAuth verification review (#24) needs to point at.
+         */
         get: operations["privacy_policy_api_v1_privacy_get"];
         put?: never;
         post?: never;
@@ -584,7 +1025,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Users */
+        /**
+         * List Users
+         * @description Every user account, with each one's computed `trust_score` and
+         *     approved/rejected contribution counts. Admin (or owner) only — see
+         *     `GET /users/me` for a caller's own equivalent, available to everyone.
+         */
         get: operations["list_users_api_v1_admin_users_get"];
         put?: never;
         post?: never;
@@ -607,14 +1053,138 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        /** Update User Role */
+        /**
+         * Update User Role
+         * @description Promotes/demotes a user between `contributor`/`moderator`/`admin`.
+         *     Admin (or owner) only, with two further owner-tier restrictions
+         *     enforced by the service layer regardless of caller role (#28,
+         *     CLAUDE.md): the owner's own row can never be changed through this
+         *     endpoint by anyone, and only the owner can grant the `admin` role
+         *     itself (a plain admin can still promote/demote between `contributor`
+         *     and `moderator`). `role` deliberately excludes `'owner'` as a valid
+         *     value — it is set once at bootstrap and never assignable here.
+         */
         patch: operations["update_user_role_api_v1_admin_users__user_id__role_patch"];
+        trace?: never;
+    };
+    "/api/v1/activity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Activity
+         * @description #154: public, read-only "recent changes" feed — every resolved
+         *     (approved/rejected/withdrawn) episode contribution and series
+         *     proposal, newest first. Sourced entirely from the existing
+         *     `contributions`/`series_proposals` audit trail (`reviewed_at`); no new
+         *     writes, no new table. Public/unauthenticated, same trust level as
+         *     `GET /series`'s own browse — this is read-only history, not the
+         *     moderation queue (`GET /contributions`, moderator-only, pending-only).
+         */
+        get: operations["list_activity_api_v1_activity_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activity/rss": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Activity Rss
+         * @description RSS 2.0 rendering of the same feed above (Wikipedia "Recent
+         *     changes" / OpenStreetMap changesets precedent, per #154's own issue
+         *     text) — cheap to add given `list_activity` already returns exactly
+         *     the rows an RSS item needs. No `offset`: an RSS reader always wants
+         *     the newest window, not a specific page.
+         */
+        get: operations["activity_rss_api_v1_activity_rss_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * ActivityFeedItem
+         * @description #154: one resolved event in the public activity feed —
+         *     either a `contribution` (an episode-level status proposal) or a
+         *     `series_proposal` (a proposal to add a new series). Only ever a
+         *     *resolved* row (approved/rejected/withdrawn) — a still-pending
+         *     submission belongs to the moderation queue (`GET /contributions`,
+         *     moderator-only), not this public read view.
+         */
+        ActivityFeedItem: {
+            /** Event Type */
+            event_type: string;
+            /** Id */
+            id: number;
+            /** Review Status */
+            review_status: string;
+            /** Resolution Method */
+            resolution_method: string | null;
+            /**
+             * Reviewed At
+             * Format: date-time
+             */
+            reviewed_at: string;
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+            /** Review Note */
+            review_note: string | null;
+            /** Series Id */
+            series_id: number | null;
+            /** Series Title */
+            series_title: string | null;
+            /** Series Slug */
+            series_slug: string | null;
+            /** Episode Number */
+            episode_number: number | null;
+            /** Proposed Status */
+            proposed_status: string | null;
+            /** Citation Description */
+            citation_description: string | null;
+            /** Proposal Title */
+            proposal_title: string | null;
+            /** Submitter Display Name */
+            submitter_display_name: string | null;
+            /** Submitter Github Id */
+            submitter_github_id: string | null;
+            /** Reviewer Display Name */
+            reviewer_display_name: string | null;
+            /** Reviewer Github Id */
+            reviewer_github_id: string | null;
+        };
+        /** ActivityFeedOut */
+        ActivityFeedOut: {
+            /** Items */
+            items: components["schemas"]["ActivityFeedItem"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+        };
         /** AdminUserListOut */
         AdminUserListOut: {
             /** Items */
@@ -648,6 +1218,46 @@ export interface components {
             trust_score: number;
             /** Created At */
             created_at: string;
+        };
+        /**
+         * AniListLookupOut
+         * @description #165: response for GET /api/v1/anilist-lookup/{anilist_id} — the
+         *     series-proposal form's blur-triggered lookup on the anilist_id field.
+         *
+         *     Three mutually exclusive outcomes via `status`, all returned as a
+         *     normal 200 (none of these is an error — "not found"/"already exists"
+         *     are both legitimate, expected results for a live user-facing lookup):
+         *
+         *     - "already_exists": the id already belongs to a live `series` row —
+         *       existing_series_id/slug/title are populated, format/episode_count/
+         *       cover_image_url are not (no AniList call was even made, see
+         *       services/anilist_lookup.py).
+         *     - "found": a real, not-yet-catalogued AniList entry — title/format/
+         *       episode_count/cover_image_url are populated, existing_series_* are
+         *       not.
+         *     - "not_found": no such AniList id, or AniList couldn't be reached —
+         *       every field beyond status/anilist_id is null.
+         */
+        AniListLookupOut: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "found" | "already_exists" | "not_found";
+            /** Anilist Id */
+            anilist_id: number;
+            /** Title */
+            title?: string | null;
+            /** Format */
+            format?: string | null;
+            /** Episode Count */
+            episode_count?: number | null;
+            /** Cover Image Url */
+            cover_image_url?: string | null;
+            /** Existing Series Id */
+            existing_series_id?: number | null;
+            /** Existing Series Slug */
+            existing_series_slug?: string | null;
         };
         /** BulkApproveRequest */
         BulkApproveRequest: {
@@ -763,6 +1373,11 @@ export interface components {
             description: string;
             /** Methodology Note */
             methodology_note?: string | null;
+            /**
+             * Source Count
+             * @default 1
+             */
+            source_count: number;
         };
         /** CitationOut */
         CitationOut: {
@@ -887,6 +1502,23 @@ export interface components {
             existing_contribution_id: number;
         };
         /**
+         * DuplicatePendingSynonymSuggestion
+         * @description 409 response body when the one-pending-per-(series_id, synonym)
+         *     rule (migrations/015) rejects a submission — points the caller at the
+         *     existing pending suggestion, same precedent as contributions'
+         *     DuplicatePendingContribution.
+         */
+        DuplicatePendingSynonymSuggestion: {
+            detail: components["schemas"]["DuplicatePendingSynonymSuggestionDetail"];
+        };
+        /** DuplicatePendingSynonymSuggestionDetail */
+        DuplicatePendingSynonymSuggestionDetail: {
+            /** Message */
+            message: string;
+            /** Existing Suggestion Id */
+            existing_suggestion_id: number;
+        };
+        /**
          * EpisodeDataIn
          * @description #85: a contributor's optional episode-range data, attached to a
          *     series proposal in the same shape #80's bulk-submission endpoint
@@ -962,9 +1594,17 @@ export interface components {
             /** Has Pending Contribution */
             has_pending_contribution: boolean;
         };
+        /** ErrorDetail */
+        ErrorDetail: {
+            /** Detail */
+            detail: string;
+        };
         /** ExportAccessRequest */
         ExportAccessRequest: {
-            /** Email */
+            /**
+             * Email
+             * Format: email
+             */
             email: string;
             /** License Accepted */
             license_accepted: boolean;
@@ -1076,12 +1716,61 @@ export interface components {
              */
             created_at: string;
         };
+        /**
+         * NeedsResearchItem
+         * @description #153: one row of the public "needs research" queue — a series with
+         *     zero episode rows (`never_researched`), or a series #175's weekly
+         *     drift worker has flagged as no longer matching AniList's live state
+         *     (`status_drift` / `episode_count_drift`, read straight from
+         *     `series.anilist_drift_reason` rather than re-derived here). The
+         *     issue's own scope note guarantees these two cases never overlap: a
+         *     drift-flagged series always has episodes to have drifted from, so a
+         *     row is always exactly one reason, never both.
+         */
+        NeedsResearchItem: {
+            /** Id */
+            id: number;
+            /** Title */
+            title: string;
+            /** Slug */
+            slug: string | null;
+            /** Reason */
+            reason: string;
+            /** Anilist Episode Count */
+            anilist_episode_count: number | null;
+            /** Airing Status */
+            airing_status: string | null;
+            /** Researched Episode Count */
+            researched_episode_count: number;
+        };
+        /** NeedsResearchListOut */
+        NeedsResearchListOut: {
+            /** Items */
+            items: components["schemas"]["NeedsResearchItem"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+        };
         /** RoleUpdateIn */
         RoleUpdateIn: {
             /**
              * Role
              * @description One of: contributor, moderator, admin. 'owner' is deliberately not a valid value here — it is set once at bootstrap and is never assignable through this endpoint. Setting 'admin' requires the caller to be the owner.
              */
+            role: string;
+        };
+        /**
+         * RoleUpdateOut
+         * @description #138: PATCH /admin/users/{id}/role previously had no response_model
+         *     at all (returned a bare dict) — this documents the real shape.
+         */
+        RoleUpdateOut: {
+            /** Id */
+            id: number;
+            /** Role */
             role: string;
         };
         /** SeriesDetailOut */
@@ -1213,6 +1902,8 @@ export interface components {
             /** Review Note */
             review_note: string | null;
             episode_data?: components["schemas"]["EpisodeDataOut"] | null;
+            /** Possible Duplicate Matches */
+            possible_duplicate_matches?: components["schemas"]["SimilarSeriesMatchOut"][];
         };
         /** SeriesProposalReject */
         SeriesProposalReject: {
@@ -1231,6 +1922,91 @@ export interface components {
             review_note: string | null;
             /** Episode Contributions Created */
             episode_contributions_created?: number | null;
+        };
+        /**
+         * SimilarSeriesCheckOut
+         * @description #150: response shape for the standalone, pre-submission
+         *     GET /series-proposals/check-title lookup the frontend calls on
+         *     Title-field blur — same matches list as SeriesProposalOut's own
+         *     possible_duplicate_matches, just available before a submitter has
+         *     committed to the rest of the form.
+         */
+        SimilarSeriesCheckOut: {
+            /** Matches */
+            matches: components["schemas"]["SimilarSeriesMatchOut"][];
+        };
+        /**
+         * SimilarSeriesMatchOut
+         * @description #150: a single "this might already exist" hint against the live
+         *     `series` catalog. Surfaced both in the submission response (frontend
+         *     shows it to the submitter right after they submit) and in the
+         *     moderation-queue listing (services/series_proposals.py's _row_to_out
+         *     computes this fresh every time a proposal is serialized, so a
+         *     moderator always sees it against the CURRENT catalog, not a stale
+         *     snapshot from submission time) — never blocking, just a pointer.
+         */
+        SimilarSeriesMatchOut: {
+            /** Id */
+            id: number;
+            /** Title */
+            title: string;
+            /** Slug */
+            slug?: string | null;
+        };
+        /** SynonymSuggestionCreate */
+        SynonymSuggestionCreate: {
+            /** Series Id */
+            series_id: number;
+            /** Synonym */
+            synonym: string;
+            /** Note */
+            note?: string | null;
+            /** License Accepted */
+            license_accepted: boolean;
+            /** Turnstile Token */
+            turnstile_token?: string | null;
+        };
+        /** SynonymSuggestionOut */
+        SynonymSuggestionOut: {
+            /** Id */
+            id: number;
+            /** Series Id */
+            series_id: number;
+            /** Series Title */
+            series_title?: string | null;
+            /** Series Slug */
+            series_slug?: string | null;
+            /** Synonym */
+            synonym: string;
+            /** Note */
+            note: string | null;
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+            /** Review Status */
+            review_status: string;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Review Note */
+            review_note: string | null;
+        };
+        /** SynonymSuggestionReject */
+        SynonymSuggestionReject: {
+            /** Review Note */
+            review_note: string;
+        };
+        /** SynonymSuggestionReviewOut */
+        SynonymSuggestionReviewOut: {
+            /** Id */
+            id: number;
+            /** Review Status */
+            review_status: string;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Review Note */
+            review_note: string | null;
         };
         /** UserOut */
         UserOut: {
@@ -1376,6 +2152,38 @@ export interface operations {
             };
         };
     };
+    list_needs_research_api_v1_series_needs_research_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NeedsResearchListOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_series_api_v1_series_get: {
         parameters: {
             query?: {
@@ -1434,6 +2242,15 @@ export interface operations {
                     "application/json": components["schemas"]["SeriesDetailOut"];
                 };
             };
+            /** @description No series matches this id or slug */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1463,6 +2280,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["EpisodeOut"][];
+                };
+            };
+            /** @description No series matches this id or slug */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -1496,6 +2322,15 @@ export interface operations {
                     "application/json": components["schemas"]["EpisodeOut"];
                 };
             };
+            /** @description No episode matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1525,6 +2360,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ContributionHistoryEntry"][];
+                };
+            };
+            /** @description No episode matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -1558,6 +2402,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Unknown provider (must be github or discord) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -1594,6 +2447,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description OAuth state missing/mismatched or invalid/expired */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Unknown provider (must be github or discord) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Provider account already linked to a different user */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -1651,6 +2531,24 @@ export interface operations {
                     "application/json": unknown;
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Unknown provider (must be github or discord) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1680,6 +2578,15 @@ export interface operations {
                     "application/json": components["schemas"]["UserOut"];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
         };
     };
     delete_current_user_api_v1_users_me_delete: {
@@ -1697,6 +2604,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
             };
         };
     };
@@ -1722,6 +2638,15 @@ export interface operations {
                     "application/json": components["schemas"]["ExportAccessResponse"];
                 };
             };
+            /** @description license_accepted was not true */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1729,6 +2654,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkSubmissionRateLimited"];
                 };
             };
         };
@@ -1751,6 +2685,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ExportOut"];
+                };
+            };
+            /** @description Missing or invalid/revoked X-API-Key header */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -1782,6 +2725,24 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Missing X-API-Key header */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Unknown API key */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1811,6 +2772,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ContributionOut"][];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description review_status is anything other than 'pending' */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -1864,6 +2852,15 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkSubmissionRateLimited"];
+                };
+            };
         };
     };
     submit_bulk_contributions_api_v1_series__series_id__contributions_bulk_post: {
@@ -1888,6 +2885,24 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BulkContributionResult"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No series matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -1928,6 +2943,15 @@ export interface operations {
                     "application/json": components["schemas"]["ContributionOut"][];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
         };
     };
     my_votes_api_v1_contributions_mine_votes_get: {
@@ -1946,6 +2970,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MyVoteOut"][];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
         };
@@ -1970,6 +3003,24 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -2005,6 +3056,24 @@ export interface operations {
                     "application/json": components["schemas"]["BulkModerationResult"];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2034,6 +3103,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ContributionReviewOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No contribution matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Contribution is not pending review */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -2071,6 +3176,109 @@ export interface operations {
                     "application/json": components["schemas"]["ContributionReviewOut"];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No contribution matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Contribution is not pending review */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    withdraw_contribution_api_v1_contributions__contribution_id__withdraw_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contribution_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContributionReviewOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description You did not submit this contribution */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No contribution matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Contribution is not pending review */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2106,6 +3314,73 @@ export interface operations {
                     "application/json": components["schemas"]["VoteCastOut"];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Cannot vote on your own submitted contribution */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No contribution matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Contribution is not pending, or you have already voted on it */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    check_title_for_duplicates_api_v1_series_proposals_check_title_get: {
+        parameters: {
+            query?: {
+                title?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimilarSeriesCheckOut"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2135,6 +3410,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SeriesProposalOut"][];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description review_status is anything other than 'pending' */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -2179,6 +3481,15 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkSubmissionRateLimited"];
+                };
+            };
         };
     };
     my_series_proposals_api_v1_series_proposals_mine_get: {
@@ -2197,6 +3508,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SeriesProposalOut"][];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
         };
@@ -2221,6 +3541,24 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -2256,6 +3594,24 @@ export interface operations {
                     "application/json": components["schemas"]["BulkModerationResult"];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2285,6 +3641,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SeriesProposalReviewOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No series proposal matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Not pending review, or a series with one of this proposal's external IDs (anilist_id/mal_id/anidb_id) already exists in the catalog */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
             /** @description Validation Error */
@@ -2322,6 +3714,42 @@ export interface operations {
                     "application/json": components["schemas"]["SeriesProposalReviewOut"];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No series proposal matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Series proposal is not pending review */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2329,6 +3757,433 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_pending_synonym_suggestions_api_v1_synonym_suggestions_get: {
+        parameters: {
+            query?: {
+                review_status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SynonymSuggestionOut"][];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description review_status is anything other than 'pending' */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_synonym_suggestion_api_v1_synonym_suggestions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SynonymSuggestionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SynonymSuggestionOut"];
+                };
+            };
+            /** @description No series matches series_id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DuplicatePendingSynonymSuggestion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+        };
+    };
+    my_synonym_suggestions_api_v1_synonym_suggestions_mine_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SynonymSuggestionOut"][];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+        };
+    };
+    bulk_approve_synonym_suggestions_api_v1_synonym_suggestions_bulk_approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkApproveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bulk_reject_synonym_suggestions_api_v1_synonym_suggestions_bulk_reject_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkRejectRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkModerationResult"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    approve_synonym_suggestion_api_v1_synonym_suggestions__suggestion_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                suggestion_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SynonymSuggestionReviewOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No synonym suggestion matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Not pending review, or this series already has that exact synonym recorded */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reject_synonym_suggestion_api_v1_synonym_suggestions__suggestion_id__reject_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                suggestion_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SynonymSuggestionReject"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SynonymSuggestionReviewOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No synonym suggestion matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Synonym suggestion is not pending review */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    anilist_lookup_api_v1_anilist_lookup__anilist_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                anilist_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AniListLookupOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too many AniList lookups this hour */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
         };
@@ -2394,6 +4249,24 @@ export interface operations {
                     "application/json": components["schemas"]["AdminUserListOut"];
                 };
             };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Admin or owner access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2426,9 +4299,97 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["RoleUpdateOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Admin/owner access required, OR the target is the owner (role immutable), OR only the owner may grant the admin role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No user matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description role is not one of the valid values */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+        };
+    };
+    list_activity_api_v1_activity_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityFeedOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    activity_rss_api_v1_activity_rss_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */

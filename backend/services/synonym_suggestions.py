@@ -234,10 +234,17 @@ async def approve_synonym_suggestion(
             detail="this series already has that exact synonym recorded",
         ) from exc
 
+    # #189: slug added so the cache-purge consumer can build the real
+    # (slug-based, #116) URL rather than the stale numeric one.
+    series_slug = await series_repo.get_slug_by_id(session, approved_row.series_id)
     await outbox_repo.write(
         session,
         event_type="synonym_suggestion.approved",
-        payload={"synonym_suggestion_id": approved_row.id, "series_id": approved_row.series_id},
+        payload={
+            "synonym_suggestion_id": approved_row.id,
+            "series_id": approved_row.series_id,
+            "slug": series_slug,
+        },
     )
 
     return SynonymSuggestionReviewOut(

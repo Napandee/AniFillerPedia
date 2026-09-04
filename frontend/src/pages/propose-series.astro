@@ -44,6 +44,9 @@ interface FormValues {
   citation_url: string;
   citation_description: string;
   citation_methodology_note: string;
+  // #204: same shape as the bulk-submit form's own field — shared across
+  // the whole attached episode-data batch, one citation row per proposal.
+  citation_source_count: string;
 }
 
 const emptyValues: FormValues = {
@@ -58,6 +61,7 @@ const emptyValues: FormValues = {
   citation_url: "",
   citation_description: "",
   citation_methodology_note: "",
+  citation_source_count: "1",
 };
 
 let values: FormValues = emptyValues;
@@ -81,6 +85,7 @@ if (Astro.request.method === "POST") {
     citation_url: String(form.get("citation_url") ?? ""),
     citation_description: String(form.get("citation_description") ?? ""),
     citation_methodology_note: String(form.get("citation_methodology_note") ?? ""),
+    citation_source_count: String(form.get("citation_source_count") ?? "1"),
   };
   licenseAccepted = form.get("license_accepted") === "on";
   const turnstileToken = String(form.get("turnstile_token") ?? "").trim();
@@ -121,6 +126,12 @@ if (Astro.request.method === "POST") {
         methodology_note: values.citation_methodology_note.trim()
           ? values.citation_methodology_note.trim()
           : undefined,
+        // #204: same parse-or-fall-back-to-1 rule as the single-episode
+        // and bulk-submit forms.
+        source_count:
+          Number.isInteger(Number(values.citation_source_count)) && Number(values.citation_source_count) >= 1
+            ? Number(values.citation_source_count)
+            : 1,
       },
     };
   }
@@ -351,6 +362,21 @@ if (Astro.request.method === "POST") {
                   placeholder="e.g. cross-referenced against a second independent thread, noted any disagreement and how it was resolved..."
                   set:text={values.citation_methodology_note}
                 />
+              </label>
+              <label class="field field--narrow">
+                <span class="field-label">
+                  Independent sources backing this <span class="optional">(optional)</span>
+                </span>
+                <input
+                  type="number"
+                  name="citation_source_count"
+                  min="1"
+                  step="1"
+                  value={values.citation_source_count}
+                />
+                <span class="field-hint">
+                  Leave at 1 unless you genuinely cross-referenced more than one independent source.
+                </span>
               </label>
             </div>
 
@@ -619,6 +645,16 @@ if (Astro.request.method === "POST") {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+  }
+  /* #204: independent-sources count field — narrow, since it's a small
+     integer, not a full-width text field like everything else here. */
+  .field--narrow input[type="number"] {
+    width: 90px;
+  }
+  .field-hint {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-faint);
   }
   .hint {
     margin: -8px 0 0;

@@ -1,4 +1,4 @@
--- #221 (implementation of the 2026-09-04 local-auth design spec): adds
+-- #224 (implementation of the 2026-09-04 local-auth design spec): adds
 -- email+password login as a second, first-class way to authenticate,
 -- coexisting with the existing GitHub/Discord OAuth columns rather than
 -- replacing them. Additive only — one nullable column, one partial

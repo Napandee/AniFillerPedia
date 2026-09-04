@@ -485,6 +485,39 @@ async def test_login_endpoint_rate_limits_repeated_failed_attempts() -> None:
 
 
 @pytest.mark.asyncio
+async def test_login_rate_limit_shares_one_bucket_across_email_case() -> None:
+    """Final-review re-review finding: normalize_email() made login
+    case-insensitive (services/auth.py), but the rate-limit identifier in
+    routers/auth.py was built from the raw, un-normalized payload.email —
+    so varying case on each attempt bought a fresh bucket every time,
+    turning the 10-attempts/300s limiter into an effectively unbounded
+    one for the exact account it's meant to protect. Proves attempts
+    against differently-cased spellings of the same email all land in
+    one bucket and still trip 429."""
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            first = await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "correct password", "display_name": "Tester"},
+            )
+            assert first.status_code == 200
+            responses = []
+            for i in range(12):
+                varied_email = email.upper() if i % 2 == 0 else email
+                responses.append(
+                    await client.post(
+                        "/api/v1/auth/local/login",
+                        json={"email": varied_email, "password": "wrong password"},
+                    )
+                )
+        assert any(r.status_code == 429 for r in responses)
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
 async def test_signup_session_cookie_authenticates_against_users_me() -> None:
     """Final-review fix (I6): the whole point of local auth is that its
     session cookie is the SAME session the rest of the API already

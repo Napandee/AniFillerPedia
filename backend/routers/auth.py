@@ -21,6 +21,7 @@ from services.auth import (
     link_provider_to_current_user,
     login_local_user,
     login_or_create_user,
+    normalize_email,
     signup_local_user,
 )
 from services.oauth_providers import (
@@ -281,7 +282,7 @@ async def local_login(
     # credential-stuffing against one targeted account without
     # collateral-blocking every other login attempt sharing that IP
     # (an office network, a VPN exit node, etc.), per the design spec.
-    rate_identifier = f"login:{payload.email}:{request.client.host if request.client else 'unknown'}"
+    rate_identifier = f"login:{normalize_email(payload.email)}:{request.client.host if request.client else 'unknown'}"
     async with session.begin():
         recent = await count_recent(
             session,

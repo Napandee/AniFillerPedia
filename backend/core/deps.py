@@ -70,9 +70,16 @@ def get_rate_limit_identifier(request: Request, current_user: Row | None) -> str
     POST /series-proposals, POST /export/request-access) — the caller's
     own user id when authenticated (so a shared NAT/proxy IP never lumps
     distinct logged-in callers into one bucket), the remote IP otherwise.
-    Relies on the Dockerfile's `--proxy-headers --forwarded-allow-ips=*`
-    uvicorn flags so `request.client.host` reflects the real client IP
-    behind Caddy, not the proxy's own address — see repositories/
+    Relies on the Dockerfile's `--proxy-headers` uvicorn flag so
+    `request.client.host` reflects the real client IP behind Caddy, not
+    the proxy's own address. #185: the actual integrity of that value
+    comes from the Caddyfile's `trusted_proxies` global option (which
+    stops a client-supplied X-Forwarded-For from being trusted unless it
+    genuinely arrived via a trusted upstream hop) plus this Dockerfile's
+    `--forwarded-allow-ips` being scoped to the docker-compose network's
+    private range rather than `*` — before that fix, a caller could set
+    an arbitrary X-Forwarded-For and have it trusted verbatim here,
+    trivially defeating every IP-keyed limit below. See repositories/
     rate_limits.py for what this identifier is actually counted against.
     """
     if current_user is not None:

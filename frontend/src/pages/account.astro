@@ -13,9 +13,19 @@ import { createApiClient } from "../api/client";
 
 // Redirect to login rather than rendering a 401 error page — must happen
 // before any data fetching below.
+//
+// #200: preserve where the visitor was headed (`next`) and why they were
+// bounced (`notice`) — a bare Astro.redirect("/") previously dropped both,
+// so a visitor whose session expired had no explanation and had to
+// manually re-navigate back to /account after logging back in.
+// HomePage.astro reads `notice` to show a one-line banner; Header.astro
+// reads `next` (in preference to the homepage's own pathname) to build its
+// login links, so a successful login lands back here.
 const user = Astro.locals.user;
 if (!user) {
-  return Astro.redirect("/");
+  return Astro.redirect(
+    `/?next=${encodeURIComponent(Astro.url.pathname)}&notice=login_required`
+  );
 }
 
 const cookie = Astro.request.headers.get("cookie") ?? "";
@@ -44,7 +54,9 @@ const resolutionLabel = (method: string | null) => {
 <Layout title="My Account — AniFillerPedia" noindex>
   <section class="account-head">
     <div>
-      <div class="disp headline">Hey, {user.display_name ?? "there"}</div>
+      {/* #197: real heading element — element change only, ".headline" is
+          a class selector so the existing styling is unchanged. */}
+      <h1 class="disp headline">Hey, {user.display_name ?? "there"}</h1>
       <div class="sub">
         <span class="role-chip">{user.role}</span>
         <span class="trust-chip">Trust score: {user.trust_score}</span>

@@ -55,7 +55,16 @@ const MODERATOR_ROLES = ["moderator", "admin", "owner"];
 
 const user = Astro.locals.user;
 if (!user || !MODERATOR_ROLES.includes(user.role)) {
-  return Astro.redirect("/");
+  // #200: preserve where the visitor was headed (`next`) and why they were
+  // bounced (`notice`) — a bare Astro.redirect("/") previously dropped both,
+  // so a moderator whose session expired had no explanation and had to
+  // manually re-navigate back to /moderation after logging back in.
+  // HomePage.astro reads `notice` to show a one-line banner; Header.astro
+  // reads `next` (in preference to the homepage's own pathname) to build
+  // its login links, so a successful login lands back here.
+  return Astro.redirect(
+    `/?next=${encodeURIComponent(Astro.url.pathname)}&notice=login_required`
+  );
 }
 
 const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
@@ -95,7 +104,9 @@ function formatDate(iso: string): string {
 
 <Layout title="Review queue — AniFillerPedia" noindex>
   <section class="queue">
-    <div class="disp heading">Review queue</div>
+    {/* #197: real heading element — element change only, ".heading" is a
+        class selector so the existing styling is unchanged. */}
+    <h1 class="disp heading">Review queue</h1>
     <p class="sub">
       Pending community submissions. Approving promotes it live; rejecting requires a note so the
       contributor (or a future reader of the audit trail) understands why.

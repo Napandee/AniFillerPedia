@@ -9,7 +9,15 @@ from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import get_settings
-from repositories.users import create_user, find_by_provider_id, link_provider, touch_last_login
+from core.security import hash_password, verify_password
+from repositories.users import (
+    create_local_user,
+    create_user,
+    find_by_email_local,
+    find_by_provider_id,
+    link_provider,
+    touch_last_login,
+)
 
 
 class AccountLinkConflict(Exception):
@@ -17,6 +25,13 @@ class AccountLinkConflict(Exception):
     provider_id already linked to a DIFFERENT user. Never silently merge
     or steal accounts.
     """
+
+
+class EmailAlreadyRegistered(Exception):
+    """Raised when a signup targets an email already registered as a
+    local account. Never silently overwrite or merge — the caller turns
+    this into a 409, matching this project's existing pattern for other
+    uniqueness constraints (e.g. the one-pending-per-episode rule)."""
 
 
 @dataclass
@@ -61,6 +76,44 @@ async def login_or_create_user(
         avatar_url=profile.avatar_url,
         role=role,
     )
+
+
+def _is_bootstrap_owner_email(email: str) -> bool:
+    settings = get_settings()
+    return bool(settings.initial_admin_email) and email == settings.initial_admin_email
+
+
+async def signup_local_user(
+    session: AsyncSession, *, email: str, password: str, display_name: str
+) -> Row:
+    existing = await find_by_email_local(session, email)
+    if existing is not None:
+        raise EmailAlreadyRegistered(f"{email} is already registered")
+
+    # 'owner', not 'admin' — same bootstrap-identity rule as the OAuth path
+    # above (_is_bootstrap_owner), just keyed by email instead of a GitHub
+    # provider_id, since a local account has no provider_id at all.
+    role = "owner" if _is_bootstrap_owner_email(email) else "contributor"
+    return await create_local_user(
+        session,
+        email=email,
+        password_hash=hash_password(password),
+        display_name=display_name,
+        role=role,
+    )
+
+
+async def login_local_user(session: AsyncSession, *, email: str, password: str) -> Row | None:
+    """Returns None on ANY failure — unknown email or wrong password are
+    deliberately indistinguishable to the caller, so a login-failure
+    response never discloses whether an email is registered at all."""
+    user = await find_by_email_local(session, email)
+    if user is None:
+        return None
+    if not verify_password(password, user.password_hash):
+        return None
+    await touch_last_login(session, user.id)
+    return user
 
 
 async def link_provider_to_current_user(

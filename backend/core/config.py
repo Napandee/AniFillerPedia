@@ -39,6 +39,7 @@ class Settings(BaseSettings):
     discord_oauth_client_id: str = ""
     discord_oauth_client_secret: str = ""
     initial_admin_github_id: str = ""
+    initial_admin_email: str = ""
 
     # Signs session cookies and the OAuth `state` param (CSRF protection +
     # carrying "this is a /settings/link attempt for user N" safely across

@@ -10,6 +10,7 @@ from schemas.admin import (
     RoleUpdateOut,
     SuspensionUpdateIn,
     SuspensionUpdateOut,
+    TrafficRollupListOut,
     VoteClusteringReportOut,
 )
 from schemas.errors import ErrorDetail
@@ -147,3 +148,24 @@ async def vote_clustering_report(
     human look.
     """
     return await admin_service.get_vote_clustering_report(session, min_reciprocal_count, limit)
+
+
+@router.get("/admin/traffic", response_model=TrafficRollupListOut, responses=_ADMIN_ONLY)
+async def traffic_rollups(
+    limit: int = Query(default=30, ge=1, le=90),
+    current_user=Depends(require_admin),  # noqa: ANN001 - Row, admin-only
+    session: AsyncSession = Depends(get_session),
+) -> TrafficRollupListOut:
+    """#221: the daily Cloudflare traffic-analytics rollup dashboard's
+    data source — most recent `limit` days, newest first. Admin/owner
+    only (not moderator-accessible like vote-clustering-report above),
+    per #219's decision: raw traffic data (request volume, country-level
+    geography) is higher-signal than anything else this project exposes,
+    with no real value to a casual visitor.
+
+    An empty `items` list is a legitimate, expected v1 response — either
+    CLOUDFLARE_ANALYTICS_API_TOKEN isn't provisioned yet, or the daily
+    worker loop simply hasn't run yet — the frontend renders an explicit
+    "no data yet" state for this, not an error.
+    """
+    return await admin_service.list_traffic_rollups(session, limit)

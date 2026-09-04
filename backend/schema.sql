@@ -492,3 +492,34 @@ CREATE TABLE series_episode_schedule (
     aired_at        TIMESTAMPTZ NOT NULL,
     PRIMARY KEY (series_id, episode_number)
 );
+
+-- =========================================================================
+-- TRAFFIC ANALYTICS ROLLUP (issue #221 — implementation of #219's decision)
+-- =========================================================================
+
+-- One row per UTC calendar day the daily rollup worker loop ran, built
+-- from Cloudflare's own passive zone analytics (GraphQL Analytics API,
+-- httpRequestsAdaptiveGroups dataset) — not a client-side beacon, and
+-- covers both the Astro frontend and `/api/v1/*` alike since Cloudflare
+-- proxies both identically (see #219's closing comment). Cloudflare's own
+-- retention window for this data is short; this table is what gives the
+-- project permanent history beyond it.
+--
+-- rollup_date is UNIQUE so a same-day rerun (worker restart, manual
+-- re-trigger) overwrites that day's row via ON CONFLICT rather than
+-- accumulating duplicates. top_paths/status_breakdown/top_countries are
+-- JSONB rather than normalized child tables — small, admin-only,
+-- read-mostly rollup data, same precedent as series_proposals.episode_data
+-- (#85). Each top_paths entry carries its own path_kind ("frontend" vs.
+-- "api", split on whether the path starts with "/api/v1/").
+CREATE TABLE traffic_daily_rollups (
+    id                SERIAL PRIMARY KEY,
+    rollup_date       DATE NOT NULL UNIQUE,
+    total_requests    INTEGER NOT NULL,
+    top_paths         JSONB NOT NULL,
+    status_breakdown  JSONB NOT NULL,
+    top_countries     JSONB NOT NULL,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX traffic_daily_rollups_rollup_date_desc ON traffic_daily_rollups (rollup_date DESC);

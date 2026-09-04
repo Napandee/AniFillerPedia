@@ -330,6 +330,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/users/me/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export Current User Data
+         * @description #208 (GDPR Article 15, right of access): bundles the caller's full
+         *     profile plus every `/mine`-scoped thing they've submitted/voted on
+         *     into one response. Reuses the exact same repository/service queries
+         *     `GET /users/me`, `GET /contributions/mine`, `GET /contributions/mine/
+         *     votes`, `GET /series-proposals/mine`, and `GET /synonym-suggestions/
+         *     mine` already expose separately — this is a bundling endpoint, not a
+         *     second implementation of any of them.
+         */
+        get: operations["export_current_user_data_api_v1_users_me_export_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/export/request-access": {
         parameters: {
             query?: never;
@@ -972,6 +998,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Terms Of Service
+         * @description #209: Terms of Service / acceptable-use policy, served as static
+         *     HTML directly by the API (no frontend page to hand-copy the prose
+         *     into), same pattern as `GET /privacy` above. Covers contributor
+         *     conduct, our right to remove content/reject contributions/terminate
+         *     access, the account-suspension mechanism (routers/admin.py's
+         *     PATCH /admin/users/{id}/suspension), and a service-level liability
+         *     disclaimer distinct from DATA_LICENSE's own data-only one.
+         */
+        get: operations["terms_of_service_api_v1_tos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/privacy": {
         parameters: {
             query?: never;
@@ -1065,6 +1117,99 @@ export interface paths {
          *     value — it is set once at bootstrap and never assignable here.
          */
         patch: operations["update_user_role_api_v1_admin_users__user_id__role_patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}/suspension": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Suspension
+         * @description #209: admin/owner-only account suspension — the enforcement half of
+         *     the ToS (the other half is the `/tos` policy page itself). A suspended
+         *     account is blocked from submitting contributions/series-proposals/
+         *     synonym-suggestions and from voting (core/deps.py's
+         *     ensure_not_suspended/require_active_user), but NOT from reading or
+         *     from exercising GDPR rights on their own account (GET /users/me,
+         *     GET /users/me/export, DELETE /users/me all stay unaffected — this is
+         *     account-conduct enforcement, not a way to strip someone's own data
+         *     rights). The owner's own row is immune, same as role changes.
+         */
+        patch: operations["update_user_suspension_api_v1_admin_users__user_id__suspension_patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/vote-clustering-report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Vote Clustering Report
+         * @description #203: the Sybil-monitoring tripwire named as an explicit open item
+         *     in CLAUDE.md's #14 decision record — surfaces pairs of accounts that
+         *     have repeatedly endorsed EACH OTHER's pending contributions, the
+         *     cheapest concrete signal of two colluding accounts combining
+         *     `trust_score` weight to auto-approve each other with no moderator
+         *     click needed. Not automated anomaly detection or blocking — still
+         *     explicitly deferred per the #14 decision, unchanged here — a
+         *     moderator (or admin/owner) runs this periodically and reviews the
+         *     flagged pairs by hand, same "manual is fine for v1" pattern as #23's
+         *     canary/log-review approach. Moderator-accessible (not admin-only, the
+         *     only endpoint on this router that isn't) since moderators are this
+         *     project's day-to-day abuse-watchers. `min_reciprocal_count` (default
+         *     2) is a starting heuristic, not tuned against real abuse data — a
+         *     single mutual endorsement is common and innocuous in a small
+         *     community; repeated mutual endorsement is the actual signal worth a
+         *     human look.
+         */
+        get: operations["vote_clustering_report_api_v1_admin_vote_clustering_report_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/traffic": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Traffic Rollups
+         * @description #221: the daily Cloudflare traffic-analytics rollup dashboard's
+         *     data source — most recent `limit` days, newest first. Admin/owner
+         *     only (not moderator-accessible like vote-clustering-report above),
+         *     per #219's decision: raw traffic data (request volume, country-level
+         *     geography) is higher-signal than anything else this project exposes,
+         *     with no real value to a casual visitor.
+         *
+         *     An empty `items` list is a legitimate, expected v1 response — either
+         *     CLOUDFLARE_ANALYTICS_API_TOKEN isn't provisioned yet, or the daily
+         *     worker loop simply hasn't run yet — the frontend renders an explicit
+         *     "no data yet" state for this, not an error.
+         */
+        get: operations["traffic_rollups_api_v1_admin_traffic_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/activity": {
@@ -1953,6 +2098,30 @@ export interface components {
             /** Slug */
             slug?: string | null;
         };
+        /**
+         * SuspensionUpdateIn
+         * @description #209: body for PATCH /admin/users/{id}/suspension.
+         */
+        SuspensionUpdateIn: {
+            /** Suspended */
+            suspended: boolean;
+            /**
+             * Reason
+             * @description Moderator-facing note explaining the suspension. Ignored (cleared) when suspended=false.
+             */
+            reason?: string | null;
+        };
+        /** SuspensionUpdateOut */
+        SuspensionUpdateOut: {
+            /** Id */
+            id: number;
+            /** Suspended */
+            suspended: boolean;
+            /** Suspended At */
+            suspended_at: string | null;
+            /** Suspended Reason */
+            suspended_reason: string | null;
+        };
         /** SynonymSuggestionCreate */
         SynonymSuggestionCreate: {
             /** Series Id */
@@ -2008,10 +2177,87 @@ export interface components {
             /** Review Note */
             review_note: string | null;
         };
+        /** TrafficCountryEntryOut */
+        TrafficCountryEntryOut: {
+            /** Country */
+            country: string;
+            /** Count */
+            count: number;
+        };
+        /**
+         * TrafficPathEntryOut
+         * @description One entry in a day's top_paths — see services/traffic_analytics.py's
+         *     aggregate_rollup() for how this is computed.
+         */
+        TrafficPathEntryOut: {
+            /** Path */
+            path: string;
+            /**
+             * Path Kind
+             * @description 'frontend' or 'api' — split on whether path starts with /api/v1/
+             */
+            path_kind: string;
+            /** Count */
+            count: number;
+        };
+        /** TrafficRollupListOut */
+        TrafficRollupListOut: {
+            /** Items */
+            items: components["schemas"]["TrafficRollupOut"][];
+        };
+        /**
+         * TrafficRollupOut
+         * @description #221: one day's persisted Cloudflare traffic rollup.
+         */
+        TrafficRollupOut: {
+            /** Rollup Date */
+            rollup_date: string;
+            /** Total Requests */
+            total_requests: number;
+            /** Top Paths */
+            top_paths: components["schemas"]["TrafficPathEntryOut"][];
+            /** Status Breakdown */
+            status_breakdown: components["schemas"]["TrafficStatusEntryOut"][];
+            /** Top Countries */
+            top_countries: components["schemas"]["TrafficCountryEntryOut"][];
+            /** Created At */
+            created_at: string;
+        };
+        /** TrafficStatusEntryOut */
+        TrafficStatusEntryOut: {
+            /** Status */
+            status: number;
+            /** Count */
+            count: number;
+        };
+        /**
+         * UserExportOut
+         * @description #208: GDPR Article 15 bundle — the caller's full profile plus
+         *     everything they've submitted/voted on, in one response. Reuses the
+         *     exact same repository/service queries each `/mine`-scoped endpoint
+         *     already exposes separately (services/contributions.py's
+         *     list_my_contributions/list_my_votes, services/series_proposals.py's
+         *     list_my_series_proposals, services/synonym_suggestions.py's
+         *     list_my_synonym_suggestions) rather than reimplementing any of them —
+         *     see routers/users.py's export_current_user_data.
+         */
+        UserExportOut: {
+            profile: components["schemas"]["UserOut"];
+            /** Contributions */
+            contributions: components["schemas"]["ContributionOut"][];
+            /** Votes */
+            votes: components["schemas"]["MyVoteOut"][];
+            /** Series Proposals */
+            series_proposals: components["schemas"]["SeriesProposalOut"][];
+            /** Synonym Suggestions */
+            synonym_suggestions: components["schemas"]["SynonymSuggestionOut"][];
+        };
         /** UserOut */
         UserOut: {
             /** Id */
             id: number;
+            /** Email */
+            email: string | null;
             /** Display Name */
             display_name: string | null;
             /** Avatar Url */
@@ -2080,6 +2326,36 @@ export interface components {
             review_status: string;
             /** Resolution Method */
             resolution_method: string | null;
+        };
+        /**
+         * VoteClusteringPairOut
+         * @description #203: one reciprocal-endorsement pair surfaced by the Sybil-
+         *     monitoring report — see services/admin.py's get_vote_clustering_report.
+         */
+        VoteClusteringPairOut: {
+            /** User A Id */
+            user_a_id: number;
+            /** User A Display Name */
+            user_a_display_name: string | null;
+            /** User B Id */
+            user_b_id: number;
+            /** User B Display Name */
+            user_b_display_name: string | null;
+            /** A Endorsed B Count */
+            a_endorsed_b_count: number;
+            /** B Endorsed A Count */
+            b_endorsed_a_count: number;
+            /** Combined Endorsement Count */
+            combined_endorsement_count: number;
+            /** Last Activity At */
+            last_activity_at: string;
+        };
+        /** VoteClusteringReportOut */
+        VoteClusteringReportOut: {
+            /** Items */
+            items: components["schemas"]["VoteClusteringPairOut"][];
+            /** Min Reciprocal Count */
+            min_reciprocal_count: number;
         };
         /** VoteCreate */
         VoteCreate: {
@@ -2616,6 +2892,35 @@ export interface operations {
             };
         };
     };
+    export_current_user_data_api_v1_users_me_export_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserExportOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+        };
+    };
     request_export_access_api_v1_export_request_access_post: {
         parameters: {
             query?: never;
@@ -2889,6 +3194,15 @@ export interface operations {
             };
             /** @description Not authenticated */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description This account has been suspended */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3323,7 +3637,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorDetail"];
                 };
             };
-            /** @description Cannot vote on your own submitted contribution */
+            /** @description Cannot vote on your own submitted contribution, or this account has been suspended (#209) */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4188,6 +4502,26 @@ export interface operations {
             };
         };
     };
+    terms_of_service_api_v1_tos_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/html": string;
+                };
+            };
+        };
+    };
     privacy_policy_api_v1_privacy_get: {
         parameters: {
             query?: never;
@@ -4336,6 +4670,167 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+        };
+    };
+    update_user_suspension_api_v1_admin_users__user_id__suspension_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SuspensionUpdateIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SuspensionUpdateOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Admin/owner access required, OR the target is the owner (immune to suspension) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description No user matches this id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    vote_clustering_report_api_v1_admin_vote_clustering_report_get: {
+        parameters: {
+            query?: {
+                min_reciprocal_count?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VoteClusteringReportOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Moderator, admin, or owner role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    traffic_rollups_api_v1_admin_traffic_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrafficRollupListOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Admin or owner access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

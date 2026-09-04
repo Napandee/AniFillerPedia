@@ -57,3 +57,84 @@ def test_verify_password_handles_malformed_hash() -> None:
     assert not verify_password("password", "garbage-string")
     # Truncated real hash (missing closing $-delimited segment)
     assert not verify_password("password", "$argon2id$v=19$m=19456,t=2,p=1")
+
+
+from core.db import async_session_factory
+from repositories.users import create_local_user, find_by_email_local
+from sqlalchemy import text
+
+
+async def _delete_user_by_email(email: str) -> None:
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(text("DELETE FROM users WHERE email = :email"), {"email": email})
+
+
+@pytest.mark.asyncio
+async def test_create_local_user_persists_a_real_row() -> None:
+    email = _unique_email()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await create_local_user(
+                    session,
+                    email=email,
+                    password_hash=hash_password("a real password"),
+                    display_name="Local Tester",
+                    role="contributor",
+                )
+            assert user.email == email
+            assert user.display_name == "Local Tester"
+            assert user.role == "contributor"
+            assert user.password_hash is not None
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_find_by_email_local_ignores_oauth_only_rows() -> None:
+    """An OAuth-only row sharing the same email (a real, structurally
+    possible case since OAuth emails were never unique) must never be
+    returned by a local-account lookup — that would let a password-login
+    attempt silently authenticate as someone else's OAuth-linked account."""
+    email = _unique_email()
+    from repositories.users import create_user
+
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await create_user(
+                    session,
+                    provider="github",
+                    provider_id=f"gh-{uuid.uuid4().hex[:12]}",
+                    email=email,
+                    display_name="OAuth Only",
+                    avatar_url=None,
+                    role="contributor",
+                )
+        async with async_session_factory() as session:
+            found = await find_by_email_local(session, email)
+            assert found is None
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_find_by_email_local_finds_a_real_local_account() -> None:
+    email = _unique_email()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await create_local_user(
+                    session,
+                    email=email,
+                    password_hash=hash_password("a real password"),
+                    display_name="Local Tester",
+                    role="contributor",
+                )
+        async with async_session_factory() as session:
+            found = await find_by_email_local(session, email)
+            assert found is not None
+            assert found.email == email
+    finally:
+        await _delete_user_by_email(email)

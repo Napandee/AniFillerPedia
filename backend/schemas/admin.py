@@ -39,3 +39,43 @@ class RoleUpdateOut(BaseModel):
 
     id: int
     role: str
+
+
+class SuspensionUpdateIn(BaseModel):
+    """#209: body for PATCH /admin/users/{id}/suspension."""
+
+    suspended: bool
+    reason: str | None = Field(
+        default=None,
+        description=(
+            "Moderator-facing note explaining the suspension. Ignored "
+            "(cleared) when suspended=false."
+        ),
+    )
+
+
+class SuspensionUpdateOut(BaseModel):
+    id: int
+    suspended: bool
+    suspended_at: str | None
+    suspended_reason: str | None
+
+
+class VoteClusteringPairOut(BaseModel):
+    """#203: one reciprocal-endorsement pair surfaced by the Sybil-
+    monitoring report — see services/admin.py's get_vote_clustering_report.
+    """
+
+    user_a_id: int
+    user_a_display_name: str | None
+    user_b_id: int
+    user_b_display_name: str | None
+    a_endorsed_b_count: int
+    b_endorsed_a_count: int
+    combined_endorsement_count: int
+    last_activity_at: str
+
+
+class VoteClusteringReportOut(BaseModel):
+    items: list[VoteClusteringPairOut]
+    min_reciprocal_count: int

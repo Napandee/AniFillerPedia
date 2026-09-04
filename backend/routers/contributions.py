@@ -5,9 +5,11 @@ import services.contributions as contributions_service
 import services.turnstile as turnstile_service
 from core.db import get_session
 from core.deps import (
+    ensure_not_suspended,
     get_current_user,
     get_current_user_optional,
     get_rate_limit_identifier,
+    require_active_user,
     require_moderator,
 )
 from schemas.contributions import (
@@ -65,6 +67,11 @@ async def submit_contribution(
     # Turnstile only gates the anonymous path (CLAUDE.md, decided
     # 2026-08-21) — an authenticated OAuth login is already a stronger
     # signal, checking it again here would be redundant.
+    # #209: a logged-in but suspended caller is blocked here, before
+    # Turnstile even runs — an anonymous caller (current_user is None) is
+    # unaffected, since suspension is an account-level restriction.
+    ensure_not_suspended(current_user)
+
     if current_user is None:
         allowed = await turnstile_service.verify(payload.turnstile_token)
         if not allowed:
@@ -95,6 +102,7 @@ async def submit_contribution(
     response_model=BulkContributionResult,
     responses={
         **_NOT_AUTHENTICATED,
+        403: {"model": ErrorDetail, "description": "This account has been suspended"},
         404: {"model": ErrorDetail, "description": "No series matches this id"},
         429: {"model": BulkSubmissionRateLimited},
     },
@@ -102,7 +110,7 @@ async def submit_contribution(
 async def submit_bulk_contributions(
     series_id: int,
     payload: BulkContributionCreate,
-    current_user=Depends(get_current_user),  # noqa: ANN001 - Row, auth required (#80, unlike single-episode submission)
+    current_user=Depends(require_active_user),  # noqa: ANN001 - Row, auth + non-suspended required (#80, #209)
     session: AsyncSession = Depends(get_session),
 ) -> BulkContributionResult:
     """#80: submit canon/filler/mixed episode RANGES for a series in one
@@ -284,7 +292,10 @@ async def withdraw_contribution(
     response_model=VoteCastOut,
     responses={
         **_NOT_AUTHENTICATED,
-        403: {"model": ErrorDetail, "description": "Cannot vote on your own submitted contribution"},
+        403: {
+            "model": ErrorDetail,
+            "description": "Cannot vote on your own submitted contribution, or this account has been suspended (#209)",
+        },
         404: {"model": ErrorDetail, "description": "No contribution matches this id"},
         409: {
             "model": ErrorDetail,
@@ -295,7 +306,7 @@ async def withdraw_contribution(
 async def vote_on_contribution(
     contribution_id: int,
     payload: VoteCreate,
-    current_user=Depends(get_current_user),  # noqa: ANN001 - Row, any logged-in user (not moderator-gated)
+    current_user=Depends(require_active_user),  # noqa: ANN001 - Row, any logged-in, non-suspended user (#209; not moderator-gated)
     session: AsyncSession = Depends(get_session),
 ) -> VoteCastOut:
     """#14: the second approval path (CLAUDE.md) — endorse or dispute a

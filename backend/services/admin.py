@@ -21,7 +21,13 @@ import fastapi
 
 from repositories import admin as admin_repo
 from repositories import outbox as outbox_repo
-from schemas.admin import AdminUserListOut, AdminUserOut
+from schemas.admin import (
+    AdminUserListOut,
+    AdminUserOut,
+    SuspensionUpdateOut,
+    VoteClusteringPairOut,
+    VoteClusteringReportOut,
+)
 
 REJECTION_PENALTY = 2
 
@@ -96,3 +102,61 @@ async def update_role(
         },
     )
     return {"id": updated.id, "role": updated.role}
+
+
+async def update_suspension(
+    session, *, target_user_id: int, suspended: bool, reason: str | None
+) -> SuspensionUpdateOut:
+    """#209: admin/owner-only account suspension. Mirrors update_role's
+    owner-immunity check (the owner's own row can never be touched through
+    an admin-tier endpoint by anyone) — there is no "only the owner can
+    suspend an admin" restriction the way role-granting has one, since
+    suspension doesn't create a new privileged account the way granting
+    'admin' does.
+    """
+    role = await admin_repo.get_user_role(session, target_user_id)
+    if role is None:
+        raise fastapi.HTTPException(status_code=404, detail="user not found")
+    if role == "owner":
+        raise fastapi.HTTPException(status_code=403, detail="the owner's account cannot be suspended")
+
+    updated = await admin_repo.set_user_suspension(
+        session, target_user_id, suspended=suspended, reason=reason if suspended else None
+    )
+
+    # Audit-trail write, same convention as role changes above.
+    await outbox_repo.write(
+        session,
+        event_type="user.suspended" if suspended else "user.unsuspended",
+        payload={"user_id": target_user_id, "reason": reason} if suspended else {"user_id": target_user_id},
+    )
+
+    return SuspensionUpdateOut(
+        id=updated.id,
+        suspended=updated.suspended_at is not None,
+        suspended_at=updated.suspended_at.isoformat() if updated.suspended_at else None,
+        suspended_reason=updated.suspended_reason,
+    )
+
+
+async def get_vote_clustering_report(
+    session, min_reciprocal_count: int, limit: int
+) -> VoteClusteringReportOut:
+    """#203: see repositories/admin.py's find_reciprocal_endorsement_pairs
+    for the query and full rationale.
+    """
+    rows = await admin_repo.find_reciprocal_endorsement_pairs(session, min_reciprocal_count, limit)
+    items = [
+        VoteClusteringPairOut(
+            user_a_id=row.user_a_id,
+            user_a_display_name=row.user_a_display_name,
+            user_b_id=row.user_b_id,
+            user_b_display_name=row.user_b_display_name,
+            a_endorsed_b_count=row.a_endorsed_b_count,
+            b_endorsed_a_count=row.b_endorsed_a_count,
+            combined_endorsement_count=row.combined_endorsement_count,
+            last_activity_at=row.last_activity_at.isoformat(),
+        )
+        for row in rows
+    ]
+    return VoteClusteringReportOut(items=items, min_reciprocal_count=min_reciprocal_count)

@@ -54,7 +54,19 @@ CREATE TABLE users (
     -- INITIAL_ADMIN_GITHUB_ID.
     role          TEXT NOT NULL DEFAULT 'contributor' CHECK (role IN ('contributor', 'moderator', 'admin', 'owner')),
     created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
-    last_login_at TIMESTAMPTZ
+    last_login_at TIMESTAMPTZ,
+    -- #209: account-suspension mechanism. NULL = active (the default for
+    -- every account); set only via PATCH /admin/users/{id}/suspension
+    -- (admin/owner only, migrations/019). suspended_at is the single
+    -- source of truth — no separate boolean to drift from it. A suspended
+    -- account is blocked from submitting contributions/series-proposals/
+    -- synonym-suggestions and from voting (core/deps.py's
+    -- ensure_not_suspended), but NOT from reading or from exercising GDPR
+    -- rights on their own account (GET /users/me, GET /users/me/export,
+    -- DELETE /users/me all stay unaffected). The owner's own row is
+    -- immune to suspension, same as role changes (services/admin.py).
+    suspended_at      TIMESTAMPTZ,
+    suspended_reason  TEXT
 );
 
 -- =========================================================================

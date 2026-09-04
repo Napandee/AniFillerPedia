@@ -8,6 +8,7 @@ on:
     paths:
       - "backend/**"
       - "docker-compose.yml"
+      - "Caddyfile"
       - ".github/workflows/pr-validate.yml"
 
 permissions:

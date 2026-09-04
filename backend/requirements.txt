@@ -3,6 +3,7 @@ uvicorn[standard]==0.52.3
 sqlmodel==0.0.24
 sqlalchemy[asyncio]==2.0.36
 asyncpg==0.30.0
+argon2-cffi==25.1.0
 pydantic-settings==2.7.0
 python-dotenv==1.2.2
 httpx==0.28.1

@@ -31,14 +31,24 @@ class Settings(BaseSettings):
     # almost always come back unchanged.
     finished_series_drift_check_interval_seconds: int = 60 * 60 * 24 * 7
 
-    # Auth (#8) — GitHub + Discord OAuth. Real values don't exist yet
-    # (#25, still open) — routes work structurally without them, live
-    # provider round-trips can't be verified until then.
+    # Auth — GitHub + Discord OAuth (#8) AND local email+password
+    # (#224). The OAuth credentials' real values don't exist yet (#25,
+    # still open) — those routes work structurally without them, but live
+    # provider round-trips can't be verified until then; local auth needs
+    # no external provisioning at all.
+    #
+    # The two bootstrap settings below are the same idea keyed two ways:
+    # initial_admin_github_id matches an OAuth login's provider-attested
+    # GitHub id, initial_admin_email matches a local signup's address.
+    # Because a signup email is attacker-controlled free text, the email
+    # path additionally only grants 'owner' while no owner row exists yet
+    # (services/auth.py::_is_bootstrap_owner_email).
     github_oauth_client_id: str = ""
     github_oauth_client_secret: str = ""
     discord_oauth_client_id: str = ""
     discord_oauth_client_secret: str = ""
     initial_admin_github_id: str = ""
+    initial_admin_email: str = ""
 
     # Signs session cookies and the OAuth `state` param (CSRF protection +
     # carrying "this is a /settings/link attempt for user N" safely across

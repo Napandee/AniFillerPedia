@@ -7,7 +7,6 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 // src/middleware.ts on every request via the real session cookie) — never
 // held in client-only memory that would vanish or lie on refresh.
 const user = Astro.locals.user;
-const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 // #200: moderation.astro/account.astro redirect an unauthenticated visitor
 // here with `?next=<page they actually wanted>` (see HomePage.astro's own
 // comment on the accompanying `notice` banner) — prefer that over the
@@ -37,14 +36,6 @@ const pathWithoutLocale = (() => {
   }
   return Astro.url.pathname;
 })();
-
-// Same-origin in the real deploy (Caddy fronts both under one domain), so a
-// relative `next` correctly lands back on this app after the round trip.
-// Cross-port local dev (Astro on :4321, backend on :8000) is a known
-// exception — not fixed here, matches #37's own note that live end-to-end
-// verification waits on real OAuth credentials anyway.
-const authorizeHref = (provider: "github" | "discord") =>
-  `${baseUrl}/api/v1/auth/${provider}/authorize?next=${next}`;
 ---
 
 <header class="site-header">
@@ -100,8 +91,7 @@ const authorizeHref = (provider: "github" | "discord") =>
         </span>
       ) : (
         <span class="login-links">
-          <a href={authorizeHref("github")}>{t("nav.logInGithub")}</a>
-          <a href={authorizeHref("discord")}>{t("nav.logInDiscord")}</a>
+          <a href={`/login?next=${next}`}>{t("nav.logIn")}</a>
         </span>
       )
     }

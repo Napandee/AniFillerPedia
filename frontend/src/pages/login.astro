@@ -1,0 +1,268 @@
+---
+// #224: dedicated /login page — local email+password signup/login as the
+// primary, first-visible entry point, per the 2026-09-04 local-auth design
+// spec (.superpowers/sdd/2026-09-04-local-auth). Previously this project's
+// only login surface was the two plain GitHub/Discord OAuth links inside
+// Header.astro; those stay fully functional, just repositioned below as a
+// secondary option, in case #25's OAuth-app provisioning ever completes —
+// nothing about that flow changes here.
+//
+// English-only, no locale-prefix wrapper: this page is deliberately outside
+// the 5-locale i18n scope (home/browse/series-detail/nav/footer chrome
+// only — see frontend/src/i18n/ui.ts), consistent with how /contribute,
+// /needs-research and /activity are also bare top-level English-only pages
+// per Header.astro's own comment on those.
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+
+// Same open-redirect guard as Header.astro's own `next` handling: only a
+// real same-site path (leading "/", not a protocol-relative "//") is
+// trusted, whether it feeds an OAuth authorize link or the client-side
+// post-login redirect in the script below. Falls back to "/" rather than
+// the current pathname (unlike Header.astro) — redirecting back to /login
+// itself after a successful login would be useless.
+const nextParam = Astro.url.searchParams.get("next");
+const isSafeNext = nextParam !== null && nextParam.startsWith("/") && !nextParam.startsWith("//");
+const next = isSafeNext ? nextParam : "/";
+
+// Final-review fix (C1): deliberately a RELATIVE path, not
+// `${import.meta.env.PUBLIC_API_BASE_URL}/...`. Vite inlines that env var
+// at BUILD time, and frontend/Dockerfile's build-arg default is the
+// internal Docker hostname `http://app:8000` — unreachable from a real
+// browser, mixed content on an HTTPS page, and blocked by the Caddyfile's
+// `connect-src 'self'` CSP regardless. Caddy already routes /api/v1/* to
+// the backend on the same public origin, so a relative path is
+// same-origin and needs no CORS. This href is followed by the visitor's
+// browser, so it must be browser-resolvable — same rule as the fetch
+// calls in the client <script> below.
+const authorizeHref = (provider: "github" | "discord") =>
+  `/api/v1/auth/${provider}/authorize?next=${encodeURIComponent(next)}`;
+---
+
+<Layout
+  title="Log in — AniFillerPedia"
+  description="Log in or create an account to contribute to AniFillerPedia."
+  noindex
+>
+  <h1 class="disp page-title">Log in</h1>
+
+  <div class="auth-toggle" role="tablist">
+    <button type="button" id="tab-login" class="tab-active" data-tab="login" role="tab" aria-selected="true">
+      Log in
+    </button>
+    <button type="button" id="tab-signup" data-tab="signup" role="tab" aria-selected="false">
+      Sign up
+    </button>
+  </div>
+
+  <form id="login-form" data-mode="login" data-next={next}>
+    <label class="field">
+      <span>Email</span>
+      <input type="email" name="email" required autocomplete="email" />
+    </label>
+    <label class="field">
+      <span>Password</span>
+      <input type="password" name="password" id="password-input" required autocomplete="current-password" />
+    </label>
+    <label class="field" id="display-name-field" hidden>
+      <span>Display name</span>
+      <input type="text" name="display_name" id="display-name-input" autocomplete="nickname" maxlength="100" />
+    </label>
+    <p class="error-note" id="form-error" role="alert" aria-live="polite" hidden></p>
+    <Button type="submit" variant="primary">Log in</Button>
+  </form>
+
+  <div class="oauth-secondary">
+    <p class="oauth-label">Or continue with:</p>
+    <a href={authorizeHref("github")}>GitHub</a>
+    <a href={authorizeHref("discord")}>Discord</a>
+  </div>
+</Layout>
+
+<script>
+  // Vanilla progressive enhancement — no client framework in this codebase
+  // (Astro islands are reserved for when one is actually needed), matching
+  // moderation.astro/propose-series.astro's own client-script convention.
+  //
+  // Final-review fix (C1): this browser-side code deliberately does NOT
+  // read import.meta.env.PUBLIC_API_BASE_URL. Vite inlines that at build
+  // time, and the production image's build-arg default is the internal
+  // Docker hostname `http://app:8000` — which a real browser cannot
+  // resolve, is mixed content on an HTTPS page, and is blocked by the
+  // Caddyfile's `connect-src 'self'` CSP anyway. Every request below uses
+  // a relative /api/v1/... path instead: Caddy routes /api/v1/* to the
+  // backend on the same public origin, so it's same-origin and CORS-free.
+
+  const form = document.getElementById("login-form") as HTMLFormElement;
+  const tabLogin = document.getElementById("tab-login") as HTMLButtonElement;
+  const tabSignup = document.getElementById("tab-signup") as HTMLButtonElement;
+  const displayNameField = document.getElementById("display-name-field") as HTMLElement;
+  const displayNameInput = document.getElementById("display-name-input") as HTMLInputElement;
+  const passwordInput = document.getElementById("password-input") as HTMLInputElement;
+  const errorNote = document.getElementById("form-error") as HTMLParagraphElement;
+  const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+  // "next" comes from the server-rendered, already open-redirect-checked
+  // data-next attribute (see the frontmatter above) — never re-derived
+  // from a live, unchecked location.search read here.
+  const next = form.dataset.next ?? "/";
+
+  type Mode = "login" | "signup";
+
+  function setMode(mode: Mode) {
+    form.dataset.mode = mode;
+    tabLogin.classList.toggle("tab-active", mode === "login");
+    tabLogin.setAttribute("aria-selected", String(mode === "login"));
+    tabSignup.classList.toggle("tab-active", mode === "signup");
+    tabSignup.setAttribute("aria-selected", String(mode === "signup"));
+    displayNameField.hidden = mode !== "signup";
+    displayNameInput.required = mode === "signup";
+    if (mode === "signup") {
+      // #6 (LocalSignupIn): password >= 8 chars server-side. LocalLoginIn
+      // only requires non-empty, so this constraint only makes sense while
+      // actually signing up.
+      passwordInput.setAttribute("minlength", "8");
+      passwordInput.autocomplete = "new-password";
+    } else {
+      passwordInput.removeAttribute("minlength");
+      passwordInput.autocomplete = "current-password";
+    }
+    submitBtn.textContent = mode === "signup" ? "Sign up" : "Log in";
+    errorNote.hidden = true;
+  }
+
+  tabLogin.addEventListener("click", () => setMode("login"));
+  tabSignup.addEventListener("click", () => setMode("signup"));
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    errorNote.hidden = true;
+    const mode = form.dataset.mode as Mode;
+    const formData = new FormData(form);
+    const path = mode === "signup" ? "/api/v1/auth/local/signup" : "/api/v1/auth/local/login";
+    const body =
+      mode === "signup"
+        ? {
+            email: formData.get("email"),
+            password: formData.get("password"),
+            display_name: formData.get("display_name"),
+          }
+        : { email: formData.get("email"), password: formData.get("password") };
+
+    let response: Response;
+    try {
+      response = await fetch(path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(body),
+      });
+    } catch {
+      errorNote.textContent = "Couldn't reach the server — check your connection and try again.";
+      errorNote.hidden = false;
+      return;
+    }
+
+    if (response.ok) {
+      window.location.href = next;
+      return;
+    }
+
+    // Deliberately non-distinguishing where the real account exists:
+    // #401 never reveals whether the email or the password was wrong.
+    if (response.status === 409) {
+      errorNote.textContent = "That email is already registered — try logging in instead.";
+    } else if (response.status === 401) {
+      errorNote.textContent = "Incorrect email or password.";
+    } else if (response.status === 429) {
+      errorNote.textContent = "Too many attempts — please wait a few minutes and try again.";
+    } else if (response.status === 422) {
+      errorNote.textContent =
+        mode === "signup"
+          ? "Please enter a valid email, a display name, and a password of at least 8 characters."
+          : "Please enter a valid email and password.";
+    } else {
+      errorNote.textContent = "Something went wrong — please try again.";
+    }
+    errorNote.hidden = false;
+  });
+</script>
+
+<style>
+  .page-title {
+    color: var(--color-heading);
+    margin-bottom: 16px;
+  }
+  .auth-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .auth-toggle button {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border-card);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+  .auth-toggle button.tab-active {
+    background: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 360px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  .field input {
+    padding: 10px 12px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border-card);
+    font-size: 14px;
+    font-family: var(--font-body);
+  }
+  .error-note {
+    background: var(--color-dispute-bg);
+    color: var(--color-dispute);
+    border-radius: var(--radius-card);
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+  }
+  .oauth-secondary {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border-card);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .oauth-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  .oauth-secondary a {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+</style>

@@ -41,7 +41,7 @@ Expected: confirms `020_add_traffic_daily_rollups.sql` is still the latest — i
 - [ ] **Step 2: Write the migration file**
 
 ```sql
--- #221 (implementation of the 2026-09-04 local-auth design spec): adds
+-- #224 (implementation of the 2026-09-04 local-auth design spec): adds
 -- email+password login as a second, first-class way to authenticate,
 -- coexisting with the existing GitHub/Discord OAuth columns rather than
 -- replacing them. Additive only — one nullable column, one partial
@@ -123,7 +123,7 @@ Add the exact version returned to `backend/requirements.txt`, alphabetically pla
 
 ```python
 # backend/tests/test_local_auth.py
-"""Tests for local (email+password) authentication — #221, implementing
+"""Tests for local (email+password) authentication — #224, implementing
 docs/superpowers/specs/2026-09-04-local-auth-design.md.
 
 Real Postgres throughout, per this project's standing convention —
@@ -893,7 +893,7 @@ Run: `cat frontend/src/pages/propose-series.astro | head -60` and `cat frontend/
 
 ```astro
 ---
-// #221: local email+password login/signup, primary entry point per the
+// #224: local email+password login/signup, primary entry point per the
 // 2026-09-04 design spec. The existing GitHub/Discord OAuth links stay
 // fully functional below, in case #25's provisioning ever completes —
 // nothing about that flow changes here.

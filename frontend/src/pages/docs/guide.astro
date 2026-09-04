@@ -5,9 +5,16 @@
 // this page can never drift from the real guide. Links out to the
 // FastAPI-generated interactive docs and raw schema for anything this
 // prose doesn't cover.
-import Layout from "../layouts/Layout.astro";
+//
+// #198: relocated from /docs to /docs/guide — Caddy claims /docs itself for
+// the backend's Swagger UI (`@backend path /api/v1/* /docs /redoc
+// /openapi.json` in the Caddyfile), so this page could never actually be
+// reached at its original route. Swagger UI stays the intended destination
+// for the bare /docs path; this friendlier guide now lives one level below
+// it instead of contending for the same URL.
+import Layout from "../../layouts/Layout.astro";
 import { marked } from "marked";
-import apiGuideMd from "../../../docs/API.md?raw";
+import apiGuideMd from "../../../../docs/API.md?raw";
 
 const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 const html = marked.parse(apiGuideMd) as string;

@@ -14,6 +14,25 @@
 # ./frontend — the one deliberate exception, since #41's docs/contribute
 # pages bake in docs/API.md and CONTRIBUTING.md at build time (see
 # frontend/Dockerfile's own comment for why).
+#
+# #193: every service below gets the same `logging` block (json-file,
+# capped at 10MB × 3 files) — app/worker log at INFO continuously (a line
+# per request, per 5s outbox poll) and would otherwise accumulate
+# indefinitely on the same disk as Postgres's data and #10's backups, with
+# nothing else on this droplet watching disk space. `deploy.resources.
+# limits` are sized against real `docker stats` output taken directly from
+# the droplet on 2026-09-04 at near-zero traffic (app ~84MB/0.3% CPU,
+# worker ~56MB/~0%, frontend ~85MB/0.3%, caddy ~28MB/0.3%, postgres
+# ~56MB/0.05%, runner ~79MB idle — a real build/checkout job spikes higher)
+# — not guessed blind. Limits are ceilings, not reservations, and are
+# deliberately allowed to sum past the droplet's real 1vCPU (a shared,
+# contended resource under cgroup CFS quotas — over-provisioning per-
+# container CPU ceilings above the physical core count is normal and lets
+# any one service burst when the others are idle) while staying well under
+# its 2GB of RAM in total (~1.6GB summed below, leaving headroom for the
+# host OS/kernel/Docker daemon itself) since containers CAN be OOM-killed
+# simultaneously if the host itself runs out, unlike CPU contention which
+# the kernel scheduler just throttles fairly.
 
 services:
   app:
@@ -30,6 +49,34 @@ services:
       - .env
     ports:
       - "127.0.0.1:8000:8000" # Caddy proxies to this; not exposed directly
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      # #193: python:3.13-slim has neither curl nor wget, but python3
+      # itself is already in the image — this is the standard-library
+      # equivalent of `curl -f`, hitting the same /api/v1/health this
+      # container already serves, without adding a package layer just for
+      # a healthcheck. `restart: unless-stopped` alone only catches a
+      # crashed process; this catches a hung-but-still-running one too.
+      test:
+        [
+          "CMD",
+          "python3",
+          "-c",
+          "import sys,urllib.request; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/health', timeout=3).status == 200 else 1)",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.40"
+          memory: 320M
 
   postgres:
     image: postgres:16-alpine
@@ -46,6 +93,16 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 384M
 
   worker:
     # Same image as `app` — the outbox poller is a different entrypoint into
@@ -64,6 +121,26 @@ services:
         condition: service_healthy
     env_file:
       - .env
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # #193: no healthcheck here, deliberately, not an oversight — the
+    # outbox poller has no HTTP surface or other liveness signal that
+    # doesn't need application code to produce (e.g. a heartbeat file/
+    # timestamp `worker.py` would have to write on every poll loop), and
+    # this batch is scoped to Caddyfile/docker-compose.yml/Dockerfile
+    # only. A trivial "is the process still running" check would add
+    # nothing `restart: unless-stopped` doesn't already cover — the whole
+    # point of a healthcheck here would be catching a HUNG-but-still-
+    # running poller, which needs a real signal from inside worker.py
+    # itself. Worth a follow-up issue if this ever becomes a real problem.
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"
+          memory: 192M
 
   frontend:
     build:
@@ -83,6 +160,31 @@ services:
       - app
     ports:
       - "127.0.0.1:4321:4321" # Caddy proxies to this; not exposed directly
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      # node:22-slim has neither curl nor wget either, but Node 22 has had
+      # native fetch() since v18 — same idea as app's python3-based check,
+      # no extra package layer needed.
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:4321/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.40"
+          memory: 320M
 
   runner:
     image: myoung34/github-runner:latest
@@ -130,6 +232,26 @@ services:
       # both sides. Fixed 2026-08-21 — real failure caught by actually
       # running the deploy job end to end ("No such file or directory").
       - /opt/AniFillerPedia:/opt/AniFillerPedia
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # #193: no healthcheck — this image's own job-listener liveness isn't
+    # something a simple process/port check would meaningfully capture,
+    # and `restart: unless-stopped` already covers an outright crash.
+    # The memory/cpu limit below is generous relative to its own idle
+    # footprint (~79MB) specifically because docker-outside-of-docker
+    # (the socket mount above) means the actual `docker build`/`docker
+    # compose` work this runner triggers happens as SEPARATE containers
+    # on the host daemon, not inside this container's own cgroup — this
+    # limit only bounds the runner process/job-shell overhead itself, not
+    # the builds it kicks off.
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 384M
 
   caddy:
     image: caddy:2-alpine
@@ -145,6 +267,29 @@ services:
     depends_on:
       - app
       - frontend
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      # caddy:2-alpine has both curl and wget — check Caddy's own admin
+      # API (localhost:2019, not published via `ports:` above, only
+      # reachable from inside the container) rather than round-tripping
+      # through the full site config to app/frontend. This deliberately
+      # tests only "is Caddy itself responsive," the same separation of
+      # concerns postgres's own pg_isready check already uses — app's and
+      # frontend's healthchecks above already cover whether they're up.
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:2019/config/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"
+          memory: 128M
 
 volumes:
   runner-work:

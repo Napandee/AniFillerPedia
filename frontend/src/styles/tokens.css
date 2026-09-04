@@ -87,6 +87,22 @@
   --color-trust-bg: #ecfdf3;
   --color-dispute-bg: #ffe1e6;
   --color-endorse-bg: #eafff1;
+  /* #201: promoted from hardcoded literals in SeriesDetailPage.astro — the
+     hover state for --color-trust-chip-bg's two <details> disclosure
+     summaries (.about-more, .range-more), previously duplicated as the
+     same literal in both places. */
+  --color-trust-chip-bg-hover: #ffd0e6;
+  /* #201: SeriesDetailPage.astro's own era-tile chip background — a
+     genuinely new dark color (distinct from --color-surface-dark, which is
+     a warm plum rather than this near-black), not a duplicate of an
+     existing token. */
+  --color-era-tile-bg: #2b1220;
+  /* #201: SeriesDetailPage.astro's own active-filter-chip pairing — a
+     genuinely new warm-amber color, distinct from the --color-status-
+     filler-* family (which reads more orange than this pairing's more
+     saturated gold). */
+  --color-filter-chip-bg: #fff1e2;
+  --color-filter-chip-text: #c96a12;
 
   /* Shape */
   --radius-pill: 999px;

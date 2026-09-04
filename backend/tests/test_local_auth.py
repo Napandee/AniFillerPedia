@@ -138,3 +138,105 @@ async def test_find_by_email_local_finds_a_real_local_account() -> None:
             assert found.email == email
     finally:
         await _delete_user_by_email(email)
+
+
+from services.auth import EmailAlreadyRegistered, login_local_user, signup_local_user
+
+
+@pytest.mark.asyncio
+async def test_signup_local_user_creates_a_contributor_by_default() -> None:
+    email = _unique_email()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await signup_local_user(
+                    session, email=email, password="a real password", display_name="New Signup"
+                )
+            assert user.role == "contributor"
+            assert user.email == email
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_local_user_rejects_duplicate_email() -> None:
+    email = _unique_email()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await signup_local_user(
+                    session, email=email, password="first password", display_name="First"
+                )
+        async with async_session_factory() as session:
+            async with session.begin():
+                with pytest.raises(EmailAlreadyRegistered):
+                    await signup_local_user(
+                        session, email=email, password="second password", display_name="Second"
+                    )
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_local_user_matching_initial_admin_email_becomes_owner(monkeypatch) -> None:
+    email = _unique_email()
+    from core.config import get_settings
+
+    get_settings.cache_clear()
+    monkeypatch.setenv("INITIAL_ADMIN_EMAIL", email)
+    get_settings.cache_clear()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await signup_local_user(
+                    session, email=email, password="owner password", display_name="Owner"
+                )
+            assert user.role == "owner"
+    finally:
+        get_settings.cache_clear()
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_login_local_user_succeeds_with_correct_password() -> None:
+    email = _unique_email()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await signup_local_user(
+                    session, email=email, password="correct password", display_name="Tester"
+                )
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await login_local_user(session, email=email, password="correct password")
+            assert user is not None
+            assert user.email == email
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_login_local_user_fails_with_wrong_password() -> None:
+    email = _unique_email()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await signup_local_user(
+                    session, email=email, password="correct password", display_name="Tester"
+                )
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await login_local_user(session, email=email, password="wrong password")
+            assert user is None
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_login_local_user_fails_for_unknown_email() -> None:
+    async with async_session_factory() as session:
+        async with session.begin():
+            user = await login_local_user(
+                session, email=_unique_email(), password="anything"
+            )
+        assert user is None

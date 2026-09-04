@@ -181,6 +181,13 @@ async def test_signup_local_user_rejects_duplicate_email() -> None:
 async def test_signup_local_user_matching_initial_admin_email_becomes_owner(monkeypatch) -> None:
     email = _unique_email()
     from core.config import get_settings
+    from repositories.users import owner_exists
+
+    async with async_session_factory() as session:
+        if await owner_exists(session):
+            pytest.skip("an owner row already exists in this database — the "
+                        "email bootstrap is deliberately one-shot (see the "
+                        "guard test below), so this case can't be exercised")
 
     get_settings.cache_clear()
     monkeypatch.setenv("INITIAL_ADMIN_EMAIL", email)
@@ -198,6 +205,87 @@ async def test_signup_local_user_matching_initial_admin_email_becomes_owner(monk
 
 
 @pytest.mark.asyncio
+async def test_signup_matching_initial_admin_email_is_ignored_once_an_owner_exists(
+    monkeypatch,
+) -> None:
+    """Final-review fix (C2): a signup email is attacker-controlled free
+    text, unlike the provider-attested GitHub id the OAuth bootstrap keys
+    on. Without this guard, anyone who guessed (or simply raced to) the
+    configured address would mint themselves 'owner'. The bootstrap must
+    be genuinely one-shot: once an owner exists, a matching email is
+    treated exactly as if it hadn't matched at all."""
+    owner_email = _unique_email()
+    attacker_email = _unique_email()
+    from core.config import get_settings
+
+    try:
+        # A real existing owner, whatever their origin.
+        async with async_session_factory() as session:
+            async with session.begin():
+                await create_local_user(
+                    session,
+                    email=owner_email,
+                    password_hash=hash_password("the real owner"),
+                    display_name="Existing Owner",
+                    role="owner",
+                )
+
+        get_settings.cache_clear()
+        monkeypatch.setenv("INITIAL_ADMIN_EMAIL", attacker_email)
+        get_settings.cache_clear()
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await signup_local_user(
+                    session,
+                    email=attacker_email,
+                    password="not the owner",
+                    display_name="Latecomer",
+                )
+            assert user.role == "contributor"
+    finally:
+        get_settings.cache_clear()
+        await _delete_user_by_email(owner_email)
+        await _delete_user_by_email(attacker_email)
+
+
+@pytest.mark.asyncio
+async def test_local_auth_email_is_case_insensitive() -> None:
+    """Final-review fix (I2): Pydantic's EmailStr lowercases only the
+    domain half, so without service-layer normalization `Foo@x.com` and
+    `foo@x.com` would be two unrelated accounts — and with no password
+    reset in v1, a user who signed up with a stray capital would have no
+    way back into their own account."""
+    email = _unique_email()
+    local_part, _, domain = email.partition("@")
+    # Uppercased local part (the half EmailStr leaves alone) plus stray
+    # surrounding whitespace — both must normalize away.
+    mixed_case = f"  {local_part.upper()}@{domain}  "
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                created = await signup_local_user(
+                    session, email=mixed_case, password="a real password", display_name="Mixed"
+                )
+            # Stored canonically, not as typed.
+            assert created.email == email
+
+        async with async_session_factory() as session:
+            user = await login_local_user(session, email=email, password="a real password")
+            assert user is not None
+            assert user.id == created.id
+
+        async with async_session_factory() as session:
+            user = await login_local_user(
+                session, email=mixed_case, password="a real password"
+            )
+            assert user is not None
+            assert user.id == created.id
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
 async def test_login_local_user_succeeds_with_correct_password() -> None:
     email = _unique_email()
     try:
@@ -206,9 +294,11 @@ async def test_login_local_user_succeeds_with_correct_password() -> None:
                 await signup_local_user(
                     session, email=email, password="correct password", display_name="Tester"
                 )
+        # No `session.begin()` wrapper: login_local_user deliberately owns
+        # its own short transactions so the argon2 verify never runs with
+        # a pooled connection held open (final-review fix I3).
         async with async_session_factory() as session:
-            async with session.begin():
-                user = await login_local_user(session, email=email, password="correct password")
+            user = await login_local_user(session, email=email, password="correct password")
             assert user is not None
             assert user.email == email
     finally:
@@ -225,8 +315,7 @@ async def test_login_local_user_fails_with_wrong_password() -> None:
                     session, email=email, password="correct password", display_name="Tester"
                 )
         async with async_session_factory() as session:
-            async with session.begin():
-                user = await login_local_user(session, email=email, password="wrong password")
+            user = await login_local_user(session, email=email, password="wrong password")
             assert user is None
     finally:
         await _delete_user_by_email(email)
@@ -235,10 +324,7 @@ async def test_login_local_user_fails_with_wrong_password() -> None:
 @pytest.mark.asyncio
 async def test_login_local_user_fails_for_unknown_email() -> None:
     async with async_session_factory() as session:
-        async with session.begin():
-            user = await login_local_user(
-                session, email=_unique_email(), password="anything"
-            )
+        user = await login_local_user(session, email=_unique_email(), password="anything")
         assert user is None
 
 
@@ -394,5 +480,90 @@ async def test_login_endpoint_rate_limits_repeated_failed_attempts() -> None:
                     )
                 )
         assert any(r.status_code == 429 for r in responses)
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_session_cookie_authenticates_against_users_me() -> None:
+    """Final-review fix (I6): the whole point of local auth is that its
+    session cookie is the SAME session the rest of the API already
+    accepts. Every other test here stops at "a cookie was set" — this one
+    actually spends it on an existing authenticated endpoint and checks
+    the identity that comes back."""
+    email = _unique_email()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            signup = await client.post(
+                "/api/v1/auth/local/signup",
+                json={"email": email, "password": "a real password", "display_name": "Chain Tester"},
+            )
+            assert signup.status_code == 200
+            token = signup.cookies["afp_session"]
+
+            # Sent explicitly rather than relying on the client's cookie
+            # jar — the cookie is Secure, which a jar may well refuse to
+            # replay over this http:// test base_url, and that would make
+            # the assertion below pass or fail for the wrong reason.
+            me = await client.get(
+                "/api/v1/users/me", headers={"Cookie": f"afp_session={token}"}
+            )
+        assert me.status_code == 200
+        body = me.json()
+        assert body["email"] == email
+        assert body["id"] == signup.json()["id"]
+        assert body["role"] == "contributor"
+    finally:
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_two_oauth_only_rows_may_share_one_email() -> None:
+    """The `users_email_unique_when_local` partial index (migration 021)
+    must constrain LOCAL accounts only. OAuth emails were never unique —
+    two providers can legitimately report the same address for what the
+    provider side considers separate identities — so a blanket UNIQUE on
+    users.email would have broken existing OAuth signups. The existing
+    coverage only proves one such row is ignored by a local lookup; this
+    proves two of them can actually coexist."""
+    email = _unique_email()
+    from repositories.users import create_user
+
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                first = await create_user(
+                    session,
+                    provider="github",
+                    provider_id=f"gh-{uuid.uuid4().hex[:12]}",
+                    email=email,
+                    display_name="OAuth One",
+                    avatar_url=None,
+                    role="contributor",
+                )
+                second = await create_user(
+                    session,
+                    provider="discord",
+                    provider_id=f"dc-{uuid.uuid4().hex[:12]}",
+                    email=email,
+                    display_name="OAuth Two",
+                    avatar_url=None,
+                    role="contributor",
+                )
+        assert first.id != second.id
+        assert first.email == second.email == email
+
+        async with async_session_factory() as session:
+            result = await session.execute(
+                text(
+                    "SELECT count(*) FROM users "
+                    "WHERE email = :email AND password_hash IS NULL"
+                ),
+                {"email": email},
+            )
+            assert result.scalar() == 2
+            # …and neither is reachable as a local account.
+            assert await find_by_email_local(session, email) is None
     finally:
         await _delete_user_by_email(email)

@@ -3,10 +3,12 @@ about live here, not in the router: explicit-only linking, admin
 bootstrap via env var rather than first-user-wins.
 """
 
+import secrets
 from dataclasses import dataclass
 
 from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.concurrency import run_in_threadpool
 
 from core.config import get_settings
 from core.security import hash_password, verify_password
@@ -16,6 +18,7 @@ from repositories.users import (
     find_by_email_local,
     find_by_provider_id,
     link_provider,
+    owner_exists,
     touch_last_login,
 )
 
@@ -78,14 +81,58 @@ async def login_or_create_user(
     )
 
 
-def _is_bootstrap_owner_email(email: str) -> bool:
+def normalize_email(email: str) -> str:
+    """The single normalization point for every local-auth email.
+
+    Pydantic's EmailStr only lowercases the DOMAIN half, so without this
+    `Foo@x.com` and `foo@x.com` would be two different local accounts with
+    no way back (v1 has no password reset). Applied here at the service
+    boundary — deliberately not scattered across the router or repository
+    — so signup, login and the bootstrap-owner comparison all agree on
+    exactly one canonical form.
+    """
+    return email.strip().lower()
+
+
+_dummy_password_hash_cache: str | None = None
+
+
+def _verify_against_dummy_hash(password: str) -> None:
+    """Timing-attack mitigation for login_local_user (see its comment).
+
+    Computed lazily rather than hard-coded so the cost parameters always
+    match whatever hash_password() currently produces — a stale literal
+    with different argon2 params would defeat the whole point by taking a
+    measurably different amount of time from a real verify.
+    """
+    global _dummy_password_hash_cache
+    if _dummy_password_hash_cache is None:
+        _dummy_password_hash_cache = hash_password(secrets.token_urlsafe(32))
+    verify_password(password, _dummy_password_hash_cache)
+
+
+async def _is_bootstrap_owner_email(session: AsyncSession, email: str) -> bool:
+    """Email-keyed counterpart to _is_bootstrap_owner, with one extra
+    guard the OAuth path doesn't need: a signup email is attacker-
+    controlled free text, whereas a GitHub provider_id is provider-
+    attested (you must actually control that account to present it). So
+    a bare string match is NOT sufficient here — whoever signs up first
+    with the configured address would otherwise mint themselves 'owner'.
+    Only fires while no owner row exists at all, making it a genuine
+    one-shot bootstrap rather than a standing privilege grant.
+    """
     settings = get_settings()
-    return bool(settings.initial_admin_email) and email == settings.initial_admin_email
+    if not settings.initial_admin_email:
+        return False
+    if email != normalize_email(settings.initial_admin_email):
+        return False
+    return not await owner_exists(session)
 
 
 async def signup_local_user(
     session: AsyncSession, *, email: str, password: str, display_name: str
 ) -> Row:
+    email = normalize_email(email)
     existing = await find_by_email_local(session, email)
     if existing is not None:
         raise EmailAlreadyRegistered(f"{email} is already registered")
@@ -93,11 +140,15 @@ async def signup_local_user(
     # 'owner', not 'admin' — same bootstrap-identity rule as the OAuth path
     # above (_is_bootstrap_owner), just keyed by email instead of a GitHub
     # provider_id, since a local account has no provider_id at all.
-    role = "owner" if _is_bootstrap_owner_email(email) else "contributor"
+    role = "owner" if await _is_bootstrap_owner_email(session, email) else "contributor"
+    # argon2 is deliberately slow (~50-100ms of real CPU); running it
+    # inline would block the whole event loop for that long on every
+    # signup, so it goes to a worker thread.
+    password_hash = await run_in_threadpool(hash_password, password)
     return await create_local_user(
         session,
         email=email,
-        password_hash=hash_password(password),
+        password_hash=password_hash,
         display_name=display_name,
         role=role,
     )
@@ -106,13 +157,33 @@ async def signup_local_user(
 async def login_local_user(session: AsyncSession, *, email: str, password: str) -> Row | None:
     """Returns None on ANY failure — unknown email or wrong password are
     deliberately indistinguishable to the caller, so a login-failure
-    response never discloses whether an email is registered at all."""
+    response never discloses whether an email is registered at all.
+
+    Call this OUTSIDE any caller-owned `session.begin()` block: it manages
+    its own short transactions on purpose, so the argon2 verify below
+    never runs while a pooled DB connection is held open.
+    """
+    email = normalize_email(email)
     user = await find_by_email_local(session, email)
+    # The lookup above is read-only, so ending its implicitly-begun
+    # transaction here discards nothing — it just hands the connection
+    # back to the pool before the ~50-100ms verify.
+    if session.in_transaction():
+        await session.rollback()
+
     if user is None:
+        # Timing-attack mitigation: returning here immediately would make
+        # an unregistered email measurably faster to reject than a
+        # registered one with a wrong password, disclosing exactly what
+        # this function's contract (and docs/API.md) promise it never
+        # discloses. Burn a comparable argon2 verify against a dummy hash
+        # instead. Do not "simplify" this away.
+        await run_in_threadpool(_verify_against_dummy_hash, password)
         return None
-    if not verify_password(password, user.password_hash):
+    if not await run_in_threadpool(verify_password, password, user.password_hash):
         return None
-    await touch_last_login(session, user.id)
+    async with session.begin():
+        await touch_last_login(session, user.id)
     return user
 
 

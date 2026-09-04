@@ -292,7 +292,14 @@ async def local_login(
         if recent >= _LOGIN_RATE_LIMIT_MAX_ATTEMPTS:
             raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="too many login attempts")
         await record(session, scope="local_login", identifier=rate_identifier)
-        user = await login_local_user(session, email=payload.email, password=payload.password)
+    # Final-review fix (I3): deliberately OUTSIDE the rate-limit block
+    # above. login_local_user runs a deliberately-slow argon2 verify and
+    # manages its own short transactions around it, so it must not be
+    # called with a caller-owned transaction already open — that would
+    # pin a pooled connection for the whole ~50-100ms verify. Recording
+    # the attempt before this point also keeps the "every attempt counts"
+    # property the signup limiter above documents.
+    user = await login_local_user(session, email=payload.email, password=payload.password)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid email or password")
     response.set_cookie(

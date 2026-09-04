@@ -79,3 +79,37 @@ class VoteClusteringPairOut(BaseModel):
 class VoteClusteringReportOut(BaseModel):
     items: list[VoteClusteringPairOut]
     min_reciprocal_count: int
+
+
+class TrafficPathEntryOut(BaseModel):
+    """One entry in a day's top_paths — see services/traffic_analytics.py's
+    aggregate_rollup() for how this is computed."""
+
+    path: str
+    path_kind: str = Field(description="'frontend' or 'api' — split on whether path starts with /api/v1/")
+    count: int
+
+
+class TrafficStatusEntryOut(BaseModel):
+    status: int
+    count: int
+
+
+class TrafficCountryEntryOut(BaseModel):
+    country: str
+    count: int
+
+
+class TrafficRollupOut(BaseModel):
+    """#221: one day's persisted Cloudflare traffic rollup."""
+
+    rollup_date: str
+    total_requests: int
+    top_paths: list[TrafficPathEntryOut]
+    status_breakdown: list[TrafficStatusEntryOut]
+    top_countries: list[TrafficCountryEntryOut]
+    created_at: str
+
+
+class TrafficRollupListOut(BaseModel):
+    items: list[TrafficRollupOut]

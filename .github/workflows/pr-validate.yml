@@ -61,6 +61,25 @@ jobs:
         run: |
           PGPASSWORD=afp_test psql -h localhost -U afp_test -d afp_test -f backend/schema.sql
 
+      # #188 follow-up: a handful of tests (tests/test_anilist_lookup.py,
+      # tests/test_admin.py, tests/test_auth.py) assume at least one
+      # `series` row already exists — true for every maintainer's local
+      # test-pg (always seeded from data/bootstrap/ per CLAUDE.local.md),
+      # never true for a genuinely fresh schema-only Postgres, which is
+      # exactly what this job's service container is. Confirmed via a real
+      # CI run before this step existed: 4 failures, all NoResultFound /
+      # a correct-but-unexpected "found" instead of "already_exists" for
+      # Naruto: Shippuuden's real AniList id — not application bugs, a
+      # test-fixture gap this step closes with the one row those tests'
+      # own docstrings already document depending on (anilist_id 1735,
+      # "confirmed already catalogued in this project's own test-pg
+      # snapshot"). Not a change to test logic/assertions, deliberately
+      # out of #188's scope — this seeds the precondition instead.
+      - name: Seed minimal fixture data for tests
+        run: |
+          PGPASSWORD=afp_test psql -h localhost -U afp_test -d afp_test -c \
+            "INSERT INTO series (anilist_id, title, provenance) VALUES (1735, 'Naruto: Shippuuden', 'manami_bootstrap');"
+
       # #188: run the real pytest suite (backend/tests/, ~4,700 lines of
       # real-Postgres integration tests, not mocks) against the same
       # Postgres service + schema the smoke test below reuses — folded into

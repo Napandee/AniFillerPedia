@@ -1,8 +1,46 @@
+# #185: this domain is Cloudflare-proxied (DNS resolves to Cloudflare's
+# anycast ranges, not the droplet's own IP — confirmed 2026-09-04), so
+# every request Caddy sees arrives from a Cloudflare edge node, not the
+# real visitor. Without `trusted_proxies`, Caddy's default reverse_proxy
+# behavior blindly APPENDS the real connecting peer's IP onto whatever
+# X-Forwarded-For a client already sent, rather than validating it first —
+# so a spoofed `X-Forwarded-For: 1.2.3.4` from anyone on the internet
+# reaches backend/core/deps.py's get_rate_limit_identifier() as the
+# caller's "IP", trivially defeating every IP-keyed rate limit
+# (repositories/rate_limits.py backs contribution_submit, export_request_
+# access, anilist_lookup — see #139/#141/#165).
+#
+# Listing Cloudflare's published IP ranges here (https://www.cloudflare.com/
+# ips/, current as of 2026-09-04 — refresh periodically, they change rarely)
+# tells Caddy which peers are legitimate upstream hops it can trust to have
+# set X-Forwarded-For honestly. For any connection whose actual TCP peer is
+# NOT in this list — including someone bypassing Cloudflare entirely and
+# connecting straight to the droplet's own IP with a forged
+# X-Forwarded-For/CF-Connecting-IP header, since nothing else here blocks
+# that — Caddy discards any inbound X-Forwarded-For and starts a fresh one
+# from the real peer address instead of trusting it. This is what actually
+# closes the spoofing hole; it's a network-level check (who really
+# connected), not a header-content check (which is exactly what's
+# spoofable).
+{
+	servers {
+		trusted_proxies static \
+ 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 \
+ 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 \
+ 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 \
+ 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 \
+ 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 \
+ 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+	}
+}
+
 anifillerpedia.wiki {
 	# Backend-owned paths (#45): the versioned API, plus FastAPI's own
-	# Swagger UI / ReDoc / schema — #41's docs page links out to /docs and
-	# /openapi.json directly rather than proxying them through the frontend.
-	# Everything else (the Astro app) falls through to the frontend handle.
+	# Swagger UI / ReDoc / schema — #198's real guide page lives at
+	# /docs/guide instead of /docs specifically because this matcher claims
+	# the bare /docs path for Swagger UI; /openapi.json directly rather than
+	# proxying them through the frontend. Everything else (the Astro app)
+	# falls through to the frontend handle.
 	# #170: encode gzip is scoped to the frontend handle only, not
 	# @backend — Caddy weakens a strong ETag into `W/"...-gzip"` on any
 	# response it actually compresses, which breaks If-None-Match
@@ -17,6 +55,75 @@ anifillerpedia.wiki {
 	handle {
 		encode gzip
 		reverse_proxy frontend:4321
+
+		# #186: Content-Security-Policy, scoped to the frontend handle only
+		# — deliberately NOT applied to @backend above. Checked live before
+		# picking that split: /docs and /redoc are FastAPI's own default
+		# Swagger UI / ReDoc pages, which load their JS/CSS bundles from
+		# cdn.jsdelivr.net (plus their own inline init <script>, and ReDoc
+		# pulls a different Google Fonts family than the frontend's own).
+		# A `default-src 'self'` CSP applied there would break both pages
+		# outright — out of scope to change per #198 ("Any change to the
+		# Swagger UI itself... is out of scope"), so the CSP is scoped to
+		# where this app's own content actually renders instead.
+		#
+		# script-src: 'self' covers every same-origin bundled/external
+		# script (e.g. moderation.astro's script — the one inline <script>
+		# big enough that Vite externalizes it to its own hashed
+		# /_astro/*.js file rather than inlining it). The rest of this
+		# app's client-side <script> blocks (Header.astro's language
+		# switcher, SeriesDetailPage.astro, account.astro,
+		# propose-series.astro) come back from Astro's SSR build genuinely
+		# INLINE in the rendered HTML rather than externalized — confirmed
+		# by building the real frontend Docker image locally and diffing
+		# its output against live production byte-for-byte, not assumed.
+		# 'unsafe-inline' would defeat the entire point of this CSP (it's
+		# meant to be defense-in-depth against #184's javascript:-href XSS
+		# vector, and 'unsafe-inline' permits exactly that), so each of
+		# those 4 scripts' exact SHA-256 content hash is allow-listed
+		# instead. None of the 4 embed any per-request/server-interpolated
+		# value (only build-time constants and client-side JS template
+		# literals), so their content — and hash — stays stable across
+		# requests; it only changes if a future PR edits one of these
+		# specific inline <script> blocks, at which point its build will
+		# fail CSP until the corresponding hash here is updated to match.
+		# https://challenges.cloudflare.com is allow-listed for #20's
+		# Turnstile widget loader (not live yet as of 2026-09-04 — no site
+		# key provisioned — but already coded into propose-series.astro,
+		# see CLAUDE.local.md's external-account checklist).
+		# style-src: 'unsafe-inline' is a deliberate, accepted exception —
+		# Astro inlines this app's component-scoped CSS directly as
+		# literal <style> blocks (confirmed the same way as the script
+		# hashes above), and unlike scripts there's no per-page-load hash
+		# list that would stay maintainable here (near-every page has its
+		# own scoped style block, vs. 4 known inline scripts total).
+		# Inline-style injection's security impact is far lower than
+		# inline-script injection — it can't execute arbitrary JS — so
+		# this is a standard, widely-accepted trade for a static
+		# Caddy-level CSP.
+		# img-src: https://*.anilist.co for #67's synced cover/banner art
+		# (confirmed live: s4.anilist.co, Cloudflare-fronted so which `s`
+		# subdomain serves a given image can vary).
+		# frame-src: https://challenges.cloudflare.com for Turnstile's
+		# actual challenge iframe (separate from script-src, which only
+		# covers loading its JS loader).
+		# frame-ancestors 'none' (+ X-Frame-Options below, for older
+		# clients that don't parse CSP frame directives): closes the
+		# clickjacking gap #186 flagged against contribute.astro/
+		# propose-series.astro/moderation/admin.
+		header Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-M6Cuk2FFQBCp22YeSZqrXki3fef9XcL2wzySAh4+J5k=' 'sha256-ZmJM6Tl01dZrC+lFQ431fOs2I92cdK0KAvAiBxOH6EU=' 'sha256-bpBxy6wc20yfG0VBfDOGNLQUEegmy+4Va9X1F4G3HgY=' 'sha256-UfKLzF4zeLAfkHOgiJCRm2ua8jNT0k8x6PEOWzkpJCw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.anilist.co; connect-src 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+	}
+
+	# #186: baseline security headers that DON'T conflict with Swagger
+	# UI/ReDoc, applied at the site level so they cover both branches above
+	# (frontend HTML and the API's JSON, plus /docs and /redoc) in one
+	# place — the full CSP above is the one exception, scoped narrower for
+	# the reasons explained there.
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 	}
 
 	log {

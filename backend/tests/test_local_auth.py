@@ -36,3 +36,24 @@ def test_hash_password_is_salted_differently_each_time() -> None:
     assert first != second
     assert verify_password("same password", first)
     assert verify_password("same password", second)
+
+
+def test_verify_password_handles_none_password_hash() -> None:
+    """OAuth-only accounts have NULL password_hash in the database.
+    verify_password must handle this gracefully, not raise."""
+    assert not verify_password("any password", None)
+
+
+def test_verify_password_handles_empty_string_password_hash() -> None:
+    """Corrupted or invalid password_hash values must return False,
+    never raise, so login can safely attempt password verification
+    even when the hash is garbage."""
+    assert not verify_password("any password", "")
+
+
+def test_verify_password_handles_malformed_hash() -> None:
+    """Garbage strings, truncated hashes, etc. must return False."""
+    assert not verify_password("password", "not-a-hash")
+    assert not verify_password("password", "garbage-string")
+    # Truncated real hash (missing closing $-delimited segment)
+    assert not verify_password("password", "$argon2id$v=19$m=19456,t=2,p=1")

@@ -8,7 +8,18 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 // held in client-only memory that would vanish or lie on refresh.
 const user = Astro.locals.user;
 const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
-const next = encodeURIComponent(Astro.url.pathname);
+// #200: moderation.astro/account.astro redirect an unauthenticated visitor
+// here with `?next=<page they actually wanted>` (see HomePage.astro's own
+// comment on the accompanying `notice` banner) — prefer that over the
+// current pathname (always "/" in that case) so a login initiated from
+// this banner state returns the visitor to the originally-requested page,
+// not the homepage. `startsWith("/")` and rejecting a leading "//" guards
+// against this becoming an open-redirect vector via a crafted query param
+// (an absolute or protocol-relative URL is never a legitimate same-site
+// "next").
+const nextParam = Astro.url.searchParams.get("next");
+const isSafeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//");
+const next = encodeURIComponent(isSafeNext ? nextParam : Astro.url.pathname);
 
 const locale = resolveLocale(Astro.currentLocale);
 const t = useTranslations(locale);
@@ -37,15 +48,36 @@ const authorizeHref = (provider: "github" | "discord") =>
 ---
 
 <header class="site-header">
-  <a class="disp brand" href={getRelativeLocaleUrl(locale, "/")}>AniFillerPedia</a>
-  <nav>
+  <div class="header-bar">
+    <a class="disp brand" href={getRelativeLocaleUrl(locale, "/")}>AniFillerPedia</a>
+    {/* #201: mobile-only hamburger trigger — hidden on desktop widths via
+        CSS, toggles #site-nav's ".is-open" class via the script below.
+        Same aria-haspopup/aria-expanded/aria-controls pattern the
+        lang-switcher trigger further down already establishes. */}
+    <button
+      type="button"
+      id="nav-toggle"
+      class="nav-toggle"
+      aria-haspopup="true"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label={t("nav.menu")}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+    </button>
+  </div>
+  <nav id="site-nav">
     <a href={getRelativeLocaleUrl(locale, "/")}>{t("nav.browse")}</a>
-    {/* #153/#154: public discovery pages — English-only (no locale
-        wrapper page exists for either, matching the docs/moderation/
-        contribute precedent), so both links point at the bare,
+    {/* #199: "how do I help" is central enough to this project to earn a
+        header nav slot, not just a footer link (see Footer.astro's own
+        addition below) — placed right after Browse. */}
+    {/* #153/#154/#199: public discovery/contribution pages — English-only
+        (no locale wrapper page exists for any of the three, matching the
+        docs/moderation precedent), so all three link to the bare,
         unprefixed path regardless of the current locale rather than
         going through getRelativeLocaleUrl (which would 404 by prefixing
-        a locale segment neither route has a page for). */}
+        a locale segment none of these routes has a page for). */}
+    <a href="/contribute">{t("nav.contribute")}</a>
     <a href="/needs-research">{t("nav.needsResearch")}</a>
     <a href="/activity">{t("nav.recentChanges")}</a>
     {user && ["moderator", "admin", "owner"].includes(user.role) && (
@@ -133,6 +165,59 @@ const authorizeHref = (provider: "github" | "discord") =>
 </header>
 
 <script>
+  // #201: mobile nav — same trigger/menu toggle shape as the lang-switcher
+  // script below (open/close functions, outside-click + Escape to close),
+  // just applied to the whole nav instead of one popover. Kept as its own
+  // block rather than merged with the lang-switcher script since the two
+  // toggle independent elements and composing them into one function would
+  // just make both harder to follow.
+  const navToggle = document.getElementById("nav-toggle");
+  const siteNav = document.getElementById("site-nav");
+
+  function closeNav() {
+    siteNav?.classList.remove("is-open");
+    navToggle?.setAttribute("aria-expanded", "false");
+  }
+
+  function openNav() {
+    siteNav?.classList.add("is-open");
+    navToggle?.setAttribute("aria-expanded", "true");
+  }
+
+  navToggle?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (navToggle.getAttribute("aria-expanded") === "true") {
+      closeNav();
+    } else {
+      openNav();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      siteNav &&
+      siteNav.classList.contains("is-open") &&
+      !siteNav.contains(event.target as Node) &&
+      event.target !== navToggle
+    ) {
+      closeNav();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeNav();
+  });
+
+  // Resizing (or rotating) past the mobile breakpoint while the panel is
+  // open would otherwise leave it stuck "open" (as a class, invisible at
+  // desktop widths but still there) — reset it so re-narrowing the
+  // viewport doesn't reveal a stale open state.
+  window.matchMedia("(min-width: 761px)").addEventListener("change", (event) => {
+    if (event.matches) closeNav();
+  });
+</script>
+
+<script>
   // #106 (Direction A): globe-icon trigger opens a small anchored popover
   // with the 5 languages as pills — plain DOM APIs, matching this
   // project's existing convention for page-level interactivity (no
@@ -186,11 +271,34 @@ const authorizeHref = (provider: "github" | "discord") =>
     flex-wrap: wrap;
     gap: 12px 16px;
   }
+  .header-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
   .brand {
     font-weight: 800;
     font-size: 19px;
     color: var(--color-accent);
     text-decoration: none;
+  }
+  /* #201: hidden at desktop widths — see the "(max-width: 760px)" block
+     at the bottom of this stylesheet for where it (and the collapsed nav
+     it controls) actually turn on. */
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--color-border-card);
+    background: var(--color-surface);
+    color: var(--color-heading);
+    box-shadow: var(--shadow-sticker);
+    cursor: pointer;
   }
   nav {
     display: flex;
@@ -302,5 +410,57 @@ const authorizeHref = (provider: "github" | "discord") =>
     border: none;
     padding: 0;
     cursor: pointer;
+  }
+
+  /* #201: real mobile nav treatment, replacing the previous zero-@media
+     free-wrap. Base nav (Browse/Contribute/Needs research/Recent changes)
+     plus role-gated moderator/admin links plus identity plus the language
+     switcher was up to 8 flex items wrapping with no grouping at phone
+     widths — collapsed behind a hamburger trigger instead, matching the
+     lang-switcher's own established trigger/popover interaction pattern
+     (just applied to the whole nav rather than one menu). */
+  @media (max-width: 760px) {
+    .site-header {
+      position: relative;
+    }
+    .header-bar {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .nav-toggle {
+      display: inline-flex;
+    }
+    nav {
+      display: none;
+    }
+    nav.is-open {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      margin-top: 8px;
+      padding: 16px 32px 20px;
+      background: var(--color-surface);
+      border-top: 2px dashed var(--color-border-divider);
+      box-shadow: var(--shadow-sticker);
+    }
+    nav.is-open .login-links,
+    nav.is-open .identity {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    nav.is-open .lang-switcher {
+      width: 100%;
+      border-left: none;
+      padding-left: 0;
+      padding-top: 12px;
+      margin-top: 4px;
+      border-top: 2px dashed var(--color-border-divider);
+    }
   }
 </style>

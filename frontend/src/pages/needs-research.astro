@@ -17,6 +17,7 @@
 // precedent — #106 only fully localized home + series detail).
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
+import BackToTop from "../components/BackToTop.astro";
 
 interface NeedsResearchItem {
   id: number;
@@ -137,6 +138,8 @@ const nextOffset = offset + LIMIT;
       {hasNextPage && <a href={`/needs-research?offset=${nextOffset}`}>Next &rarr;</a>}
     </nav>
   )}
+
+  <BackToTop />
 </Layout>
 
 <style>

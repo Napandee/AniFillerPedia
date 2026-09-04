@@ -10,6 +10,14 @@ const t = useTranslations(locale);
 <footer class="site-footer">
   <span>&copy; {year} AniFillerPedia</span>
   <nav>
+    {/* #199: /contribute and /export-access were live but linked from
+        nowhere in the site's own nav — added here (and to Header.astro's
+        nav, for /contribute specifically). English-only pages, no locale
+        wrapper (matches the docs/moderation precedent), so bare paths
+        rather than getRelativeLocaleUrl — same reasoning as Header.astro's
+        own needs-research/activity links. */}
+    <a href="/contribute">{t("footer.contribute")}</a>
+    <a href="/export-access">{t("footer.exportAccess")}</a>
     <a href={getRelativeLocaleUrl(locale, "/license")}>{t("footer.license")}</a>
     <a href={getRelativeLocaleUrl(locale, "/privacy")}>{t("footer.privacy")}</a>
     <a href={getRelativeLocaleUrl(locale, "/tos")}>{t("footer.tos")}</a>

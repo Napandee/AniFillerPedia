@@ -111,7 +111,7 @@ const loginRequiredNotice = Astro.url.searchParams.get("notice") === "login_requ
 
   {
     pendingCount !== null && (
-      <a class="review-teaser" href={getRelativeLocaleUrl(locale, "/moderation")}>
+      <a class="review-teaser" href="/admin/moderation">
         <span class="review-dot" />
         <span>
           {t(pendingCount === 1 ? "home.reviewTeaser.pending_one" : "home.reviewTeaser.pending_other", {

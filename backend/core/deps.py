@@ -70,15 +70,54 @@ def get_rate_limit_identifier(request: Request, current_user: Row | None) -> str
     POST /series-proposals, POST /export/request-access) — the caller's
     own user id when authenticated (so a shared NAT/proxy IP never lumps
     distinct logged-in callers into one bucket), the remote IP otherwise.
-    Relies on the Dockerfile's `--proxy-headers --forwarded-allow-ips=*`
-    uvicorn flags so `request.client.host` reflects the real client IP
-    behind Caddy, not the proxy's own address — see repositories/
+    Relies on the Dockerfile's `--proxy-headers` uvicorn flag so
+    `request.client.host` reflects the real client IP behind Caddy, not
+    the proxy's own address. #185: the actual integrity of that value
+    comes from the Caddyfile's `trusted_proxies` global option (which
+    stops a client-supplied X-Forwarded-For from being trusted unless it
+    genuinely arrived via a trusted upstream hop) plus this Dockerfile's
+    `--forwarded-allow-ips` being scoped to the docker-compose network's
+    private range rather than `*` — before that fix, a caller could set
+    an arbitrary X-Forwarded-For and have it trusted verbatim here,
+    trivially defeating every IP-keyed limit below. See repositories/
     rate_limits.py for what this identifier is actually counted against.
     """
     if current_user is not None:
         return f"user:{current_user.id}"
     host = request.client.host if request.client else "unknown"
     return f"ip:{host}"
+
+
+def ensure_not_suspended(current_user: Row | None) -> None:
+    """#209: a suspended account cannot submit or vote. A single shared
+    check rather than duplicating the `suspended_at IS NOT NULL` test at
+    every write-path call site — used both directly (the anonymous-
+    allowed submission endpoints, which resolve their caller via
+    get_current_user_optional and so can't express this as a dependency)
+    and via require_active_user below (the login-required endpoints).
+    No-ops for an anonymous caller (current_user is None) — suspension is
+    an account-level restriction, and an anonymous submission has no
+    account to suspend in the first place. Deliberately does NOT block
+    reading or GDPR-rights endpoints (GET /users/me, GET /users/me/export,
+    DELETE /users/me) — only the write paths named in #209's scope
+    (submitting contributions/series-proposals/synonym-suggestions,
+    voting) call this.
+    """
+    if current_user is not None and current_user.suspended_at is not None:
+        raise HTTPException(status_code=403, detail="This account has been suspended.")
+
+
+async def require_active_user(current_user: Row = Depends(get_current_user)) -> Row:
+    """Same as get_current_user, plus #209's suspension check — for
+    endpoints that require login AND an active (non-suspended) account:
+    voting and bulk contribution submission. (The single-episode
+    contribution/series-proposal/synonym-suggestion submission endpoints
+    accept anonymous callers via get_current_user_optional instead, so
+    they call ensure_not_suspended directly in the handler rather than
+    depending on this.)
+    """
+    ensure_not_suspended(current_user)
+    return current_user
 
 
 async def require_owner(current_user: Row = Depends(get_current_user)) -> Row:

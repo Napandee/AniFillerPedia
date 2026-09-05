@@ -73,6 +73,57 @@ async def delete_user(session: AsyncSession, user_id: int) -> None:
     await session.execute(text("DELETE FROM users WHERE id = :id"), {"id": user_id})
 
 
+async def create_local_user(
+    session: AsyncSession,
+    *,
+    email: str,
+    password_hash: str,
+    display_name: str,
+    role: str,
+) -> Row:
+    result = await session.execute(
+        text(
+            """
+            INSERT INTO users (email, password_hash, display_name, role, last_login_at)
+            VALUES (:email, :password_hash, :display_name, :role, now())
+            RETURNING *
+            """
+        ),
+        {
+            "email": email,
+            "password_hash": password_hash,
+            "display_name": display_name,
+            "role": role,
+        },
+    )
+    return result.one()
+
+
+async def find_by_email_local(session: AsyncSession, email: str) -> Row | None:
+    """Only ever matches a row with password_hash set — an OAuth-only
+    row sharing this email (structurally possible, since OAuth emails
+    were never unique) must never be treated as a local account."""
+    result = await session.execute(
+        text("SELECT * FROM users WHERE email = :email AND password_hash IS NOT NULL"),
+        {"email": email},
+    )
+    return result.one_or_none()
+
+
+async def owner_exists(session: AsyncSession) -> bool:
+    """True when any row already holds role = 'owner'.
+
+    Backs the email-keyed bootstrap-owner guard in services/auth.py: a
+    local signup email is attacker-controlled free text (unlike a GitHub
+    provider_id, which requires actually controlling that account), so
+    the email bootstrap must only ever fire while no owner exists at all.
+    """
+    result = await session.execute(
+        text("SELECT EXISTS (SELECT 1 FROM users WHERE role = 'owner')")
+    )
+    return bool(result.scalar())
+
+
 async def link_provider(
     session: AsyncSession, *, user_id: int, provider: str, provider_id: str
 ) -> None:

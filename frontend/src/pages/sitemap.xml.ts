@@ -18,9 +18,10 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 const STATIC_PATHS = [
   "",
   "contribute",
-  "docs",
+  "docs/guide",
   "license",
   "privacy",
+  "tos",
   "export-access",
   "propose-series",
   // #153/#154: public, unauthenticated, English-only discovery pages —

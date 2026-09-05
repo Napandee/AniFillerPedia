@@ -1,0 +1,105 @@
+---
+// #210: a floating "back to top" control for pages whose content can run
+// genuinely long — a long-running show's full episode list
+// (SeriesDetailPage.astro), the browse/needs-research catalog
+// (HomePage.astro, needs-research.astro), and the activity feed
+// (activity.astro). Plain DOM, no framework island — same "vanilla
+// progressive enhancement" convention as every other page-level
+// interactive bit in this codebase (Header.astro's lang-switcher, #86's
+// jump-to-next-status controls).
+//
+// Fixed to the bottom-right of the viewport — deliberately not competing
+// with #86's own stat-jump controls on SeriesDetailPage.astro, which are
+// positioned relative to the stat cards themselves (scroll with the page,
+// anchored near the top of the episode-list section) rather than fixed to
+// the viewport, so there's no overlap regardless of which corner this
+// picks. Bottom-right is the conventional placement for this pattern.
+//
+// `label` lets a localized page (Home/Series) pass its own translated
+// string; pages without a locale wrapper (needs-research, activity — see
+// their own file-header comments) can just accept the English default,
+// consistent with how the rest of their copy is hardcoded English too.
+interface Props {
+  label?: string;
+}
+const { label = "Back to top" } = Astro.props;
+---
+
+<button type="button" id="back-to-top" class="back-to-top" aria-label={label} hidden>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15" />
+  </svg>
+</button>
+
+<script>
+  // Shown only once the visitor has scrolled a meaningful distance —
+  // rAF-throttled scroll handler so this doesn't run a style write on
+  // every single scroll event.
+  const SCROLL_THRESHOLD = 480;
+  const button = document.getElementById("back-to-top") as HTMLButtonElement | null;
+
+  if (button) {
+    let ticking = false;
+
+    function updateVisibility() {
+      if (button) button.hidden = window.scrollY < SCROLL_THRESHOLD;
+      ticking = false;
+    }
+
+    updateVisibility();
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateVisibility);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+
+    button.addEventListener("click", () => {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+      // Moves keyboard focus back up to the control that just fired,
+      // rather than leaving it stranded wherever the target row used to
+      // be — a real, if small, keyboard-accessibility win on its own.
+      button.focus();
+    });
+  }
+</script>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 15;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    background: var(--color-surface);
+    color: var(--color-accent);
+    box-shadow: var(--shadow-sticker);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .back-to-top:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .back-to-top[hidden] {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .back-to-top {
+      right: 16px;
+      bottom: 16px;
+    }
+  }
+</style>

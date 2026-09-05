@@ -7,11 +7,20 @@ rather than marked done — so nothing is ever silently dropped once a real
 handler exists for it later. Run as its own container (docker-compose.yml
 `worker` service), same image as the app, different entrypoint.
 
-Every handler registered here MUST NOT raise — process_batch() wraps a
-whole batch in one transaction, so a raising handler rolls back
-mark_processed for every row already handled in that same batch, not just
-its own. See services/notifications.py's module docstring for the full
-reasoning. Handlers catch their own errors and log them instead.
+Every handler registered here is still expected to catch its own errors
+rather than raise — see services/notifications.py's module docstring for
+the full reasoning (a raising handler used to roll back mark_processed for
+every row already handled in that same batch, not just its own). #195
+adds a real safety net on top of that discipline, for the case where a
+FUTURE handler does raise anyway: each event's handler call + mark_processed
+now runs in its own SAVEPOINT (session.begin_nested()), so one event's
+failure can no longer roll back anything already committed earlier in the
+same batch. A raising handler's event has its retry_count bumped instead;
+after MAX_RETRY_ATTEMPTS failures it's dead-lettered (failed_at set) and
+repositories.outbox.fetch_unprocessed_batch stops re-fetching it, so it
+can no longer block anything behind it either. Dead-lettering is logged at
+ERROR level — real Telegram alerting on it is #190's job (blocked on a
+token that doesn't exist yet), not built here, per #195's own scope.
 """
 
 import asyncio
@@ -20,7 +29,12 @@ from collections.abc import Awaitable, Callable
 
 from core.config import get_settings
 from core.db import async_session_factory
-from repositories.outbox import fetch_unprocessed_batch, mark_processed
+from repositories.outbox import (
+    fetch_unprocessed_batch,
+    increment_retry_count,
+    mark_dead_lettered,
+    mark_processed,
+)
 from services.alerting import alert_unhandled_exception
 from services.anilist_sync import (
     run_episode_schedule_sync_forever,
@@ -28,6 +42,7 @@ from services.anilist_sync import (
 )
 from services.cache_purge import purge_series_page_cache
 from services.notifications import notify_moderators_new_submission
+from services.traffic_analytics import run_traffic_rollup_forever
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("outbox_worker")
@@ -56,9 +71,19 @@ HANDLERS: dict[str, Callable[[dict], Awaitable[None]]] = {
     "synonym_suggestion.approved": purge_series_page_cache,
 }
 
+# #195: after this many failed attempts, a poisoned event is dead-lettered
+# (set aside) rather than retried forever. Not a tuned number — same "no
+# real failure data yet" stance this project has already taken for #14's
+# Sybil-resistance threshold and #84/#139's rate limits; every current
+# handler is designed to never actually raise in the first place (see the
+# module docstring), so this bounds a bug's blast radius, not a routinely-
+# exercised path.
+MAX_RETRY_ATTEMPTS = 5
+
 
 async def process_batch() -> int:
-    """One poll cycle. Returns how many events were actually handled."""
+    """One poll cycle. Returns how many events were actually handled
+    (dead-lettered/still-retrying events are not counted as handled)."""
     settings = get_settings()
     handled = 0
     async with async_session_factory() as session:
@@ -73,9 +98,40 @@ async def process_batch() -> int:
                         row.id,
                     )
                     continue
-                await handler(row.payload)
-                await mark_processed(session, row.id)
-                handled += 1
+                # #195: each event's own SAVEPOINT — a raising handler only
+                # ever rolls back ITS OWN attempted writes (there should be
+                # none; handlers are designed not to write to this session
+                # at all), never mark_processed for anything already
+                # committed earlier in this same batch.
+                try:
+                    async with session.begin_nested():
+                        await handler(row.payload)
+                        await mark_processed(session, row.id)
+                    handled += 1
+                except Exception as exc:
+                    async with session.begin_nested():
+                        retry_count = await increment_retry_count(session, row.id)
+                    if retry_count >= MAX_RETRY_ATTEMPTS:
+                        async with session.begin_nested():
+                            await mark_dead_lettered(session, row.id)
+                        logger.error(
+                            "event id=%s event_type=%s dead-lettered after %s failed "
+                            "attempts (last error: %s) — no longer retried, see worker.py "
+                            "module docstring (#195)",
+                            row.id,
+                            row.event_type,
+                            retry_count,
+                            exc,
+                        )
+                    else:
+                        logger.warning(
+                            "event id=%s event_type=%s handler raised (attempt %s/%s): %s",
+                            row.id,
+                            row.event_type,
+                            retry_count,
+                            MAX_RETRY_ATTEMPTS,
+                            exc,
+                        )
     return handled
 
 
@@ -109,11 +165,16 @@ async def run_all_forever() -> None:
     #175: renamed from run_both_forever() to accommodate a third loop —
     the weekly finished-series drift re-check — alongside the original
     two. Still one asyncio.gather, still one container/process.
+
+    #221: a fourth loop — the daily Cloudflare traffic-analytics rollup.
+    Same pattern as the other three: its own interval setting, its own
+    run_..._forever() function, gathered in here alongside them.
     """
     await asyncio.gather(
         run_forever(),
         run_episode_schedule_sync_forever(),
         run_finished_series_drift_check_forever(),
+        run_traffic_rollup_forever(),
     )
 
 

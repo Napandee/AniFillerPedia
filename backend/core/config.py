@@ -31,14 +31,24 @@ class Settings(BaseSettings):
     # almost always come back unchanged.
     finished_series_drift_check_interval_seconds: int = 60 * 60 * 24 * 7
 
-    # Auth (#8) — GitHub + Discord OAuth. Real values don't exist yet
-    # (#25, still open) — routes work structurally without them, live
-    # provider round-trips can't be verified until then.
+    # Auth — GitHub + Discord OAuth (#8) AND local email+password
+    # (#224). The OAuth credentials' real values don't exist yet (#25,
+    # still open) — those routes work structurally without them, but live
+    # provider round-trips can't be verified until then; local auth needs
+    # no external provisioning at all.
+    #
+    # The two bootstrap settings below are the same idea keyed two ways:
+    # initial_admin_github_id matches an OAuth login's provider-attested
+    # GitHub id, initial_admin_email matches a local signup's address.
+    # Because a signup email is attacker-controlled free text, the email
+    # path additionally only grants 'owner' while no owner row exists yet
+    # (services/auth.py::_is_bootstrap_owner_email).
     github_oauth_client_id: str = ""
     github_oauth_client_secret: str = ""
     discord_oauth_client_id: str = ""
     discord_oauth_client_secret: str = ""
     initial_admin_github_id: str = ""
+    initial_admin_email: str = ""
 
     # Signs session cookies and the OAuth `state` param (CSRF protection +
     # carrying "this is a /settings/link attempt for user N" safely across
@@ -76,8 +86,28 @@ class Settings(BaseSettings):
     cloudflare_api_token: str = ""
     # anifillerpedia.wiki's real zone ID, confirmed live 2026-08-21 (not
     # sensitive — Cloudflare zone IDs aren't secrets, the API token is).
+    # Reused as-is by #221's traffic rollup below — same zone, no reason
+    # for a second env var just to hold the same value twice.
     cloudflare_zone_id: str = "090a6d6b91e55f92740f23bad2c11de6"
     public_site_base_url: str = "https://anifillerpedia.wiki"
+
+    # #221 (implementation of #219's decision): daily Cloudflare zone-
+    # analytics rollup. A *separate* token from cloudflare_api_token above
+    # — that one is scoped to Zone > Cache Purge for #15's outbox
+    # consumer, this one needs a narrower Zone > Analytics > Read scope
+    # for this zone only, so they're kept as two distinct credentials
+    # rather than one token doing double duty across two different
+    # privilege scopes. Not provisioned yet (CLAUDE.local.md's external-
+    # account checklist) — empty by default, same "structurally ready,
+    # not live-configured" pattern as telegram_bot_token/turnstile_secret_key
+    # above: services/traffic_analytics.py's daily loop logs once and
+    # no-ops while this is unset, rather than erroring or crash-looping.
+    cloudflare_analytics_api_token: str = ""
+
+    # Daily by default, same reasoning as episode_schedule_sync_interval_
+    # seconds above — this data only needs a once-a-day rollup, not a
+    # tight poll loop.
+    traffic_rollup_interval_seconds: int = 60 * 60 * 24
 
 
 _INSECURE_DEFAULT_SESSION_SECRET_KEY = "dev-insecure-change-me"

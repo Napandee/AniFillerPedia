@@ -37,9 +37,17 @@ const [contributionsRes, proposalsRes, votesRes] = await Promise.all([
   api.GET("/api/v1/contributions/mine/votes", { headers: { cookie } }),
 ]);
 
-const myContributions = contributionsRes.data ?? [];
+// #196: GET /contributions/mine and GET /contributions/mine/votes now
+// return a {items, total, limit, offset} pagination envelope instead of a
+// bare array — read `.items` for the first page and keep `total` around
+// so a "Load more" control knows when more pages exist. series-proposals/
+// mine is a DIFFERENT endpoint, explicitly out of this issue's scope —
+// left exactly as-is (still a bare array).
+const myContributions = contributionsRes.data?.items ?? [];
+const myContributionsTotal = contributionsRes.data?.total ?? myContributions.length;
 const myProposals = proposalsRes.data ?? [];
-const myVotes = votesRes.data ?? [];
+const myVotes = votesRes.data?.items ?? [];
+const myVotesTotal = votesRes.data?.total ?? myVotes.length;
 
 const dateFmt = (iso: string) =>
   new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
@@ -104,7 +112,7 @@ const resolutionLabel = (method: string | null) => {
       myContributions.length === 0 ? (
         <p class="empty">You haven't submitted any episode corrections yet.</p>
       ) : (
-        <ul class="item-list">
+        <ul class="item-list" id="my-contributions-list">
           {myContributions.map((c) => (
             <li class="item-card">
               <div class="item-top">
@@ -135,6 +143,17 @@ const resolutionLabel = (method: string | null) => {
         </ul>
       )
     }
+    {myContributions.length < myContributionsTotal && (
+      <button
+        type="button"
+        class="btn-load-more"
+        id="contributions-load-more"
+        data-offset={myContributions.length}
+        data-total={myContributionsTotal}
+      >
+        Load more ({myContributions.length} of {myContributionsTotal})
+      </button>
+    )}
   </section>
 
   <section class="panel">
@@ -168,7 +187,7 @@ const resolutionLabel = (method: string | null) => {
       myVotes.length === 0 ? (
         <p class="empty">You haven't endorsed or disputed any contributions yet.</p>
       ) : (
-        <ul class="item-list">
+        <ul class="item-list" id="my-votes-list">
           {myVotes.map((v) => (
             <li class="item-card">
               <div class="item-top">
@@ -189,6 +208,17 @@ const resolutionLabel = (method: string | null) => {
         </ul>
       )
     }
+    {myVotes.length < myVotesTotal && (
+      <button
+        type="button"
+        class="btn-load-more"
+        id="votes-load-more"
+        data-offset={myVotes.length}
+        data-total={myVotesTotal}
+      >
+        Load more ({myVotes.length} of {myVotesTotal})
+      </button>
+    )}
   </section>
 </Layout>
 
@@ -205,6 +235,228 @@ const resolutionLabel = (method: string | null) => {
       event.preventDefault();
     }
   });
+
+  // #196: GET /contributions/mine and GET /contributions/mine/votes now
+  // return a {items, total, limit, offset} pagination envelope — this page
+  // had no pagination UI at all before, so both sections get a simple
+  // "Load more" button (no existing filter/approve-reject complexity to
+  // integrate with here, unlike admin/moderation.astro's queue). Fetches
+  // use a relative /api/v1/... path, same as every other client-side fetch
+  // in this codebase (never a ${baseUrl}-prefixed one — see #218/#228).
+
+  function formatDate(iso: string): string {
+    return new Date(iso).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
+
+  function resolutionLabel(method: string | null): string | null {
+    if (method === "moderator") return "moderator approval";
+    if (method === "community_vote") return "community vote";
+    return null;
+  }
+
+  interface FetchedContribution {
+    id: number;
+    series_id: number;
+    episode_number: number;
+    proposed_status: string;
+    proposed_note: string | null;
+    citation: { url?: string | null; description: string };
+    submitted_at: string;
+    review_status: string;
+    resolution_method: string | null;
+    review_note: string | null;
+  }
+
+  function buildContributionItem(c: FetchedContribution): HTMLLIElement {
+    const li = document.createElement("li");
+    li.className = "item-card";
+
+    const top = document.createElement("div");
+    top.className = "item-top";
+    const badge = document.createElement("span");
+    // Matches StatusBadge.astro's own rendered markup/classes closely
+    // enough for this page's own CSS (status-chip below carries the real
+    // color); kept plain text here rather than reimplementing that
+    // component's internals in client JS.
+    badge.className = `status-chip status-chip--${c.proposed_status}`;
+    badge.textContent = c.proposed_status;
+    const target = document.createElement("span");
+    target.className = "item-target";
+    target.textContent = `Series #${c.series_id} · Episode ${c.episode_number}`;
+    top.append(badge, target);
+    li.append(top);
+
+    if (c.proposed_note) {
+      const note = document.createElement("p");
+      note.className = "item-note";
+      note.textContent = c.proposed_note;
+      li.append(note);
+    }
+
+    const citation = document.createElement("p");
+    citation.className = "item-citation";
+    citation.append("Citation: ");
+    if (c.citation.url) {
+      const link = document.createElement("a");
+      link.href = c.citation.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = c.citation.description;
+      citation.append(link);
+    } else {
+      citation.append(c.citation.description);
+    }
+    li.append(citation);
+
+    const meta = document.createElement("div");
+    meta.className = "item-meta";
+    const statusChip = document.createElement("span");
+    statusChip.className = `status-chip status-chip--${c.review_status}`;
+    statusChip.textContent = c.review_status;
+    meta.append(statusChip);
+    const resolution = resolutionLabel(c.resolution_method);
+    if (resolution) {
+      const resolutionEl = document.createElement("span");
+      resolutionEl.className = "meta-note";
+      resolutionEl.textContent = `via ${resolution}`;
+      meta.append(resolutionEl);
+    }
+    const submitted = document.createElement("span");
+    submitted.className = "meta-note";
+    submitted.textContent = `submitted ${formatDate(c.submitted_at)}`;
+    meta.append(submitted);
+    li.append(meta);
+
+    if (c.review_note) {
+      const reviewNote = document.createElement("p");
+      reviewNote.className = "review-note";
+      reviewNote.textContent = `Reviewer note: ${c.review_note}`;
+      li.append(reviewNote);
+    }
+
+    return li;
+  }
+
+  interface FetchedVote {
+    contribution_id: number;
+    series_id: number;
+    series_title: string;
+    episode_number: number;
+    proposed_status: string;
+    vote: string;
+    weight_at_vote: number;
+    review_status: string;
+    resolution_method: string | null;
+    created_at: string;
+  }
+
+  function buildVoteItem(v: FetchedVote): HTMLLIElement {
+    const li = document.createElement("li");
+    li.className = "item-card";
+
+    const top = document.createElement("div");
+    top.className = "item-top";
+    const voteChip = document.createElement("span");
+    voteChip.className = `vote-chip vote-chip--${v.vote}`;
+    voteChip.textContent = v.vote;
+    const statusBadge = document.createElement("span");
+    statusBadge.className = `status-chip status-chip--${v.proposed_status}`;
+    statusBadge.textContent = v.proposed_status;
+    const target = document.createElement("span");
+    target.className = "item-target";
+    target.textContent = `${v.series_title} · Episode ${v.episode_number}`;
+    top.append(voteChip, statusBadge, target);
+    li.append(top);
+
+    const meta = document.createElement("div");
+    meta.className = "item-meta";
+    const statusChip = document.createElement("span");
+    statusChip.className = `status-chip status-chip--${v.review_status}`;
+    statusChip.textContent = v.review_status;
+    meta.append(statusChip);
+    const resolution = resolutionLabel(v.resolution_method);
+    if (resolution) {
+      const resolutionEl = document.createElement("span");
+      resolutionEl.className = "meta-note";
+      resolutionEl.textContent = `via ${resolution}`;
+      meta.append(resolutionEl);
+    }
+    const weight = document.createElement("span");
+    weight.className = "meta-note";
+    weight.textContent = `weight at vote: ${v.weight_at_vote}`;
+    meta.append(weight);
+    const cast = document.createElement("span");
+    cast.className = "meta-note";
+    cast.textContent = `cast ${formatDate(v.created_at)}`;
+    meta.append(cast);
+    li.append(meta);
+
+    return li;
+  }
+
+  function wireLoadMore<T>(
+    buttonId: string,
+    listId: string,
+    pathSuffix: string,
+    buildItem: (row: T) => HTMLLIElement
+  ) {
+    const button = document.getElementById(buttonId) as HTMLButtonElement | null;
+    const list = document.getElementById(listId);
+    if (!button || !list) return;
+
+    button.addEventListener("click", async () => {
+      const offset = Number(button.dataset.offset ?? "0");
+      button.disabled = true;
+      const originalLabel = button.textContent;
+      button.textContent = "Loading…";
+
+      try {
+        const response = await fetch(`${pathSuffix}?limit=20&offset=${offset}`, {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          button.disabled = false;
+          button.textContent = originalLabel;
+          return;
+        }
+        const body = (await response.json()) as { items: T[]; total: number };
+
+        for (const row of body.items) {
+          list.append(buildItem(row));
+        }
+
+        const newOffset = offset + body.items.length;
+        button.dataset.offset = String(newOffset);
+
+        if (newOffset >= body.total || body.items.length === 0) {
+          button.remove();
+        } else {
+          button.disabled = false;
+          button.textContent = `Load more (${newOffset} of ${body.total})`;
+        }
+      } catch {
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
+  }
+
+  wireLoadMore<FetchedContribution>(
+    "contributions-load-more",
+    "my-contributions-list",
+    "/api/v1/contributions/mine",
+    buildContributionItem
+  );
+  wireLoadMore<FetchedVote>(
+    "votes-load-more",
+    "my-votes-list",
+    "/api/v1/contributions/mine/votes",
+    buildVoteItem
+  );
 </script>
 
 <style>
@@ -295,6 +547,27 @@ const resolutionLabel = (method: string | null) => {
   .empty {
     font-size: 13px;
     color: var(--color-text-faint);
+  }
+
+  /* #196: "Load more" — this page had no pagination UI at all before;
+     styled as a plain outlined pill, same treatment as
+     admin/moderation.astro's own .btn--load-more. */
+  .btn-load-more {
+    display: block;
+    margin: 14px auto 0;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: var(--radius-pill);
+    padding: 7px 16px;
+    color: var(--color-accent);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
+    cursor: pointer;
+  }
+  .btn-load-more:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .item-list {

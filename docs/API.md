@@ -385,6 +385,48 @@ auto-promotes into the live episode data — no moderator click required.
 One sufficiently-trusted voter's endorsement can cross the threshold
 alone; several lower-trust voters' endorsements can also combine to.
 
+## Your own contributions and votes
+
+Three paginated, login-required endpoints, all sharing the same
+`{items, total, limit, offset}` envelope as `GET /series` and
+`GET /activity` above (`limit` 1–100, default 20; `offset` default 0):
+
+```
+GET /contributions/mine?limit=20&offset=0
+```
+
+Every contribution the caller has ever submitted, resolved or still
+pending, newest first — same per-item shape as **Full contribution
+history for an episode** above.
+
+```
+GET /contributions/mine/votes?limit=20&offset=0
+```
+
+Every vote the caller has cast, newest first:
+
+```json
+{
+  "items": [
+    { "contribution_id": 900, "series_id": 42, "series_title": "Naruto: Shippuuden",
+      "episode_number": 15, "proposed_status": "mixed", "vote": "endorse",
+      "weight_at_vote": 61, "review_status": "approved",
+      "resolution_method": "community_vote", "created_at": "2026-08-21T08:10:00Z" }
+  ],
+  "total": 12, "limit": 20, "offset": 0
+}
+```
+
+```
+GET /contributions
+```
+
+Moderator/admin/owner-only: the pending-review queue, same envelope and
+per-item shape as `GET /contributions/mine` above but scoped to every
+`pending` contribution across all submitters rather than one caller's
+own. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the approval/voting
+workflow this queue feeds into.
+
 ## Activity feed
 
 Public, read-only "recent changes" feed — every resolved (approved/

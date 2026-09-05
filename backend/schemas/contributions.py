@@ -104,6 +104,19 @@ class ContributionOut(BaseModel):
     review_note: str | None
 
 
+class ContributionsOut(BaseModel):
+    """#196: pagination envelope for GET /contributions (the moderator
+    queue) and GET /contributions/mine — same {items, total, limit, offset}
+    shape as schemas/activity.py's ActivityFeedOut, the reference pattern
+    every paginated endpoint in this codebase follows.
+    """
+
+    items: list[ContributionOut]
+    total: int
+    limit: int
+    offset: int
+
+
 class ContributionReject(BaseModel):
     # Required, not optional — #13/#3: a moderator must give a reason, so a
     # rejected contributor understands why rather than just that they were.
@@ -194,6 +207,17 @@ class MyVoteOut(BaseModel):
     review_status: str
     resolution_method: str | None
     created_at: datetime
+
+
+class MyVotesOut(BaseModel):
+    """#196: pagination envelope for GET /contributions/mine/votes — same
+    {items, total, limit, offset} shape as ActivityFeedOut/ContributionsOut.
+    """
+
+    items: list[MyVoteOut]
+    total: int
+    limit: int
+    offset: int
 
 
 class BulkContributionCreate(BaseModel):

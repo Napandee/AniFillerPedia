@@ -1,0 +1,60 @@
+---
+import Layout from "./Layout.astro";
+
+interface Props {
+  title: string;
+  activeTab: "moderation" | "users" | "traffic";
+}
+
+const { title, activeTab } = Astro.props;
+
+// Mirrors the exact role lists each of the three admin pages already
+// enforces independently in their own frontmatter (moderation.astro's
+// MODERATOR_ROLES; admin/users.astro's and admin/traffic.astro's own
+// ["admin", "owner"] checks) — this is a UI convenience only, never a
+// security boundary. The backend's own per-endpoint role check is the
+// real enforcement, same as every admin page already assumes.
+const role = (Astro.locals.user?.role ?? "") as "moderator" | "admin" | "owner" | "";
+
+const TABS = [
+  { id: "moderation", label: "Moderation", href: "/admin/moderation", roles: ["moderator", "admin", "owner"] },
+  { id: "users", label: "Users", href: "/admin/users", roles: ["admin", "owner"] },
+  { id: "traffic", label: "Traffic", href: "/admin/traffic", roles: ["admin", "owner"] },
+] as const;
+
+const visibleTabs = TABS.filter((tab) => (tab.roles as unknown as string[]).includes(role));
+---
+
+<Layout title={title} noindex>
+  <nav class="admin-tabs" aria-label="Admin sections">
+    {visibleTabs.map((tab) => (
+      <a href={tab.href} class:list={["admin-tab", { "admin-tab--active": tab.id === activeTab }]}>
+        {tab.label}
+      </a>
+    ))}
+  </nav>
+  <slot />
+</Layout>
+
+<style>
+  .admin-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--color-border-card);
+  }
+  .admin-tab {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 16px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .admin-tab--active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>

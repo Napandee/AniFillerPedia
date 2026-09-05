@@ -390,6 +390,12 @@ function formatDate(iso: string): string {
 </AdminLayout>
 
 <script>
+  // #196 review follow-up: the fetch/offset/button-label state machine for
+  // "Load more" below is shared with account.astro's own "Load more" via
+  // ../../lib/loadMore.ts — only the DOM-building/wiring (buildContributionCard,
+  // wireCard, bulk-selection refresh) stays local, since it's page-specific.
+  import { wireLoadMore } from "../../lib/loadMore";
+
   // Vanilla progressive enhancement — no client framework in this codebase
   // yet (Astro islands are reserved for when one is actually needed).
   // Approve/reject both call the backend directly from the browser via a
@@ -703,50 +709,16 @@ function formatDate(iso: string): string {
     const list = document.getElementById("contrib-list");
     if (!button || !list) return;
 
-    button.addEventListener("click", async () => {
-      const offset = Number(button.dataset.offset ?? "0");
-      button.disabled = true;
-      const originalLabel = button.textContent;
-      button.textContent = "Loading…";
-
-      try {
-        const response = await fetch(
-          `/api/v1/contributions?review_status=pending&limit=20&offset=${offset}`,
-          { credentials: "include" }
-        );
-        if (!response.ok) {
-          showToast(`Could not load more (${response.status}).`, "error");
-          button.disabled = false;
-          button.textContent = originalLabel;
-          return;
-        }
-        const body = (await response.json()) as {
-          items: FetchedContribution[];
-          total: number;
-        };
-
-        for (const item of body.items) {
-          const card = buildContributionCard(item);
-          list.append(card);
-          wireCard(card);
-        }
-
-        const newOffset = offset + body.items.length;
-        button.dataset.offset = String(newOffset);
-        button.dataset.total = String(body.total);
-        updateEmptyState("contrib");
-
-        if (newOffset >= body.total || body.items.length === 0) {
-          button.remove();
-        } else {
-          button.disabled = false;
-          button.textContent = `Load more (${newOffset} of ${body.total})`;
-        }
-      } catch {
-        showToast("Network error — could not load more. Try again.", "error");
-        button.disabled = false;
-        button.textContent = originalLabel;
-      }
+    wireLoadMore<FetchedContribution>({
+      button,
+      buildUrl: (offset) => `/api/v1/contributions?review_status=pending&limit=20&offset=${offset}`,
+      onRow: (item) => {
+        const card = buildContributionCard(item);
+        list.append(card);
+        wireCard(card);
+      },
+      onBatchComplete: () => updateEmptyState("contrib"),
+      onError: (message) => showToast(message, "error"),
     });
   }
 

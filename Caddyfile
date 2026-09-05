@@ -101,8 +101,9 @@ anifillerpedia.wiki {
 		# /_astro/*.js file rather than inlining it). The rest of this
 		# app's client-side <script> blocks (Header.astro's language
 		# switcher and nav toggle, SeriesDetailPage.astro, account.astro,
-		# propose-series.astro, and — added by #224 — login.astro) come
-		# back from Astro's SSR build genuinely
+		# propose-series.astro, login.astro, and — the world-map coloring
+		# script on admin/traffic.astro) come back from Astro's SSR build
+		# genuinely
 		# INLINE in the rendered HTML rather than externalized — confirmed
 		# by building the real frontend Docker image locally and diffing
 		# its output against live production byte-for-byte, not assumed.
@@ -140,7 +141,7 @@ anifillerpedia.wiki {
 		# clients that don't parse CSP frame directives): closes the
 		# clickjacking gap #186 flagged against contribute.astro/
 		# propose-series.astro/moderation/admin.
-		header Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-M6Cuk2FFQBCp22YeSZqrXki3fef9XcL2wzySAh4+J5k=' 'sha256-ZmJM6Tl01dZrC+lFQ431fOs2I92cdK0KAvAiBxOH6EU=' 'sha256-bpBxy6wc20yfG0VBfDOGNLQUEegmy+4Va9X1F4G3HgY=' 'sha256-UfKLzF4zeLAfkHOgiJCRm2ua8jNT0k8x6PEOWzkpJCw=' 'sha256-u2zF34XgOkyw7pD3YKqXNfHvAdwv/Vgl9y9iOFk2omM=' 'sha256-aoaRBAF8+wlPtRJYMg5YEFi+awTbcLw3WCCXkh5ZkP0=' 'sha256-Ck0XnhmfZRL/blVMfjqUfCH5qzlVaVzj3hSwGdLk8Ls='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.anilist.co; connect-src 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+		header Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-M6Cuk2FFQBCp22YeSZqrXki3fef9XcL2wzySAh4+J5k=' 'sha256-ZmJM6Tl01dZrC+lFQ431fOs2I92cdK0KAvAiBxOH6EU=' 'sha256-bpBxy6wc20yfG0VBfDOGNLQUEegmy+4Va9X1F4G3HgY=' 'sha256-UfKLzF4zeLAfkHOgiJCRm2ua8jNT0k8x6PEOWzkpJCw=' 'sha256-u2zF34XgOkyw7pD3YKqXNfHvAdwv/Vgl9y9iOFk2omM=' 'sha256-aoaRBAF8+wlPtRJYMg5YEFi+awTbcLw3WCCXkh5ZkP0=' 'sha256-Ck0XnhmfZRL/blVMfjqUfCH5qzlVaVzj3hSwGdLk8Ls=' 'sha256-uGUbfx3reBbl8nh+DLNdD2spP7prvSkQ014Akuo3CT8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.anilist.co; connect-src 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
 	}
 
 	# #186: baseline security headers that DON'T conflict with Swagger

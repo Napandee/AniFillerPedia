@@ -9,7 +9,7 @@
 // has no existing charting dependency anywhere in the frontend, and
 // #221's own scope says "simple charts/tables, not a big visualization
 // investment for v1."
-import Layout from "../../layouts/Layout.astro";
+import AdminLayout from "../../layouts/AdminLayout.astro";
 import { createApiClient } from "../../api/client";
 
 const user = Astro.locals.user;
@@ -48,7 +48,7 @@ function formatNumber(n: number): string {
 }
 ---
 
-<Layout title="Traffic analytics — AniFillerPedia" noindex>
+<AdminLayout title="Traffic analytics — AniFillerPedia" activeTab="traffic">
   <section class="panel">
     <h1 class="disp">Traffic analytics</h1>
     <p class="sub">
@@ -186,7 +186,7 @@ function formatNumber(n: number): string {
       </>
     )}
   </section>
-</Layout>
+</AdminLayout>
 
 <style>
   .panel {

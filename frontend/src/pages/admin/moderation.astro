@@ -85,7 +85,13 @@ const [contributionsResult, proposalsResult, synonymSuggestionsResponse] = await
   }),
 ]);
 
-const contributions: ContributionOut[] = contributionsResult.data ?? [];
+// #196: GET /contributions now returns a {items, total, limit, offset}
+// pagination envelope instead of a bare array — the moderation queue was
+// previously unbounded (this endpoint's own motivating gap for #196), so
+// this page reads `.items` for the first page and uses `total` below to
+// decide whether to render a "Load more" control.
+const contributions: ContributionOut[] = contributionsResult.data?.items ?? [];
+const contributionsTotal: number = contributionsResult.data?.total ?? contributions.length;
 const proposals: SeriesProposalOut[] = proposalsResult.data ?? [];
 const synonymSuggestions: SynonymSuggestionOut[] = synonymSuggestionsResponse.ok
   ? await synonymSuggestionsResponse.json()
@@ -191,6 +197,23 @@ function formatDate(iso: string): string {
           </li>
         ))}
       </ul>
+      {/* #196: the queue's own motivating gap — this endpoint was
+          previously unbounded, so anything past the first page (default
+          20) was silently unreachable. `data-offset` starts at how many
+          rows the SSR pass already rendered; the client script advances it
+          on each successful fetch and hides this button once it reaches
+          `data-total`. */}
+      {contributions.length < contributionsTotal && (
+        <button
+          type="button"
+          class="btn btn--load-more"
+          id="contrib-load-more"
+          data-offset={contributions.length}
+          data-total={contributionsTotal}
+        >
+          Load more ({contributions.length} of {contributionsTotal})
+        </button>
+      )}
     </div>
 
     <div class="panel">
@@ -377,6 +400,17 @@ function formatDate(iso: string): string {
   // the frontmatter's own server-side baseUrl above, which runs on the
   // server and is unaffected).
 
+  // #196: client-side copy of the frontmatter's own formatDate() above —
+  // Astro frontmatter runs server-side only and isn't reachable from this
+  // <script> block, so a row built here (see buildContributionCard, used
+  // only by "Load more") needs its own copy rather than importing it.
+  function formatDate(iso: string): string {
+    return new Date(iso).toLocaleString(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  }
+
   const ENDPOINT: Record<string, (id: string) => { approve: string; reject: string }> = {
     contribution: (id) => ({
       approve: `/api/v1/contributions/${id}/approve`,
@@ -515,7 +549,11 @@ function formatDate(iso: string): string {
     }
   }
 
-  document.querySelectorAll<HTMLLIElement>("li.card").forEach((card) => {
+  // #196: extracted from the former inline forEach below so a card
+  // appended later by "Load more" (see wireContribLoadMore) gets exactly
+  // the same approve/reject wiring as one rendered by the initial SSR
+  // pass — additive, not a restructuring of the existing per-item logic.
+  function wireCard(card: HTMLLIElement) {
     const noteField = card.querySelector<HTMLTextAreaElement>(".review-note");
     const rejectBtn = card.querySelector<HTMLButtonElement>('[data-action="reject"]');
     const approveBtn = card.querySelector<HTMLButtonElement>('[data-action="approve"]');
@@ -542,7 +580,177 @@ function formatDate(iso: string): string {
       }
       void handleAction(card, "reject", note);
     });
-  });
+  }
+
+  document.querySelectorAll<HTMLLIElement>("li.card").forEach(wireCard);
+
+  // #196: builds a contribution <li> matching the SSR markup above
+  // (index.astro/HomePage-style structural parity) — used only by
+  // "Load more" below, since a freshly-fetched page of the queue has to
+  // be rendered client-side with no server round trip of its own.
+  interface FetchedContribution {
+    id: number;
+    series_id: number;
+    episode_number: number;
+    proposed_status: string;
+    proposed_note: string | null;
+    citation: { url?: string | null; description: string };
+    submitted_at: string;
+  }
+
+  function buildContributionCard(c: FetchedContribution): HTMLLIElement {
+    const li = document.createElement("li");
+    li.className = "card";
+    li.dataset.kind = "contribution";
+    li.dataset.id = String(c.id);
+
+    const top = document.createElement("div");
+    top.className = "card-top";
+    const selectLabel = document.createElement("label");
+    selectLabel.className = "select-one";
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "select-checkbox";
+    checkbox.setAttribute("aria-label", "Select this contribution");
+    selectLabel.append(checkbox);
+    const target = document.createElement("span");
+    target.className = "target";
+    target.textContent = `Series #${c.series_id} · Episode #${c.episode_number}`;
+    const pill = document.createElement("span");
+    pill.className = `status-pill status-pill--${c.proposed_status}`;
+    pill.textContent = c.proposed_status;
+    top.append(selectLabel, target, pill);
+    li.append(top);
+
+    if (c.proposed_note) {
+      const note = document.createElement("p");
+      note.className = "note";
+      note.textContent = c.proposed_note;
+      li.append(note);
+    }
+
+    const citation = document.createElement("div");
+    citation.className = "citation";
+    const label = document.createElement("span");
+    label.className = "label";
+    label.textContent = "Citation:";
+    citation.append(label, " ");
+    if (c.citation.url) {
+      const link = document.createElement("a");
+      link.href = c.citation.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = c.citation.description;
+      citation.append(link);
+    } else {
+      const span = document.createElement("span");
+      span.textContent = c.citation.description;
+      citation.append(span);
+    }
+    li.append(citation);
+
+    const metaRow = document.createElement("div");
+    metaRow.className = "meta-row";
+    const submitted = document.createElement("span");
+    submitted.textContent = `Submitted ${formatDate(c.submitted_at)}`;
+    const mutedNote = document.createElement("span");
+    mutedNote.className = "muted-note";
+    mutedNote.textContent = "Submitter not shown — this endpoint doesn't return identity (see #39 note)";
+    metaRow.append(submitted, mutedNote);
+    li.append(metaRow);
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+    const approveBtn = document.createElement("button");
+    approveBtn.type = "button";
+    approveBtn.className = "btn btn--approve";
+    approveBtn.dataset.action = "approve";
+    approveBtn.textContent = "Approve";
+    const rejectGroup = document.createElement("div");
+    rejectGroup.className = "reject-group";
+    const textarea = document.createElement("textarea");
+    textarea.className = "review-note";
+    textarea.placeholder = "Review note (required to reject)";
+    textarea.rows = 2;
+    const rejectBtn = document.createElement("button");
+    rejectBtn.type = "button";
+    rejectBtn.className = "btn btn--reject";
+    rejectBtn.dataset.action = "reject";
+    rejectBtn.disabled = true;
+    rejectBtn.textContent = "Reject";
+    rejectGroup.append(textarea, rejectBtn);
+    actions.append(approveBtn, rejectGroup);
+    li.append(actions);
+
+    const fieldError = document.createElement("p");
+    fieldError.className = "field-error";
+    fieldError.hidden = true;
+    fieldError.textContent = "Reject requires a review note — add one above.";
+    li.append(fieldError);
+
+    return li;
+  }
+
+  // #196: same client-side-fetch/relative-path convention as
+  // handleAction/runBulk above (never a ${baseUrl}-prefixed URL — see
+  // #218/#228). Appends fetched rows to BOTH the DOM list and wires them
+  // into the same approve/reject handling every SSR-rendered card gets,
+  // and refreshes the bulk-selection panel's own cached-count logic
+  // (bulkRefresh, populated by wireBulkPanel below) so a newly-loaded row
+  // is immediately selectable/bulk-actionable, not invisible to it.
+  function wireContribLoadMore() {
+    const button = document.getElementById("contrib-load-more") as HTMLButtonElement | null;
+    const list = document.getElementById("contrib-list");
+    if (!button || !list) return;
+
+    button.addEventListener("click", async () => {
+      const offset = Number(button.dataset.offset ?? "0");
+      button.disabled = true;
+      const originalLabel = button.textContent;
+      button.textContent = "Loading…";
+
+      try {
+        const response = await fetch(
+          `/api/v1/contributions?review_status=pending&limit=20&offset=${offset}`,
+          { credentials: "include" }
+        );
+        if (!response.ok) {
+          showToast(`Could not load more (${response.status}).`, "error");
+          button.disabled = false;
+          button.textContent = originalLabel;
+          return;
+        }
+        const body = (await response.json()) as {
+          items: FetchedContribution[];
+          total: number;
+        };
+
+        for (const item of body.items) {
+          const card = buildContributionCard(item);
+          list.append(card);
+          wireCard(card);
+        }
+
+        const newOffset = offset + body.items.length;
+        button.dataset.offset = String(newOffset);
+        button.dataset.total = String(body.total);
+        updateEmptyState("contrib");
+
+        if (newOffset >= body.total || body.items.length === 0) {
+          button.remove();
+        } else {
+          button.disabled = false;
+          button.textContent = `Load more (${newOffset} of ${body.total})`;
+        }
+      } catch {
+        showToast("Network error — could not load more. Try again.", "error");
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
+  }
+
+  wireContribLoadMore();
 
   // #3: bulk approve/reject. Each panel (contributions, proposals,
   // synonym suggestions) tracks its own selection independently — a
@@ -990,6 +1198,17 @@ function formatDate(iso: string): string {
   .btn--reject {
     color: #fff;
     background: var(--color-dispute);
+  }
+  /* #196: "Load more" — the moderation queue's own pagination control,
+     styled as a plain outlined pill (neither the approve-green nor
+     reject-red semantics apply here) so it doesn't compete visually with
+     the per-card action buttons above it. */
+  .btn--load-more {
+    display: block;
+    margin: 12px auto 0;
+    color: var(--color-accent);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-card);
   }
   .reject-group {
     display: flex;

@@ -107,6 +107,13 @@ const en = {
   // (Canon/Filler/Mixed), not the raw English key.
   "series.jumpToNext": "Jump to next {status} episode",
   "series.jumpToNext.wrapped": "Back to the first {status} episode",
+  // #202: compact "jump to episode #" input for long-running shows — see
+  // SeriesDetailPage's jump-to-episode form. Distinct from jumpToNext
+  // above (that jumps by status, this jumps by an exact episode number the
+  // visitor already knows) but sits in the same visual area and composes
+  // with it rather than replacing it.
+  "series.jumpToEpisode": "Jump to episode #",
+  "series.jumpToEpisode.notFound": "No episode with that number was found.",
   "series.empty.title": "No episodes researched yet",
   "series.empty.body": "Nobody has submitted filler/canon data for this series yet — be the first.",
   "series.empty.submitFirst": "Submit episode 1",
@@ -215,6 +222,8 @@ const es: Partial<Record<TranslationKey, string>> = {
   "series.filterChip.clear": "✕ borrar",
   "series.jumpToNext": "Ir al siguiente episodio {status}",
   "series.jumpToNext.wrapped": "Vuelta al primer episodio {status}",
+  "series.jumpToEpisode": "Ir al episodio n.º",
+  "series.jumpToEpisode.notFound": "No se encontró ningún episodio con ese número.",
   "series.empty.title": "Aún no se ha investigado ningún episodio",
   "series.empty.body": "Nadie ha enviado datos de relleno/canon para esta serie todavía — sé el primero.",
   "series.empty.submitFirst": "Enviar episodio 1",
@@ -313,6 +322,8 @@ const hi: Partial<Record<TranslationKey, string>> = {
   "series.filterChip.clear": "✕ हटाएँ",
   "series.jumpToNext": "अगले {status} एपिसोड पर जाएँ",
   "series.jumpToNext.wrapped": "पहले {status} एपिसोड पर वापस",
+  "series.jumpToEpisode": "एपिसोड नंबर पर जाएँ",
+  "series.jumpToEpisode.notFound": "उस नंबर वाला कोई एपिसोड नहीं मिला।",
   "series.empty.title": "अभी तक किसी एपिसोड पर शोध नहीं हुआ",
   "series.empty.body": "इस सीरीज़ के लिए अभी तक किसी ने फिलर/कैनन डेटा जमा नहीं किया — सबसे पहले आप बनें।",
   "series.empty.submitFirst": "एपिसोड 1 जमा करें",
@@ -411,6 +422,8 @@ const ja: Partial<Record<TranslationKey, string>> = {
   "series.filterChip.clear": "✕ 解除",
   "series.jumpToNext": "次の{status}話へ移動",
   "series.jumpToNext.wrapped": "最初の{status}話に戻りました",
+  "series.jumpToEpisode": "話数を指定して移動",
+  "series.jumpToEpisode.notFound": "その話数のエピソードは見つかりませんでした。",
   "series.empty.title": "まだ調査された話がありません",
   "series.empty.body": "この作品のフィラー・カノン情報はまだ誰も投稿していません — 最初の投稿者になりましょう。",
   "series.empty.submitFirst": "第1話を投稿する",
@@ -509,6 +522,8 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "series.filterChip.clear": "✕ 清除",
   "series.jumpToNext": "跳转到下一个{status}集",
   "series.jumpToNext.wrapped": "已返回第一个{status}集",
+  "series.jumpToEpisode": "跳转到指定集数",
+  "series.jumpToEpisode.notFound": "未找到该集数的剧集。",
   "series.empty.title": "尚未有任何集数经过研究",
   "series.empty.body": "还没有人为这部作品提交填充/原著数据 —— 来做第一个提交的人吧。",
   "series.empty.submitFirst": "提交第 1 集",

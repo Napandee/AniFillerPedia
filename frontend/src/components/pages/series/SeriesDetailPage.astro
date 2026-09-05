@@ -63,6 +63,15 @@ const fillerCount = episodes.filter((ep) => ep.status === "filler").length;
 const mixedCount = episodes.filter((ep) => ep.status === "mixed").length;
 const pct = (n: number) => (totalEpisodes > 0 ? Math.round((n / totalEpisodes) * 100) : 0);
 
+// #202: compact "jump to episode #" input, shown only for shows long
+// enough that scrolling/repeated status-jumps is genuinely painful — same
+// `totalEpisodes` (episodes.length, the researched/rendered count, not
+// `totalKnownEpisodes`'s real AniList total) already used for the stat
+// cards above, since the jump control can only ever land on a row that's
+// actually rendered.
+const JUMP_TO_EPISODE_THRESHOLD = 300;
+const showJumpToEpisode = totalEpisodes >= JUMP_TO_EPISODE_THRESHOLD;
+
 // #94: range-notation summary — the literal filler-guide shorthand
 // ("Canon: 1-44, 48-49...") grouped by status, computed from the same
 // already-fetched episode list the stat cards above use (no new API
@@ -445,11 +454,42 @@ const structuredData = series
             </div>
           )}
 
+          {/* #202: compact jump-to-episode-number input — composes with
+              the jump-to-next-status controls above rather than replacing
+              them, so it lives in the same visual area (right under the
+              stat cards). Only shown for long-running shows (see
+              JUMP_TO_EPISODE_THRESHOLD above); a form so Enter submits it
+              without any extra JS wiring, matching this page's existing
+              preference for native HTML behavior over custom key
+              handling. */}
+          {showJumpToEpisode && (
+            <form class="jump-to-episode" id="jump-to-episode-form">
+              <label class="jump-to-episode-label" for="jump-to-episode-input">
+                {t("series.jumpToEpisode")}
+              </label>
+              <input
+                type="number"
+                min="1"
+                step="1"
+                inputmode="numeric"
+                id="jump-to-episode-input"
+                class="jump-to-episode-input"
+                placeholder={t("series.jumpToEpisode")}
+                aria-label={t("series.jumpToEpisode")}
+                data-not-found-message={t("series.jumpToEpisode.notFound")}
+              />
+              <button type="submit" class="jump-to-episode-submit" aria-label={t("series.jumpToEpisode")}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </button>
+            </form>
+          )}
+
           {/* #86: aria-live region for the one case the jump control's own
               scroll doesn't self-explain — wrapping back to the first
-              match because nothing was left further down the list. Hidden
-              (both visually and from assistive tech) the rest of the
-              time. */}
+              match because nothing was left further down the list. Also
+              reused by #202's jump-to-episode-number input for its own
+              not-found state. Hidden (both visually and from assistive
+              tech) the rest of the time. */}
           <div class="jump-toast" id="jump-toast" role="status" aria-live="polite" hidden></div>
 
 
@@ -517,7 +557,7 @@ const structuredData = series
               const airedAt = formatAiredAt(episode.aired_at ?? null);
               const lastVerified = formatAiredAt(episode.updated_at);
               return (
-                <details class="episode-row" data-status={episode.status}>
+                <details class="episode-row" data-status={episode.status} data-episode-number={episode.episode_number}>
                   <summary class="episode-row-head">
                     <span class="episode-number">{t("series.episodeAbbrev", { number: episode.episode_number })}</span>
                     {/* #73: reopens #33's "skip for v1" call — empty when
@@ -712,6 +752,18 @@ const structuredData = series
           // which is also scroll order (the list renders as one column).
           const rowIndex = new Map<HTMLElement, number>(rows.map((row, i) => [row, i]));
 
+          // #202: shared by both jumpToNextEpisode below and the new
+          // jump-to-episode-number form — scroll a target row into view
+          // and flash it, respecting prefers-reduced-motion. Extracted out
+          // of jumpToNextEpisode (which used to inline this) so the new
+          // number-based jump doesn't duplicate the same three lines.
+          function scrollToAndFlash(target: HTMLElement) {
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
+            target.classList.add("jump-target-flash");
+            window.setTimeout(() => target.classList.remove("jump-target-flash"), 1600);
+          }
+
           function jumpToNextEpisode(status: string, wrappedMessage: string) {
             const matches = rows.filter((row) => row.dataset.status === status);
             if (matches.length === 0) return;
@@ -744,13 +796,39 @@ const structuredData = series
               wrapped = true;
             }
 
-            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
-            target.classList.add("jump-target-flash");
-            window.setTimeout(() => target?.classList.remove("jump-target-flash"), 1600);
+            scrollToAndFlash(target);
 
             if (wrapped) showJumpToast(wrappedMessage);
           }
+
+          // #202: jump straight to a specific episode number, composing
+          // with (not replacing) jumpToNextEpisode above. Looked up via the
+          // new data-episode-number attribute on each row, precomputed once
+          // into a Map the same way rowIndex is above — cheap even for a
+          // 1,200+ episode show, and avoids a fresh querySelector per
+          // submit.
+          const jumpToEpisodeForm = document.getElementById("jump-to-episode-form");
+          const jumpToEpisodeInput = document.getElementById("jump-to-episode-input") as HTMLInputElement | null;
+          const rowsByEpisodeNumber = new Map<number, HTMLElement>();
+          for (const row of rows) {
+            const n = Number(row.dataset.episodeNumber);
+            if (Number.isFinite(n)) rowsByEpisodeNumber.set(n, row);
+          }
+
+          jumpToEpisodeForm?.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const episodeNumber = Number.parseInt(jumpToEpisodeInput?.value ?? "", 10);
+            if (!Number.isFinite(episodeNumber)) return;
+
+            const target = rowsByEpisodeNumber.get(episodeNumber);
+            if (!target) {
+              showJumpToast(jumpToEpisodeInput?.dataset.notFoundMessage ?? "");
+              return;
+            }
+
+            applyFilter(null);
+            scrollToAndFlash(target);
+          });
 
           // #87: the pending-indicator link lives inside <summary>, so a
           // click on it would otherwise also toggle the parent <details>
@@ -1392,6 +1470,62 @@ const structuredData = series
   }
   .range-more[open] summary::before {
     content: "\2212\00a0hide";
+  }
+
+  /* #202: compact jump-to-episode-number control — sits in the same
+     visual area as the stat cards' own jump-to-next-status buttons
+     (right above the jump-toast region both controls can trigger), reusing
+     the same tokens as .stat-chip/.filter-chip elsewhere on this page
+     rather than inventing new ones. */
+  .jump-to-episode {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 24px 0;
+    width: fit-content;
+    background: var(--color-surface);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sticker);
+    padding: 6px 8px 6px 16px;
+  }
+  .jump-to-episode-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  .jump-to-episode-input {
+    width: 74px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-pill);
+    padding: 6px 12px;
+  }
+  .jump-to-episode-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    background: var(--color-surface);
+    color: var(--color-accent);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .jump-to-episode-submit:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .jump-to-episode-submit svg {
+    flex-shrink: 0;
   }
 
   /* #86: shown only briefly, only for the wrap-to-first case — see

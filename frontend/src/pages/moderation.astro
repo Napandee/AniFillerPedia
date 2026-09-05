@@ -369,41 +369,44 @@ function formatDate(iso: string): string {
 <script>
   // Vanilla progressive enhancement — no client framework in this codebase
   // yet (Astro islands are reserved for when one is actually needed).
-  // Approve/reject both call the backend directly from the browser; the
-  // session cookie is forwarded automatically (same-origin in production,
-  // Caddy fronts both frontend and backend under one domain).
-  const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+  // Approve/reject both call the backend directly from the browser via a
+  // relative path — Caddy routes /api/v1/* to the backend on the same
+  // public origin, so this is same-origin, needs no CORS, and satisfies
+  // the CSP's connect-src 'self' (see #218/#228: a browser cannot resolve
+  // the internal Docker hostname baked in by PUBLIC_API_BASE_URL, unlike
+  // the frontmatter's own server-side baseUrl above, which runs on the
+  // server and is unaffected).
 
   const ENDPOINT: Record<string, (id: string) => { approve: string; reject: string }> = {
     contribution: (id) => ({
-      approve: `${baseUrl}/api/v1/contributions/${id}/approve`,
-      reject: `${baseUrl}/api/v1/contributions/${id}/reject`,
+      approve: `/api/v1/contributions/${id}/approve`,
+      reject: `/api/v1/contributions/${id}/reject`,
     }),
     proposal: (id) => ({
-      approve: `${baseUrl}/api/v1/series-proposals/${id}/approve`,
-      reject: `${baseUrl}/api/v1/series-proposals/${id}/reject`,
+      approve: `/api/v1/series-proposals/${id}/approve`,
+      reject: `/api/v1/series-proposals/${id}/reject`,
     }),
     // #148
     synonym: (id) => ({
-      approve: `${baseUrl}/api/v1/synonym-suggestions/${id}/approve`,
-      reject: `${baseUrl}/api/v1/synonym-suggestions/${id}/reject`,
+      approve: `/api/v1/synonym-suggestions/${id}/approve`,
+      reject: `/api/v1/synonym-suggestions/${id}/reject`,
     }),
   };
 
   // #3: bulk counterparts — one call per action instead of one per item.
   const BULK_ENDPOINT: Record<string, { approve: string; reject: string }> = {
     contribution: {
-      approve: `${baseUrl}/api/v1/contributions/bulk-approve`,
-      reject: `${baseUrl}/api/v1/contributions/bulk-reject`,
+      approve: `/api/v1/contributions/bulk-approve`,
+      reject: `/api/v1/contributions/bulk-reject`,
     },
     proposal: {
-      approve: `${baseUrl}/api/v1/series-proposals/bulk-approve`,
-      reject: `${baseUrl}/api/v1/series-proposals/bulk-reject`,
+      approve: `/api/v1/series-proposals/bulk-approve`,
+      reject: `/api/v1/series-proposals/bulk-reject`,
     },
     // #148
     synonym: {
-      approve: `${baseUrl}/api/v1/synonym-suggestions/bulk-approve`,
-      reject: `${baseUrl}/api/v1/synonym-suggestions/bulk-reject`,
+      approve: `/api/v1/synonym-suggestions/bulk-approve`,
+      reject: `/api/v1/synonym-suggestions/bulk-reject`,
     },
   };
 

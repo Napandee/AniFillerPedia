@@ -5,12 +5,17 @@
 // own role check is a UI convenience only, the backend's require_admin
 // gate on GET /api/v1/admin/traffic is the real enforcement layer.
 //
-// Deliberately plain HTML tables, not a charting library — this project
-// has no existing charting dependency anywhere in the frontend, and
-// #221's own scope says "simple charts/tables, not a big visualization
-// investment for v1."
+// A world map + this file's own "About this data" panel were added later
+// (2026-09) on top of #221's original plain-table v1 — still zero new
+// charting dependency (the map is a static, MIT-licensed SVG asset
+// colored by plain vanilla JS, matching this project's existing
+// no-framework-islands convention) and zero new data collection (the
+// map/legend/documentation below are built entirely from the same
+// country/path/status aggregates #221 already computed — no per-visitor
+// tracking was added, and none of this needed a privacy-policy change).
 import AdminLayout from "../../layouts/AdminLayout.astro";
 import { createApiClient } from "../../api/client";
+import worldMapSvg from "../../assets/world-map.svg?raw";
 
 const user = Astro.locals.user;
 if (!user || !["admin", "owner"].includes(user.role)) {
@@ -36,6 +41,12 @@ const rollups = data?.items ?? [];
 const hasData = rollups.length > 0;
 const latest = hasData ? rollups[0] : null;
 
+// Handed to the client script as JSON (never interpolated into JS
+// source directly) so it can color the map and drive the legend without
+// a second request — this is the exact same top_countries array the
+// table below renders, just fed to two views of one dataset.
+const countryDataJson = JSON.stringify(latest?.top_countries ?? []);
+
 function formatDate(iso: string): string {
   const d = new Date(`${iso}T00:00:00Z`);
   return Number.isNaN(d.getTime())
@@ -54,7 +65,7 @@ function formatNumber(n: number): string {
     <p class="sub">
       Daily rollups from Cloudflare's own zone analytics — covers both the site and the
       API, admin/owner only. See <a href="https://github.com/Napandee/AniFillerPedia/issues/221">#221</a>
-      for how this is built.
+      for how this is built, and "About this data" below for exactly what it can and can't tell you.
     </p>
 
     {error && <p class="error">Could not load traffic data from the backend.</p>}
@@ -86,6 +97,27 @@ function formatNumber(n: number): string {
             <span class="stat-label">Days of history</span>
             <span class="stat-value">{rollups.length}</span>
           </div>
+        </div>
+
+        <div class="map-block">
+          <div class="map-header">
+            <h2>Requests by country — {formatDate(latest.rollup_date)}</h2>
+            <p class="map-caption">
+              Hover a country for its exact count. Only the top 10 countries for the day are
+              recorded (see "About this data" below) — every other country renders unlit, which
+              may still carry real, just lower-volume, traffic rather than genuinely zero.
+            </p>
+          </div>
+          <div class="map-wrap" id="world-map-wrap" set:html={worldMapSvg} />
+          <div class="map-legend">
+            <span class="legend-label">Fewer requests</span>
+            <span class="legend-swatch legend-swatch--none" title="No data recorded for this day"></span>
+            <span class="legend-swatch legend-swatch--low"></span>
+            <span class="legend-swatch legend-swatch--mid"></span>
+            <span class="legend-swatch legend-swatch--high"></span>
+            <span class="legend-label">More requests</span>
+          </div>
+          <div id="map-tooltip" class="map-tooltip" hidden></div>
         </div>
 
         <div class="grid">
@@ -185,8 +217,154 @@ function formatNumber(n: number): string {
         </div>
       </>
     )}
+
+    <details class="about-data">
+      <summary>About this data — what it shows, what it can't, and what extending it would cost</summary>
+      <div class="about-body">
+        <h3>What's actually collected</h3>
+        <p>
+          Cloudflare's own zone analytics, rolled up once a day: total requests, the busiest
+          paths, response-status counts, and a per-country request count. All four are
+          independent aggregates — a count of "how many requests hit this path" and a count of
+          "how many requests came from this country" on the same day, never joined back to each
+          other or to any individual visitor.
+        </p>
+
+        <h3>Real shortcomings</h3>
+        <ul>
+          <li>
+            <strong>No "what did country X actually do."</strong> You cannot ask "what did the US
+            requests do" — country counts and path counts are two separate totals for the day,
+            not a per-visitor trail. There is no way to answer that question with this data, at
+            any granularity, no matter how the dashboard is rearranged.
+          </li>
+          <li>
+            <strong>Country-level only, not city/region.</strong> Cloudflare's analytics API
+            doesn't document a finer geography field for this dataset — country is the limit
+            without a different Cloudflare product tier.
+          </li>
+          <li>
+            <strong>Top 10 countries per day, not all of them.</strong> A country with real but
+            modest traffic can fall out of the list entirely on a given day — "not shown" here
+            never means "definitely zero."
+          </li>
+          <li>
+            <strong>Daily granularity, not live.</strong> This is yesterday's rollup, not a
+            real-time feed — by design (#219), to avoid a client-side beacon.
+          </li>
+        </ul>
+
+        <h3>Why it's built this way — and what changing it actually costs</h3>
+        <p>
+          The honest reason this stops at aggregates: AniFillerPedia stores <em>zero</em>
+          per-visitor data anywhere today. That's not an oversight here — it's the same
+          anonymous-first posture this project takes everywhere else (no tracking beyond what a
+          real account needs, GDPR-anonymized contributions, "detection not prevention" for abuse
+          monitoring). This dashboard was built to stay inside that line, not bump up against it.
+        </p>
+        <p>
+          Actually answering "what did these specific requests do" needs a genuinely different
+          data source — most realistically, ingesting Caddy's own access logs (already produced
+          on the droplet, currently only ever skimmed by hand for abuse per this project's
+          existing log-review process) into a real, queryable, per-request table: IP or hashed
+          IP, path, timestamp, country (Cloudflare already supplies this per-request via a
+          header, so no new lookup is needed). Technically straightforward. The real cost is
+          user-facing, not engineering:
+        </p>
+        <ul>
+          <li>
+            <strong>This becomes real visitor tracking, on the record.</strong> The moment
+            IP+path+timestamp are stored together, that's a genuine, disclosable change — not a
+            bigger dashboard, a different privacy posture.
+          </li>
+          <li>
+            <strong>The privacy policy would need to say so.</strong> It currently doesn't
+            mention this because nothing like it is collected — this is the one thing on this
+            page that can't be shipped without also updating that page.
+          </li>
+          <li>
+            <strong>It needs its own retention/rotation policy.</strong> Unbounded raw request
+            logs grow indefinitely; this project already has precedent for exactly this kind of
+            cleanup elsewhere (e.g. rate-limit-event pruning), but it's a new piece of upkeep,
+            not a one-time add.
+          </li>
+        </ul>
+        <p>
+          None of that is a reason not to do it — it's a real, useful capability, and it would
+          also make the existing manual log-review process queryable instead of a monthly manual
+          skim. It's flagged here so that "make this page better" and "start logging individual
+          visitors" stay two separate decisions, not one that quietly follows from the other.
+        </p>
+      </div>
+    </details>
   </section>
 </AdminLayout>
+
+<script type="application/json" id="country-data" is:inline set:html={countryDataJson} />
+
+<script>
+  // Colors the embedded world-map SVG (frontend/src/assets/world-map.svg,
+  // MIT-licensed path data derived from jvectormap-content) using the
+  // exact same top_countries data the table above already renders — no
+  // second request, no per-visitor data of any kind, just a different
+  // view of one existing aggregate. Plain DOM APIs, matching this
+  // project's no-framework-islands convention.
+  const dataEl = document.getElementById("country-data");
+  const wrap = document.getElementById("world-map-wrap");
+  const tooltip = document.getElementById("map-tooltip");
+
+  if (dataEl && wrap && tooltip) {
+    const countries: { country: string; count: number }[] = JSON.parse(dataEl.textContent || "[]");
+    const counts = new Map(countries.map((c) => [c.country, c.count]));
+    const maxCount = Math.max(1, ...countries.map((c) => c.count));
+
+    // Country names via the standard Intl API — no hand-maintained
+    // code->name table to keep in sync with the map's 176 country codes.
+    const regionNames =
+      typeof Intl !== "undefined" && "DisplayNames" in Intl
+        ? new Intl.DisplayNames(["en"], { type: "region" })
+        : null;
+
+    const numberFormat = new Intl.NumberFormat("en-GB");
+
+    const paths = wrap.querySelectorAll<SVGPathElement>("path[id]");
+    paths.forEach((path) => {
+      const code = path.id;
+      const count = counts.get(code) ?? 0;
+      // Log scale — the real distribution here is heavily skewed (one
+      // country routinely dwarfs the rest), so a linear scale would
+      // render everything except the top country as functionally
+      // invisible.
+      const intensity = count > 0 ? Math.log(count + 1) / Math.log(maxCount + 1) : 0;
+      path.style.fill = count > 0 ? `color-mix(in srgb, var(--color-accent) ${Math.round(10 + intensity * 90)}%, var(--color-surface))` : "var(--color-border-card)";
+      path.style.stroke = "var(--color-surface)";
+      path.style.strokeWidth = "0.5";
+      path.style.cursor = count > 0 ? "pointer" : "default";
+
+      const name = regionNames?.of(code) ?? code;
+      const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      title.textContent = count > 0 ? `${name}: ${numberFormat.format(count)} requests` : `${name}: no recorded requests`;
+      path.appendChild(title);
+
+      path.addEventListener("pointerenter", (event) => {
+        if (count === 0) return;
+        tooltip.textContent = `${name} — ${numberFormat.format(count)} requests`;
+        tooltip.hidden = false;
+        positionTooltip(event);
+      });
+      path.addEventListener("pointermove", positionTooltip);
+      path.addEventListener("pointerleave", () => {
+        tooltip.hidden = true;
+      });
+    });
+
+    function positionTooltip(event: PointerEvent) {
+      const wrapRect = wrap!.getBoundingClientRect();
+      tooltip!.style.left = `${event.clientX - wrapRect.left + 12}px`;
+      tooltip!.style.top = `${event.clientY - wrapRect.top + 12}px`;
+    }
+  }
+</script>
 
 <style>
   .panel {
@@ -263,6 +441,78 @@ function formatNumber(n: number): string {
     font-size: 20px;
     font-weight: 800;
     color: var(--color-heading);
+  }
+  .map-block {
+    position: relative;
+    background: var(--color-surface-pending);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 20px 24px 24px;
+    margin-bottom: 24px;
+  }
+  .map-header h2 {
+    font-size: 14px;
+    color: var(--color-heading);
+    margin: 0 0 4px;
+  }
+  .map-caption {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin: 0 0 12px;
+    max-width: 70ch;
+  }
+  .map-wrap {
+    width: 100%;
+  }
+  .map-wrap :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .map-wrap :global(path) {
+    transition: filter 0.15s ease;
+  }
+  .map-wrap :global(path:hover) {
+    filter: brightness(0.92);
+  }
+  .map-legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--color-text-faint);
+    font-weight: 700;
+  }
+  .legend-swatch {
+    width: 16px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid var(--color-border-card);
+  }
+  .legend-swatch--none {
+    background: var(--color-border-card);
+  }
+  .legend-swatch--low {
+    background: color-mix(in srgb, var(--color-accent) 30%, var(--color-surface));
+  }
+  .legend-swatch--mid {
+    background: color-mix(in srgb, var(--color-accent) 60%, var(--color-surface));
+  }
+  .legend-swatch--high {
+    background: var(--color-accent);
+  }
+  .map-tooltip {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+    background: var(--color-heading);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: var(--radius-card);
+    white-space: nowrap;
   }
   .grid {
     display: grid;
@@ -351,5 +601,43 @@ function formatNumber(n: number): string {
   }
   .history-block {
     max-width: 420px;
+  }
+  .about-data {
+    margin-top: 28px;
+    border: 1px dashed var(--color-border-card);
+    border-radius: var(--radius-card);
+    padding: 16px 20px;
+  }
+  .about-data summary {
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--color-heading);
+  }
+  .about-body {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--color-text);
+    max-width: 76ch;
+  }
+  .about-body h3 {
+    font-size: 13px;
+    color: var(--color-heading);
+    margin: 18px 0 6px;
+  }
+  .about-body h3:first-child {
+    margin-top: 0;
+  }
+  .about-body p {
+    margin: 0 0 10px;
+    line-height: 1.5;
+  }
+  .about-body ul {
+    margin: 0 0 10px;
+    padding-left: 20px;
+    line-height: 1.5;
+  }
+  .about-body li {
+    margin-bottom: 6px;
   }
 </style>

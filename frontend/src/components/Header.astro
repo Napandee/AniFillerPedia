@@ -71,18 +71,6 @@ const pathWithoutLocale = (() => {
     <a href="/contribute">{t("nav.contribute")}</a>
     <a href="/needs-research">{t("nav.needsResearch")}</a>
     <a href="/activity">{t("nav.recentChanges")}</a>
-    {user && ["moderator", "admin", "owner"].includes(user.role) && (
-      <a
-        href="/admin"
-        class:list={["admin-shield", { "admin-shield--active": Astro.url.pathname.startsWith("/admin") }]}
-        title={t("nav.adminPortal")}
-        aria-label={t("nav.adminPortal")}
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-      </a>
-    )}
     {
       user ? (
         <span class="identity">
@@ -157,6 +145,23 @@ const pathWithoutLocale = (() => {
         ))}
       </div>
     </div>
+    {/* #admin-portal: a distinct floating icon-button in the header's
+        top-right corner, matching AniDex's own admin-access pattern
+        (a circular FAB alongside its own account icons) rather than
+        reading as one more plain-text nav link — placed last so it
+        sits at the true right edge of the row, not buried mid-nav. */}
+    {user && ["moderator", "admin", "owner"].includes(user.role) && (
+      <a
+        href="/admin"
+        class:list={["admin-shield", { "admin-shield--active": Astro.url.pathname.startsWith("/admin") }]}
+        title={t("nav.adminPortal")}
+        aria-label={t("nav.adminPortal")}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </a>
+    )}
   </nav>
 </header>
 
@@ -395,15 +400,32 @@ const pathWithoutLocale = (() => {
     font-weight: 600;
     text-transform: capitalize;
   }
+  /* A circular icon-button, not a plain nav link — same "floating
+     account icon" treatment as .nav-toggle/.lang-trigger elsewhere in
+     this file (fixed size, surface background, sticker shadow), so it
+     reads as a distinct corner affordance rather than one more text
+     link buried in the flat nav row. */
   .admin-shield {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--color-border-card);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sticker);
     color: var(--color-text-muted);
     text-decoration: none;
+    transition: transform 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .admin-shield:hover {
+    transform: scale(1.08);
   }
   .admin-shield--active {
     color: var(--color-accent);
+    border-color: var(--color-accent);
   }
   .logout-form {
     display: inline;

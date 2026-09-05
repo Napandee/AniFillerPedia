@@ -34,8 +34,7 @@ def _build_message(payload: dict) -> str:
         return (
             f"New pending contribution #{payload['contribution_id']} — "
             f"series {payload.get('series_id')}, episode {payload.get('episode_number')}. "
-            f"Review: GET /api/v1/contributions?review_status=pending "
-            f"(no moderation UI yet — Phase 5 frontend not built)."
+            f"Review: https://anifillerpedia.wiki/moderation"
         )
     if "series_proposal_id" in payload:
         return (

@@ -1,0 +1,12 @@
+---
+// #admin-portal (2026-09-05): the shield icon in Header.astro links
+// here. This page renders nothing of its own — it exists only to send
+// the viewer to whichever admin tab their role can actually reach,
+// so there's no dashboard/overview content to build or maintain.
+const user = Astro.locals.user;
+if (user && ["moderator", "admin", "owner"].includes(user.role)) {
+  const target = user.role === "moderator" ? "/admin/moderation" : "/admin/users";
+  return Astro.redirect(target, 302);
+}
+return Astro.redirect("/", 302);
+---

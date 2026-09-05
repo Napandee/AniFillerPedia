@@ -24,7 +24,7 @@ https://anifillerpedia.wiki/api/v1
 ```
 
 Every endpoint below is relative to that. All responses are JSON except
-`GET /privacy` (HTML).
+`GET /privacy` and `GET /tos` (HTML).
 
 ## Authentication
 
@@ -41,10 +41,10 @@ to one caller's own data:
 | `GET /contributions/mine`, `/mine/votes` | `GET /series/*`, `/episodes/*` (all public reads) |
 | `GET /series-proposals/mine` | `POST /export/request-access` (email-gated, not login-gated) |
 | `GET /synonym-suggestions/mine` | `GET /export` (API-key-gated, not login-gated) |
-| `GET /users/me`, `DELETE /users/me` | |
-| `GET /settings/link/{provider}` | `GET /license`, `GET /privacy` |
-| Moderator+: `GET /contributions`, `GET /series-proposals`, `GET /synonym-suggestions`, every `/approve`, `/reject`, `/bulk-approve`, `/bulk-reject` | |
-| Admin+: `GET /admin/users`, `PATCH /admin/users/{id}/role` | |
+| `GET /users/me`, `GET /users/me/export`, `DELETE /users/me` | |
+| `GET /settings/link/{provider}` | `GET /license`, `GET /privacy`, `GET /tos` |
+| Moderator+: `GET /contributions`, `GET /series-proposals`, `GET /synonym-suggestions`, every `/approve`, `/reject`, `/bulk-approve`, `/bulk-reject`, `GET /admin/vote-clustering-report` | |
+| Admin+: `GET /admin/users`, `PATCH /admin/users/{id}/role`, `PATCH /admin/users/{id}/suspension` | |
 
 **How the login flow actually works.** This API has exactly one auth
 mechanism today: a browser-driven, cookie-based OAuth redirect. There is
@@ -93,6 +93,52 @@ real server-to-server write use case shows up, treat adding a proper
 service-account/bearer-token path as a real, scoped addition to design —
 not something to work around by scripting the cookie flow against a real
 human-owned account.
+
+### Local (email+password) auth
+
+A second, non-OAuth way to get the same `afp_session` cookie described
+above — added because neither OAuth provider is provisioned in production
+yet (see the project's own operational notes), so the browser-redirect
+flow above currently has no real login path to actually complete. This
+coexists with OAuth; it doesn't replace it, and a user can have both a
+local password and a linked OAuth identity on the same account over time.
+
+```
+POST /auth/local/signup
+{"email": "person@example.com", "password": "a real password", "display_name": "Person"}
+```
+
+Creates a new local account and immediately signs it in — no email
+verification step exists in v1 (a deliberate scope decision, matching
+this project's general bias against building for demand that doesn't
+exist yet), so the account is usable the moment this call returns.
+`password` must be at least 8 characters (rejected with `422` otherwise,
+the same structured validation-error shape every other endpoint's
+`pydantic` validation produces). On success (`200`), the response sets
+`afp_session` exactly as OAuth's `callback` does, and returns
+`{"id", "email", "display_name", "role"}` — a brand-new local account
+always starts as `role: "contributor"` (unless its email matches the
+bootstrap-owner env var, same convention as OAuth's own bootstrap path).
+
+`409` if the email is already registered as a local account — the
+response never distinguishes "already registered" from any other
+failure reason beyond that one documented case, so a caller can rely on
+`409` specifically meaning "sign in instead," and nothing else about an
+email's registration status is disclosed. Also rate-limited: `429` after
+5 signup attempts from the same IP within an hour.
+
+```
+POST /auth/local/login
+{"email": "person@example.com", "password": "a real password"}
+```
+
+`200` and the same `afp_session` cookie/body shape as signup on success.
+`401` on any failure — wrong password *and* unknown email both return the
+identical `401`, deliberately: this endpoint never discloses whether a
+given email is registered at all. Rate-limited per email+IP pair (not IP
+alone, so one heavily-trafficked IP can't collateral-block logins for
+every account behind it): `429` after 10 failed attempts for the same
+email+IP within a 5-minute window.
 
 ## Series
 
@@ -360,6 +406,23 @@ separate commercial agreement, see [DATA_LICENSE](../DATA_LICENSE)) and
 where to reach out about commercial use. The code powering this API is
 separately licensed [MIT](../LICENSE) — the split matters, see
 `DATA_LICENSE`'s own explanation of why.
+
+## Terms of Service
+
+```
+GET /tos
+```
+
+HTML page covering account conduct, our right to remove content/suspend
+accounts, and a service-level liability disclaimer — distinct from
+`DATA_LICENSE`'s own data-only warranty disclaimer above and from the
+[privacy policy](/api/v1/privacy)'s personal-data scope. A suspended
+account (admin/owner-only, `PATCH /admin/users/{id}/suspension`) is
+blocked from submitting/voting but keeps full read and GDPR-rights
+access — `GET /users/me/export` (see the Authentication table above)
+bundles a caller's own profile plus everything they've submitted/voted
+on into one response, for the same GDPR right-of-access reason
+`DELETE /users/me` exists for erasure.
 
 ## Errors
 

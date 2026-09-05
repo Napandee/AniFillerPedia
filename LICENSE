@@ -24,7 +24,11 @@ SOFTWARE.
 
 This license (MIT) covers the code in this repository only — the server,
 scripts, tooling, and any client libraries. The dataset itself (episode-level
-filler/canon records) is licensed separately under the Open Database License
-(ODbL) v1.0 — see DATA_LICENSE for the full text. This split mirrors the
-precedent set by manami-project/anime-offline-database, one of this project's
-own seed data sources, which uses the same code/data license split.
+filler/canon records) is licensed separately under CC BY-NC-SA 4.0, with a
+commercial-use carve-out — see DATA_LICENSE for the full text. This split
+mirrors the precedent set by manami-project/anime-offline-database, one of
+this project's own seed data sources, which uses the same code/data license
+split; the data side moved from an earlier ODbL v1.0 choice to CC BY-NC-SA
+4.0 on 2026-08-20 (see CLAUDE.md's Decisions Made — License for the
+reasoning) — this file previously still referenced ODbL, which had gone
+stale.

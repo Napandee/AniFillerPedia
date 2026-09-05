@@ -44,6 +44,9 @@ let values = {
   // #83: optional — shared across the whole batch, same as citation_url/
   // citation_description.
   citation_methodology_note: "",
+  // #204: shared across the whole batch too, same reasoning as
+  // citation_methodology_note above — one citation row per bulk call.
+  citation_source_count: "1",
   license_accepted: false,
 };
 
@@ -89,6 +92,7 @@ if (hasValidParams && user && Astro.request.method === "POST") {
     citation_url: String(form.get("citation_url") ?? ""),
     citation_description: String(form.get("citation_description") ?? ""),
     citation_methodology_note: String(form.get("citation_methodology_note") ?? ""),
+    citation_source_count: String(form.get("citation_source_count") ?? "1"),
     license_accepted: form.get("license_accepted") === "yes",
   };
 
@@ -106,6 +110,12 @@ if (hasValidParams && user && Astro.request.method === "POST") {
         methodology_note: values.citation_methodology_note.trim()
           ? values.citation_methodology_note.trim()
           : undefined,
+        // #204: same parse-or-fall-back-to-1 rule as submit.astro's own
+        // single-episode form.
+        source_count:
+          Number.isInteger(Number(values.citation_source_count)) && Number(values.citation_source_count) >= 1
+            ? Number(values.citation_source_count)
+            : 1,
       },
       license_accepted: values.license_accepted,
       dry_run: !isConfirm,
@@ -212,6 +222,7 @@ const countsByStatus = (entries: BulkEntry[]) => {
         <input type="hidden" name="citation_url" value={values.citation_url} />
         <input type="hidden" name="citation_description" value={values.citation_description} />
         <input type="hidden" name="citation_methodology_note" value={values.citation_methodology_note} />
+        <input type="hidden" name="citation_source_count" value={values.citation_source_count} />
         {values.license_accepted && <input type="hidden" name="license_accepted" value="yes" />}
         <div class="review-actions">
           <Button type="submit" name="stage" value="form" variant="ghost">Edit</Button>
@@ -290,6 +301,20 @@ const countsByStatus = (entries: BulkEntry[]) => {
             placeholder="e.g. cross-referenced against a second independent thread, noted any disagreement and how it was resolved..."
             set:text={values.citation_methodology_note}
           />
+        </label>
+
+        <label class="field field--narrow">
+          <span>Independent sources backing this <span class="optional">(optional)</span></span>
+          <input
+            type="number"
+            name="citation_source_count"
+            min="1"
+            step="1"
+            value={values.citation_source_count}
+          />
+          <span class="field-hint">
+            Leave at 1 unless you genuinely cross-referenced more than one independent source.
+          </span>
         </label>
 
         <p class="login-note">
@@ -424,7 +449,20 @@ const countsByStatus = (entries: BulkEntry[]) => {
     font-weight: 700;
     color: var(--color-dispute);
   }
+  /* #204: independent-sources count field — narrow, since it's a small
+     integer, not a full-width text field like everything else here. */
+  .field--narrow input[type="number"] {
+    width: 90px;
+  }
+  .field-hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-faint);
+  }
   input[type="url"],
+  input[type="number"],
   textarea {
     width: 100%;
     font-family: var(--font-body);

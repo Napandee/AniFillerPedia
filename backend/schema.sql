@@ -40,7 +40,10 @@ CREATE TABLE users (
     github_id     TEXT UNIQUE,
     discord_id    TEXT UNIQUE,
     google_id     TEXT UNIQUE,   -- nullable, reserved for issue #24 (Google OAuth, post-launch, not yet implemented)
-    email         TEXT,          -- from whichever provider supplied it; never the login key
+    email         TEXT,          -- from whichever provider supplied it for OAuth-only rows;
+                                  -- for local (password-having) rows, this IS the login key
+                                  -- (see users_email_unique_when_local below)
+    password_hash TEXT,
     display_name  TEXT,
     avatar_url    TEXT,
     -- 'owner' is a distinct tier above 'admin' (decided 2026-08-21, see
@@ -54,8 +57,24 @@ CREATE TABLE users (
     -- INITIAL_ADMIN_GITHUB_ID.
     role          TEXT NOT NULL DEFAULT 'contributor' CHECK (role IN ('contributor', 'moderator', 'admin', 'owner')),
     created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
-    last_login_at TIMESTAMPTZ
+    last_login_at TIMESTAMPTZ,
+    -- #209: account-suspension mechanism. NULL = active (the default for
+    -- every account); set only via PATCH /admin/users/{id}/suspension
+    -- (admin/owner only, migrations/019). suspended_at is the single
+    -- source of truth — no separate boolean to drift from it. A suspended
+    -- account is blocked from submitting contributions/series-proposals/
+    -- synonym-suggestions and from voting (core/deps.py's
+    -- ensure_not_suspended), but NOT from reading or from exercising GDPR
+    -- rights on their own account (GET /users/me, GET /users/me/export,
+    -- DELETE /users/me all stay unaffected). The owner's own row is
+    -- immune to suspension, same as role changes (services/admin.py).
+    suspended_at      TIMESTAMPTZ,
+    suspended_reason  TEXT
 );
+
+CREATE UNIQUE INDEX users_email_unique_when_local
+    ON users (email)
+    WHERE password_hash IS NOT NULL;
 
 -- =========================================================================
 -- SERIES CATALOG (community-grown — see header note above)
@@ -229,7 +248,14 @@ CREATE TABLE series_proposals (
 -- bare URL isn't a citation on its own.
 CREATE TABLE citations (
     id            SERIAL PRIMARY KEY,
-    url           TEXT,
+    -- #184: defense-in-depth alongside the Pydantic-layer scheme allowlist
+    -- on CitationIn.url (backend/schemas/contributions.py) — even a write
+    -- path that bypasses that layer entirely can't persist a non-http(s)
+    -- URL here (the concrete exploit this closes: a `javascript:` URI
+    -- stored verbatim and rendered as a raw <a href> on several pages).
+    -- Case-insensitive; NULL stays allowed (a source may be a book/guide
+    -- with no URL at all, per the comment below).
+    url           TEXT CHECK (url IS NULL OR url ~* '^https?://'),
     description   TEXT NOT NULL,
     submitted_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
     created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -304,6 +330,17 @@ CREATE UNIQUE INDEX contributions_one_pending_per_episode
     ON contributions (series_id, episode_number)
     WHERE review_status = 'pending';
 
+-- #194: backs list_for_episode() (the public per-episode contribution-
+-- history view, hit on every episode-detail page load) once results
+-- include resolved rows, not just pending ones — the partial unique index
+-- above deliberately excludes those.
+CREATE INDEX contributions_by_series_and_episode
+    ON contributions (series_id, episode_number);
+
+-- #194: backs list_mine() (a contributor's own submission history).
+CREATE INDEX contributions_by_submitted_by
+    ON contributions (submitted_by);
+
 -- Community trust-weighted votes on a *pending* contribution — the
 -- alternative path to promotion alongside direct moderator approval (see
 -- CLAUDE.md). voter_id and weight_at_vote are both nullable/preserved
@@ -322,6 +359,12 @@ CREATE TABLE contribution_votes (
     created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (contribution_id, voter_id)
 );
+
+-- #194: backs list_votes_by_voter() (#30, GET /contributions/mine/votes) —
+-- the table's only other index is the UNIQUE above, leading column
+-- contribution_id, which doesn't serve a voter_id-only lookup.
+CREATE INDEX contribution_votes_by_voter
+    ON contribution_votes (voter_id);
 
 -- One row per POST /series/{id}/contributions/bulk call that actually wrote
 -- something (dry_run calls never insert here — see issue #84). Backs a
@@ -401,8 +444,23 @@ CREATE TABLE outbox_events (
     event_type   TEXT NOT NULL,   -- 'contribution.submitted' | 'contribution.approved' | 'contribution.rejected' | 'contribution.withdrawn' | 'series_proposal.submitted' | 'series_proposal.approved' | ...
     payload      JSONB NOT NULL,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-    processed_at TIMESTAMPTZ   -- NULL until a consumer has handled it
+    processed_at TIMESTAMPTZ,   -- NULL until a consumer has handled it
+    -- #195: bounded retry + dead-letter, so a handler that raises can't
+    -- head-of-line-block every event behind it forever. retry_count is
+    -- bumped on each failed attempt (worker.py::process_batch); once it
+    -- crosses MAX_RETRY_ATTEMPTS, failed_at is set and the event is
+    -- excluded from fetch_unprocessed_batch from then on — set aside, not
+    -- deleted, so it stays queryable (`WHERE failed_at IS NOT NULL`)
+    -- rather than silently dropped.
+    retry_count  INTEGER NOT NULL DEFAULT 0,
+    failed_at    TIMESTAMPTZ
 );
+
+-- #194: backs fetch_unprocessed_batch, run every worker poll cycle.
+-- Processed rows are never archived, so without this the query degrades
+-- toward O(all rows ever written), not O(unprocessed rows).
+CREATE INDEX outbox_events_unprocessed
+    ON outbox_events (id) WHERE processed_at IS NULL;
 
 -- =========================================================================
 -- EXPORT ACCESS (issue #22 — terms-acceptance + API key gate for /export)
@@ -441,3 +499,34 @@ CREATE TABLE series_episode_schedule (
     aired_at        TIMESTAMPTZ NOT NULL,
     PRIMARY KEY (series_id, episode_number)
 );
+
+-- =========================================================================
+-- TRAFFIC ANALYTICS ROLLUP (issue #221 — implementation of #219's decision)
+-- =========================================================================
+
+-- One row per UTC calendar day the daily rollup worker loop ran, built
+-- from Cloudflare's own passive zone analytics (GraphQL Analytics API,
+-- httpRequestsAdaptiveGroups dataset) — not a client-side beacon, and
+-- covers both the Astro frontend and `/api/v1/*` alike since Cloudflare
+-- proxies both identically (see #219's closing comment). Cloudflare's own
+-- retention window for this data is short; this table is what gives the
+-- project permanent history beyond it.
+--
+-- rollup_date is UNIQUE so a same-day rerun (worker restart, manual
+-- re-trigger) overwrites that day's row via ON CONFLICT rather than
+-- accumulating duplicates. top_paths/status_breakdown/top_countries are
+-- JSONB rather than normalized child tables — small, admin-only,
+-- read-mostly rollup data, same precedent as series_proposals.episode_data
+-- (#85). Each top_paths entry carries its own path_kind ("frontend" vs.
+-- "api", split on whether the path starts with "/api/v1/").
+CREATE TABLE traffic_daily_rollups (
+    id                SERIAL PRIMARY KEY,
+    rollup_date       DATE NOT NULL UNIQUE,
+    total_requests    INTEGER NOT NULL,
+    top_paths         JSONB NOT NULL,
+    status_breakdown  JSONB NOT NULL,
+    top_countries     JSONB NOT NULL,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX traffic_daily_rollups_rollup_date_desc ON traffic_daily_rollups (rollup_date DESC);

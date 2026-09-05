@@ -26,6 +26,23 @@ async def test_privacy_policy_is_reachable() -> None:
 
 
 @pytest.mark.asyncio
+async def test_tos_page_is_reachable() -> None:
+    """#209: the Terms of Service page, same pattern as the privacy policy
+    test above.
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.get("/api/v1/tos")
+    assert response.status_code == 200
+    assert "text/html" in response.headers["content-type"]
+    body = response.text
+    assert "Terms of Service" in body
+    assert "DATA_LICENSE" in body  # distinguishes this doc's scope from the data license
+    assert "suspend" in body.lower()  # covers the account-suspension mechanism
+    assert "as is" in body.lower()  # service-level liability disclaimer, distinct from DATA_LICENSE's own
+
+
+@pytest.mark.asyncio
 async def test_license_endpoint_reachable() -> None:
     """#21's dedicated attribution endpoint — decided but never actually
     built until found missing while writing #16's API docs.

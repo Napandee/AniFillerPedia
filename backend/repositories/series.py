@@ -240,6 +240,20 @@ async def get_last_modified(session: AsyncSession, series_id: int) -> datetime:
     return row.last_modified
 
 
+async def get_slug_by_id(session: AsyncSession, series_id: int) -> str | None:
+    """#189: a lightweight, single-column lookup for outbox-event write
+    sites that only need a series' slug (to embed in the event payload so
+    services/cache_purge.py's consumer never has to guess a URL shape or
+    do its own DB round-trip) — get_series_by_identifier above returns
+    every column, which is unnecessary weight for this one use.
+    """
+    result = await session.execute(
+        text("SELECT slug FROM series WHERE id = :id"), {"id": series_id}
+    )
+    row = result.first()
+    return row.slug if row else None
+
+
 async def get_by_anilist_id(session: AsyncSession, anilist_id: int) -> Row | None:
     """#165: the early duplicate check for the series-proposal form's
     live AniList-ID lookup — checked BEFORE calling out to AniList itself,

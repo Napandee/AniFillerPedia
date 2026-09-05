@@ -23,7 +23,9 @@ from schemas.contributions import (
     ContributionCreate,
     ContributionOut,
     ContributionReviewOut,
+    ContributionsOut,
     MyVoteOut,
+    MyVotesOut,
     VoteCastOut,
 )
 from schemas.moderation import BulkModerationEntry, BulkModerationResult
@@ -488,26 +490,31 @@ async def submit_bulk_contributions(
     return result
 
 
-async def list_pending_contributions(session: AsyncSession) -> list[ContributionOut]:
-    rows = await contributions_repo.list_pending(session)
-    return [
-        ContributionOut(
-            id=row.id,
-            series_id=row.series_id,
-            episode_number=row.episode_number,
-            proposed_status=row.proposed_status,
-            proposed_note=row.proposed_note,
-            citation=CitationOut(
-                id=row.citation_id, url=row.citation_url, description=row.citation_description
-            ),
-            submitted_at=row.submitted_at,
-            review_status=row.review_status,
-            resolution_method=row.resolution_method,
-            reviewed_at=row.reviewed_at,
-            review_note=row.review_note,
-        )
-        for row in rows
-    ]
+async def list_pending_contributions(session: AsyncSession, limit: int, offset: int) -> ContributionsOut:
+    rows, total = await contributions_repo.list_pending(session, limit, offset)
+    return ContributionsOut(
+        items=[
+            ContributionOut(
+                id=row.id,
+                series_id=row.series_id,
+                episode_number=row.episode_number,
+                proposed_status=row.proposed_status,
+                proposed_note=row.proposed_note,
+                citation=CitationOut(
+                    id=row.citation_id, url=row.citation_url, description=row.citation_description
+                ),
+                submitted_at=row.submitted_at,
+                review_status=row.review_status,
+                resolution_method=row.resolution_method,
+                reviewed_at=row.reviewed_at,
+                review_note=row.review_note,
+            )
+            for row in rows
+        ],
+        total=total,
+        limit=limit,
+        offset=offset,
+    )
 
 
 async def _promote_to_episode_and_notify(session: AsyncSession, approved_row: Row) -> None:
@@ -790,42 +797,52 @@ async def bulk_reject_contributions(
     return await _bulk_moderate(session, ids, _reject_one)
 
 
-async def list_my_votes(session: AsyncSession, user_id: int) -> list[MyVoteOut]:
-    rows = await contributions_repo.list_votes_by_voter(session, user_id)
-    return [
-        MyVoteOut(
-            contribution_id=row.contribution_id,
-            series_id=row.series_id,
-            series_title=row.series_title,
-            episode_number=row.episode_number,
-            proposed_status=row.proposed_status,
-            vote=row.vote,
-            weight_at_vote=row.weight_at_vote,
-            review_status=row.review_status,
-            resolution_method=row.resolution_method,
-            created_at=row.created_at,
-        )
-        for row in rows
-    ]
+async def list_my_votes(session: AsyncSession, user_id: int, limit: int, offset: int) -> MyVotesOut:
+    rows, total = await contributions_repo.list_votes_by_voter(session, user_id, limit, offset)
+    return MyVotesOut(
+        items=[
+            MyVoteOut(
+                contribution_id=row.contribution_id,
+                series_id=row.series_id,
+                series_title=row.series_title,
+                episode_number=row.episode_number,
+                proposed_status=row.proposed_status,
+                vote=row.vote,
+                weight_at_vote=row.weight_at_vote,
+                review_status=row.review_status,
+                resolution_method=row.resolution_method,
+                created_at=row.created_at,
+            )
+            for row in rows
+        ],
+        total=total,
+        limit=limit,
+        offset=offset,
+    )
 
 
-async def list_my_contributions(session: AsyncSession, user_id: int) -> list[ContributionOut]:
-    rows = await contributions_repo.list_mine(session, user_id)
-    return [
-        ContributionOut(
-            id=row.id,
-            series_id=row.series_id,
-            episode_number=row.episode_number,
-            proposed_status=row.proposed_status,
-            proposed_note=row.proposed_note,
-            citation=CitationOut(
-                id=row.citation_id, url=row.citation_url, description=row.citation_description
-            ),
-            submitted_at=row.submitted_at,
-            review_status=row.review_status,
-            resolution_method=row.resolution_method,
-            reviewed_at=row.reviewed_at,
-            review_note=row.review_note,
-        )
-        for row in rows
-    ]
+async def list_my_contributions(session: AsyncSession, user_id: int, limit: int, offset: int) -> ContributionsOut:
+    rows, total = await contributions_repo.list_mine(session, user_id, limit, offset)
+    return ContributionsOut(
+        items=[
+            ContributionOut(
+                id=row.id,
+                series_id=row.series_id,
+                episode_number=row.episode_number,
+                proposed_status=row.proposed_status,
+                proposed_note=row.proposed_note,
+                citation=CitationOut(
+                    id=row.citation_id, url=row.citation_url, description=row.citation_description
+                ),
+                submitted_at=row.submitted_at,
+                review_status=row.review_status,
+                resolution_method=row.resolution_method,
+                reviewed_at=row.reviewed_at,
+                review_note=row.review_note,
+            )
+            for row in rows
+        ],
+        total=total,
+        limit=limit,
+        offset=offset,
+    )

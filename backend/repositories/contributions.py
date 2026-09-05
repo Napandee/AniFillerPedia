@@ -102,7 +102,14 @@ async def create(
     return result.one()
 
 
-async def list_mine(session: AsyncSession, user_id: int) -> list[Row]:
+async def list_mine(session: AsyncSession, user_id: int, limit: int, offset: int) -> tuple[list[Row], int]:
+    total = (
+        await session.execute(
+            text("SELECT count(*) FROM contributions WHERE submitted_by = :user_id"),
+            {"user_id": user_id},
+        )
+    ).scalar_one()
+
     result = await session.execute(
         text(
             """
@@ -111,11 +118,12 @@ async def list_mine(session: AsyncSession, user_id: int) -> list[Row]:
             JOIN citations c ON c.id = co.citation_id
             WHERE co.submitted_by = :user_id
             ORDER BY co.submitted_at DESC
+            LIMIT :limit OFFSET :offset
             """
         ),
-        {"user_id": user_id},
+        {"user_id": user_id, "limit": limit, "offset": offset},
     )
-    return list(result.fetchall())
+    return list(result.fetchall()), total
 
 
 async def get_episode_series_and_number(
@@ -156,7 +164,11 @@ async def list_for_episode(
     return list(result.fetchall())
 
 
-async def list_pending(session: AsyncSession) -> list[Row]:
+async def list_pending(session: AsyncSession, limit: int, offset: int) -> tuple[list[Row], int]:
+    total = (
+        await session.execute(text("SELECT count(*) FROM contributions WHERE review_status = 'pending'"))
+    ).scalar_one()
+
     result = await session.execute(
         text(
             """
@@ -165,10 +177,12 @@ async def list_pending(session: AsyncSession) -> list[Row]:
             JOIN citations c ON c.id = co.citation_id
             WHERE co.review_status = 'pending'
             ORDER BY co.submitted_at
+            LIMIT :limit OFFSET :offset
             """
-        )
+        ),
+        {"limit": limit, "offset": offset},
     )
-    return list(result.fetchall())
+    return list(result.fetchall()), total
 
 
 async def get_by_id(session: AsyncSession, contribution_id: int) -> Row | None:
@@ -336,12 +350,29 @@ async def promote_via_vote(session: AsyncSession, contribution_id: int) -> Row |
     return result.first()
 
 
-async def list_votes_by_voter(session: AsyncSession, voter_id: int) -> list[Row]:
+async def list_votes_by_voter(
+    session: AsyncSession, voter_id: int, limit: int, offset: int
+) -> tuple[list[Row], int]:
     """#30: the votes-cast counterpart to list_mine() (a user's own
     submissions) — enough of the contribution's own shape (series title,
     episode, current status) joined in that a UI can render each row
     without a follow-up request per vote.
     """
+    total = (
+        await session.execute(
+            text(
+                """
+                SELECT count(*)
+                FROM contribution_votes v
+                JOIN contributions c ON c.id = v.contribution_id
+                JOIN series s ON s.id = c.series_id
+                WHERE v.voter_id = :voter_id
+                """
+            ),
+            {"voter_id": voter_id},
+        )
+    ).scalar_one()
+
     result = await session.execute(
         text(
             """
@@ -355,11 +386,12 @@ async def list_votes_by_voter(session: AsyncSession, voter_id: int) -> list[Row]
             JOIN series s ON s.id = c.series_id
             WHERE v.voter_id = :voter_id
             ORDER BY v.created_at DESC
+            LIMIT :limit OFFSET :offset
             """
         ),
-        {"voter_id": voter_id},
+        {"voter_id": voter_id, "limit": limit, "offset": offset},
     )
-    return list(result.fetchall())
+    return list(result.fetchall()), total
 
 
 async def count_recent_bulk_submissions(session: AsyncSession, user_id: int, window_hours: int) -> int:

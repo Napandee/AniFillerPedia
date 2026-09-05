@@ -336,6 +336,36 @@ outcome, and any community votes cast on it:
 A `pending` entry with no moderator action yet can still resolve on its
 own — see **Community voting** below.
 
+## AniList lookup
+
+A small proxy the series-proposal form uses to pre-fill a title when
+someone types an AniList id (fires on blur, so in normal use at most once
+per id a submitter enters):
+
+```
+GET /anilist-lookup/{anilist_id}
+```
+
+Public, anonymous allowed, rate-limited to 30/hour per caller (a proxy
+onto AniList's own public GraphQL API, not something this project's own
+rate limits should be the only thing standing between anonymous callers
+and AniList's real ceiling). Always a `200`, never an error, for any of
+its three mutually exclusive outcomes:
+
+```json
+{ "status": "already_exists", "anilist_id": 1735,
+  "title": null, "format": null, "episode_count": null, "cover_image_url": null,
+  "existing_series_id": 42, "existing_series_slug": "naruto-shippuuden" }
+```
+
+- `"already_exists"` — the id already belongs to a live series in this
+  catalog; `existing_series_id`/`existing_series_slug` are populated, no
+  AniList call is even made.
+- `"found"` — a real, not-yet-catalogued AniList entry; `title`/`format`/
+  `episode_count`/`cover_image_url` are populated instead.
+- `"not_found"` — no such AniList id, or AniList couldn't be reached;
+  every field beyond `status`/`anilist_id` is `null`.
+
 ## Community voting
 
 Any logged-in user can endorse or dispute a pending contribution:
@@ -354,6 +384,43 @@ weighted endorsement crosses a threshold (currently 75), the contribution
 auto-promotes into the live episode data — no moderator click required.
 One sufficiently-trusted voter's endorsement can cross the threshold
 alone; several lower-trust voters' endorsements can also combine to.
+
+## Activity feed
+
+Public, read-only "recent changes" feed — every resolved (approved/
+rejected/withdrawn) episode contribution and series proposal, newest
+first. This is history, not the moderation queue (`GET /contributions`,
+moderator-only, pending-only):
+
+```
+GET /activity?limit=20&offset=0
+```
+
+```json
+{
+  "items": [
+    { "event_type": "contribution", "id": 900, "review_status": "approved",
+      "resolution_method": "community_vote",
+      "reviewed_at": "2026-08-21T08:20:00Z", "submitted_at": "2026-08-21T08:00:00Z",
+      "review_note": null, "series_id": 42, "series_title": "Naruto: Shippuuden",
+      "series_slug": "naruto-shippuuden", "episode_number": 15,
+      "proposed_status": "mixed", "citation_description": "...",
+      "proposal_title": null,
+      "submitter_display_name": "kabuto_scrolls", "submitter_github_id": "...",
+      "reviewer_display_name": null, "reviewer_github_id": null }
+  ],
+  "total": 431, "limit": 20, "offset": 0
+}
+```
+
+`submitter_*`/`reviewer_*` are `null` for an anonymous submission or an
+account since anonymized by deletion — the two look identical on purpose
+(see the privacy policy). An RSS 2.0 rendering of the same feed is also
+available for feed readers:
+
+```
+GET /activity/rss?limit=50
+```
 
 ## Bulk export
 

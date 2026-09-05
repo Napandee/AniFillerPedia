@@ -221,6 +221,70 @@ async def test_users_me_export_bundles_everything() -> None:
 
 
 @pytest.mark.asyncio
+async def test_users_me_export_includes_every_contribution_and_vote_beyond_any_page_cap() -> None:
+    """#196 review follow-up: GET /users/me/export's whole legal purpose is
+    "every row this user has, unabridged" — it must never behave like the
+    paginated GET /contributions/mine / GET /contributions/mine/votes
+    (default limit=20, hard cap limit<=100). Seeds 105 contributions and
+    105 votes for one user (via the bulk-submission endpoint, to seed each
+    batch in one call rather than tripping the single-submission
+    endpoint's 20/hour rate limit) and asserts the export returns all 105
+    of each — a number chosen specifically to exceed both the paginated
+    siblings' default AND their hard cap, so this test fails if a future
+    change ever reintroduces a call to those paginated functions here
+    (with any limit value) instead of the genuinely unbounded
+    list_my_contributions_all()/list_my_votes_all() added in 3f5216d.
+    """
+    caller_id = await _make_user(email="export-completeness@example.com")
+    other_id = await _make_user()
+    series_id = await _make_test_series("export-completeness")
+    try:
+        seed_count = 105
+        transport = ASGITransport(app=app)
+
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(caller_id)) as client:
+            bulk_resp = await client.post(
+                f"/api/v1/series/{series_id}/contributions/bulk",
+                json={
+                    "canon_ranges": f"1-{seed_count}",
+                    "citation": {"description": f"{TEST_PREFIX} bulk citation (caller)"},
+                    "license_accepted": True,
+                },
+            )
+        assert bulk_resp.status_code == 200, bulk_resp.text
+        assert len(bulk_resp.json()["created"]) == seed_count
+
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(other_id)) as client:
+            other_bulk_resp = await client.post(
+                f"/api/v1/series/{series_id}/contributions/bulk",
+                json={
+                    "canon_ranges": f"{seed_count + 1}-{seed_count * 2}",
+                    "citation": {"description": f"{TEST_PREFIX} bulk citation (other, for votes)"},
+                    "license_accepted": True,
+                },
+            )
+        assert other_bulk_resp.status_code == 200, other_bulk_resp.text
+        other_contribution_ids = [entry["contribution_id"] for entry in other_bulk_resp.json()["created"]]
+        assert len(other_contribution_ids) == seed_count
+
+        for contribution_id in other_contribution_ids:
+            vote_resp = await _vote_as(caller_id, contribution_id, "endorse")
+            assert vote_resp.status_code == 200, vote_resp.text
+
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(caller_id)) as client:
+            export_resp = await client.get("/api/v1/users/me/export")
+        assert export_resp.status_code == 200, export_resp.text
+        body = export_resp.json()
+
+        assert len(body["contributions"]) == seed_count
+        assert len(body["votes"]) == seed_count
+    finally:
+        await _cleanup_series(series_id)
+        await _delete_user(caller_id)
+        await _delete_user(other_id)
+
+
+@pytest.mark.asyncio
 async def test_users_me_export_requires_authentication() -> None:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

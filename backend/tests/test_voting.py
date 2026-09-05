@@ -373,8 +373,8 @@ async def test_my_votes_lists_only_own_votes_with_context(test_series_id: int, s
             response = await client.get("/api/v1/contributions/mine/votes")
         assert response.status_code == 200, response.text
         body = response.json()
-        assert len(body) == 1
-        entry = body[0]
+        assert len(body["items"]) == 1
+        entry = body["items"][0]
         assert entry["contribution_id"] == contribution_id
         assert entry["series_id"] == test_series_id
         assert entry["episode_number"] == 20
@@ -383,6 +383,61 @@ async def test_my_votes_lists_only_own_votes_with_context(test_series_id: int, s
     finally:
         await _delete_user(voter_id)
         await _delete_user(other_voter_id)
+
+
+@pytest.mark.asyncio
+async def test_my_votes_pagination_envelope_and_paging(test_series_id: int, submitter_id: int) -> None:
+    """#196: GET /contributions/mine/votes now returns {items, total,
+    limit, offset}, and limit/offset actually page through results — one
+    voter casts 3 votes across 3 separate contributions, request limit=2
+    then offset=2, confirm total reflects the true count while items
+    respects limit and the two pages don't overlap.
+    """
+    voter_id = await _make_user()
+    try:
+        contribution_ids = [
+            await _submit_contribution_as(submitter_id, test_series_id, episode_number)
+            for episode_number in (30, 31, 32)
+        ]
+        for contribution_id in contribution_ids:
+            vote_resp = await _vote_as(voter_id, contribution_id, "endorse")
+            assert vote_resp.status_code == 200, vote_resp.text
+
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(voter_id))
+
+            page_1 = await client.get("/api/v1/contributions/mine/votes", params={"limit": 2, "offset": 0})
+            assert page_1.status_code == 200
+            body_1 = page_1.json()
+            assert body_1["limit"] == 2
+            assert body_1["offset"] == 0
+            assert len(body_1["items"]) == 2
+            assert body_1["total"] >= 3
+
+            page_2 = await client.get("/api/v1/contributions/mine/votes", params={"limit": 2, "offset": 2})
+            assert page_2.status_code == 200
+            body_2 = page_2.json()
+            assert body_2["offset"] == 2
+
+            ids_page_1 = {c["contribution_id"] for c in body_1["items"]}
+            ids_page_2 = {c["contribution_id"] for c in body_2["items"]}
+            assert ids_page_1.isdisjoint(ids_page_2)
+            assert set(contribution_ids) <= (ids_page_1 | ids_page_2)
+    finally:
+        await _delete_user(voter_id)
+
+
+@pytest.mark.asyncio
+async def test_my_votes_limit_over_100_is_rejected(submitter_id: int) -> None:
+    """#196: limit is capped at 100 via FastAPI's Query(..., le=100) —
+    matches the existing GET /activity convention.
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        client.cookies.set(SESSION_COOKIE_NAME, create_session_token(submitter_id))
+        response = await client.get("/api/v1/contributions/mine/votes", params={"limit": 500})
+    assert response.status_code == 422
 
 
 @pytest.mark.asyncio

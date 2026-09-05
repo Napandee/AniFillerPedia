@@ -18,6 +18,16 @@ router = APIRouter(tags=["users"])
 
 _NOT_AUTHENTICATED = {401: {"model": ErrorDetail, "description": "Not authenticated"}}
 
+# #208's GDPR export must return EVERY row the caller has, never a single
+# paginated page — #196 added a required limit/offset to
+# list_my_contributions/list_my_votes (for the real paginated endpoints,
+# GET /contributions/mine and GET /contributions/mine/votes), but this
+# export call site isn't one of those endpoints and has no page-size
+# concept of its own. A large sentinel limit here keeps the export's
+# existing "everything, unbounded" behavior — series_proposals/
+# synonym_suggestions below stay genuinely unpaginated for the same reason.
+_EXPORT_ALL_LIMIT = 1_000_000
+
 
 @router.get("/users/me", response_model=UserOut, responses=_NOT_AUTHENTICATED)
 async def read_current_user(
@@ -73,10 +83,14 @@ async def export_current_user_data(
         rejected_count=rejected_count,
         trust_score=compute_trust_score(approved_count, rejected_count),
     )
+    contributions_result = await contributions_service.list_my_contributions(
+        session, current_user.id, _EXPORT_ALL_LIMIT, 0
+    )
+    votes_result = await contributions_service.list_my_votes(session, current_user.id, _EXPORT_ALL_LIMIT, 0)
     return UserExportOut(
         profile=profile,
-        contributions=await contributions_service.list_my_contributions(session, current_user.id),
-        votes=await contributions_service.list_my_votes(session, current_user.id),
+        contributions=contributions_result.items,
+        votes=votes_result.items,
         series_proposals=await series_proposals_service.list_my_series_proposals(
             session, current_user.id
         ),

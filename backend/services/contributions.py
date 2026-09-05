@@ -821,6 +821,29 @@ async def list_my_votes(session: AsyncSession, user_id: int, limit: int, offset:
     )
 
 
+async def list_my_votes_all(session: AsyncSession, user_id: int) -> list[MyVoteOut]:
+    """#196 review finding: for `GET /users/me/export` only — every vote
+    the caller has cast, unabridged, never a paginated page. See
+    repositories.contributions.list_votes_by_voter_all().
+    """
+    rows = await contributions_repo.list_votes_by_voter_all(session, user_id)
+    return [
+        MyVoteOut(
+            contribution_id=row.contribution_id,
+            series_id=row.series_id,
+            series_title=row.series_title,
+            episode_number=row.episode_number,
+            proposed_status=row.proposed_status,
+            vote=row.vote,
+            weight_at_vote=row.weight_at_vote,
+            review_status=row.review_status,
+            resolution_method=row.resolution_method,
+            created_at=row.created_at,
+        )
+        for row in rows
+    ]
+
+
 async def list_my_contributions(session: AsyncSession, user_id: int, limit: int, offset: int) -> ContributionsOut:
     rows, total = await contributions_repo.list_mine(session, user_id, limit, offset)
     return ContributionsOut(
@@ -846,3 +869,29 @@ async def list_my_contributions(session: AsyncSession, user_id: int, limit: int,
         limit=limit,
         offset=offset,
     )
+
+
+async def list_my_contributions_all(session: AsyncSession, user_id: int) -> list[ContributionOut]:
+    """#196 review finding: for `GET /users/me/export` only — every
+    contribution the caller has submitted, unabridged, never a paginated
+    page. See repositories.contributions.list_mine_all().
+    """
+    rows = await contributions_repo.list_mine_all(session, user_id)
+    return [
+        ContributionOut(
+            id=row.id,
+            series_id=row.series_id,
+            episode_number=row.episode_number,
+            proposed_status=row.proposed_status,
+            proposed_note=row.proposed_note,
+            citation=CitationOut(
+                id=row.citation_id, url=row.citation_url, description=row.citation_description
+            ),
+            submitted_at=row.submitted_at,
+            review_status=row.review_status,
+            resolution_method=row.resolution_method,
+            reviewed_at=row.reviewed_at,
+            review_note=row.review_note,
+        )
+        for row in rows
+    ]

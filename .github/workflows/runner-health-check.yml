@@ -30,6 +30,8 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    permissions:
+      administration: read
     steps:
       - name: Check afp-droplet runner status
         env:

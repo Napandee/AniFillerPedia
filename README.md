@@ -61,13 +61,18 @@ this initial batch.
   carries how many independent sources agree, surfaced as a corroboration
   badge, with the fuller research trail available behind a disclosure
   rather than cluttering the main claim.
+- **AI-client access via MCP** — a read-only [Model Context Protocol](https://modelcontextprotocol.io)
+  server exposes the same public data (series search, episodes, licensing)
+  as callable tools for MCP-compatible AI clients, alongside the REST API.
+  See [mcp/README.md](mcp/README.md).
 
 ## Repo layout
 
-Monorepo, hard split between `backend/` (FastAPI/Python) and `frontend/`
-(Astro/Node) — kept genuinely separate (no shared config/tooling, path-
-filtered CI) so either side can be worked on and deployed independently.
-See each directory's own `README.md` for local setup.
+Monorepo, hard split between `backend/` (FastAPI/Python), `frontend/`
+(Astro/Node), and `mcp/` (Python, the read-only MCP server) — kept
+genuinely separate (no shared config/tooling, path-filtered CI) so each
+side can be worked on and deployed independently. See each directory's
+own `README.md` for local setup.
 
 ## License
 

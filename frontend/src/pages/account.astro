@@ -223,6 +223,12 @@ const resolutionLabel = (method: string | null) => {
 </Layout>
 
 <script>
+  // #196 review follow-up: the fetch/offset/button-label state machine for
+  // both "Load more" buttons below is shared with admin/moderation.astro's
+  // own "Load more" via ../lib/loadMore.ts — only the DOM-building/wiring
+  // stays local to each page, since each page's rows look different.
+  import { wireLoadMore } from "../lib/loadMore";
+
   // Progressive-enhancement second confirmation on top of the required
   // checkbox above (which alone already blocks accidental/no-JS submission)
   // — this is an irreversible action, so a real browser confirm() dialog is
@@ -398,60 +404,30 @@ const resolutionLabel = (method: string | null) => {
     return li;
   }
 
-  function wireLoadMore<T>(
+  function setupLoadMore<T>(
     buttonId: string,
     listId: string,
-    pathSuffix: string,
+    pathBase: string,
     buildItem: (row: T) => HTMLLIElement
   ) {
     const button = document.getElementById(buttonId) as HTMLButtonElement | null;
     const list = document.getElementById(listId);
     if (!button || !list) return;
 
-    button.addEventListener("click", async () => {
-      const offset = Number(button.dataset.offset ?? "0");
-      button.disabled = true;
-      const originalLabel = button.textContent;
-      button.textContent = "Loading…";
-
-      try {
-        const response = await fetch(`${pathSuffix}?limit=20&offset=${offset}`, {
-          credentials: "include",
-        });
-        if (!response.ok) {
-          button.disabled = false;
-          button.textContent = originalLabel;
-          return;
-        }
-        const body = (await response.json()) as { items: T[]; total: number };
-
-        for (const row of body.items) {
-          list.append(buildItem(row));
-        }
-
-        const newOffset = offset + body.items.length;
-        button.dataset.offset = String(newOffset);
-
-        if (newOffset >= body.total || body.items.length === 0) {
-          button.remove();
-        } else {
-          button.disabled = false;
-          button.textContent = `Load more (${newOffset} of ${body.total})`;
-        }
-      } catch {
-        button.disabled = false;
-        button.textContent = originalLabel;
-      }
+    wireLoadMore<T>({
+      button,
+      buildUrl: (offset) => `${pathBase}?limit=20&offset=${offset}`,
+      onRow: (row) => list.append(buildItem(row)),
     });
   }
 
-  wireLoadMore<FetchedContribution>(
+  setupLoadMore<FetchedContribution>(
     "contributions-load-more",
     "my-contributions-list",
     "/api/v1/contributions/mine",
     buildContributionItem
   );
-  wireLoadMore<FetchedVote>(
+  setupLoadMore<FetchedVote>(
     "votes-load-more",
     "my-votes-list",
     "/api/v1/contributions/mine/votes",

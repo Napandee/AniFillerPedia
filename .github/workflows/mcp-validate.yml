@@ -1,0 +1,110 @@
+name: Validate MCP server PR build
+
+# Path-filtered — monorepo split (CLAUDE.md Guardrails, 2026-08-21),
+# extended to the third top-level directory (#178). Must never fire on a
+# backend/-only or frontend/-only change, and vice versa. Mirrors
+# pr-validate.yml's shape (real test suite + a build-and-smoke-test the
+# actual image), not frontend-validate.yml's lighter build-only check —
+# mcp/ has a real test suite (#178's own acceptance criteria), unlike
+# frontend at the time frontend-validate.yml was written (#31).
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "mcp/**"
+      - ".github/workflows/mcp-validate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: mcp
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: mcp/requirements-dev.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      # mcp/tests/conftest.py points AFP_API_BASE_URL at the real,
+      # deployed production API (https://anifillerpedia.wiki/api/v1) by
+      # default — matching this repo's own established "test against the
+      # real dependency, not a stand-in" convention (see
+      # backend/tests/test_anilist_sync.py's header comment). No
+      # credentials needed: every endpoint these tests call is public and
+      # unauthenticated (docs/API.md), and this is read-only GET traffic
+      # well within "reasonable use" of that public API.
+      - name: Run test suite
+        run: python -m pytest -v
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./mcp
+          file: ./mcp/Dockerfile
+          push: false
+          load: true
+          tags: anifillerpedia-mcp:pr-test
+
+      # Real smoke test against the built image, not just a successful
+      # `docker build` — same discipline as pr-validate.yml's own
+      # smoke-test step. Points the container at the real production API
+      # (same reasoning as the `test` job above) and confirms the
+      # streamable-http endpoint actually answers a real MCP
+      # `initialize` call, not just that the process starts.
+      - name: Smoke-test the built image
+        run: |
+          docker run -d --name afp-mcp-smoke -p 8000:8000 \
+            -e AFP_API_BASE_URL=https://anifillerpedia.wiki/api/v1 \
+            anifillerpedia-mcp:pr-test
+
+          # `if curl -sf ...; then` directly, not `status=$(curl ...)` —
+          # the latter trips this step's own `set -e` the moment curl
+          # returns non-zero (e.g. connection-refused during the
+          # container's brief startup window), aborting the retry loop
+          # on its very first iteration before it can ever retry. Same
+          # pattern as pr-validate.yml's own smoke-test step.
+          ok=""
+          for i in $(seq 1 30); do
+            if curl -sf -o /dev/null -X POST http://localhost:8000/mcp \
+              -H "Content-Type: application/json" \
+              -H "Accept: application/json, text/event-stream" \
+              -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2026-07-28","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"0"}}}'; then
+              ok=1
+              break
+            fi
+            sleep 1
+          done
+          if [ -z "$ok" ]; then
+            echo "MCP server never became reachable on :8000/mcp"
+            docker logs afp-mcp-smoke
+            exit 1
+          fi
+          echo "Smoke test passed: streamable-http initialize responded 200."
+
+      - name: Container logs
+        if: always()
+        run: docker logs afp-mcp-smoke || true
+
+      - name: Clean up
+        if: always()
+        run: docker rm -f afp-mcp-smoke || true

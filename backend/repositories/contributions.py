@@ -105,7 +105,14 @@ async def create(
 async def list_mine(session: AsyncSession, user_id: int, limit: int, offset: int) -> tuple[list[Row], int]:
     total = (
         await session.execute(
-            text("SELECT count(*) FROM contributions WHERE submitted_by = :user_id"),
+            text(
+                """
+                SELECT count(*)
+                FROM contributions co
+                JOIN citations c ON c.id = co.citation_id
+                WHERE co.submitted_by = :user_id
+                """
+            ),
             {"user_id": user_id},
         )
     ).scalar_one()
@@ -124,6 +131,28 @@ async def list_mine(session: AsyncSession, user_id: int, limit: int, offset: int
         {"user_id": user_id, "limit": limit, "offset": offset},
     )
     return list(result.fetchall()), total
+
+
+async def list_mine_all(session: AsyncSession, user_id: int) -> list[Row]:
+    """#196 review finding: the GDPR export (`GET /users/me/export`) needs
+    every one of a user's contributions, unabridged — a paginated `LIMIT`,
+    sentinel or otherwise, is architecturally wrong for that legal
+    guarantee. Same SELECT as list_mine() above, minus LIMIT/OFFSET and the
+    now-pointless count query; not reachable from any public router.
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT co.*, c.url AS citation_url, c.description AS citation_description
+            FROM contributions co
+            JOIN citations c ON c.id = co.citation_id
+            WHERE co.submitted_by = :user_id
+            ORDER BY co.submitted_at DESC
+            """
+        ),
+        {"user_id": user_id},
+    )
+    return list(result.fetchall())
 
 
 async def get_episode_series_and_number(
@@ -166,7 +195,16 @@ async def list_for_episode(
 
 async def list_pending(session: AsyncSession, limit: int, offset: int) -> tuple[list[Row], int]:
     total = (
-        await session.execute(text("SELECT count(*) FROM contributions WHERE review_status = 'pending'"))
+        await session.execute(
+            text(
+                """
+                SELECT count(*)
+                FROM contributions co
+                JOIN citations c ON c.id = co.citation_id
+                WHERE co.review_status = 'pending'
+                """
+            )
+        )
     ).scalar_one()
 
     result = await session.execute(
@@ -392,6 +430,32 @@ async def list_votes_by_voter(
         {"voter_id": voter_id, "limit": limit, "offset": offset},
     )
     return list(result.fetchall()), total
+
+
+async def list_votes_by_voter_all(session: AsyncSession, voter_id: int) -> list[Row]:
+    """#196 review finding: the GDPR export's votes counterpart to
+    list_mine_all() above — every vote the caller has ever cast, unabridged,
+    for the same reason. Same SELECT as list_votes_by_voter(), minus
+    LIMIT/OFFSET and the count query; not reachable from any public router.
+    """
+    result = await session.execute(
+        text(
+            """
+            SELECT
+                v.vote, v.weight_at_vote, v.created_at,
+                c.id AS contribution_id, c.series_id, c.episode_number,
+                c.proposed_status, c.review_status, c.resolution_method,
+                s.title AS series_title
+            FROM contribution_votes v
+            JOIN contributions c ON c.id = v.contribution_id
+            JOIN series s ON s.id = c.series_id
+            WHERE v.voter_id = :voter_id
+            ORDER BY v.created_at DESC
+            """
+        ),
+        {"voter_id": voter_id},
+    )
+    return list(result.fetchall())
 
 
 async def count_recent_bulk_submissions(session: AsyncSession, user_id: int, window_hours: int) -> int:

@@ -72,10 +72,16 @@ const pathWithoutLocale = (() => {
     <a href="/needs-research">{t("nav.needsResearch")}</a>
     <a href="/activity">{t("nav.recentChanges")}</a>
     {user && ["moderator", "admin", "owner"].includes(user.role) && (
-      <a href={getRelativeLocaleUrl(locale, "/moderation")}>{t("nav.reviewQueue")}</a>
-    )}
-    {user && ["admin", "owner"].includes(user.role) && (
-      <a href={getRelativeLocaleUrl(locale, "/admin/users")}>{t("nav.manageUsers")}</a>
+      <a
+        href="/admin"
+        class:list={["admin-shield", { "admin-shield--active": Astro.url.pathname.startsWith("/admin") }]}
+        title={t("nav.adminPortal")}
+        aria-label={t("nav.adminPortal")}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </a>
     )}
     {
       user ? (
@@ -388,6 +394,16 @@ const pathWithoutLocale = (() => {
     color: var(--color-text-faint);
     font-weight: 600;
     text-transform: capitalize;
+  }
+  .admin-shield {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  .admin-shield--active {
+    color: var(--color-accent);
   }
   .logout-form {
     display: inline;

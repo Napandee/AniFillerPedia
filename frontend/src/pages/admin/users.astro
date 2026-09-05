@@ -17,7 +17,7 @@
 // on GET/PATCH /api/v1/admin/users is a separate, already-enforced layer,
 // not a substitute for hiding the UI from a moderator/contributor/logged-out
 // visitor.
-import Layout from "../../layouts/Layout.astro";
+import AdminLayout from "../../layouts/AdminLayout.astro";
 import Button from "../../components/Button.astro";
 import { createApiClient } from "../../api/client";
 
@@ -95,7 +95,7 @@ function formatDate(iso: string): string {
 }
 ---
 
-<Layout title="Manage users — AniFillerPedia" noindex>
+<AdminLayout title="Manage users — AniFillerPedia" activeTab="users">
   <section class="panel">
     <h1 class="disp">Manage users</h1>
     <p class="sub">
@@ -169,7 +169,7 @@ function formatDate(iso: string): string {
       {hasNext ? <a href={`?offset=${nextOffset}`}>Next &rarr;</a> : <span class="disabled-link">Next &rarr;</span>}
     </div>
   </section>
-</Layout>
+</AdminLayout>
 
 <style>
   .panel {

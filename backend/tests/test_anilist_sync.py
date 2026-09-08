@@ -20,6 +20,15 @@ existing row read-only rather than inserting a duplicate, and cleanup only
 removes what this test itself created.
 """
 
+import pytest
+
+# Every test in this module hits the real AniList API (see the docstring above).
+# conftest.py probes it once per session and skips these when it is unreachable —
+# an upstream outage must not block a repo whose branch protection requires the
+# check these run inside.
+pytestmark = pytest.mark.live_network
+
+
 from datetime import date
 
 import pytest

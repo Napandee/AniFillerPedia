@@ -30,3 +30,11 @@ session:
   rebuild-trigger pipeline to propagate approved changes; freshness instead
   comes from the outbox-driven cache purge above. Islands for auth, search,
   the contribution submission form, and the moderator approval-queue view.
+
+- **MCP server** (`mcp/`, decided 2026-08-27 issue #159, built #178): a
+  standalone, read-only Model Context Protocol server — 5 GET-only tool
+  wrappers (search/get series, get episodes, get episode, get license) over
+  the same public REST API, never touching Postgres directly. Its own
+  container, its own path-filtered CI, routed at `/mcp` through Caddy —
+  same hard-separation convention as `backend/`/`frontend/`. Write tools are
+  explicitly out of scope (blocked on an unsolved MCP-auth design problem).

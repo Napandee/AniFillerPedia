@@ -347,12 +347,81 @@ async def test_mine_scopes_to_caller_excludes_other_users(test_series_id: int) -
 
             mine_b = await client_b.get("/api/v1/contributions/mine")
             assert mine_b.status_code == 200
-            mine_b_ids = {c["id"] for c in mine_b.json()}
+            mine_b_body = mine_b.json()
+            mine_b_ids = {c["id"] for c in mine_b_body["items"]}
             assert resp_b.json()["id"] in mine_b_ids
             assert resp_a.json()["id"] not in mine_b_ids  # the actual scoping guarantee
     finally:
         await _delete_user(user_a)
         await _delete_user(user_b)
+
+
+@pytest.mark.asyncio
+async def test_mine_pagination_envelope_and_paging(test_series_id: int) -> None:
+    """#196: GET /contributions/mine now returns {items, total, limit,
+    offset}, and limit/offset actually page through results — seed 3
+    submissions from one user, request limit=2 then a second page with
+    offset=2, confirm total reflects the true count while items respects
+    limit and the two pages don't overlap.
+    """
+    user_id = await _make_authenticated_user()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            submitted_ids = []
+            for episode_number in (30, 31, 32):
+                resp = await client.post(
+                    "/api/v1/contributions",
+                    json={
+                        "series_id": test_series_id,
+                        "episode_number": episode_number,
+                        "proposed_status": "canon",
+                        "citation": {"description": f"__test_12__ paging citation {episode_number}"},
+                        "license_accepted": True,
+                    },
+                )
+                assert resp.status_code == 201, resp.text
+                submitted_ids.append(resp.json()["id"])
+
+            page_1 = await client.get("/api/v1/contributions/mine", params={"limit": 2, "offset": 0})
+            assert page_1.status_code == 200
+            body_1 = page_1.json()
+            assert body_1["limit"] == 2
+            assert body_1["offset"] == 0
+            assert len(body_1["items"]) == 2
+            assert body_1["total"] >= 3
+
+            page_2 = await client.get("/api/v1/contributions/mine", params={"limit": 2, "offset": 2})
+            assert page_2.status_code == 200
+            body_2 = page_2.json()
+            assert body_2["offset"] == 2
+            assert len(body_2["items"]) >= 1
+
+            ids_page_1 = {c["id"] for c in body_1["items"]}
+            ids_page_2 = {c["id"] for c in body_2["items"]}
+            assert ids_page_1.isdisjoint(ids_page_2)
+            # All 3 seeded ids appear somewhere across the two pages.
+            assert set(submitted_ids) <= (ids_page_1 | ids_page_2)
+    finally:
+        await _delete_user(user_id)
+
+
+@pytest.mark.asyncio
+async def test_mine_limit_over_100_is_rejected() -> None:
+    """#196: limit is capped at 100 via FastAPI's Query(..., le=100) —
+    matches the existing GET /activity convention (schemas/activity.py,
+    routers/activity.py), which 422s rather than silently clamping.
+    """
+    user_id = await _make_authenticated_user()
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            client.cookies.set(SESSION_COOKIE_NAME, create_session_token(user_id))
+            response = await client.get("/api/v1/contributions/mine", params={"limit": 500})
+        assert response.status_code == 422
+    finally:
+        await _delete_user(user_id)
 
 
 @pytest.mark.asyncio

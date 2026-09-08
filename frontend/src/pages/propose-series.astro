@@ -436,8 +436,13 @@ if (Astro.request.method === "POST") {
   // the ID-present path — built together so a submitter sees one
   // consistent kind of hint regardless of which one fires. Vanilla DOM,
   // no framework island, matching moderation.astro's own progressive-
-  // enhancement approach elsewhere in this codebase.
-  const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+  // enhancement approach elsewhere in this codebase. Both fetch calls below
+  // use a relative path (not the frontmatter's own server-side baseUrl
+  // above, which is unaffected) — Caddy routes /api/v1/* to the backend
+  // on the same public origin, so a relative path is same-origin, needs
+  // no CORS, and satisfies the CSP's connect-src 'self' (see #218/#228: a
+  // browser cannot resolve the internal Docker hostname baked in by
+  // PUBLIC_API_BASE_URL).
 
   function escapeHtml(value: string): string {
     const div = document.createElement("div");
@@ -476,7 +481,7 @@ if (Astro.request.method === "POST") {
     lastCheckedTitle = raw;
     try {
       const response = await fetch(
-        `${baseUrl}/api/v1/series-proposals/check-title?title=${encodeURIComponent(raw)}`
+        `/api/v1/series-proposals/check-title?title=${encodeURIComponent(raw)}`
       );
       if (!response.ok) return;
       const data: { matches: { id: number; title: string; slug: string | null }[] } =
@@ -520,7 +525,7 @@ if (Astro.request.method === "POST") {
     if (raw === lastCheckedAnilistId) return;
     lastCheckedAnilistId = raw;
     try {
-      const response = await fetch(`${baseUrl}/api/v1/anilist-lookup/${encodeURIComponent(raw)}`);
+      const response = await fetch(`/api/v1/anilist-lookup/${encodeURIComponent(raw)}`);
       if (!response.ok) {
         clearPanel(anilistPanel);
         return;

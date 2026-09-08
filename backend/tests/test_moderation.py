@@ -209,6 +209,53 @@ async def test_non_moderator_forbidden_from_queue_and_actions(
 
 
 @pytest.mark.asyncio
+async def test_queue_pagination_envelope_and_paging(test_series_id: int, moderator_id: int) -> None:
+    """#196: GET /contributions now returns {items, total, limit, offset}
+    and limit/offset actually page through the moderation queue — seed 3
+    pending contributions, request limit=2 then offset=2, confirm total
+    reflects the true count while items respects limit and the two pages
+    don't overlap.
+    """
+    contribution_ids = [
+        await _submit_contribution(test_series_id, episode_number) for episode_number in (40, 41, 42)
+    ]
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        client.cookies.set(SESSION_COOKIE_NAME, create_session_token(moderator_id))
+
+        page_1 = await client.get("/api/v1/contributions", params={"limit": 2, "offset": 0})
+        assert page_1.status_code == 200
+        body_1 = page_1.json()
+        assert body_1["limit"] == 2
+        assert body_1["offset"] == 0
+        assert len(body_1["items"]) == 2
+        assert body_1["total"] >= 3
+
+        page_2 = await client.get("/api/v1/contributions", params={"limit": 2, "offset": 2})
+        assert page_2.status_code == 200
+        body_2 = page_2.json()
+        assert body_2["offset"] == 2
+
+        ids_page_1 = {c["id"] for c in body_1["items"]}
+        ids_page_2 = {c["id"] for c in body_2["items"]}
+        assert ids_page_1.isdisjoint(ids_page_2)
+        assert set(contribution_ids) <= (ids_page_1 | ids_page_2)
+
+
+@pytest.mark.asyncio
+async def test_queue_limit_over_100_is_rejected(moderator_id: int) -> None:
+    """#196: limit is capped at 100 via FastAPI's Query(..., le=100) —
+    matches the existing GET /activity convention.
+    """
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        client.cookies.set(SESSION_COOKIE_NAME, create_session_token(moderator_id))
+        response = await client.get("/api/v1/contributions", params={"limit": 500})
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
 async def test_approve_promotes_pending_contribution_into_episodes(
     test_series_id: int, moderator_id: int
 ) -> None:
@@ -220,7 +267,8 @@ async def test_approve_promotes_pending_contribution_into_episodes(
 
         queue_response = await client.get("/api/v1/contributions")
         assert queue_response.status_code == 200
-        assert contribution_id in {c["id"] for c in queue_response.json()}
+        queue_body = queue_response.json()
+        assert contribution_id in {c["id"] for c in queue_body["items"]}
 
         approve_response = await client.post(f"/api/v1/contributions/{contribution_id}/approve")
         assert approve_response.status_code == 200, approve_response.text

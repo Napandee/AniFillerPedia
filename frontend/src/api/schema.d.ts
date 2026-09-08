@@ -253,6 +253,45 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/local/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Local Signup
+         * @description Real email+password signup — coexists with OAuth login, does not
+         *     replace it. No email verification in v1 (see the design spec's
+         *     explicitly-deferred list) — the account is active immediately.
+         */
+        post: operations["local_signup_api_v1_auth_local_signup_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/local/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Local Login */
+        post: operations["local_login_api_v1_auth_local_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/logout": {
         parameters: {
             query?: never;
@@ -438,7 +477,9 @@ export interface paths {
          *     review. Moderator/admin/owner only. `review_status` is accepted but
          *     only the default `pending` is meaningful right now; anything else
          *     404s rather than silently returning an empty list, so a caller finds
-         *     out immediately if they typo'd it.
+         *     out immediately if they typo'd it. #196: paginated (default 20, capped
+         *     at 100), same {items, total, limit, offset} envelope as every other
+         *     paginated endpoint — the queue was previously an unbounded bare list.
          */
         get: operations["list_pending_contributions_api_v1_contributions_get"];
         put?: never;
@@ -497,7 +538,8 @@ export interface paths {
          * My Contributions
          * @description Every contribution the CALLER has submitted, regardless of review
          *     status — requires login (an anonymous submission has no account to
-         *     list this against).
+         *     list this against). #196: paginated, same {items, total, limit, offset}
+         *     envelope as every other paginated endpoint in this codebase.
          */
         get: operations["my_contributions_api_v1_contributions_mine_get"];
         put?: never;
@@ -520,7 +562,7 @@ export interface paths {
          * @description #30: votes-cast counterpart to `/contributions/mine` above — every
          *     endorse/dispute vote the caller has cast, with enough context (series
          *     title, episode, current resolution) to render without a follow-up
-         *     request per row.
+         *     request per row. #196: paginated, same envelope as the rest.
          */
         get: operations["my_votes_api_v1_contributions_mine_votes_get"];
         put?: never;
@@ -1629,6 +1671,23 @@ export interface components {
             review_note: string | null;
         };
         /**
+         * ContributionsOut
+         * @description #196: pagination envelope for GET /contributions (the moderator
+         *     queue) and GET /contributions/mine — same {items, total, limit, offset}
+         *     shape as schemas/activity.py's ActivityFeedOut, the reference pattern
+         *     every paginated endpoint in this codebase follows.
+         */
+        ContributionsOut: {
+            /** Items */
+            items: components["schemas"]["ContributionOut"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+        };
+        /**
          * DuplicatePendingContribution
          * @description 409 response body when #20's one-pending-per-episode rule rejects a
          *     submission — points the caller at the existing pending contribution so
@@ -1830,6 +1889,28 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** LocalLoginIn */
+        LocalLoginIn: {
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /** Password */
+            password: string;
+        };
+        /** LocalSignupIn */
+        LocalSignupIn: {
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /** Password */
+            password: string;
+            /** Display Name */
+            display_name: string;
+        };
         /**
          * MyVoteOut
          * @description #30: one entry per vote the caller has cast, enough context
@@ -1860,6 +1941,21 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+        };
+        /**
+         * MyVotesOut
+         * @description #196: pagination envelope for GET /contributions/mine/votes — same
+         *     {items, total, limit, offset} shape as ActivityFeedOut/ContributionsOut.
+         */
+        MyVotesOut: {
+            /** Items */
+            items: components["schemas"]["MyVoteOut"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
         };
         /**
          * NeedsResearchItem
@@ -2763,6 +2859,94 @@ export interface operations {
             };
         };
     };
+    local_signup_api_v1_auth_local_signup_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocalSignupIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Email already registered */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    local_login_api_v1_auth_local_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocalLoginIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Invalid email or password */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     logout_api_v1_auth_logout_post: {
         parameters: {
             query?: never;
@@ -3063,6 +3247,8 @@ export interface operations {
         parameters: {
             query?: {
                 review_status?: string;
+                limit?: number;
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -3076,7 +3262,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContributionOut"][];
+                    "application/json": components["schemas"]["ContributionsOut"];
                 };
             };
             /** @description Not authenticated */
@@ -3241,7 +3427,10 @@ export interface operations {
     };
     my_contributions_api_v1_contributions_mine_get: {
         parameters: {
-            query?: never;
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -3254,7 +3443,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContributionOut"][];
+                    "application/json": components["schemas"]["ContributionsOut"];
                 };
             };
             /** @description Not authenticated */
@@ -3264,13 +3453,25 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
     };
     my_votes_api_v1_contributions_mine_votes_get: {
         parameters: {
-            query?: never;
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -3283,7 +3484,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["MyVoteOut"][];
+                    "application/json": components["schemas"]["MyVotesOut"];
                 };
             };
             /** @description Not authenticated */
@@ -3293,6 +3494,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

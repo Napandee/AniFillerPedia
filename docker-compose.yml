@@ -1,19 +1,24 @@
-# Production stack for the DO Droplet. Six services: the FastAPI app, its
-# Postgres, the outbox-events worker, the Astro frontend, a self-hosted
-# GitHub Actions runner (so build-app.yml/frontend-deploy.yml can deploy
-# without a webhook/SSH hop), and Caddy for automatic TLS.
+# Production stack for the DO Droplet. Seven services: the FastAPI app, its
+# Postgres, the outbox-events worker, the Astro frontend, the read-only MCP
+# server (#178), a self-hosted GitHub Actions runner (so
+# build-app.yml/frontend-deploy.yml/mcp-deploy.yml can deploy without a
+# webhook/SSH hop), and Caddy for automatic TLS.
 #
 # Unlike AniDex's pattern (raw `docker pull` + `docker run`, no Compose),
 # this project genuinely needs multi-container orchestration on one box —
-# app, Postgres, worker, frontend, and runner all coordinate here. Compose IS
-# the deploy mechanism for this project, not just a container-manager
-# convenience file. See CLAUDE.md Architecture / Decisions Made for why.
+# app, Postgres, worker, frontend, mcp, and runner all coordinate here.
+# Compose IS the deploy mechanism for this project, not just a
+# container-manager convenience file. See CLAUDE.md Architecture /
+# Decisions Made for why.
 #
 # Backend image is built from ./backend (monorepo split — CLAUDE.md
 # Guardrails). The frontend's build context is the repo root, not
 # ./frontend — the one deliberate exception, since #41's docs/contribute
 # pages bake in docs/API.md and CONTRIBUTING.md at build time (see
-# frontend/Dockerfile's own comment for why).
+# frontend/Dockerfile's own comment for why). `mcp`'s build context is
+# ./mcp, same as backend — it's a standalone Python service that only ever
+# calls the public REST API over HTTP (never touches Postgres directly),
+# so it needs nothing from outside its own directory (see mcp/README.md).
 #
 # #193: every service below gets the same `logging` block (json-file,
 # capped at 10MB × 3 files) — app/worker log at INFO continuously (a line
@@ -24,15 +29,19 @@
 # the droplet on 2026-09-04 at near-zero traffic (app ~84MB/0.3% CPU,
 # worker ~56MB/~0%, frontend ~85MB/0.3%, caddy ~28MB/0.3%, postgres
 # ~56MB/0.05%, runner ~79MB idle — a real build/checkout job spikes higher)
-# — not guessed blind. Limits are ceilings, not reservations, and are
-# deliberately allowed to sum past the droplet's real 1vCPU (a shared,
-# contended resource under cgroup CFS quotas — over-provisioning per-
-# container CPU ceilings above the physical core count is normal and lets
-# any one service burst when the others are idle) while staying well under
-# its 2GB of RAM in total (~1.6GB summed below, leaving headroom for the
-# host OS/kernel/Docker daemon itself) since containers CAN be OOM-killed
-# simultaneously if the host itself runs out, unlike CPU contention which
-# the kernel scheduler just throttles fairly.
+# — not guessed blind. `mcp` (#178, merged after this batch) wasn't part of
+# that measurement pass; its own limits below are a conservative estimate
+# matching `worker`'s sizing (a similarly lightweight, low-traffic service
+# with no DB connection of its own), not a real docker-stats reading —
+# worth revisiting once it's actually seen real traffic. Limits are
+# ceilings, not reservations, and are deliberately allowed to sum past the
+# droplet's real 1vCPU (a shared, contended resource under cgroup CFS
+# quotas — over-provisioning per-container CPU ceilings above the physical
+# core count is normal and lets any one service burst when the others are
+# idle) while staying well under its 2GB of RAM in total (leaving headroom
+# for the host OS/kernel/Docker daemon itself) since containers CAN be
+# OOM-killed simultaneously if the host itself runs out, unlike CPU
+# contention which the kernel scheduler just throttles fairly.
 
 services:
   app:
@@ -186,6 +195,45 @@ services:
           cpus: "0.40"
           memory: 320M
 
+  mcp:
+    # #178, Phase 1 of #159's spike decision: read-only MCP tools wrapping
+    # the public REST API. Deliberately its own build/deploy unit (not
+    # folded into `app`) — same monorepo hard-separation guardrail as
+    # backend/frontend, now extended to a third leg (mcp/README.md).
+    build:
+      context: ./mcp
+      dockerfile: Dockerfile
+    image: ghcr.io/napandee/anifillerpedia-mcp:latest
+    container_name: afp-mcp
+    restart: unless-stopped
+    environment:
+      # Internal Docker network hostname — same pattern as the frontend's
+      # own PUBLIC_API_BASE_URL build arg above, except this is a plain
+      # runtime env var (no build-time inlining needed; afp_client.py reads
+      # it at call time via os.environ, see mcp/afp_client.py).
+      AFP_API_BASE_URL: http://app:8000
+    depends_on:
+      - app
+    ports:
+      - "127.0.0.1:8001:8000" # Caddy proxies to this; not exposed directly
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # No healthcheck here, deliberately, matching worker's own "no
+    # healthcheck" reasoning above rather than guessing one: a bare GET
+    # against the streamable-http /mcp endpoint isn't confirmed to return
+    # a clean 200 (the MCP protocol's own handshake expects a real client,
+    # not a plain HTTP probe), and inventing a check against untested
+    # behavior risks a false-negative restart loop worse than no check at
+    # all. `restart: unless-stopped` still covers an outright crash.
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"
+          memory: 192M
+
   runner:
     image: myoung34/github-runner:latest
     container_name: afp-runner
@@ -267,6 +315,7 @@ services:
     depends_on:
       - app
       - frontend
+      - mcp
     logging:
       driver: json-file
       options:

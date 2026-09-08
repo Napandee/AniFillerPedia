@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import services.contributions as contributions_service
@@ -20,8 +20,10 @@ from schemas.contributions import (
     ContributionOut,
     ContributionReject,
     ContributionReviewOut,
+    ContributionsOut,
     DuplicatePendingContribution,
     MyVoteOut,
+    MyVotesOut,
     VoteCastOut,
     VoteCreate,
 )
@@ -127,34 +129,39 @@ async def submit_bulk_contributions(
     return result
 
 
-@router.get("/contributions/mine", response_model=list[ContributionOut], responses=_NOT_AUTHENTICATED)
+@router.get("/contributions/mine", response_model=ContributionsOut, responses=_NOT_AUTHENTICATED)
 async def my_contributions(
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     current_user=Depends(get_current_user),  # noqa: ANN001 - Row, auth required
     session: AsyncSession = Depends(get_session),
-) -> list[ContributionOut]:
+) -> ContributionsOut:
     """Every contribution the CALLER has submitted, regardless of review
     status — requires login (an anonymous submission has no account to
-    list this against).
+    list this against). #196: paginated, same {items, total, limit, offset}
+    envelope as every other paginated endpoint in this codebase.
     """
-    return await contributions_service.list_my_contributions(session, current_user.id)
+    return await contributions_service.list_my_contributions(session, current_user.id, limit, offset)
 
 
-@router.get("/contributions/mine/votes", response_model=list[MyVoteOut], responses=_NOT_AUTHENTICATED)
+@router.get("/contributions/mine/votes", response_model=MyVotesOut, responses=_NOT_AUTHENTICATED)
 async def my_votes(
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     current_user=Depends(get_current_user),  # noqa: ANN001 - Row, auth required
     session: AsyncSession = Depends(get_session),
-) -> list[MyVoteOut]:
+) -> MyVotesOut:
     """#30: votes-cast counterpart to `/contributions/mine` above — every
     endorse/dispute vote the caller has cast, with enough context (series
     title, episode, current resolution) to render without a follow-up
-    request per row.
+    request per row. #196: paginated, same envelope as the rest.
     """
-    return await contributions_service.list_my_votes(session, current_user.id)
+    return await contributions_service.list_my_votes(session, current_user.id, limit, offset)
 
 
 @router.get(
     "/contributions",
-    response_model=list[ContributionOut],
+    response_model=ContributionsOut,
     responses={
         **_MODERATOR_ONLY,
         404: {"model": ErrorDetail, "description": "review_status is anything other than 'pending'"},
@@ -162,18 +169,22 @@ async def my_votes(
 )
 async def list_pending_contributions(
     review_status: str = "pending",
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     current_user=Depends(require_moderator),  # noqa: ANN001 - Row, moderator/admin only
     session: AsyncSession = Depends(get_session),
-) -> list[ContributionOut]:
+) -> ContributionsOut:
     """#13: the moderation queue — every contribution currently pending
     review. Moderator/admin/owner only. `review_status` is accepted but
     only the default `pending` is meaningful right now; anything else
     404s rather than silently returning an empty list, so a caller finds
-    out immediately if they typo'd it.
+    out immediately if they typo'd it. #196: paginated (default 20, capped
+    at 100), same {items, total, limit, offset} envelope as every other
+    paginated endpoint — the queue was previously an unbounded bare list.
     """
     if review_status != "pending":
         raise HTTPException(status_code=404, detail="only review_status=pending is supported")
-    return await contributions_service.list_pending_contributions(session)
+    return await contributions_service.list_pending_contributions(session, limit, offset)
 
 
 @router.post(

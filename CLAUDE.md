@@ -58,14 +58,15 @@ gitignored because this repo is public.
   fine to just do.
 - Ask before changing the deploy pipeline once one exists — changes there
   affect the live deployment path.
-- **Monorepo with a hard backend/frontend split, not a shared tangle.**
-  `backend/` (FastAPI/Python) and `frontend/` (Astro/Node) live in one repo
-  (decided 2026-08-21 specifically to keep the roadmap board and the
+- **Monorepo with a hard split per component, not a shared tangle.**
+  `backend/` (FastAPI/Python), `frontend/` (Astro/Node), and `mcp/` (Python,
+  the read-only MCP server, added 2026-08-27 issue #159/#178) live in one
+  repo (decided 2026-08-21 specifically to keep the roadmap board and the
   typed-client codegen pipeline simple — see Decisions Made) but must stay
   genuinely separate: no dependency files, configs, or tooling bleeding
-  across the two directories. CI must use path-based triggers
-  (`paths: ['backend/**']` / `paths: ['frontend/**']`) so a change on one
-  side never rebuilds or redeploys the other. This is what makes the
+  across directories. CI must use path-based triggers (`paths:
+  ['backend/**']` / `paths: ['frontend/**']` / `paths: ['mcp/**']`) so a
+  change to one never rebuilds or redeploys another. This is what makes the
   monorepo choice safe rather than a shortcut to coupling them — don't
   quietly erode it for convenience.
 - **Stay stateless — no local-disk dependencies for anything that persists

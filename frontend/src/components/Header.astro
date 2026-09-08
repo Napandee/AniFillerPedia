@@ -7,7 +7,6 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 // src/middleware.ts on every request via the real session cookie) — never
 // held in client-only memory that would vanish or lie on refresh.
 const user = Astro.locals.user;
-const baseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 // #200: moderation.astro/account.astro redirect an unauthenticated visitor
 // here with `?next=<page they actually wanted>` (see HomePage.astro's own
 // comment on the accompanying `notice` banner) — prefer that over the
@@ -37,14 +36,6 @@ const pathWithoutLocale = (() => {
   }
   return Astro.url.pathname;
 })();
-
-// Same-origin in the real deploy (Caddy fronts both under one domain), so a
-// relative `next` correctly lands back on this app after the round trip.
-// Cross-port local dev (Astro on :4321, backend on :8000) is a known
-// exception — not fixed here, matches #37's own note that live end-to-end
-// verification waits on real OAuth credentials anyway.
-const authorizeHref = (provider: "github" | "discord") =>
-  `${baseUrl}/api/v1/auth/${provider}/authorize?next=${next}`;
 ---
 
 <header class="site-header">
@@ -80,12 +71,6 @@ const authorizeHref = (provider: "github" | "discord") =>
     <a href="/contribute">{t("nav.contribute")}</a>
     <a href="/needs-research">{t("nav.needsResearch")}</a>
     <a href="/activity">{t("nav.recentChanges")}</a>
-    {user && ["moderator", "admin", "owner"].includes(user.role) && (
-      <a href={getRelativeLocaleUrl(locale, "/moderation")}>{t("nav.reviewQueue")}</a>
-    )}
-    {user && ["admin", "owner"].includes(user.role) && (
-      <a href={getRelativeLocaleUrl(locale, "/admin/users")}>{t("nav.manageUsers")}</a>
-    )}
     {
       user ? (
         <span class="identity">
@@ -100,8 +85,7 @@ const authorizeHref = (provider: "github" | "discord") =>
         </span>
       ) : (
         <span class="login-links">
-          <a href={authorizeHref("github")}>{t("nav.logInGithub")}</a>
-          <a href={authorizeHref("discord")}>{t("nav.logInDiscord")}</a>
+          <a href={`/login?next=${next}`}>{t("nav.logIn")}</a>
         </span>
       )
     }
@@ -161,6 +145,23 @@ const authorizeHref = (provider: "github" | "discord") =>
         ))}
       </div>
     </div>
+    {/* #admin-portal: a distinct floating icon-button in the header's
+        top-right corner, matching AniDex's own admin-access pattern
+        (a circular FAB alongside its own account icons) rather than
+        reading as one more plain-text nav link — placed last so it
+        sits at the true right edge of the row, not buried mid-nav. */}
+    {user && ["moderator", "admin", "owner"].includes(user.role) && (
+      <a
+        href="/admin"
+        class:list={["admin-shield", { "admin-shield--active": Astro.url.pathname.startsWith("/admin") }]}
+        title={t("nav.adminPortal")}
+        aria-label={t("nav.adminPortal")}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </a>
+    )}
   </nav>
 </header>
 
@@ -398,6 +399,33 @@ const authorizeHref = (provider: "github" | "discord") =>
     color: var(--color-text-faint);
     font-weight: 600;
     text-transform: capitalize;
+  }
+  /* A circular icon-button, not a plain nav link — same "floating
+     account icon" treatment as .nav-toggle/.lang-trigger elsewhere in
+     this file (fixed size, surface background, sticker shadow), so it
+     reads as a distinct corner affordance rather than one more text
+     link buried in the flat nav row. */
+  .admin-shield {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--color-border-card);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sticker);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: transform 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .admin-shield:hover {
+    transform: scale(1.08);
+  }
+  .admin-shield--active {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
   }
   .logout-form {
     display: inline;

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
 
 from schemas.contributions import ContributionOut, MyVoteOut
 from schemas.series_proposals import SeriesProposalOut
@@ -41,3 +41,14 @@ class UserExportOut(BaseModel):
     votes: list[MyVoteOut]
     series_proposals: list[SeriesProposalOut]
     synonym_suggestions: list[SynonymSuggestionOut]
+
+
+class LocalSignupIn(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=200)
+    display_name: str = Field(min_length=1, max_length=100)
+
+
+class LocalLoginIn(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=1, max_length=200)

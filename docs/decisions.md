@@ -316,3 +316,50 @@ typed client is wired into a real page (`index.astro` calls the backend's
 `/api/v1/health` server-side). Verified end-to-end with a real HTTP server,
 not just type-checked. `frontend-validate.yml` CI added (path-filtered,
 mirrors the backend's `pr-validate.yml`). #32–#41 build on this shell next.
+
+- **Local email+password authentication, alongside OAuth, not instead of
+  it** (decided 2026-09-04, issue #224) — GitHub/Discord OAuth stayed the
+  only way to log in for weeks with #25's OAuth apps unprovisioned, which
+  meant nobody could actually log in to production or exercise the trust/
+  voting/moderation system end to end. Adds email+password signup/login
+  (argon2id hashing) as a fully first-class second path, reusing the
+  existing session-cookie mechanism rather than a parallel auth scheme:
+  `users.password_hash` (nullable, coexists with the OAuth id columns —
+  additive migration `021_add_local_auth.sql`), `/login` renders the local
+  form as primary with OAuth buttons secondary, and a new
+  `INITIAL_ADMIN_EMAIL` bootstrap variable parallels the existing
+  GitHub-id-based one. Rate-limited on both signup and login, reusing
+  existing rate-limit infrastructure rather than a new mechanism.
+  Explicitly deferred: magic-link auth, email verification, password
+  reset, CAPTCHA on this specific flow (disk-level encryption tracked
+  separately as #223). Full design:
+  `docs/superpowers/specs/2026-09-04-local-auth-design.md`.
+- **Admin portal, gated by role, not a security boundary in the UI
+  itself** (shipped #234, shield placement corrected #235) — a shared
+  `AdminLayout.astro` tab strip (Moderation for moderator/admin/owner,
+  Users/Traffic for admin/owner only) consolidates what were previously
+  scattered top-level pages (`/moderation` → `/admin/moderation`, a 301
+  redirect kept at the old path) under `/admin/*`. The header's admin
+  shield icon is a navigation affordance only — every actual permission
+  check happens server-side per endpoint, same as before; the shield's
+  role-gating in the frontend just avoids showing the entry point to
+  users who'd get a 403 anyway. Corrected 2026-09-04 after initial
+  placement read as visually out of place: moved to sit last inside
+  `<nav>` (the true right edge, matching `Napandee/AniDex`'s own
+  placement) with sizing/styling matching the header's existing
+  `.nav-toggle`/`.lang-trigger` icon-button pattern, rather than sitting
+  inline mid-nav.
+- **Traffic dashboard shows real numbers, not a black box, and documents
+  its own limits in-page** (shipped #236) — the admin traffic page
+  (`/admin/traffic`, gated admin/owner) renders #221's daily Cloudflare
+  Analytics rollups as a log-scaled world map (156-country SVG, tooltips
+  via `Intl.DisplayNames`) plus summary stats, and ships its own
+  `<details>` "About this data" panel spelling out exactly what's
+  collected, known shortcomings, and what extending it further would cost
+  in privacy-policy/retention terms — rather than presenting the numbers
+  with no context on what they do and don't represent. Deliberately
+  scoped to the existing Cloudflare Analytics aggregate rollups only, not
+  raw per-request Caddy log ingestion (`/data/access.log` on the droplet
+  already retains raw IP+path+timestamp data independent of this
+  feature — see the privacy-policy honesty gap this surfaced, tracked
+  separately).

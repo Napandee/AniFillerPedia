@@ -2,64 +2,32 @@
 
 ## Purpose
 
-An open, community-editable database of anime filler/canon episode data — which
-episodes are anime-original ("filler") versus adapted from the source manga
-("canon"), with mixed episodes flagged separately. It exists because no
-existing option is both genuinely open (free to read, free to contribute to,
-no ToS wall) and API-accessible (see Guardrails — the two closest existing
-sources each fail one of those). Standalone project, not part of AniDex — see
-Decisions Made for why.
+An open, community-editable database of per-episode anime filler/canon status
+(`canon` / `filler` / `mixed`). No existing option is both genuinely open and
+API-accessible. Standalone project, **not** part of AniDex.
 
-**Open for reading and contributing; not for powering paid products without
-agreement** (decided 2026-08-20, see Decisions Made — License): anyone may
-read the data or contribute corrections/citations/new-series proposals,
-regardless of who they work for — an employee of a commercial, paid anime
-tracker is as welcome to contribute as anyone else. What requires a separate
-commercial agreement is *using* this project's data (via the API, a bulk
-export, or otherwise) as a backing data source for a product or service that
-charges its own end users. Contribution and consumption are governed
-differently on purpose.
+**Contribution and consumption are governed differently on purpose:** anyone may
+read or contribute. Backing a product that charges its end users needs a separate
+commercial agreement. Reasoning in `docs/decisions.md`.
 
 ## Scope
 
-**In scope:**
-- Per-episode filler/canon/mixed status for anime series, not just a
-  series-level "this show has filler" flag.
-- A public, unauthenticated read API — no account, no sync requirement, no
-  rate-limit wall for reasonable use.
-- A community correction workflow (submit/adjust/correct entries) gated by an
-  approval flow — not open unmoderated write access.
-- A source citation per entry, so every filler/canon claim is traceable to
-  where it came from.
+**In scope:** per-episode status (not a series-level flag); a public
+unauthenticated read API; a moderated correction workflow; a citation per entry.
 
 **Out of scope — do not build these:**
-- Scraping any site whose terms of service forbid it (see Guardrails — this
-  ruled out animefillerlist.tv specifically; see Data Source below for why
-  that's a distinct question from animefillerlist.com, the actually
-  long-established, more complete site of the two — evaluated separately
-  in issue #48 and deliberately not pursued as a source either, for
-  reasons unrelated to `.tv`'s ToS).
-- Pulling from Simkl's catalog/discovery API without their explicit prior
-  permission — their own published rules restrict catalog use to apps that
-  also integrate Simkl login/sync, which this project does not (see
-  Guardrails).
-- Being a personal watch tracker (status, progress, ratings, personal notes)
-  — that's a different product; AniDex already does this for its own users
-  and is explicitly not the thing this project extends or depends on.
-- Monetization/paywall — the owner's explicit intent is a freely-usable
-  public resource.
+- Scraping any site whose ToS forbids it. Ruled out animefillerlist.tv;
+  animefillerlist.com was evaluated and also not pursued — `docs/data-sources.md`.
+- Simkl's catalog API without explicit prior permission — their rules restrict it
+  to apps that also integrate Simkl login/sync.
+- A personal watch tracker. Different product; AniDex does that.
+- Monetization or a paywall.
 
 ## Deploy
 
-Decided 2026-08-20, live since 2026-08-21. DigitalOcean Droplet running
-`backend`/`frontend`/`worker`/`postgres`/`caddy` containers; GitHub Actions
-builds and pushes to GHCR on a merge to `master`, path-filtered separately
-for `backend/**` and `frontend/**` per the monorepo split above; a
-self-hosted runner container on the droplet itself pulls the new image and
-restarts (`docker compose pull` + `up -d`) — no webhook, no HMAC, no
-inbound SSH hop. Same build-then-self-hosted-runner-deploys pattern as
-`Napandee/AniDex`. See Decisions Made — Tech stack for the original
-decision record.
+Merge to `master` builds and ships to the live droplet automatically. Pipeline,
+runner and repo-variable detail is private — `.claude/context/deploy.md`,
+gitignored because this repo is public.
 
 ## Guardrails — Non-Negotiable
 
@@ -114,12 +82,11 @@ decision record.
 
 ## Where the detail lives
 
-Read these when the task calls for them — they are not loaded by default.
+Read when the task calls for them — not loaded by default.
 
-- `docs/architecture.md` — before changing how backend, frontend or database fit together.
-- `docs/data-model.md` — when touching schema, episode status values, or series records.
+- `docs/decisions.md` — before changing licensing, auth, the contribution model,
+  or the status vocabulary. Check it before re-litigating a decision.
+- `docs/architecture.md` — before changing how backend, frontend and database fit together.
+- `docs/data-model.md` — schema, status values, series records.
 - `docs/data-sources.md` — before adding or changing a scraper or import path.
-- `docs/decisions.md` — before proposing anything that changes licensing, auth,
-  the contribution model, or the episode status vocabulary. Fifteen decisions
-  with their reasoning; check it before re-litigating one.
 - `docs/API.md` — the HTTP API surface.

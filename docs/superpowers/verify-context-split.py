@@ -21,8 +21,15 @@ import sys
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 BACKUP = REPO / ".claude" / "context" / "_backup-CLAUDE.local.md.20260908"
-MAX_CLAUDE = 5000
+# CLAUDE.md is measured EXCLUDING the Guardrails block. Spec 3.1 forbids
+# trimming that block -- it is 3,217 chars of wrong-action rules -- so a flat
+# total would measure something the split cannot change, and would pressure
+# trimming real content to hit a round number. The budget below covers
+# everything else: purpose, scope, deploy summary and the pointer index.
+MAX_CLAUDE_NONGUARD = 2000
 MAX_LOCAL = 3500
+
+GUARD_HEADING = "## Guardrails"
 
 # Sections of CLAUDE.local.md whose content must never reach a tracked file.
 PRIVATE_SECTIONS = [
@@ -163,13 +170,24 @@ def main():
 
     # ---- 3. size ----
     ok = True
-    for label, text, limit in (("CLAUDE.md", claude, MAX_CLAUDE),
-                               ("CLAUDE.local.md", local, MAX_LOCAL)):
-        if len(text) > limit:
-            ok = False
-            print(f"FAIL size: {label} is {len(text)} chars (limit {limit})")
-        else:
-            print(f"PASS size: {label} is {len(text)} chars (limit {limit})")
+    guard = ""
+    if GUARD_HEADING in claude:
+        after = claude[claude.index(GUARD_HEADING):]
+        nxt = after.find("\n## ", 1)
+        guard = after if nxt == -1 else after[:nxt]
+    nonguard = len(claude) - len(guard)
+    if nonguard > MAX_CLAUDE_NONGUARD:
+        ok = False
+        print(f"FAIL size: CLAUDE.md non-guard content is {nonguard} chars "
+              f"(limit {MAX_CLAUDE_NONGUARD}); total {len(claude)}, guards {len(guard)}")
+    else:
+        print(f"PASS size: CLAUDE.md non-guard content is {nonguard} chars "
+              f"(limit {MAX_CLAUDE_NONGUARD}); total {len(claude)}, guards {len(guard)}")
+    if len(local) > MAX_LOCAL:
+        ok = False
+        print(f"FAIL size: CLAUDE.local.md is {len(local)} chars (limit {MAX_LOCAL})")
+    else:
+        print(f"PASS size: CLAUDE.local.md is {len(local)} chars (limit {MAX_LOCAL})")
     if not ok:
         failures.append("size")
 

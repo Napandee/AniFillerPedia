@@ -282,3 +282,37 @@ superseded decision is marked superseded rather than deleted.
   episodes/citations), not the auth-gated write paths, and treat it as a
   real (if small) architecture change requiring the same care as any
   other Guardrails-listed decision, not a quick middleware add.
+
+## Visual direction — DECIDED (2026-08-21): Playful Fandom
+
+**Locked in: canvas theme "03 · Playful fandom"** — bold color, diagonal
+energy, Baloo 2 (display) + Nunito (body), pink/coral accent (#d6337a) on a
+warm cream background. Chosen from the three finalists (03 Playful fandom,
+08 Glossy modern SaaS, 10 Soft pastel) explored 2026-08-20. This was
+originally "deliberately deferred, not made" pending Phase 2–4 backend work
+— that deferral is now resolved; treat this as final unless Andreas
+explicitly reopens it.
+
+Canvas: https://claude.ai/code/artifact/2809d89e-1bd3-4374-a9ab-d6c03f226a91
+(private artifact — not for the public repo's `CLAUDE.md`, hence living
+here). The canvas's "Interactive demo" page has a clickable Playful Fandom
+prototype (home → series → back) if a live feel is needed again later.
+Don't confuse canvas "theme 03" with GitHub **issue #3** ("community
+correction queue design") — unrelated, coincidental numbering.
+
+**Update 2026-08-22: Phase 5 has actually started.** The three blockers
+noted below (as of the 2026-08-21 planning pass) are all resolved — kept
+struck-through rather than deleted, for the historical trail:
+- ~~The real UX pass never written to any file~~ — captured across the 11
+  filed Phase 5 issues (#31–#41) instead of a separate doc.
+- ~~Board Theme field has no "Frontend & UX" option~~ — added same day.
+- ~~No Phase 5 GitHub issues exist yet~~ — #31–#41 filed 2026-08-21.
+
+**#31 (scaffold) shipped 2026-08-22**, commit `3a2a0c3`: `frontend/` is now
+a real Astro app (SSR, `@astrojs/node` standalone adapter), the Playful
+Fandom tokens/components below are implemented in
+`frontend/src/styles/tokens.css` + `frontend/src/components/`, and #11's
+typed client is wired into a real page (`index.astro` calls the backend's
+`/api/v1/health` server-side). Verified end-to-end with a real HTTP server,
+not just type-checked. `frontend-validate.yml` CI added (path-filtered,
+mirrors the backend's `pr-validate.yml`). #32–#41 build on this shell next.

@@ -1,15 +1,21 @@
 name: Validate backend PR build
 
-# Path-filtered — monorepo split (CLAUDE.md Guardrails, 2026-08-21).
+# No `paths:` filter here on purpose. Branch protection on `master` requires
+# the `build` check this job produces, with no path-based exception on its own
+# side — so a workflow-level path filter meant a docs-only PR could never
+# produce that check at all and sat permanently BLOCKED, needing an admin
+# bypass to merge (hit by #244). This workflow now always triggers and always
+# produces a `build` check; the "Detect diff scope" step below decides
+# internally whether to run the expensive parts, so branch protection stays
+# satisfiable through the normal flow instead of through --admin.
+#
+# The monorepo split (CLAUDE.md Guardrails, 2026-08-21) still holds — it is
+# now enforced inside the job rather than at the trigger. Same fix AniDex
+# applied in its issue #506 after three admin bypasses.
 # See frontend-validate.yml for the frontend/ equivalent.
 on:
   pull_request:
     branches: [master]
-    paths:
-      - "backend/**"
-      - "docker-compose.yml"
-      - "Caddyfile"
-      - ".github/workflows/pr-validate.yml"
 
 permissions:
   contents: read
@@ -36,7 +42,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Replaces the old trigger-level path filter. Same intent — don't run a
+      # backend build for a diff it cannot say anything about — but decided
+      # here, inside the job, so the job (and its `build` check) always runs
+      # and always reports. A PR mixing code with docs still gets the full
+      # run: skip_build only becomes true when EVERY changed file is one none
+      # of the steps below could catch a regression in.
+      - name: Detect diff scope
+        id: scope
+        run: |
+          git fetch --depth=1 origin "${{ github.event.pull_request.base.sha }}"
+          changed=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" HEAD)
+          skip_build=true
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              backend/*|docker-compose.yml|Caddyfile|.github/workflows/pr-validate.yml)
+                skip_build=false ;;
+              *) ;;
+            esac
+          done <<< "$changed"
+          echo "skip_build=$skip_build" >> "$GITHUB_OUTPUT"
+          if [ "$skip_build" = "true" ]; then
+            echo "::notice::No backend-relevant file changed ($(echo "$changed" | tr '\n' ' ')) — skipping the build, schema, pytest and smoke steps. They cannot exercise anything this diff could break. The build check still reports so branch protection is satisfied."
+          fi
+
       - name: Set up Python
+        if: steps.scope.outputs.skip_build != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -46,10 +78,12 @@ jobs:
             backend/requirements-dev.txt
 
       - name: Install backend dependencies
+        if: steps.scope.outputs.skip_build != 'true'
         working-directory: backend
         run: pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Build image (no push)
+        if: steps.scope.outputs.skip_build != 'true'
         uses: docker/build-push-action@v6
         with:
           context: ./backend
@@ -59,6 +93,7 @@ jobs:
           tags: anifillerpedia-backend:pr-test
 
       - name: Apply schema to test database
+        if: steps.scope.outputs.skip_build != 'true'
         run: |
           PGPASSWORD=afp_test psql -h localhost -U afp_test -d afp_test -f backend/schema.sql
 
@@ -77,6 +112,7 @@ jobs:
       # snapshot"). Not a change to test logic/assertions, deliberately
       # out of #188's scope — this seeds the precondition instead.
       - name: Seed minimal fixture data for tests
+        if: steps.scope.outputs.skip_build != 'true'
         run: |
           PGPASSWORD=afp_test psql -h localhost -U afp_test -d afp_test -c \
             "INSERT INTO series (anilist_id, title, provenance) VALUES (1735, 'Naruto: Shippuuden', 'manami_bootstrap');"
@@ -87,6 +123,7 @@ jobs:
       # this job (not a separate one) so it's covered by the existing
       # required "build" status check without a branch-protection change.
       - name: Run backend test suite (pytest)
+        if: steps.scope.outputs.skip_build != 'true'
         working-directory: backend
         env:
           DATABASE_URL: postgresql+asyncpg://afp_test:afp_test@localhost:5432/afp_test
@@ -97,6 +134,7 @@ jobs:
       # (e.g. /api/v1/health per the versioned API convention in CLAUDE.md),
       # update this step's URL — don't assume this guess is correct.
       - name: Smoke-test the built image
+        if: steps.scope.outputs.skip_build != 'true'
         run: |
           docker run -d --name afp-smoke --network host \
             -e DATABASE_URL="postgresql+asyncpg://afp_test:afp_test@localhost:5432/afp_test" \
@@ -118,9 +156,9 @@ jobs:
           echo "Smoke test passed: health endpoint responded."
 
       - name: Container logs
-        if: always()
+        if: always() && steps.scope.outputs.skip_build != 'true'
         run: docker logs afp-smoke || true
 
       - name: Clean up
-        if: always()
+        if: always() && steps.scope.outputs.skip_build != 'true'
         run: docker rm -f afp-smoke || true

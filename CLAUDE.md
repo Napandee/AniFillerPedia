@@ -91,3 +91,5 @@ Read when the task calls for them — not loaded by default.
 - `docs/data-model.md` — schema, status values, series records.
 - `docs/data-sources.md` — before adding or changing a scraper or import path.
 - `docs/API.md` — the HTTP API surface.
+- `docs/FAULTS.md` — what has gone wrong here before, and the guard each
+  fault produced.

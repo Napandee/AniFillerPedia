@@ -140,7 +140,9 @@ def main():
                 if ph and ph in text:
                     leaks.append((name, p.relative_to(REPO).as_posix(), ph[:60]))
     ignored = subprocess.run(
-        ["git", "-C", str(REPO), "check-ignore", ".claude/context/"],
+        # no trailing slash: the path is a symlink to the private claude-context
+        # repo, and a directory-only pattern would not match a symlink
+        ["git", "-C", str(REPO), "check-ignore", ".claude/context"],
         capture_output=True, text=True).returncode == 0
     if not ignored:
         leaks.append(("(directory)", ".claude/context/", "NOT GITIGNORED"))

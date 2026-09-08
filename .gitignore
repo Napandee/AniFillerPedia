@@ -28,7 +28,10 @@ npm-debug.log*
 CLAUDE.local.md
 # Private Claude context split out of CLAUDE.local.md. This repo is PUBLIC --
 # anything under .claude/context/ is deliberately untracked. Do not un-ignore.
-.claude/context/
+.claude/context
+# no trailing slash on purpose: this path is a SYMLINK to the private
+# claude-context repo, and git treats a symlink as a file, so a
+# directory-only pattern ('.claude/context/') would not match it.
 # Working scratch files -- never publish.
 .claude/scratch/
 

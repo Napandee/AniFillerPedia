@@ -13,9 +13,23 @@ name: Self-hosted runner health check
 # can't actually deliver a notification until #190 is resolved by someone
 # with that credential — see this issue's own PR description for the
 # verification that was possible without it.
+#
+# #227: the schedule trigger is disabled for now. The check step's own
+# `gh api repos/.../actions/runners` call 403s on every single run — the
+# self-hosted-runners API requires a repo-level Administration permission,
+# which the default GITHUB_TOKEN cannot be granted (confirmed directly:
+# GitHub's own API rejects `permissions: administration: read` on this
+# token outright, "Unexpected value 'administration'" — this isn't a
+# missing `permissions:` block, GITHUB_TOKEN structurally cannot hold this
+# scope at all). A real fix needs a fine-grained PAT with Administration
+# (read) repository permission, added as a new repo secret (e.g.
+# RUNNER_HEALTH_CHECK_TOKEN) and swapped in for GH_TOKEN below — that step
+# needs whoever holds repo admin access, since only a real account can
+# mint that token. Until then this workflow was failing every 15 minutes
+# with zero actual alerting value (also blocked on #190 above), so the
+# schedule is off — `workflow_dispatch` still works for manual testing
+# once a real token exists.
 on:
-  schedule:
-    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       runner_name:

@@ -50,12 +50,17 @@ const user = Astro.locals.user;
 let pendingCount: number | null = null;
 if (user && QUALIFYING_ROLES.has(user.role)) {
   const cookie = Astro.request.headers.get("cookie") ?? "";
+  // #196: GET /contributions now returns a {items, total, limit, offset}
+  // envelope — `total` is the real count across every pending contribution,
+  // not just whatever fits on one page, so it's a better source for this
+  // teaser than `items.length` would be (which would silently cap at the
+  // default page size of 20 instead of reporting the true number).
   const { data: pendingData } = await api.GET("/api/v1/contributions", {
-    params: { query: { review_status: "pending" } },
+    params: { query: { review_status: "pending", limit: 1 } },
     headers: { cookie },
   });
   if (pendingData) {
-    pendingCount = pendingData.length;
+    pendingCount = pendingData.total;
   }
 }
 
@@ -111,7 +116,7 @@ const loginRequiredNotice = Astro.url.searchParams.get("notice") === "login_requ
 
   {
     pendingCount !== null && (
-      <a class="review-teaser" href={getRelativeLocaleUrl(locale, "/moderation")}>
+      <a class="review-teaser" href="/admin/moderation">
         <span class="review-dot" />
         <span>
           {t(pendingCount === 1 ? "home.reviewTeaser.pending_one" : "home.reviewTeaser.pending_other", {

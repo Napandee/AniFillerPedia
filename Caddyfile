@@ -80,6 +80,17 @@ anifillerpedia.wiki {
 	handle @backend {
 		reverse_proxy app:8000
 	}
+	# #178: the read-only MCP server (Phase 1 of #159's decision), a
+	# separate container from `app` — see docker-compose.yml's `mcp`
+	# service. No `encode gzip` here, matching @backend's own reasoning
+	# above but for a different mechanic: the streamable-http transport is
+	# a long-lived, chunked SSE response (GET) interleaved with plain JSON
+	# POSTs — gzip buffering would sit at odds with that stream staying
+	# incrementally flushed, not just an ETag concern like @backend's.
+	@mcp path /mcp /mcp/*
+	handle @mcp {
+		reverse_proxy mcp:8000
+	}
 	handle {
 		encode gzip
 		reverse_proxy frontend:4321
@@ -100,16 +111,18 @@ anifillerpedia.wiki {
 		# big enough that Vite externalizes it to its own hashed
 		# /_astro/*.js file rather than inlining it). The rest of this
 		# app's client-side <script> blocks (Header.astro's language
-		# switcher, SeriesDetailPage.astro, account.astro,
-		# propose-series.astro) come back from Astro's SSR build genuinely
+		# switcher and nav toggle, SeriesDetailPage.astro, account.astro,
+		# propose-series.astro, login.astro, and — the world-map coloring
+		# script on admin/traffic.astro) come back from Astro's SSR build
+		# genuinely
 		# INLINE in the rendered HTML rather than externalized — confirmed
 		# by building the real frontend Docker image locally and diffing
 		# its output against live production byte-for-byte, not assumed.
 		# 'unsafe-inline' would defeat the entire point of this CSP (it's
 		# meant to be defense-in-depth against #184's javascript:-href XSS
 		# vector, and 'unsafe-inline' permits exactly that), so each of
-		# those 4 scripts' exact SHA-256 content hash is allow-listed
-		# instead. None of the 4 embed any per-request/server-interpolated
+		# those scripts' exact SHA-256 content hash is allow-listed
+		# instead. None of them embed any per-request/server-interpolated
 		# value (only build-time constants and client-side JS template
 		# literals), so their content — and hash — stays stable across
 		# requests; it only changes if a future PR edits one of these
@@ -139,7 +152,7 @@ anifillerpedia.wiki {
 		# clients that don't parse CSP frame directives): closes the
 		# clickjacking gap #186 flagged against contribute.astro/
 		# propose-series.astro/moderation/admin.
-		header Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-M6Cuk2FFQBCp22YeSZqrXki3fef9XcL2wzySAh4+J5k=' 'sha256-ZmJM6Tl01dZrC+lFQ431fOs2I92cdK0KAvAiBxOH6EU=' 'sha256-bpBxy6wc20yfG0VBfDOGNLQUEegmy+4Va9X1F4G3HgY=' 'sha256-UfKLzF4zeLAfkHOgiJCRm2ua8jNT0k8x6PEOWzkpJCw=' 'sha256-u2zF34XgOkyw7pD3YKqXNfHvAdwv/Vgl9y9iOFk2omM=' 'sha256-aoaRBAF8+wlPtRJYMg5YEFi+awTbcLw3WCCXkh5ZkP0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.anilist.co; connect-src 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+		header Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-M6Cuk2FFQBCp22YeSZqrXki3fef9XcL2wzySAh4+J5k=' 'sha256-ZmJM6Tl01dZrC+lFQ431fOs2I92cdK0KAvAiBxOH6EU=' 'sha256-bpBxy6wc20yfG0VBfDOGNLQUEegmy+4Va9X1F4G3HgY=' 'sha256-UfKLzF4zeLAfkHOgiJCRm2ua8jNT0k8x6PEOWzkpJCw=' 'sha256-u2zF34XgOkyw7pD3YKqXNfHvAdwv/Vgl9y9iOFk2omM=' 'sha256-aoaRBAF8+wlPtRJYMg5YEFi+awTbcLw3WCCXkh5ZkP0=' 'sha256-Ck0XnhmfZRL/blVMfjqUfCH5qzlVaVzj3hSwGdLk8Ls=' 'sha256-uGUbfx3reBbl8nh+DLNdD2spP7prvSkQ014Akuo3CT8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.anilist.co; connect-src 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
 	}
 
 	# #186: baseline security headers that DON'T conflict with Swagger

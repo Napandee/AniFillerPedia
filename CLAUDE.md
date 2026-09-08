@@ -62,7 +62,7 @@ gitignored because this repo is public.
   `backend/` (FastAPI/Python), `frontend/` (Astro/Node), and `mcp/` (Python,
   the read-only MCP server, added 2026-08-27 issue #159/#178) live in one
   repo (decided 2026-08-21 specifically to keep the roadmap board and the
-  typed-client codegen pipeline simple — see Decisions Made) but must stay
+  typed-client codegen pipeline simple — see `docs/decisions.md`) but must stay
   genuinely separate: no dependency files, configs, or tooling bleeding
   across directories. CI must use path-based triggers (`paths:
   ['backend/**']` / `paths: ['frontend/**']` / `paths: ['mcp/**']`) so a
@@ -71,7 +71,7 @@ gitignored because this repo is public.
   quietly erode it for convenience.
 - **Stay stateless — no local-disk dependencies for anything that persists
   or that other requests rely on.** The droplet-based deploy (decided
-  2026-08-21, see Decisions Made) is deliberate, not a technical necessity —
+  2026-08-21, see `docs/decisions.md`) is deliberate, not a technical necessity —
   the app layer itself should stay portable to a serverless target (Cloud
   Run, etc.) even though that's not the current plan. The concrete case to
   watch: the bulk `/export` dump (#7/#22) must use object storage (DO

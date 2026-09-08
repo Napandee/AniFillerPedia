@@ -143,7 +143,7 @@ def main():
         # no trailing slash: the path is a symlink to the private claude-context
         # repo, and a directory-only pattern would not match a symlink
         ["git", "-C", str(REPO), "check-ignore", ".claude/context"],
-        capture_output=True, text=True).returncode == 0
+        capture_output=True, text=True, check=False).returncode == 0
     if not ignored:
         leaks.append(("(directory)", ".claude/context/", "NOT GITIGNORED"))
     if leaks:
@@ -152,7 +152,7 @@ def main():
         for name, where, ph in leaks[:12]:
             print(f"       [{name}] -> {where}: {ph}")
     else:
-        print(f"PASS privacy: no private content tracked; .claude/context/ is gitignored")
+        print("PASS privacy: no private content tracked; .claude/context is gitignored")
 
     # ---- 2. coverage ----
     dropped_facts = set()
@@ -205,7 +205,7 @@ def main():
 
     # ---- 5. imports ----
     imports = [p.name for p in [REPO / "CLAUDE.md", REPO / "CLAUDE.local.md"] + docs + ctx
-               if any(l.startswith("@") for l in read(p).split("\n"))]
+               if any(line.startswith("@") for line in read(p).split("\n"))]
     if imports:
         failures.append("imports")
         print(f"FAIL imports: @import found in {', '.join(imports)}")

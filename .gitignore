@@ -26,6 +26,9 @@ npm-debug.log*
 # Claude Code — local context and machine-specific settings
 .claude/settings.local.json
 CLAUDE.local.md
+# Private Claude context split out of CLAUDE.local.md. This repo is PUBLIC --
+# anything under .claude/context/ is deliberately untracked. Do not un-ignore.
+.claude/context/
 
 # Data / volumes a compose file might create locally
 *-data/

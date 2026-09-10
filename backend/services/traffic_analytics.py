@@ -364,8 +364,10 @@ async def run_hourly_traffic_rollup() -> bool:
     # fetching the window `[now-1h, now)` — a row labeled e.g. "11:00"
     # actually held data from ~10:37-11:37, mislabeling exactly the thing
     # this feature exists to make precise (attributing a spike to the
-    # right hour). Flooring `now` to the hour first, then using that as
-    # BOTH the label and the window start, makes the row's label and its
+    # right hour). Flooring `now - 1h` to the hour first (the last
+    # COMPLETE hour, not the in-progress one `now` itself belongs to),
+    # then using that single value as BOTH the label and the window
+    # start, makes the row's label and its
     # contents agree, and makes a same-hour restart genuinely idempotent
     # (recomputes the identical window and key) instead of silently
     # overwriting a different window's data under the same rollup_hour.

@@ -15,7 +15,7 @@ conventions:
 """
 
 import uuid
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import httpx
 import pytest
@@ -27,7 +27,13 @@ from core.config import get_settings
 from core.db import async_session_factory
 from core.security import SESSION_COOKIE_NAME, create_session_token
 from main import app
-from repositories.traffic_analytics import list_daily_rollups
+from repositories.traffic_analytics import (
+    list_daily_rollups,
+    list_hourly_rollups,
+    prune_hourly_rollups_older_than,
+    upsert_daily_rollup,
+    upsert_hourly_rollup,
+)
 from services.traffic_analytics import (
     _classify_path_kind,
     aggregate_rollup,
@@ -59,6 +65,14 @@ async def _cleanup_rollup(rollup_date: date) -> None:
         async with session.begin():
             await session.execute(
                 text("DELETE FROM traffic_daily_rollups WHERE rollup_date = :d"), {"d": rollup_date}
+            )
+
+
+async def _cleanup_hourly_rollup(rollup_hour: datetime) -> None:
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("DELETE FROM traffic_hourly_rollups WHERE rollup_hour = :h"), {"h": rollup_hour}
             )
 
 
@@ -246,6 +260,103 @@ def test_aggregate_rollup_empty_groups_includes_bot_breakdown() -> None:
         "top_countries": [],
         "bot_breakdown": [],
     }
+
+
+# --- upsert_daily_rollup bot_breakdown + hourly rollup repository fns -----
+
+
+@pytest.mark.asyncio
+async def test_upsert_daily_rollup_persists_bot_breakdown() -> None:
+    rollup_date = date.today() - timedelta(days=2)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_daily_rollup(
+                    session,
+                    rollup_date=rollup_date,
+                    total_requests=10,
+                    top_paths=[{"path": "/", "path_kind": "frontend", "count": 10}],
+                    status_breakdown=[{"status": 200, "count": 10}],
+                    top_countries=[{"country": "US", "count": 10}],
+                    bot_breakdown=[{"category": "known_bot", "count": 10}],
+                )
+        async with async_session_factory() as session:
+            rows = await list_daily_rollups(session, limit=5)
+        row = next(r for r in rows if r.rollup_date == rollup_date)
+        assert row.bot_breakdown == [{"category": "known_bot", "count": 10}]
+    finally:
+        await _cleanup_rollup(rollup_date)
+
+
+@pytest.mark.asyncio
+async def test_upsert_and_list_hourly_rollups() -> None:
+    rollup_hour = datetime(2026, 9, 10, 14, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_hourly_rollup(
+                    session,
+                    rollup_hour=rollup_hour,
+                    total_requests=5,
+                    top_paths=[{"path": "/api/v1/series", "path_kind": "api", "count": 5}],
+                    status_breakdown=[{"status": 200, "count": 5}],
+                    top_countries=[{"country": "GB", "count": 5}],
+                    bot_breakdown=[{"category": "other", "count": 5}],
+                )
+        async with async_session_factory() as session:
+            rows = await list_hourly_rollups(session, limit=10)
+        row = next(r for r in rows if r.rollup_hour == rollup_hour)
+        assert row.total_requests == 5
+        assert row.bot_breakdown == [{"category": "other", "count": 5}]
+    finally:
+        await _cleanup_hourly_rollup(rollup_hour)
+
+
+@pytest.mark.asyncio
+async def test_upsert_hourly_rollup_same_hour_overwrites() -> None:
+    rollup_hour = datetime(2026, 9, 10, 15, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_hourly_rollup(
+                    session, rollup_hour=rollup_hour, total_requests=1,
+                    top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+                )
+                await upsert_hourly_rollup(
+                    session, rollup_hour=rollup_hour, total_requests=99,
+                    top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+                )
+        async with async_session_factory() as session:
+            rows = await list_hourly_rollups(session, limit=10)
+        matching = [r for r in rows if r.rollup_hour == rollup_hour]
+        assert len(matching) == 1
+        assert matching[0].total_requests == 99
+    finally:
+        await _cleanup_hourly_rollup(rollup_hour)
+
+
+@pytest.mark.asyncio
+async def test_prune_hourly_rollups_older_than_cutoff() -> None:
+    old_hour = datetime(2026, 8, 1, 0, 0, tzinfo=timezone.utc)
+    recent_hour = datetime(2026, 9, 10, 10, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                for h in (old_hour, recent_hour):
+                    await upsert_hourly_rollup(
+                        session, rollup_hour=h, total_requests=1,
+                        top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+                    )
+                await prune_hourly_rollups_older_than(
+                    session, cutoff=datetime(2026, 9, 1, tzinfo=timezone.utc)
+                )
+        async with async_session_factory() as session:
+            rows = await list_hourly_rollups(session, limit=100)
+        hours = {r.rollup_hour for r in rows}
+        assert old_hour not in hours
+        assert recent_hour in hours
+    finally:
+        await _cleanup_hourly_rollup(recent_hour)
 
 
 # --- run_daily_traffic_rollup: no-op-without-token + mocked-HTTP+real-DB --
@@ -447,8 +558,6 @@ async def test_traffic_endpoint_returns_persisted_rollups() -> None:
     try:
         async with async_session_factory() as session:
             async with session.begin():
-                from repositories.traffic_analytics import upsert_daily_rollup
-
                 await upsert_daily_rollup(
                     session,
                     rollup_date=rollup_date,
@@ -456,6 +565,7 @@ async def test_traffic_endpoint_returns_persisted_rollups() -> None:
                     top_paths=[{"path": "/api/v1/series", "path_kind": "api", "count": 20}],
                     status_breakdown=[{"status": 200, "count": 42}],
                     top_countries=[{"country": "US", "count": 42}],
+                    bot_breakdown=[{"category": "known_bot", "count": 42}],
                 )
 
         transport = ASGITransport(app=app)
@@ -470,6 +580,14 @@ async def test_traffic_endpoint_returns_persisted_rollups() -> None:
         assert row["top_paths"][0]["path_kind"] == "api"
         assert row["status_breakdown"][0]["status"] == 200
         assert row["top_countries"][0]["country"] == "US"
+        # NOTE: not asserting row["bot_breakdown"] here — the /admin/traffic
+        # response schema (schemas/admin.py::TrafficRollupOut) doesn't surface
+        # bot_breakdown yet; per progress.md that's Task 6's job (it owns
+        # schemas/admin.py, services/admin.py, routers/admin.py). Adding that
+        # assertion now (as the task-3 brief's Step 4 literally specifies)
+        # would hand a guaranteed-failing test to this task, contradicting
+        # the "leave the suite fully green" requirement. Flagged in the
+        # task-3 report instead of silently deviating from the brief.
     finally:
         await _cleanup_rollup(rollup_date)
         await _cleanup_user(admin_id)

@@ -281,6 +281,7 @@ async def run_daily_traffic_rollup() -> bool:
                 top_paths=rollup["top_paths"],
                 status_breakdown=rollup["status_breakdown"],
                 top_countries=rollup["top_countries"],
+                bot_breakdown=rollup["bot_breakdown"],
             )
     return True
 

@@ -526,7 +526,24 @@ CREATE TABLE traffic_daily_rollups (
     top_paths         JSONB NOT NULL,
     status_breakdown  JSONB NOT NULL,
     top_countries     JSONB NOT NULL,
+    bot_breakdown     JSONB NOT NULL DEFAULT '[]'::jsonb,
     created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE INDEX traffic_daily_rollups_rollup_date_desc ON traffic_daily_rollups (rollup_date DESC);
+
+-- #250: hourly counterpart to traffic_daily_rollups above — same shape,
+-- 7-day retention (pruned by services/traffic_analytics.py's
+-- run_hourly_traffic_rollup()) instead of unlimited history.
+CREATE TABLE traffic_hourly_rollups (
+    id                SERIAL PRIMARY KEY,
+    rollup_hour       TIMESTAMPTZ NOT NULL UNIQUE,
+    total_requests    INTEGER NOT NULL,
+    top_paths         JSONB NOT NULL,
+    status_breakdown  JSONB NOT NULL,
+    top_countries     JSONB NOT NULL,
+    bot_breakdown     JSONB NOT NULL,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX traffic_hourly_rollups_rollup_hour_desc ON traffic_hourly_rollups (rollup_hour DESC);

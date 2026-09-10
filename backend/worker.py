@@ -169,8 +169,8 @@ async def run_all_forever() -> None:
     the weekly finished-series drift re-check — alongside the original
     two. Still one asyncio.gather, still one container/process.
 
-    #221: a fourth and fifth loop — the daily Cloudflare traffic-analytics
-    rollup, and (#251) an hourly rollup with its own short retention
+    #221: a fourth loop — the daily Cloudflare traffic-analytics rollup.
+    #250 added a fifth: an hourly rollup with its own short retention
     window alongside it. Same pattern as the other three: each its own
     interval setting, its own run_..._forever() function, gathered in
     here alongside them.

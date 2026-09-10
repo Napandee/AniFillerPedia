@@ -70,12 +70,21 @@ query TrafficRollup($zoneTag: String!, $since: Time!, $until: Time!, $limit: Int
 }
 """
 
-# Cloudflare's own cap on this dataset's limit argument is well above this
-# (docs put it in the thousands) — this is a daily rollup over a 24h
-# window, not an exhaustive per-request export, so a few thousand distinct
-# (path, method, status, country) combinations is already generous headroom
-# for a site this project's own traffic volume.
-_QUERY_LIMIT = 5000
+# #250 review finding: raised from 5000. Adding `userAgent` to the
+# dimensions block (below) multiplies group cardinality by the number of
+# distinct User-Agent strings seen — a much higher-cardinality dimension
+# than (path, method, status, country) alone, which is what the original
+# 5000 figure was sized against. Cloudflare's documented cap on this
+# dataset's `limit` argument is 10000 — set to that ceiling rather than a
+# number picked to "probably" cover real traffic, since `orderBy:
+# [count_DESC]` means any truncation silently drops the long tail (the
+# lowest-count groups), biasing every aggregate this file computes
+# (total_requests undercounts, top_paths loses real low-traffic paths,
+# bot_breakdown skews toward whichever category has the highest
+# per-group counts) with no error surfaced on its own — see the
+# truncation check in aggregate_rollup() below for the other half of
+# this fix.
+_QUERY_LIMIT = 10000
 
 _TOP_N_PATHS = 15
 _TOP_N_COUNTRIES = 10
@@ -193,6 +202,28 @@ def aggregate_rollup(
     }
 
 
+def _warn_if_truncated(groups: list[dict], *, window_label: str) -> None:
+    """#250 review finding: Cloudflare's `orderBy: [count_DESC]` means a
+    response that hits `_QUERY_LIMIT` exactly has silently dropped the
+    long tail (the lowest-count groups) — every aggregate this file
+    computes from `groups` would then be a biased undercount with no
+    error surfaced anywhere. This is the only place that signal is
+    cheaply available (a free `len()` check on data already fetched), so
+    it gets logged here rather than passing silently into aggregate_rollup().
+    """
+    if len(groups) >= _QUERY_LIMIT:
+        logger.warning(
+            "%s traffic rollup: Cloudflare returned %d groups, hitting _QUERY_LIMIT "
+            "(%d) exactly — the response was very likely truncated, meaning "
+            "total_requests/top_paths/bot_breakdown for this cycle are an "
+            "undercount biased toward the highest-count groups. Consider raising "
+            "_QUERY_LIMIT further if this recurs.",
+            window_label,
+            len(groups),
+            _QUERY_LIMIT,
+        )
+
+
 async def _fetch_traffic_groups(
     *, token: str, zone_id: str, since: datetime, until: datetime
 ) -> list[dict] | None:
@@ -273,6 +304,7 @@ async def run_daily_traffic_rollup() -> bool:
     )
     if groups is None:
         return False
+    _warn_if_truncated(groups, window_label="daily")
 
     rollup = aggregate_rollup(groups)
 
@@ -326,8 +358,21 @@ async def run_hourly_traffic_rollup() -> bool:
             _logged_missing_hourly_token = True
         return False
 
-    until = datetime.now(timezone.utc)
-    since = until - timedelta(hours=1)
+    # #250 review finding: roll up the last COMPLETE calendar hour, not
+    # "now minus 1h" labeled as the current (still in-progress) hour. The
+    # earlier version set `rollup_hour = now.replace(minute=0, ...)` while
+    # fetching the window `[now-1h, now)` — a row labeled e.g. "11:00"
+    # actually held data from ~10:37-11:37, mislabeling exactly the thing
+    # this feature exists to make precise (attributing a spike to the
+    # right hour). Flooring `now` to the hour first, then using that as
+    # BOTH the label and the window start, makes the row's label and its
+    # contents agree, and makes a same-hour restart genuinely idempotent
+    # (recomputes the identical window and key) instead of silently
+    # overwriting a different window's data under the same rollup_hour.
+    now = datetime.now(timezone.utc)
+    rollup_hour = (now - timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
+    since = rollup_hour
+    until = rollup_hour + timedelta(hours=1)
 
     groups = await _fetch_traffic_groups(
         token=settings.cloudflare_analytics_api_token,
@@ -337,10 +382,14 @@ async def run_hourly_traffic_rollup() -> bool:
     )
     if groups is None:
         return False
+    _warn_if_truncated(groups, window_label="hourly")
 
     rollup = aggregate_rollup(groups)
-    rollup_hour = until.replace(minute=0, second=0, microsecond=0)
-    cutoff = until - timedelta(days=settings.traffic_hourly_rollup_retention_days)
+    # #250 review finding: floor at 1 day regardless of config — a
+    # misconfigured 0 (or negative) would make cutoff >= now and prune the
+    # row this very cycle just inserted.
+    retention_days = max(1, settings.traffic_hourly_rollup_retention_days)
+    cutoff = now - timedelta(days=retention_days)
 
     async with async_session_factory() as session:
         async with session.begin():

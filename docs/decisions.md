@@ -383,3 +383,14 @@ mirrors the backend's `pr-validate.yml`). #32–#41 build on this shell next.
   this app's own rate limits — a new view onto existing data, not a new
   collection mechanism, so none of this required a privacy-policy change
   or a Cloudflare plan upgrade.
+  **Real gap caught by final review before merge, fixed same-day:** the
+  panel's `identifier` field is not always anonymous — the local-login
+  rate limit's identifier embeds the caller's raw email
+  (`login:<email>:<ip>`, `routers/auth.py`), which would have made this
+  the only admin surface exposing email addresses (`GET /admin/users`'
+  `AdminUserOut` deliberately has no email field). Fixed by redacting any
+  email-shaped substring server-side (`services/admin.py::
+  _redact_identifier`) before it ever leaves the response — scope and IP
+  stay visible for abuse-correlation, the email itself never does.
+  Andreas's explicit call on the tradeoff: redact rather than hash the
+  whole identifier or drop it, keeping IP-level correlation intact.

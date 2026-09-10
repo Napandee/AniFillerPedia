@@ -17,6 +17,8 @@ listing, services/contributions.py's vote-casting), never two
 implementations that could drift apart.
 """
 
+import re
+
 import fastapi
 
 from repositories import admin as admin_repo
@@ -217,10 +219,28 @@ async def list_hourly_traffic_rollups(session, limit: int) -> TrafficHourlyRollu
     return TrafficHourlyRollupListOut(items=items)
 
 
+# #250 review finding: some rate-limit scopes key their identifier on an
+# email address (local_login's is "login:<email>:<ip>" — see
+# routers/auth.py's rate_identifier) — returning that verbatim would make
+# this endpoint a new PII exposure GET /admin/users deliberately avoids
+# (AdminUserOut has no email field). Redacted here, at the point the
+# response is built, so a raw email never leaves the backend at all — not
+# just hidden by the frontend. The IP portion and the scope stay visible
+# (an admin can still see "this IP is hammering local_login" and spot the
+# same identifier recurring), only the email substring itself is masked.
+_EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
+
+
+def _redact_identifier(identifier: str) -> str:
+    return _EMAIL_RE.sub("***", identifier)
+
+
 async def get_rate_limit_summary(session, *, window_hours: int, limit: int) -> RateLimitSummaryOut:
     """#250: the abuse-signal dashboard panel's data source — reads the
     same rate_limit_events table every rate-limited endpoint already
-    writes to, not a new collection mechanism."""
+    writes to, not a new collection mechanism. Identifiers are redacted
+    (see _redact_identifier) before leaving this function — never
+    returned raw."""
     rows = await rate_limits_repo.list_recent_grouped(session, window_hours=window_hours, limit=limit)
     totals = await rate_limits_repo.count_recent_totals(session, window_hours=window_hours)
     return RateLimitSummaryOut(
@@ -230,7 +250,7 @@ async def get_rate_limit_summary(session, *, window_hours: int, limit: int) -> R
         top_entries=[
             RateLimitEventSummaryEntryOut(
                 scope=row.scope,
-                identifier=row.identifier,
+                identifier=_redact_identifier(row.identifier),
                 count=row.event_count,
                 first_seen=row.first_seen.isoformat(),
                 last_seen=row.last_seen.isoformat(),

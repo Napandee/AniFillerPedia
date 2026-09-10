@@ -15,7 +15,7 @@ conventions:
 """
 
 import uuid
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import httpx
 import pytest
@@ -27,11 +27,19 @@ from core.config import get_settings
 from core.db import async_session_factory
 from core.security import SESSION_COOKIE_NAME, create_session_token
 from main import app
-from repositories.traffic_analytics import list_daily_rollups
+from repositories.traffic_analytics import (
+    list_daily_rollups,
+    list_hourly_rollups,
+    prune_hourly_rollups_older_than,
+    upsert_daily_rollup,
+    upsert_hourly_rollup,
+)
 from services.traffic_analytics import (
     _classify_path_kind,
     aggregate_rollup,
+    classify_bot,
     run_daily_traffic_rollup,
+    run_hourly_traffic_rollup,
 )
 
 TEST_PREFIX = "__test_221__"
@@ -42,13 +50,15 @@ def _clear_settings_cache_and_missing_token_flag(monkeypatch: pytest.MonkeyPatch
     """get_settings() is @lru_cache'd (same gotcha test_config.py already
     documents) — clear it around every test in this file so env changes
     made here don't leak into/out of other test files. Also resets the
-    module-level "already logged the missing-token warning once" flag,
-    since that's deliberately global, cross-cycle state (see the module's
-    own docstring on _logged_missing_token) that would otherwise make the
-    no-token test order-dependent.
+    module-level "already logged the missing-token warning once" flags
+    for both the daily and hourly rollup loops, since those are
+    deliberately global, cross-cycle state (see the module's own
+    docstring on _logged_missing_token / _logged_missing_hourly_token)
+    that would otherwise make the no-token tests order-dependent.
     """
     get_settings.cache_clear()
     monkeypatch.setattr(traffic_analytics, "_logged_missing_token", False)
+    monkeypatch.setattr(traffic_analytics, "_logged_missing_hourly_token", False)
     yield
     get_settings.cache_clear()
 
@@ -58,6 +68,14 @@ async def _cleanup_rollup(rollup_date: date) -> None:
         async with session.begin():
             await session.execute(
                 text("DELETE FROM traffic_daily_rollups WHERE rollup_date = :d"), {"d": rollup_date}
+            )
+
+
+async def _cleanup_hourly_rollup(rollup_hour: datetime) -> None:
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("DELETE FROM traffic_hourly_rollups WHERE rollup_hour = :h"), {"h": rollup_hour}
             )
 
 
@@ -174,14 +192,174 @@ def test_aggregate_rollup_truncates_to_top_n() -> None:
     assert len(result["top_countries"]) == 1
 
 
-def test_aggregate_rollup_empty_groups() -> None:
+def test_classify_bot_known_crawlers() -> None:
+    assert classify_bot(
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/145.0.0.0 Safari/537.36 (compatible; meta-externalagent/1.1 "
+        "(+https://developers.facebook.com/docs/sharing/webmasters/crawler))"
+    ) == "known_bot"
+    assert classify_bot(
+        "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/151.0.7922.173 Mobile Safari/537.36 "
+        "(compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    ) == "known_bot"
+    assert classify_bot("Mozilla/5.0 AppleWebKit/537.36 (compatible; GPTBot/1.4)") == "known_bot"
+
+
+def test_classify_bot_is_case_insensitive() -> None:
+    assert classify_bot("compatible; GOOGLEBOT/2.1") == "known_bot"
+
+
+def test_classify_bot_real_browser_is_other() -> None:
+    assert classify_bot(
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/128.0.0.0 Safari/537.36"
+    ) == "other"
+
+
+def test_classify_bot_missing_is_other() -> None:
+    assert classify_bot(None) == "other"
+    assert classify_bot("") == "other"
+
+
+def _group_with_ua(path: str, status: int, country: str, user_agent: str, count: int) -> dict:
+    return {
+        "count": count,
+        "dimensions": {
+            "clientRequestPath": path,
+            "clientRequestHTTPMethodName": "GET",
+            "edgeResponseStatus": status,
+            "clientCountryName": country,
+            "userAgent": user_agent,
+        },
+    }
+
+
+def test_aggregate_rollup_bot_breakdown_splits_and_sums() -> None:
+    groups = [
+        _group_with_ua("/login", 307, "US", "compatible; Googlebot/2.1", 10),
+        _group_with_ua("/login", 200, "GB", "compatible; meta-externalagent/1.1", 5),
+        _group_with_ua("/", 200, "US", "Mozilla/5.0 (Windows NT 10.0) Chrome/128.0.0.0", 3),
+    ]
+    result = aggregate_rollup(groups)
+    bots = {b["category"]: b["count"] for b in result["bot_breakdown"]}
+    assert bots == {"known_bot": 15, "other": 3}
+
+
+def test_aggregate_rollup_bot_breakdown_omits_zero_categories() -> None:
+    """Same convention as status_breakdown/top_countries: only categories
+    that actually appeared are emitted, never a padded zero entry."""
+    groups = [_group_with_ua("/", 200, "US", "compatible; Googlebot/2.1", 7)]
+    result = aggregate_rollup(groups)
+    assert result["bot_breakdown"] == [{"category": "known_bot", "count": 7}]
+
+
+def test_aggregate_rollup_empty_groups_includes_bot_breakdown() -> None:
     result = aggregate_rollup([])
     assert result == {
         "total_requests": 0,
         "top_paths": [],
         "status_breakdown": [],
         "top_countries": [],
+        "bot_breakdown": [],
     }
+
+
+# --- upsert_daily_rollup bot_breakdown + hourly rollup repository fns -----
+
+
+@pytest.mark.asyncio
+async def test_upsert_daily_rollup_persists_bot_breakdown() -> None:
+    rollup_date = date.today() - timedelta(days=2)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_daily_rollup(
+                    session,
+                    rollup_date=rollup_date,
+                    total_requests=10,
+                    top_paths=[{"path": "/", "path_kind": "frontend", "count": 10}],
+                    status_breakdown=[{"status": 200, "count": 10}],
+                    top_countries=[{"country": "US", "count": 10}],
+                    bot_breakdown=[{"category": "known_bot", "count": 10}],
+                )
+        async with async_session_factory() as session:
+            rows = await list_daily_rollups(session, limit=5)
+        row = next(r for r in rows if r.rollup_date == rollup_date)
+        assert row.bot_breakdown == [{"category": "known_bot", "count": 10}]
+    finally:
+        await _cleanup_rollup(rollup_date)
+
+
+@pytest.mark.asyncio
+async def test_upsert_and_list_hourly_rollups() -> None:
+    rollup_hour = datetime(2026, 9, 10, 14, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_hourly_rollup(
+                    session,
+                    rollup_hour=rollup_hour,
+                    total_requests=5,
+                    top_paths=[{"path": "/api/v1/series", "path_kind": "api", "count": 5}],
+                    status_breakdown=[{"status": 200, "count": 5}],
+                    top_countries=[{"country": "GB", "count": 5}],
+                    bot_breakdown=[{"category": "other", "count": 5}],
+                )
+        async with async_session_factory() as session:
+            rows = await list_hourly_rollups(session, limit=10)
+        row = next(r for r in rows if r.rollup_hour == rollup_hour)
+        assert row.total_requests == 5
+        assert row.bot_breakdown == [{"category": "other", "count": 5}]
+    finally:
+        await _cleanup_hourly_rollup(rollup_hour)
+
+
+@pytest.mark.asyncio
+async def test_upsert_hourly_rollup_same_hour_overwrites() -> None:
+    rollup_hour = datetime(2026, 9, 10, 15, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_hourly_rollup(
+                    session, rollup_hour=rollup_hour, total_requests=1,
+                    top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+                )
+                await upsert_hourly_rollup(
+                    session, rollup_hour=rollup_hour, total_requests=99,
+                    top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+                )
+        async with async_session_factory() as session:
+            rows = await list_hourly_rollups(session, limit=10)
+        matching = [r for r in rows if r.rollup_hour == rollup_hour]
+        assert len(matching) == 1
+        assert matching[0].total_requests == 99
+    finally:
+        await _cleanup_hourly_rollup(rollup_hour)
+
+
+@pytest.mark.asyncio
+async def test_prune_hourly_rollups_older_than_cutoff() -> None:
+    old_hour = datetime(2026, 8, 1, 0, 0, tzinfo=timezone.utc)
+    recent_hour = datetime(2026, 9, 10, 10, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                for h in (old_hour, recent_hour):
+                    await upsert_hourly_rollup(
+                        session, rollup_hour=h, total_requests=1,
+                        top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+                    )
+                await prune_hourly_rollups_older_than(
+                    session, cutoff=datetime(2026, 9, 1, tzinfo=timezone.utc)
+                )
+        async with async_session_factory() as session:
+            rows = await list_hourly_rollups(session, limit=100)
+        hours = {r.rollup_hour for r in rows}
+        assert old_hour not in hours
+        assert recent_hour in hours
+    finally:
+        await _cleanup_hourly_rollup(recent_hour)
 
 
 # --- run_daily_traffic_rollup: no-op-without-token + mocked-HTTP+real-DB --
@@ -351,6 +529,62 @@ async def test_run_daily_traffic_rollup_handles_http_failure_gracefully(
     assert persisted is False
 
 
+# --- run_hourly_traffic_rollup: no-op-without-token + mocked-HTTP+real-DB,
+# plus its own retention pruning -------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_run_hourly_traffic_rollup_noops_without_token(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    monkeypatch.delenv("CLOUDFLARE_ANALYTICS_API_TOKEN", raising=False)
+    get_settings.cache_clear()
+    with caplog.at_level("WARNING", logger="traffic_analytics"):
+        persisted = await run_hourly_traffic_rollup()
+    assert persisted is False
+
+
+@pytest.mark.asyncio
+async def test_run_hourly_traffic_rollup_persists_and_prunes_old_rows(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("CLOUDFLARE_ANALYTICS_API_TOKEN", "test-token-not-real")
+    get_settings.cache_clear()
+
+    mocked_body = {
+        "data": {"viewer": {"zones": [{"httpRequestsAdaptiveGroups": [
+            _group_with_ua("/login", 307, "US", "compatible; Googlebot/2.1", 7),
+        ]}]}}
+    }
+    real_async_client = httpx.AsyncClient
+    monkeypatch.setattr(
+        traffic_analytics.httpx, "AsyncClient",
+        lambda *a, **k: real_async_client(
+            transport=httpx.MockTransport(lambda r: httpx.Response(200, json=mocked_body))
+        ),
+    )
+
+    # A stale row this cycle's prune step must remove.
+    old_hour = datetime(2000, 1, 1, tzinfo=timezone.utc)
+    async with async_session_factory() as session:
+        async with session.begin():
+            await upsert_hourly_rollup(
+                session, rollup_hour=old_hour, total_requests=1,
+                top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+            )
+
+    persisted = await run_hourly_traffic_rollup()
+    assert persisted is True
+
+    async with async_session_factory() as session:
+        rows = await list_hourly_rollups(session, limit=100)
+    assert not any(r.rollup_hour == old_hour for r in rows), "stale row should have been pruned"
+    latest = max(rows, key=lambda r: r.rollup_hour)
+    assert latest.total_requests == 7
+    assert latest.bot_breakdown == [{"category": "known_bot", "count": 7}]
+    await _cleanup_hourly_rollup(latest.rollup_hour)
+
+
 # --- GET /admin/traffic: role-gating + real persisted-data rendering ------
 
 
@@ -383,8 +617,6 @@ async def test_traffic_endpoint_returns_persisted_rollups() -> None:
     try:
         async with async_session_factory() as session:
             async with session.begin():
-                from repositories.traffic_analytics import upsert_daily_rollup
-
                 await upsert_daily_rollup(
                     session,
                     rollup_date=rollup_date,
@@ -392,6 +624,7 @@ async def test_traffic_endpoint_returns_persisted_rollups() -> None:
                     top_paths=[{"path": "/api/v1/series", "path_kind": "api", "count": 20}],
                     status_breakdown=[{"status": 200, "count": 42}],
                     top_countries=[{"country": "US", "count": 42}],
+                    bot_breakdown=[{"category": "known_bot", "count": 42}],
                 )
 
         transport = ASGITransport(app=app)
@@ -406,6 +639,14 @@ async def test_traffic_endpoint_returns_persisted_rollups() -> None:
         assert row["top_paths"][0]["path_kind"] == "api"
         assert row["status_breakdown"][0]["status"] == 200
         assert row["top_countries"][0]["country"] == "US"
+        # NOTE: not asserting row["bot_breakdown"] here — the /admin/traffic
+        # response schema (schemas/admin.py::TrafficRollupOut) doesn't surface
+        # bot_breakdown yet; per progress.md that's Task 6's job (it owns
+        # schemas/admin.py, services/admin.py, routers/admin.py). Adding that
+        # assertion now (as the task-3 brief's Step 4 literally specifies)
+        # would hand a guaranteed-failing test to this task, contradicting
+        # the "leave the suite fully green" requirement. Flagged in the
+        # task-3 report instead of silently deviating from the brief.
     finally:
         await _cleanup_rollup(rollup_date)
         await _cleanup_user(admin_id)
@@ -427,6 +668,94 @@ async def test_traffic_endpoint_empty_state() -> None:
             transport=transport, base_url="http://test", cookies=_cookie(admin_id)
         ) as client:
             response = await client.get("/api/v1/admin/traffic")
+        assert response.status_code == 200
+        assert response.json()["items"] == []
+    finally:
+        await _cleanup_user(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_traffic_endpoint_includes_bot_breakdown() -> None:
+    admin_id = await _create_user("admin")
+    rollup_date = date.today() - timedelta(days=3)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_daily_rollup(
+                    session, rollup_date=rollup_date, total_requests=5,
+                    top_paths=[{"path": "/", "path_kind": "frontend", "count": 5}],
+                    status_breakdown=[{"status": 200, "count": 5}],
+                    top_countries=[{"country": "US", "count": 5}],
+                    bot_breakdown=[{"category": "known_bot", "count": 5}],
+                )
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic")
+        body = response.json()
+        row = next(r for r in body["items"] if r["rollup_date"] == rollup_date.isoformat())
+        assert row["bot_breakdown"] == [{"category": "known_bot", "count": 5}]
+    finally:
+        await _cleanup_rollup(rollup_date)
+        await _cleanup_user(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_hourly_traffic_endpoint_requires_admin() -> None:
+    contributor_id = await _create_user("contributor")
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(contributor_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic/hourly")
+        assert response.status_code == 403
+    finally:
+        await _cleanup_user(contributor_id)
+
+
+@pytest.mark.asyncio
+async def test_hourly_traffic_endpoint_returns_persisted_rollups() -> None:
+    admin_id = await _create_user("admin")
+    rollup_hour = datetime(2026, 9, 10, 9, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_hourly_rollup(
+                    session, rollup_hour=rollup_hour, total_requests=3,
+                    top_paths=[{"path": "/", "path_kind": "frontend", "count": 3}],
+                    status_breakdown=[{"status": 200, "count": 3}],
+                    top_countries=[{"country": "US", "count": 3}],
+                    bot_breakdown=[{"category": "other", "count": 3}],
+                )
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic/hourly")
+        assert response.status_code == 200
+        body = response.json()
+        row = next(r for r in body["items"] if r["rollup_hour"] == rollup_hour.isoformat())
+        assert row["total_requests"] == 3
+        assert row["bot_breakdown"] == [{"category": "other", "count": 3}]
+    finally:
+        await _cleanup_hourly_rollup(rollup_hour)
+        await _cleanup_user(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_hourly_traffic_endpoint_empty_state() -> None:
+    admin_id = await _create_user("owner")
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(text("DELETE FROM traffic_hourly_rollups"))
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic/hourly")
         assert response.status_code == 200
         assert response.json()["items"] == []
     finally:

@@ -21,6 +21,7 @@ from sqlalchemy import text
 from core.db import async_session_factory
 from core.security import SESSION_COOKIE_NAME, create_session_token
 from main import app
+from repositories.rate_limits import count_recent_totals, list_recent_grouped
 from services.auth import Profile, login_or_create_user
 
 TEST_PREFIX = "__test_139__"
@@ -101,6 +102,44 @@ async def _seed_rate_limit_events(scope: str, identifier: str, count: int) -> No
                     text("INSERT INTO rate_limit_events (scope, identifier) VALUES (:scope, :id)"),
                     {"scope": scope, "id": identifier},
                 )
+
+
+@pytest.mark.asyncio
+async def test_list_recent_grouped_counts_per_scope_and_identifier() -> None:
+    await _seed_rate_limit_events("local_login", "login:a@example.com:ip:1.2.3.4", 3)
+    await _seed_rate_limit_events("local_login", "login:b@example.com:ip:5.6.7.8", 1)
+    await _seed_rate_limit_events("anilist_lookup", "ip:1.2.3.4", 2)
+
+    async with async_session_factory() as session:
+        rows = await list_recent_grouped(session, window_hours=24, limit=10)
+
+    by_identifier = {(r.scope, r.identifier): r.event_count for r in rows}
+    assert by_identifier[("local_login", "login:a@example.com:ip:1.2.3.4")] == 3
+    assert by_identifier[("local_login", "login:b@example.com:ip:5.6.7.8")] == 1
+    assert by_identifier[("anilist_lookup", "ip:1.2.3.4")] == 2
+    # Sorted descending by count.
+    assert rows[0].event_count >= rows[-1].event_count
+
+
+@pytest.mark.asyncio
+async def test_list_recent_grouped_respects_limit() -> None:
+    for i in range(5):
+        await _seed_rate_limit_events("local_login", f"login:user{i}@example.com:ip:1.2.3.4", 1)
+
+    async with async_session_factory() as session:
+        rows = await list_recent_grouped(session, window_hours=24, limit=2)
+    assert len(rows) == 2
+
+
+@pytest.mark.asyncio
+async def test_count_recent_totals_unaffected_by_detail_limit() -> None:
+    for i in range(5):
+        await _seed_rate_limit_events("local_login", f"login:user{i}@example.com:ip:1.2.3.4", 2)
+
+    async with async_session_factory() as session:
+        totals = await count_recent_totals(session, window_hours=24)
+    assert totals.total_events == 10
+    assert totals.distinct_identifiers == 5
 
 
 async def _cleanup_series_proposals(title: str) -> None:

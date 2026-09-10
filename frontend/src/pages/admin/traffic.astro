@@ -31,6 +31,24 @@ const { data, error } = await api.GET("/api/v1/admin/traffic", {
   headers: { cookie },
 });
 
+// #250: two new, non-critical sections — no `error` destructured for
+// either, matching this page's existing tolerant style (an empty/missing
+// result renders its own empty-state below, not a page-level error).
+// #250 review finding: the section below is titled "Last 24 hours" — fetch
+// exactly 24 rows to match, not 48 (which produced two different days'
+// worth of hours rendered with only a bare HH:MM label, so e.g. yesterday's
+// and today's 14:00 rows were visually indistinguishable).
+const { data: hourlyData } = await api.GET("/api/v1/admin/traffic/hourly", {
+  params: { query: { limit: 24 } },
+  headers: { cookie },
+});
+const hourlyRollups = hourlyData?.items ?? [];
+
+const { data: rateLimitData } = await api.GET("/api/v1/admin/rate-limit-summary", {
+  params: { query: { window_hours: 24, limit: 25 } },
+  headers: { cookie },
+});
+
 const rollups = data?.items ?? [];
 // Two distinct reasons this can legitimately be empty, both real v1
 // states rather than errors: CLOUDFLARE_ANALYTICS_API_TOKEN isn't
@@ -57,6 +75,36 @@ function formatDate(iso: string): string {
 function formatNumber(n: number): string {
   return n.toLocaleString("en-GB");
 }
+
+function formatHour(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? iso
+    : d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
+}
+
+function formatTimestamp(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? iso
+    : d.toLocaleString("en-GB", {
+        year: "numeric", month: "short", day: "numeric",
+        hour: "2-digit", minute: "2-digit", timeZone: "UTC",
+      }) + " UTC";
+}
+
+// #250 review finding: an empty bot_breakdown means "no data recorded"
+// (a pre-#250 rollup, or the classifier genuinely finding nothing to
+// report) — NOT "0% known bots", which would render a confident, false
+// number precisely on the days this feature can't actually say anything.
+// hasBotData distinguishes the two so the stat card can show "—" instead.
+const latestBotBreakdown = latest?.bot_breakdown ?? [];
+const hasBotData = latestBotBreakdown.length > 0;
+const knownBotCount = latestBotBreakdown.find((b) => b.category === "known_bot")?.count ?? 0;
+const botSharePercent =
+  hasBotData && latest && latest.total_requests > 0
+    ? Math.round((knownBotCount / latest.total_requests) * 100)
+    : null;
 ---
 
 <AdminLayout title="Traffic analytics — AniFillerPedia" activeTab="traffic">
@@ -96,6 +144,10 @@ function formatNumber(n: number): string {
           <div class="stat-card">
             <span class="stat-label">Days of history</span>
             <span class="stat-value">{rollups.length}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Known bots</span>
+            <span class="stat-value">{botSharePercent === null ? "—" : `${botSharePercent}%`}</span>
           </div>
         </div>
 
@@ -218,16 +270,101 @@ function formatNumber(n: number): string {
       </>
     )}
 
+    <div class="table-block hourly-block">
+      <h2>Last 24 hours</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Hour</th><th>Requests</th><th>Known bots</th></tr>
+          </thead>
+          <tbody>
+            {hourlyRollups.map((h) => {
+              const botCount = h.bot_breakdown.find((b) => b.category === "known_bot")?.count ?? 0;
+              return (
+                <tr>
+                  <td>{formatHour(h.rollup_hour)}</td>
+                  <td>{formatNumber(h.total_requests)}</td>
+                  <td>{formatNumber(botCount)}</td>
+                </tr>
+              );
+            })}
+            {hourlyRollups.length === 0 && (
+              <tr><td colspan="3" class="empty-cell">No hourly data yet.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="table-block rate-limit-block">
+      <h2>Rate-limit activity</h2>
+      {rateLimitData && (
+        <p class="map-caption">
+          {formatNumber(rateLimitData.total_events)} events across{" "}
+          {formatNumber(rateLimitData.distinct_identifiers)} identifiers in the last{" "}
+          {rateLimitData.window_hours}h.
+        </p>
+      )}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Scope</th><th>Identifier</th><th>Count</th><th>Last seen</th></tr>
+          </thead>
+          <tbody>
+            {(rateLimitData?.top_entries ?? []).map((e) => (
+              <tr>
+                <td class="mono">{e.scope}</td>
+                <td class="mono">{e.identifier}</td>
+                <td>{formatNumber(e.count)}</td>
+                <td>{formatTimestamp(e.last_seen)}</td>
+              </tr>
+            ))}
+            {(rateLimitData?.top_entries.length ?? 0) === 0 && (
+              <tr><td colspan="4" class="empty-cell">No rate-limit activity in this window.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <details class="about-data">
       <summary>About this data — what it shows, what it can't, and what extending it would cost</summary>
       <div class="about-body">
         <h3>What's actually collected</h3>
         <p>
-          Cloudflare's own zone analytics, rolled up once a day: total requests, the busiest
-          paths, response-status counts, and a per-country request count. All four are
-          independent aggregates — a count of "how many requests hit this path" and a count of
-          "how many requests came from this country" on the same day, never joined back to each
-          other or to any individual visitor.
+          Cloudflare's own zone analytics, rolled up once a day (and, since #250, once an
+          hour too): total requests, the busiest paths, response-status counts, and a
+          per-country request count. All four are independent aggregates — a count of
+          "how many requests hit this path" and a count of "how many requests came from
+          this country" on the same day, never joined back to each other or to any
+          individual visitor.
+        </p>
+        <p>
+          The "Known bots" figure and the hourly table's bot count (#250) come from the
+          same Cloudflare aggregate — a `userAgent` dimension already returned per group,
+          classified into "known_bot" / "other" by a maintained list of known crawler
+          User-Agent strings. This is still aggregate, Cloudflare-sourced data, not a new
+          per-visitor tracking mechanism — the classification happens on the same grouped
+          rows every other number on this page comes from, never on an individual request.
+          "Other" is not a claim that that traffic is human — only that it didn't match a
+          known crawler pattern.
+        </p>
+        <p>
+          Hourly rollups keep only 7 days of history (pruned automatically), unlike the
+          daily table's unlimited retention — hourly is for spotting something recent,
+          daily is for long-term trend.
+        </p>
+        <p>
+          The rate-limit activity panel is sourced from <code>rate_limit_events</code>, a
+          table that already existed for enforcing this app's own rate limits (login,
+          signup, AniList lookups, and others) — this page just gives it a view, it isn't
+          a new data collection. The identifier shown is not always anonymous: some scopes
+          (the local-login rate limit specifically) key on <code>email:ip</code>, so this
+          panel can display a real email address — including one entered in a failed or
+          probing login attempt, whether or not that account exists. Any email substring
+          is redacted server-side (replaced with <code>***</code>) before it reaches this
+          page or this endpoint's response at all; the IP portion and scope stay visible so
+          a repeat offender is still identifiable.
         </p>
 
         <h3>Real shortcomings</h3>
@@ -601,6 +738,13 @@ function formatNumber(n: number): string {
   }
   .history-block {
     max-width: 420px;
+  }
+  .hourly-block {
+    margin-top: 24px;
+    max-width: 520px;
+  }
+  .rate-limit-block {
+    margin-top: 24px;
   }
   .about-data {
     margin-top: 28px;

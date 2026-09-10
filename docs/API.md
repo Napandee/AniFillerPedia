@@ -44,7 +44,7 @@ to one caller's own data:
 | `GET /users/me`, `GET /users/me/export`, `DELETE /users/me` | |
 | `GET /settings/link/{provider}` | `GET /license`, `GET /privacy`, `GET /tos` |
 | Moderator+: `GET /contributions`, `GET /series-proposals`, `GET /synonym-suggestions`, every `/approve`, `/reject`, `/bulk-approve`, `/bulk-reject`, `GET /admin/vote-clustering-report` | |
-| Admin+: `GET /admin/users`, `PATCH /admin/users/{id}/role`, `PATCH /admin/users/{id}/suspension` | |
+| Admin+: `GET /admin/users`, `PATCH /admin/users/{id}/role`, `PATCH /admin/users/{id}/suspension`, `GET /admin/traffic`, `GET /admin/traffic/hourly`, `GET /admin/rate-limit-summary` | |
 
 **How the login flow actually works.** This API has exactly one auth
 mechanism today: a browser-driven, cookie-based OAuth redirect. There is

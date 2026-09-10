@@ -17,16 +17,24 @@ listing, services/contributions.py's vote-casting), never two
 implementations that could drift apart.
 """
 
+import re
+
 import fastapi
 
 from repositories import admin as admin_repo
 from repositories import outbox as outbox_repo
+from repositories import rate_limits as rate_limits_repo
 from repositories import traffic_analytics as traffic_repo
 from schemas.admin import (
     AdminUserListOut,
     AdminUserOut,
+    RateLimitEventSummaryEntryOut,
+    RateLimitSummaryOut,
     SuspensionUpdateOut,
+    TrafficBotEntryOut,
     TrafficCountryEntryOut,
+    TrafficHourlyRollupListOut,
+    TrafficHourlyRollupOut,
     TrafficPathEntryOut,
     TrafficRollupListOut,
     TrafficRollupOut,
@@ -184,8 +192,69 @@ async def list_traffic_rollups(session, limit: int) -> TrafficRollupListOut:
             top_paths=[TrafficPathEntryOut(**entry) for entry in row.top_paths],
             status_breakdown=[TrafficStatusEntryOut(**entry) for entry in row.status_breakdown],
             top_countries=[TrafficCountryEntryOut(**entry) for entry in row.top_countries],
+            bot_breakdown=[TrafficBotEntryOut(**entry) for entry in row.bot_breakdown],
             created_at=row.created_at.isoformat(),
         )
         for row in rows
     ]
     return TrafficRollupListOut(items=items)
+
+
+async def list_hourly_traffic_rollups(session, limit: int) -> TrafficHourlyRollupListOut:
+    """#250: the hourly counterpart to list_traffic_rollups above — same
+    mapping shape, 7-day-retention table instead of unlimited-history."""
+    rows = await traffic_repo.list_hourly_rollups(session, limit)
+    items = [
+        TrafficHourlyRollupOut(
+            rollup_hour=row.rollup_hour.isoformat(),
+            total_requests=row.total_requests,
+            top_paths=[TrafficPathEntryOut(**entry) for entry in row.top_paths],
+            status_breakdown=[TrafficStatusEntryOut(**entry) for entry in row.status_breakdown],
+            top_countries=[TrafficCountryEntryOut(**entry) for entry in row.top_countries],
+            bot_breakdown=[TrafficBotEntryOut(**entry) for entry in row.bot_breakdown],
+            created_at=row.created_at.isoformat(),
+        )
+        for row in rows
+    ]
+    return TrafficHourlyRollupListOut(items=items)
+
+
+# #250 review finding: some rate-limit scopes key their identifier on an
+# email address (local_login's is "login:<email>:<ip>" — see
+# routers/auth.py's rate_identifier) — returning that verbatim would make
+# this endpoint a new PII exposure GET /admin/users deliberately avoids
+# (AdminUserOut has no email field). Redacted here, at the point the
+# response is built, so a raw email never leaves the backend at all — not
+# just hidden by the frontend. The IP portion and the scope stay visible
+# (an admin can still see "this IP is hammering local_login" and spot the
+# same identifier recurring), only the email substring itself is masked.
+_EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
+
+
+def _redact_identifier(identifier: str) -> str:
+    return _EMAIL_RE.sub("***", identifier)
+
+
+async def get_rate_limit_summary(session, *, window_hours: int, limit: int) -> RateLimitSummaryOut:
+    """#250: the abuse-signal dashboard panel's data source — reads the
+    same rate_limit_events table every rate-limited endpoint already
+    writes to, not a new collection mechanism. Identifiers are redacted
+    (see _redact_identifier) before leaving this function — never
+    returned raw."""
+    rows = await rate_limits_repo.list_recent_grouped(session, window_hours=window_hours, limit=limit)
+    totals = await rate_limits_repo.count_recent_totals(session, window_hours=window_hours)
+    return RateLimitSummaryOut(
+        window_hours=window_hours,
+        total_events=totals.total_events,
+        distinct_identifiers=totals.distinct_identifiers,
+        top_entries=[
+            RateLimitEventSummaryEntryOut(
+                scope=row.scope,
+                identifier=_redact_identifier(row.identifier),
+                count=row.event_count,
+                first_seen=row.first_seen.isoformat(),
+                last_seen=row.last_seen.isoformat(),
+            )
+            for row in rows
+        ],
+    )

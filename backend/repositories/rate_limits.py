@@ -34,3 +34,42 @@ async def record(session: AsyncSession, *, scope: str, identifier: str) -> None:
         text("INSERT INTO rate_limit_events (scope, identifier) VALUES (:scope, :identifier)"),
         {"scope": scope, "identifier": identifier},
     )
+
+
+async def list_recent_grouped(
+    session: AsyncSession, *, window_hours: int, limit: int
+) -> list:
+    """Per (scope, identifier) counts within the window, most-active
+    first — the abuse-signal dashboard panel's data source (#250)."""
+    result = await session.execute(
+        text(
+            """
+            SELECT scope, identifier, count(*) AS event_count,
+                   min(created_at) AS first_seen, max(created_at) AS last_seen
+            FROM rate_limit_events
+            WHERE created_at > now() - make_interval(hours => :window_hours)
+            GROUP BY scope, identifier
+            ORDER BY event_count DESC
+            LIMIT :limit
+            """
+        ),
+        {"window_hours": window_hours, "limit": limit},
+    )
+    return list(result.fetchall())
+
+
+async def count_recent_totals(session: AsyncSession, *, window_hours: int):
+    """Headline totals for the same window, independent of list_recent_
+    grouped's LIMIT — so a summary sentence stays accurate even when the
+    detail table is truncated (#250)."""
+    result = await session.execute(
+        text(
+            """
+            SELECT count(*) AS total_events, count(DISTINCT identifier) AS distinct_identifiers
+            FROM rate_limit_events
+            WHERE created_at > now() - make_interval(hours => :window_hours)
+            """
+        ),
+        {"window_hours": window_hours},
+    )
+    return result.one()

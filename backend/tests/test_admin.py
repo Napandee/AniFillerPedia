@@ -300,3 +300,79 @@ async def test_owner_role_cannot_be_changed_by_anyone() -> None:
             assert row.role == "owner"  # unchanged
     finally:
         await _cleanup(owner_id, other_owner_target)
+
+
+@pytest.mark.asyncio
+async def test_rate_limit_summary_requires_admin() -> None:
+    contributor_id = await _create_user("contributor")
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(contributor_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/rate-limit-summary")
+        assert response.status_code == 403
+    finally:
+        await _cleanup(contributor_id)
+
+
+@pytest.mark.asyncio
+async def test_rate_limit_summary_returns_grouped_data() -> None:
+    admin_id = await _create_user("admin")
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("INSERT INTO rate_limit_events (scope, identifier) VALUES "
+                     "('local_login', '__test_250__ip:9.9.9.9'), "
+                     "('local_login', '__test_250__ip:9.9.9.9')")
+            )
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/rate-limit-summary")
+        assert response.status_code == 200
+        body = response.json()
+        assert body["window_hours"] == 24
+        entry = next(e for e in body["top_entries"] if e["identifier"] == "__test_250__ip:9.9.9.9")
+        assert entry["count"] == 2
+        assert entry["scope"] == "local_login"
+    finally:
+        await _cleanup(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_rate_limit_summary_redacts_embedded_email() -> None:
+    """#250 review finding: local_login's real identifier format is
+    "login:<email>:<ip>" (see routers/auth.py's rate_identifier) — a raw
+    email address must never reach this endpoint's response, since
+    GET /admin/users deliberately withholds email from admins and this
+    endpoint must not become a back door around that.
+    """
+    admin_id = await _create_user("admin")
+    raw_identifier = "login:__test_250_redact__victim@example.com:ip:9.9.9.9"
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("INSERT INTO rate_limit_events (scope, identifier) VALUES (:scope, :id)"),
+                {"scope": "local_login", "id": raw_identifier},
+            )
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/rate-limit-summary")
+        assert response.status_code == 200
+        raw_body = response.text
+        assert "victim@example.com" not in raw_body
+
+        body = response.json()
+        entry = next(e for e in body["top_entries"] if e["scope"] == "local_login" and "***" in e["identifier"])
+        # The redaction regex's local-part match is greedy up to "@" (by
+        # design — safer to over-redact a test-prefix than under-redact a
+        # real email), so the test prefix is swallowed into the match too.
+        assert entry["identifier"] == "login:***:ip:9.9.9.9"
+    finally:
+        await _cleanup(admin_id)

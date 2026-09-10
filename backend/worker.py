@@ -42,7 +42,10 @@ from services.anilist_sync import (
 )
 from services.cache_purge import purge_series_page_cache
 from services.notifications import notify_moderators_new_submission
-from services.traffic_analytics import run_traffic_rollup_forever
+from services.traffic_analytics import (
+    run_hourly_traffic_rollup_forever,
+    run_traffic_rollup_forever,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("outbox_worker")
@@ -167,14 +170,17 @@ async def run_all_forever() -> None:
     two. Still one asyncio.gather, still one container/process.
 
     #221: a fourth loop — the daily Cloudflare traffic-analytics rollup.
-    Same pattern as the other three: its own interval setting, its own
-    run_..._forever() function, gathered in here alongside them.
+    #250 added a fifth: an hourly rollup with its own short retention
+    window alongside it. Same pattern as the other three: each its own
+    interval setting, its own run_..._forever() function, gathered in
+    here alongside them.
     """
     await asyncio.gather(
         run_forever(),
         run_episode_schedule_sync_forever(),
         run_finished_series_drift_check_forever(),
         run_traffic_rollup_forever(),
+        run_hourly_traffic_rollup_forever(),
     )
 
 

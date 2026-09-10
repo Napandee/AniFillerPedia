@@ -1254,6 +1254,49 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/traffic/hourly": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Traffic Hourly Rollups
+         * @description #250: hourly counterpart to GET /admin/traffic — 7-day retention,
+         *     for recent-spike investigation rather than long-term trend.
+         */
+        get: operations["traffic_hourly_rollups_api_v1_admin_traffic_hourly_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/rate-limit-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Rate Limit Summary
+         * @description #250: per-(scope, identifier) rate-limit activity over the last
+         *     `window_hours` — the app's own already-collected rate-limit
+         *     bookkeeping (repositories/rate_limits.py), not a new data source.
+         */
+        get: operations["rate_limit_summary_api_v1_admin_rate_limit_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/activity": {
         parameters: {
             query?: never;
@@ -1995,6 +2038,34 @@ export interface components {
             /** Offset */
             offset: number;
         };
+        /** RateLimitEventSummaryEntryOut */
+        RateLimitEventSummaryEntryOut: {
+            /** Scope */
+            scope: string;
+            /** Identifier */
+            identifier: string;
+            /** Count */
+            count: number;
+            /** First Seen */
+            first_seen: string;
+            /** Last Seen */
+            last_seen: string;
+        };
+        /**
+         * RateLimitSummaryOut
+         * @description #250: the abuse-signal dashboard panel's response shape — reads
+         *     the already-existing rate_limit_events table, not a new data source.
+         */
+        RateLimitSummaryOut: {
+            /** Window Hours */
+            window_hours: number;
+            /** Total Events */
+            total_events: number;
+            /** Distinct Identifiers */
+            distinct_identifiers: number;
+            /** Top Entries */
+            top_entries: components["schemas"]["RateLimitEventSummaryEntryOut"][];
+        };
         /** RoleUpdateIn */
         RoleUpdateIn: {
             /**
@@ -2273,12 +2344,48 @@ export interface components {
             /** Review Note */
             review_note: string | null;
         };
+        /** TrafficBotEntryOut */
+        TrafficBotEntryOut: {
+            /**
+             * Category
+             * @description 'known_bot' or 'other' — a heuristic User-Agent classification, not a certainty claim
+             */
+            category: string;
+            /** Count */
+            count: number;
+        };
         /** TrafficCountryEntryOut */
         TrafficCountryEntryOut: {
             /** Country */
             country: string;
             /** Count */
             count: number;
+        };
+        /** TrafficHourlyRollupListOut */
+        TrafficHourlyRollupListOut: {
+            /** Items */
+            items: components["schemas"]["TrafficHourlyRollupOut"][];
+        };
+        /**
+         * TrafficHourlyRollupOut
+         * @description #250: the hourly counterpart to TrafficRollupOut above — 7-day
+         *     retention instead of unlimited history, keyed by rollup_hour.
+         */
+        TrafficHourlyRollupOut: {
+            /** Rollup Hour */
+            rollup_hour: string;
+            /** Total Requests */
+            total_requests: number;
+            /** Top Paths */
+            top_paths: components["schemas"]["TrafficPathEntryOut"][];
+            /** Status Breakdown */
+            status_breakdown: components["schemas"]["TrafficStatusEntryOut"][];
+            /** Top Countries */
+            top_countries: components["schemas"]["TrafficCountryEntryOut"][];
+            /** Bot Breakdown */
+            bot_breakdown: components["schemas"]["TrafficBotEntryOut"][];
+            /** Created At */
+            created_at: string;
         };
         /**
          * TrafficPathEntryOut
@@ -2316,6 +2423,8 @@ export interface components {
             status_breakdown: components["schemas"]["TrafficStatusEntryOut"][];
             /** Top Countries */
             top_countries: components["schemas"]["TrafficCountryEntryOut"][];
+            /** Bot Breakdown */
+            bot_breakdown: components["schemas"]["TrafficBotEntryOut"][];
             /** Created At */
             created_at: string;
         };
@@ -5014,6 +5123,105 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TrafficRollupListOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Admin or owner access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    traffic_hourly_rollups_api_v1_admin_traffic_hourly_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrafficHourlyRollupListOut"];
+                };
+            };
+            /** @description Not authenticated */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Admin or owner access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rate_limit_summary_api_v1_admin_rate_limit_summary_get: {
+        parameters: {
+            query?: {
+                window_hours?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RateLimitSummaryOut"];
                 };
             };
             /** @description Not authenticated */

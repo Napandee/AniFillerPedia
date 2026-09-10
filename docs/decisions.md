@@ -363,3 +363,34 @@ mirrors the backend's `pr-validate.yml`). #32–#41 build on this shell next.
   already retains raw IP+path+timestamp data independent of this
   feature — see the privacy-policy honesty gap this surfaced, tracked
   separately).
+  **Addendum, 2026-09-10 (issue #250):** extended with bot/human traffic
+  classification, hourly rollups, and an abuse-signal panel — prompted by
+  a real question (a large volume of requests toward the login endpoint,
+  investigated and resolved as well-known crawlers, chiefly Facebook's
+  link-preview bot, following the "Log in" nav link's per-page `next=`
+  URL on every crawled page — not credential stuffing; the real
+  `POST /auth/local/login` endpoint saw 3 hits in 9 days). Bot
+  classification is a maintained `userAgent` token list applied to the
+  same Cloudflare-sourced aggregate this page already used — **not**
+  Cloudflare Bot Management: a direct GraphQL query against this zone
+  confirmed live that this project's Cloudflare plan does not have
+  access to the `botScore` dimension. Hourly rollups are a second table
+  (`traffic_hourly_rollups`) with a 7-day retention window (pruned every
+  cycle) rather than the daily table's unlimited history — different
+  purpose, recent-detail investigation vs. long-term trend, so a
+  different retention policy on purpose. The rate-limit-activity panel
+  reads `rate_limit_events`, a table that already existed for enforcing
+  this app's own rate limits — a new view onto existing data, not a new
+  collection mechanism, so none of this required a privacy-policy change
+  or a Cloudflare plan upgrade.
+  **Real gap caught by final review before merge, fixed same-day:** the
+  panel's `identifier` field is not always anonymous — the local-login
+  rate limit's identifier embeds the caller's raw email
+  (`login:<email>:<ip>`, `routers/auth.py`), which would have made this
+  the only admin surface exposing email addresses (`GET /admin/users`'
+  `AdminUserOut` deliberately has no email field). Fixed by redacting any
+  email-shaped substring server-side (`services/admin.py::
+  _redact_identifier`) before it ever leaves the response — scope and IP
+  stay visible for abuse-correlation, the email itself never does.
+  Andreas's explicit call on the tradeoff: redact rather than hash the
+  whole identifier or drop it, keeping IP-level correlation intact.

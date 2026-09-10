@@ -34,8 +34,12 @@ const { data, error } = await api.GET("/api/v1/admin/traffic", {
 // #250: two new, non-critical sections — no `error` destructured for
 // either, matching this page's existing tolerant style (an empty/missing
 // result renders its own empty-state below, not a page-level error).
+// #250 review finding: the section below is titled "Last 24 hours" — fetch
+// exactly 24 rows to match, not 48 (which produced two different days'
+// worth of hours rendered with only a bare HH:MM label, so e.g. yesterday's
+// and today's 14:00 rows were visually indistinguishable).
 const { data: hourlyData } = await api.GET("/api/v1/admin/traffic/hourly", {
-  params: { query: { limit: 48 } },
+  params: { query: { limit: 24 } },
   headers: { cookie },
 });
 const hourlyRollups = hourlyData?.items ?? [];
@@ -89,10 +93,18 @@ function formatTimestamp(iso: string): string {
       }) + " UTC";
 }
 
+// #250 review finding: an empty bot_breakdown means "no data recorded"
+// (a pre-#250 rollup, or the classifier genuinely finding nothing to
+// report) — NOT "0% known bots", which would render a confident, false
+// number precisely on the days this feature can't actually say anything.
+// hasBotData distinguishes the two so the stat card can show "—" instead.
 const latestBotBreakdown = latest?.bot_breakdown ?? [];
+const hasBotData = latestBotBreakdown.length > 0;
 const knownBotCount = latestBotBreakdown.find((b) => b.category === "known_bot")?.count ?? 0;
 const botSharePercent =
-  latest && latest.total_requests > 0 ? Math.round((knownBotCount / latest.total_requests) * 100) : 0;
+  hasBotData && latest && latest.total_requests > 0
+    ? Math.round((knownBotCount / latest.total_requests) * 100)
+    : null;
 ---
 
 <AdminLayout title="Traffic analytics — AniFillerPedia" activeTab="traffic">
@@ -135,7 +147,7 @@ const botSharePercent =
           </div>
           <div class="stat-card">
             <span class="stat-label">Known bots</span>
-            <span class="stat-value">{botSharePercent}%</span>
+            <span class="stat-value">{botSharePercent === null ? "—" : `${botSharePercent}%`}</span>
           </div>
         </div>
 
@@ -346,7 +358,13 @@ const botSharePercent =
           The rate-limit activity panel is sourced from <code>rate_limit_events</code>, a
           table that already existed for enforcing this app's own rate limits (login,
           signup, AniList lookups, and others) — this page just gives it a view, it isn't
-          a new data collection.
+          a new data collection. The identifier shown is not always anonymous: some scopes
+          (the local-login rate limit specifically) key on <code>email:ip</code>, so this
+          panel can display a real email address — including one entered in a failed or
+          probing login attempt, whether or not that account exists. Any email substring
+          is redacted server-side (replaced with <code>***</code>) before it reaches this
+          page or this endpoint's response at all; the IP portion and scope stay visible so
+          a repeat offender is still identifiable.
         </p>
 
         <h3>Real shortcomings</h3>

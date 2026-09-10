@@ -260,12 +260,12 @@ git commit -m "Add classify_bot() and bot_breakdown to aggregate_rollup() (#251)
 ## Task 3: Repository layer — extended daily upsert, hourly rollup CRUD, pruning
 
 **Files:**
-- Modify: `backend/repositories/traffic_analytics.py`
+- Modify: `backend/repositories/traffic_analytics.py`, `backend/services/traffic_analytics.py` (Step 4's one-line caller fix)
 - Test: `backend/tests/test_traffic_analytics.py`
 
 **Interfaces:**
 - Consumes: Task 1's `traffic_hourly_rollups` table; Task 2's `bot_breakdown` shape.
-- Produces: `upsert_daily_rollup(..., bot_breakdown: list[dict])` (extended signature — **breaking** for any caller not updated; Task 4 updates the one real caller, `run_daily_traffic_rollup`); `upsert_hourly_rollup(session, *, rollup_hour: datetime, total_requests: int, top_paths: list[dict], status_breakdown: list[dict], top_countries: list[dict], bot_breakdown: list[dict]) -> None`; `list_hourly_rollups(session, limit: int = 48) -> list[Row]`; `prune_hourly_rollups_older_than(session, cutoff: datetime) -> None` — consumed by Task 4 and Task 6.
+- Produces: `upsert_daily_rollup(..., bot_breakdown: list[dict])` (extended signature — this task also fixes its one real caller, `run_daily_traffic_rollup`, in the same commit, per Step 4 below); `upsert_hourly_rollup(session, *, rollup_hour: datetime, total_requests: int, top_paths: list[dict], status_breakdown: list[dict], top_countries: list[dict], bot_breakdown: list[dict]) -> None`; `list_hourly_rollups(session, limit: int = 48) -> list[Row]`; `prune_hourly_rollups_older_than(session, cutoff: datetime) -> None` — consumed by Task 4 and Task 6. Note: the API response (`TrafficRollupOut`) does not surface `bot_breakdown` until Task 6 — this task's own direct-`upsert_daily_rollup`-call test fix only needs to pass the new required arg, not assert on it via the HTTP response; Task 6's `test_traffic_endpoint_includes_bot_breakdown` owns that assertion.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -465,15 +465,46 @@ async def prune_hourly_rollups_older_than(session: AsyncSession, cutoff) -> None
     )
 ```
 
-- [ ] **Step 4: Run to verify they pass**
+- [ ] **Step 4: Fix the one broken production call site**
+
+This task's `upsert_daily_rollup` signature change (new required `bot_breakdown` param)
+breaks its one existing production caller. Fix it in the same task that broke it, so this
+task leaves the suite fully green rather than handing a known failure to the next task.
+
+In `backend/services/traffic_analytics.py`'s `run_daily_traffic_rollup()`, change:
+```python
+            await upsert_daily_rollup(
+                session,
+                rollup_date=until.date(),
+                total_requests=rollup["total_requests"],
+                top_paths=rollup["top_paths"],
+                status_breakdown=rollup["status_breakdown"],
+                top_countries=rollup["top_countries"],
+            )
+```
+to add `bot_breakdown=rollup["bot_breakdown"],` after `top_countries=rollup["top_countries"],`.
+(`rollup["bot_breakdown"]` already exists — Task 2 added it to `aggregate_rollup()`'s return.)
+
+Also fix `test_traffic_endpoint_returns_persisted_rollups` in
+`backend/tests/test_traffic_analytics.py` — its own direct `upsert_daily_rollup(...)` call
+breaks the same way. Add `bot_breakdown=[{"category": "known_bot", "count": 42}],` to that
+call only. Do **not** add an assertion on `row["bot_breakdown"]` in this test — the
+`GET /admin/traffic` response schema (`TrafficRollupOut`) doesn't surface that field until
+Task 6, so asserting on it here would fail for a reason outside this task's scope. Task 6's
+`test_traffic_endpoint_includes_bot_breakdown` already owns that HTTP-response-level
+assertion once the schema exposes it — this task only needs the repository call itself to
+compile and run.
+
+- [ ] **Step 5: Run to verify everything passes**
 
 Run: `cd backend && .venv/bin/python -m pytest tests/test_traffic_analytics.py -v`
-Expected: all pass. (This will also currently fail on the pre-existing `test_run_daily_traffic_rollup_*` tests and `test_traffic_endpoint_returns_persisted_rollups`, since `run_daily_traffic_rollup` and that test's own direct `upsert_daily_rollup` call don't pass `bot_breakdown` yet — Task 4 fixes the runner; fix `test_traffic_endpoint_returns_persisted_rollups`'s direct call in *this* task since it's this task's signature change that broke it: add `bot_breakdown=[{"country": ...}]`-shaped arg, i.e. `bot_breakdown=[{"category": "known_bot", "count": 42}]`, to that test's `upsert_daily_rollup(...)` call, and add `assert row["bot_breakdown"][0]["category"] == "known_bot"` to its assertions.)
+Expected: all pass — the whole file, including every pre-existing test, with no known
+failures left over for the next task.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add backend/repositories/traffic_analytics.py backend/tests/test_traffic_analytics.py
+git add backend/repositories/traffic_analytics.py backend/services/traffic_analytics.py backend/tests/test_traffic_analytics.py
 git commit -m "Extend upsert_daily_rollup for bot_breakdown; add hourly rollup repository functions (#251)"
 ```
 
@@ -564,9 +595,8 @@ Expected: `ImportError: cannot import name 'run_hourly_traffic_rollup'`.
     traffic_hourly_rollup_retention_days: int = 7
 ```
 
-`backend/services/traffic_analytics.py` — first, update `run_daily_traffic_rollup()`'s
-`upsert_daily_rollup(...)` call to pass `bot_breakdown=rollup["bot_breakdown"],` (Task 3 broke
-this call; this task fixes it). Then add:
+`backend/services/traffic_analytics.py` — add (Task 3 already fixed `run_daily_traffic_
+rollup()`'s call site, so this task only adds new code, nothing to reconcile there):
 
 ```python
 _logged_missing_hourly_token = False

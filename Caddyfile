@@ -181,7 +181,3 @@ anifillerpedia.wiki {
 anifillerpedia.org, animefillerpedia.org {
 	redir https://anifillerpedia.wiki{uri} permanent
 }
-
-# #226 real-world verification: comment-only, zero functional effect —
-# confirms the auto-recreate step (sync-droplet-checkout.yml) actually
-# picks up a Caddyfile change with no manual step. Safe to remove later.

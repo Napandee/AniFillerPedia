@@ -34,7 +34,11 @@ import httpx
 
 from core.config import get_settings
 from core.db import async_session_factory
-from repositories.traffic_analytics import upsert_daily_rollup
+from repositories.traffic_analytics import (
+    prune_hourly_rollups_older_than,
+    upsert_daily_rollup,
+    upsert_hourly_rollup,
+)
 
 logger = logging.getLogger("traffic_analytics")
 
@@ -300,3 +304,70 @@ async def run_traffic_rollup_forever() -> None:
         except Exception:
             logger.exception("error during traffic rollup cycle — continuing")
         await asyncio.sleep(settings.traffic_rollup_interval_seconds)
+
+
+_logged_missing_hourly_token = False
+
+
+async def run_hourly_traffic_rollup() -> bool:
+    """Same shape as run_daily_traffic_rollup, but a 1h window and its
+    own retention pruning — see this file's module docstring / the design
+    spec for why hourly gets a short retention while daily doesn't.
+    """
+    global _logged_missing_hourly_token
+    settings = get_settings()
+
+    if not settings.cloudflare_analytics_api_token:
+        if not _logged_missing_hourly_token:
+            logger.warning(
+                "CLOUDFLARE_ANALYTICS_API_TOKEN not set — hourly traffic rollup skipped "
+                "(structurally ready, not live-configured yet; this message logs once)"
+            )
+            _logged_missing_hourly_token = True
+        return False
+
+    until = datetime.now(timezone.utc)
+    since = until - timedelta(hours=1)
+
+    groups = await _fetch_traffic_groups(
+        token=settings.cloudflare_analytics_api_token,
+        zone_id=settings.cloudflare_zone_id,
+        since=since,
+        until=until,
+    )
+    if groups is None:
+        return False
+
+    rollup = aggregate_rollup(groups)
+    rollup_hour = until.replace(minute=0, second=0, microsecond=0)
+    cutoff = until - timedelta(days=settings.traffic_hourly_rollup_retention_days)
+
+    async with async_session_factory() as session:
+        async with session.begin():
+            await upsert_hourly_rollup(
+                session,
+                rollup_hour=rollup_hour,
+                total_requests=rollup["total_requests"],
+                top_paths=rollup["top_paths"],
+                status_breakdown=rollup["status_breakdown"],
+                top_countries=rollup["top_countries"],
+                bot_breakdown=rollup["bot_breakdown"],
+            )
+            await prune_hourly_rollups_older_than(session, cutoff=cutoff)
+    return True
+
+
+async def run_hourly_traffic_rollup_forever() -> None:
+    settings = get_settings()
+    logger.info(
+        "hourly traffic rollup starting: interval=%ss",
+        settings.traffic_hourly_rollup_interval_seconds,
+    )
+    while True:
+        try:
+            persisted = await run_hourly_traffic_rollup()
+            if persisted:
+                logger.info("persisted hourly traffic rollup")
+        except Exception:
+            logger.exception("error during hourly traffic rollup cycle — continuing")
+        await asyncio.sleep(settings.traffic_hourly_rollup_interval_seconds)

@@ -109,6 +109,13 @@ class Settings(BaseSettings):
     # tight poll loop.
     traffic_rollup_interval_seconds: int = 60 * 60 * 24
 
+    # #250/#251: hourly rollup runs far more often than the daily one, so
+    # it gets its own short retention window (pruned every cycle by
+    # run_hourly_traffic_rollup) rather than accumulating forever the way
+    # the daily table does.
+    traffic_hourly_rollup_interval_seconds: int = 60 * 60
+    traffic_hourly_rollup_retention_days: int = 7
+
 
 _INSECURE_DEFAULT_SESSION_SECRET_KEY = "dev-insecure-change-me"
 

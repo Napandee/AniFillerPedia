@@ -39,6 +39,7 @@ from services.traffic_analytics import (
     aggregate_rollup,
     classify_bot,
     run_daily_traffic_rollup,
+    run_hourly_traffic_rollup,
 )
 
 TEST_PREFIX = "__test_221__"
@@ -524,6 +525,62 @@ async def test_run_daily_traffic_rollup_handles_http_failure_gracefully(
 
     persisted = await run_daily_traffic_rollup()
     assert persisted is False
+
+
+# --- run_hourly_traffic_rollup: no-op-without-token + mocked-HTTP+real-DB,
+# plus its own retention pruning -------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_run_hourly_traffic_rollup_noops_without_token(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    monkeypatch.delenv("CLOUDFLARE_ANALYTICS_API_TOKEN", raising=False)
+    get_settings.cache_clear()
+    with caplog.at_level("WARNING", logger="traffic_analytics"):
+        persisted = await run_hourly_traffic_rollup()
+    assert persisted is False
+
+
+@pytest.mark.asyncio
+async def test_run_hourly_traffic_rollup_persists_and_prunes_old_rows(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("CLOUDFLARE_ANALYTICS_API_TOKEN", "test-token-not-real")
+    get_settings.cache_clear()
+
+    mocked_body = {
+        "data": {"viewer": {"zones": [{"httpRequestsAdaptiveGroups": [
+            _group_with_ua("/login", 307, "US", "compatible; Googlebot/2.1", 7),
+        ]}]}}
+    }
+    real_async_client = httpx.AsyncClient
+    monkeypatch.setattr(
+        traffic_analytics.httpx, "AsyncClient",
+        lambda *a, **k: real_async_client(
+            transport=httpx.MockTransport(lambda r: httpx.Response(200, json=mocked_body))
+        ),
+    )
+
+    # A stale row this cycle's prune step must remove.
+    old_hour = datetime(2000, 1, 1, tzinfo=timezone.utc)
+    async with async_session_factory() as session:
+        async with session.begin():
+            await upsert_hourly_rollup(
+                session, rollup_hour=old_hour, total_requests=1,
+                top_paths=[], status_breakdown=[], top_countries=[], bot_breakdown=[],
+            )
+
+    persisted = await run_hourly_traffic_rollup()
+    assert persisted is True
+
+    async with async_session_factory() as session:
+        rows = await list_hourly_rollups(session, limit=100)
+    assert not any(r.rollup_hour == old_hour for r in rows), "stale row should have been pruned"
+    latest = max(rows, key=lambda r: r.rollup_hour)
+    assert latest.total_requests == 7
+    assert latest.bot_breakdown == [{"category": "known_bot", "count": 7}]
+    await _cleanup_hourly_rollup(latest.rollup_hour)
 
 
 # --- GET /admin/traffic: role-gating + real persisted-data rendering ------

@@ -58,6 +58,7 @@ query TrafficRollup($zoneTag: String!, $since: Time!, $until: Time!, $limit: Int
           clientRequestHTTPMethodName
           edgeResponseStatus
           clientCountryName
+          userAgent
         }
       }
     }
@@ -74,6 +75,28 @@ _QUERY_LIMIT = 5000
 
 _TOP_N_PATHS = 15
 _TOP_N_COUNTRIES = 10
+
+# Case-insensitive substring match against a maintained set of known
+# crawler/bot User-Agent tokens. Deliberately binary and honestly named:
+# "known_bot" is a positive match against this list, "other" means
+# "didn't match anything on this list" — never a claim that "other"
+# traffic is confirmed human. Extend this tuple as new crawlers show up
+# in real traffic (see docs/decisions.md's traffic-dashboard entry for
+# the investigation that produced the initial list).
+_KNOWN_BOT_TOKENS = (
+    "meta-externalagent", "facebookexternalhit", "googlebot", "bingbot",
+    "gptbot", "chatgpt-user", "oai-searchbot", "amazonbot", "semrushbot",
+    "ahrefsbot", "yandexbot", "duckduckbot", "applebot", "petalbot",
+    "mj12bot", "dotbot", "bytespider", "claudebot", "anthropic-ai",
+    "ccbot", "ia_archiver",
+)
+
+
+def classify_bot(user_agent: str | None) -> str:
+    if not user_agent:
+        return "other"
+    lowered = user_agent.lower()
+    return "known_bot" if any(token in lowered for token in _KNOWN_BOT_TOKENS) else "other"
 
 # #221's own acceptance criteria: log the missing-token skip once, not
 # every cycle. With a daily interval this would barely matter (one line a
@@ -111,6 +134,7 @@ def aggregate_rollup(
     path_counts: dict[str, int] = {}
     status_counts: dict[int, int] = {}
     country_counts: dict[str, int] = {}
+    bot_counts: dict[str, int] = {}
 
     for group in groups:
         count = group.get("count") or 0
@@ -128,6 +152,9 @@ def aggregate_rollup(
         country = dimensions.get("clientCountryName")
         if country:
             country_counts[country] = country_counts.get(country, 0) + count
+
+        category = classify_bot(dimensions.get("userAgent"))
+        bot_counts[category] = bot_counts.get(category, 0) + count
 
     top_paths = [
         {"path": path, "path_kind": _classify_path_kind(path), "count": count}
@@ -148,12 +175,17 @@ def aggregate_rollup(
             :top_n_countries
         ]
     ]
+    bot_breakdown = [
+        {"category": category, "count": count}
+        for category, count in sorted(bot_counts.items(), key=lambda kv: kv[1], reverse=True)
+    ]
 
     return {
         "total_requests": total_requests,
         "top_paths": top_paths,
         "status_breakdown": status_breakdown,
         "top_countries": top_countries,
+        "bot_breakdown": bot_breakdown,
     }
 
 

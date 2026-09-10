@@ -31,6 +31,7 @@ from repositories.traffic_analytics import list_daily_rollups
 from services.traffic_analytics import (
     _classify_path_kind,
     aggregate_rollup,
+    classify_bot,
     run_daily_traffic_rollup,
 )
 
@@ -174,13 +175,76 @@ def test_aggregate_rollup_truncates_to_top_n() -> None:
     assert len(result["top_countries"]) == 1
 
 
-def test_aggregate_rollup_empty_groups() -> None:
+def test_classify_bot_known_crawlers() -> None:
+    assert classify_bot(
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/145.0.0.0 Safari/537.36 (compatible; meta-externalagent/1.1 "
+        "(+https://developers.facebook.com/docs/sharing/webmasters/crawler))"
+    ) == "known_bot"
+    assert classify_bot(
+        "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/151.0.7922.173 Mobile Safari/537.36 "
+        "(compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    ) == "known_bot"
+    assert classify_bot("Mozilla/5.0 AppleWebKit/537.36 (compatible; GPTBot/1.4)") == "known_bot"
+
+
+def test_classify_bot_is_case_insensitive() -> None:
+    assert classify_bot("compatible; GOOGLEBOT/2.1") == "known_bot"
+
+
+def test_classify_bot_real_browser_is_other() -> None:
+    assert classify_bot(
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/128.0.0.0 Safari/537.36"
+    ) == "other"
+
+
+def test_classify_bot_missing_is_other() -> None:
+    assert classify_bot(None) == "other"
+    assert classify_bot("") == "other"
+
+
+def _group_with_ua(path: str, status: int, country: str, user_agent: str, count: int) -> dict:
+    return {
+        "count": count,
+        "dimensions": {
+            "clientRequestPath": path,
+            "clientRequestHTTPMethodName": "GET",
+            "edgeResponseStatus": status,
+            "clientCountryName": country,
+            "userAgent": user_agent,
+        },
+    }
+
+
+def test_aggregate_rollup_bot_breakdown_splits_and_sums() -> None:
+    groups = [
+        _group_with_ua("/login", 307, "US", "compatible; Googlebot/2.1", 10),
+        _group_with_ua("/login", 200, "GB", "compatible; meta-externalagent/1.1", 5),
+        _group_with_ua("/", 200, "US", "Mozilla/5.0 (Windows NT 10.0) Chrome/128.0.0.0", 3),
+    ]
+    result = aggregate_rollup(groups)
+    bots = {b["category"]: b["count"] for b in result["bot_breakdown"]}
+    assert bots == {"known_bot": 15, "other": 3}
+
+
+def test_aggregate_rollup_bot_breakdown_omits_zero_categories() -> None:
+    """Same convention as status_breakdown/top_countries: only categories
+    that actually appeared are emitted, never a padded zero entry."""
+    groups = [_group_with_ua("/", 200, "US", "compatible; Googlebot/2.1", 7)]
+    result = aggregate_rollup(groups)
+    assert result["bot_breakdown"] == [{"category": "known_bot", "count": 7}]
+
+
+def test_aggregate_rollup_empty_groups_includes_bot_breakdown() -> None:
     result = aggregate_rollup([])
     assert result == {
         "total_requests": 0,
         "top_paths": [],
         "status_breakdown": [],
         "top_countries": [],
+        "bot_breakdown": [],
     }
 
 

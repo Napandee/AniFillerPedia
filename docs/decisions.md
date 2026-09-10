@@ -372,9 +372,9 @@ mirrors the backend's `pr-validate.yml`). #32–#41 build on this shell next.
   `POST /auth/local/login` endpoint saw 3 hits in 9 days). Bot
   classification is a maintained `userAgent` token list applied to the
   same Cloudflare-sourced aggregate this page already used — **not**
-  Cloudflare Bot Management, confirmed live via a direct GraphQL query
-  against this zone that this plan does not have access to the
-  `botScore` dimension. Hourly rollups are a second table
+  Cloudflare Bot Management: a direct GraphQL query against this zone
+  confirmed live that this project's Cloudflare plan does not have
+  access to the `botScore` dimension. Hourly rollups are a second table
   (`traffic_hourly_rollups`) with a 7-day retention window (pruned every
   cycle) rather than the daily table's unlimited history — different
   purpose, recent-detail investigation vs. long-term trend, so a

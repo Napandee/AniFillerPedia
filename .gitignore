@@ -35,5 +35,10 @@ CLAUDE.local.md
 # Working scratch files -- never publish.
 .claude/scratch/
 
+# #226: droplet-side marker tracking the last Caddyfile hash the deploy
+# pipeline actually recreated afp-caddy for (sync-droplet-checkout.yml).
+# Operational state, not a source file -- never meant to be tracked.
+.caddyfile-deployed.sha256
+
 # Data / volumes a compose file might create locally
 *-data/

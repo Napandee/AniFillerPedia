@@ -11,6 +11,7 @@ from schemas.admin import (
     RoleUpdateOut,
     SuspensionUpdateIn,
     SuspensionUpdateOut,
+    TrafficHourlyRollupListOut,
     TrafficRollupListOut,
     VoteClusteringReportOut,
 )
@@ -170,6 +171,17 @@ async def traffic_rollups(
     "no data yet" state for this, not an error.
     """
     return await admin_service.list_traffic_rollups(session, limit)
+
+
+@router.get("/admin/traffic/hourly", response_model=TrafficHourlyRollupListOut, responses=_ADMIN_ONLY)
+async def traffic_hourly_rollups(
+    limit: int = Query(default=48, ge=1, le=168),
+    current_user=Depends(require_admin),  # noqa: ANN001 - Row, admin-only
+    session: AsyncSession = Depends(get_session),
+) -> TrafficHourlyRollupListOut:
+    """#250: hourly counterpart to GET /admin/traffic — 7-day retention,
+    for recent-spike investigation rather than long-term trend."""
+    return await admin_service.list_hourly_traffic_rollups(session, limit)
 
 
 @router.get("/admin/rate-limit-summary", response_model=RateLimitSummaryOut, responses=_ADMIN_ONLY)

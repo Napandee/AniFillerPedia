@@ -29,7 +29,10 @@ from schemas.admin import (
     RateLimitEventSummaryEntryOut,
     RateLimitSummaryOut,
     SuspensionUpdateOut,
+    TrafficBotEntryOut,
     TrafficCountryEntryOut,
+    TrafficHourlyRollupListOut,
+    TrafficHourlyRollupOut,
     TrafficPathEntryOut,
     TrafficRollupListOut,
     TrafficRollupOut,
@@ -187,11 +190,31 @@ async def list_traffic_rollups(session, limit: int) -> TrafficRollupListOut:
             top_paths=[TrafficPathEntryOut(**entry) for entry in row.top_paths],
             status_breakdown=[TrafficStatusEntryOut(**entry) for entry in row.status_breakdown],
             top_countries=[TrafficCountryEntryOut(**entry) for entry in row.top_countries],
+            bot_breakdown=[TrafficBotEntryOut(**entry) for entry in row.bot_breakdown],
             created_at=row.created_at.isoformat(),
         )
         for row in rows
     ]
     return TrafficRollupListOut(items=items)
+
+
+async def list_hourly_traffic_rollups(session, limit: int) -> TrafficHourlyRollupListOut:
+    """#250: the hourly counterpart to list_traffic_rollups above — same
+    mapping shape, 7-day-retention table instead of unlimited-history."""
+    rows = await traffic_repo.list_hourly_rollups(session, limit)
+    items = [
+        TrafficHourlyRollupOut(
+            rollup_hour=row.rollup_hour.isoformat(),
+            total_requests=row.total_requests,
+            top_paths=[TrafficPathEntryOut(**entry) for entry in row.top_paths],
+            status_breakdown=[TrafficStatusEntryOut(**entry) for entry in row.status_breakdown],
+            top_countries=[TrafficCountryEntryOut(**entry) for entry in row.top_countries],
+            bot_breakdown=[TrafficBotEntryOut(**entry) for entry in row.bot_breakdown],
+            created_at=row.created_at.isoformat(),
+        )
+        for row in rows
+    ]
+    return TrafficHourlyRollupListOut(items=items)
 
 
 async def get_rate_limit_summary(session, *, window_hours: int, limit: int) -> RateLimitSummaryOut:

@@ -100,6 +100,13 @@ class TrafficCountryEntryOut(BaseModel):
     count: int
 
 
+class TrafficBotEntryOut(BaseModel):
+    category: str = Field(
+        description="'known_bot' or 'other' — a heuristic User-Agent classification, not a certainty claim"
+    )
+    count: int
+
+
 class TrafficRollupOut(BaseModel):
     """#221: one day's persisted Cloudflare traffic rollup."""
 
@@ -108,11 +115,29 @@ class TrafficRollupOut(BaseModel):
     top_paths: list[TrafficPathEntryOut]
     status_breakdown: list[TrafficStatusEntryOut]
     top_countries: list[TrafficCountryEntryOut]
+    bot_breakdown: list[TrafficBotEntryOut]
     created_at: str
 
 
 class TrafficRollupListOut(BaseModel):
     items: list[TrafficRollupOut]
+
+
+class TrafficHourlyRollupOut(BaseModel):
+    """#250: the hourly counterpart to TrafficRollupOut above — 7-day
+    retention instead of unlimited history, keyed by rollup_hour."""
+
+    rollup_hour: str
+    total_requests: int
+    top_paths: list[TrafficPathEntryOut]
+    status_breakdown: list[TrafficStatusEntryOut]
+    top_countries: list[TrafficCountryEntryOut]
+    bot_breakdown: list[TrafficBotEntryOut]
+    created_at: str
+
+
+class TrafficHourlyRollupListOut(BaseModel):
+    items: list[TrafficHourlyRollupOut]
 
 
 class RateLimitEventSummaryEntryOut(BaseModel):

@@ -672,3 +672,91 @@ async def test_traffic_endpoint_empty_state() -> None:
         assert response.json()["items"] == []
     finally:
         await _cleanup_user(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_traffic_endpoint_includes_bot_breakdown() -> None:
+    admin_id = await _create_user("admin")
+    rollup_date = date.today() - timedelta(days=3)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_daily_rollup(
+                    session, rollup_date=rollup_date, total_requests=5,
+                    top_paths=[{"path": "/", "path_kind": "frontend", "count": 5}],
+                    status_breakdown=[{"status": 200, "count": 5}],
+                    top_countries=[{"country": "US", "count": 5}],
+                    bot_breakdown=[{"category": "known_bot", "count": 5}],
+                )
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic")
+        body = response.json()
+        row = next(r for r in body["items"] if r["rollup_date"] == rollup_date.isoformat())
+        assert row["bot_breakdown"] == [{"category": "known_bot", "count": 5}]
+    finally:
+        await _cleanup_rollup(rollup_date)
+        await _cleanup_user(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_hourly_traffic_endpoint_requires_admin() -> None:
+    contributor_id = await _create_user("contributor")
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(contributor_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic/hourly")
+        assert response.status_code == 403
+    finally:
+        await _cleanup_user(contributor_id)
+
+
+@pytest.mark.asyncio
+async def test_hourly_traffic_endpoint_returns_persisted_rollups() -> None:
+    admin_id = await _create_user("admin")
+    rollup_hour = datetime(2026, 9, 10, 9, 0, tzinfo=timezone.utc)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await upsert_hourly_rollup(
+                    session, rollup_hour=rollup_hour, total_requests=3,
+                    top_paths=[{"path": "/", "path_kind": "frontend", "count": 3}],
+                    status_breakdown=[{"status": 200, "count": 3}],
+                    top_countries=[{"country": "US", "count": 3}],
+                    bot_breakdown=[{"category": "other", "count": 3}],
+                )
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic/hourly")
+        assert response.status_code == 200
+        body = response.json()
+        row = next(r for r in body["items"] if r["rollup_hour"] == rollup_hour.isoformat())
+        assert row["total_requests"] == 3
+        assert row["bot_breakdown"] == [{"category": "other", "count": 3}]
+    finally:
+        await _cleanup_hourly_rollup(rollup_hour)
+        await _cleanup_user(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_hourly_traffic_endpoint_empty_state() -> None:
+    admin_id = await _create_user("owner")
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(text("DELETE FROM traffic_hourly_rollups"))
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/traffic/hourly")
+        assert response.status_code == 200
+        assert response.json()["items"] == []
+    finally:
+        await _cleanup_user(admin_id)

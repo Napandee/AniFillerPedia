@@ -29,3 +29,47 @@ jobs:
         run: |
           git fetch origin master
           git merge --ff-only origin/master
+
+      # #226: syncing Caddyfile to disk was never enough on its own — Caddy
+      # bind-mounts it as a single file (docker-compose.yml: `./Caddyfile:
+      # /etc/caddy/Caddyfile:ro`), and git's own file-replacement strategy
+      # (write a temp file, rename() over the original path) changes the
+      # underlying inode at that path. A single-file Docker bind mount
+      # doesn't dynamically re-resolve the path to the new inode, so the
+      # running container keeps reading the OLD content — `caddy reload`
+      # (issue #226's own first-guess fix) re-reads from that same stale
+      # mount and changes nothing. Confirmed directly (2026-09-04, this
+      # session): `docker exec afp-caddy grep ... Caddyfile` showed old
+      # content even after the host file had genuinely changed. The fix
+      # that actually works is recreating the container (--force-recreate),
+      # which re-establishes the bind mount against the current inode.
+      #
+      # Hash-marker-file design, not "did this workflow's own git merge just
+      # advance the checkout": this workflow runs on every push to master
+      # with no path filter, but build-app.yml/frontend-deploy.yml/
+      # mcp-deploy.yml each ALSO run their own identical fetch+merge on a
+      # backend/**, frontend/**, or mcp/** push — whichever workflow's job
+      # the single self-hosted runner happens to process first "consumes"
+      # the fast-forward, so a push touching both e.g. backend/** and
+      # Caddyfile in the same commit could let this workflow's own before/
+      # after HEAD comparison see "nothing to do" if the other workflow's
+      # merge already landed it first. Comparing the CURRENT on-disk
+      # Caddyfile's hash against a persisted marker of the last hash this
+      # step actually recreated Caddy for sidesteps that ordering race
+      # entirely — correct regardless of which workflow's merge actually
+      # advanced the checkout, and idempotent by construction (an unchanged
+      # Caddyfile always hashes the same, so a run that finds nothing new
+      # is a safe, cheap no-op — issue #226's own acceptance criterion).
+      - name: Recreate Caddy if Caddyfile changed
+        working-directory: ${{ vars.APPDATA_PATH }}
+        run: |
+          MARKER=".caddyfile-deployed.sha256"
+          CURRENT="$(sha256sum Caddyfile | awk '{print $1}')"
+          PREVIOUS="$(cat "$MARKER" 2>/dev/null || true)"
+          if [ "$CURRENT" != "$PREVIOUS" ]; then
+            echo "Caddyfile changed (or no marker yet) — recreating afp-caddy"
+            docker compose up -d --force-recreate --no-deps caddy
+            echo "$CURRENT" > "$MARKER"
+          else
+            echo "Caddyfile unchanged since the last recreate — skipping"
+          fi

@@ -300,3 +300,43 @@ async def test_owner_role_cannot_be_changed_by_anyone() -> None:
             assert row.role == "owner"  # unchanged
     finally:
         await _cleanup(owner_id, other_owner_target)
+
+
+@pytest.mark.asyncio
+async def test_rate_limit_summary_requires_admin() -> None:
+    contributor_id = await _create_user("contributor")
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(contributor_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/rate-limit-summary")
+        assert response.status_code == 403
+    finally:
+        await _cleanup(contributor_id)
+
+
+@pytest.mark.asyncio
+async def test_rate_limit_summary_returns_grouped_data() -> None:
+    admin_id = await _create_user("admin")
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("INSERT INTO rate_limit_events (scope, identifier) VALUES "
+                     "('local_login', '__test_250__ip:9.9.9.9'), "
+                     "('local_login', '__test_250__ip:9.9.9.9')")
+            )
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/rate-limit-summary")
+        assert response.status_code == 200
+        body = response.json()
+        assert body["window_hours"] == 24
+        entry = next(e for e in body["top_entries"] if e["identifier"] == "__test_250__ip:9.9.9.9")
+        assert entry["count"] == 2
+        assert entry["scope"] == "local_login"
+    finally:
+        await _cleanup(admin_id)

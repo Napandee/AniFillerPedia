@@ -6,6 +6,7 @@ from core.db import get_session
 from core.deps import require_admin, require_moderator
 from schemas.admin import (
     AdminUserListOut,
+    RateLimitSummaryOut,
     RoleUpdateIn,
     RoleUpdateOut,
     SuspensionUpdateIn,
@@ -169,3 +170,17 @@ async def traffic_rollups(
     "no data yet" state for this, not an error.
     """
     return await admin_service.list_traffic_rollups(session, limit)
+
+
+@router.get("/admin/rate-limit-summary", response_model=RateLimitSummaryOut, responses=_ADMIN_ONLY)
+async def rate_limit_summary(
+    window_hours: int = Query(default=24, ge=1, le=168),
+    limit: int = Query(default=25, ge=1, le=100),
+    current_user=Depends(require_admin),  # noqa: ANN001 - Row, admin-only
+    session: AsyncSession = Depends(get_session),
+) -> RateLimitSummaryOut:
+    """#250: per-(scope, identifier) rate-limit activity over the last
+    `window_hours` — the app's own already-collected rate-limit
+    bookkeeping (repositories/rate_limits.py), not a new data source.
+    """
+    return await admin_service.get_rate_limit_summary(session, window_hours=window_hours, limit=limit)

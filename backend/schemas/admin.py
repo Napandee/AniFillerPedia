@@ -113,3 +113,22 @@ class TrafficRollupOut(BaseModel):
 
 class TrafficRollupListOut(BaseModel):
     items: list[TrafficRollupOut]
+
+
+class RateLimitEventSummaryEntryOut(BaseModel):
+    scope: str
+    identifier: str
+    count: int
+    first_seen: str
+    last_seen: str
+
+
+class RateLimitSummaryOut(BaseModel):
+    """#250: the abuse-signal dashboard panel's response shape — reads
+    the already-existing rate_limit_events table, not a new data source.
+    """
+
+    window_hours: int
+    total_events: int
+    distinct_identifiers: int
+    top_entries: list[RateLimitEventSummaryEntryOut]

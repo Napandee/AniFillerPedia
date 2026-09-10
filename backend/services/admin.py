@@ -21,10 +21,13 @@ import fastapi
 
 from repositories import admin as admin_repo
 from repositories import outbox as outbox_repo
+from repositories import rate_limits as rate_limits_repo
 from repositories import traffic_analytics as traffic_repo
 from schemas.admin import (
     AdminUserListOut,
     AdminUserOut,
+    RateLimitEventSummaryEntryOut,
+    RateLimitSummaryOut,
     SuspensionUpdateOut,
     TrafficCountryEntryOut,
     TrafficPathEntryOut,
@@ -189,3 +192,26 @@ async def list_traffic_rollups(session, limit: int) -> TrafficRollupListOut:
         for row in rows
     ]
     return TrafficRollupListOut(items=items)
+
+
+async def get_rate_limit_summary(session, *, window_hours: int, limit: int) -> RateLimitSummaryOut:
+    """#250: the abuse-signal dashboard panel's data source — reads the
+    same rate_limit_events table every rate-limited endpoint already
+    writes to, not a new collection mechanism."""
+    rows = await rate_limits_repo.list_recent_grouped(session, window_hours=window_hours, limit=limit)
+    totals = await rate_limits_repo.count_recent_totals(session, window_hours=window_hours)
+    return RateLimitSummaryOut(
+        window_hours=window_hours,
+        total_events=totals.total_events,
+        distinct_identifiers=totals.distinct_identifiers,
+        top_entries=[
+            RateLimitEventSummaryEntryOut(
+                scope=row.scope,
+                identifier=row.identifier,
+                count=row.event_count,
+                first_seen=row.first_seen.isoformat(),
+                last_seen=row.last_seen.isoformat(),
+            )
+            for row in rows
+        ],
+    )

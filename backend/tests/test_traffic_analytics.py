@@ -50,13 +50,15 @@ def _clear_settings_cache_and_missing_token_flag(monkeypatch: pytest.MonkeyPatch
     """get_settings() is @lru_cache'd (same gotcha test_config.py already
     documents) — clear it around every test in this file so env changes
     made here don't leak into/out of other test files. Also resets the
-    module-level "already logged the missing-token warning once" flag,
-    since that's deliberately global, cross-cycle state (see the module's
-    own docstring on _logged_missing_token) that would otherwise make the
-    no-token test order-dependent.
+    module-level "already logged the missing-token warning once" flags
+    for both the daily and hourly rollup loops, since those are
+    deliberately global, cross-cycle state (see the module's own
+    docstring on _logged_missing_token / _logged_missing_hourly_token)
+    that would otherwise make the no-token tests order-dependent.
     """
     get_settings.cache_clear()
     monkeypatch.setattr(traffic_analytics, "_logged_missing_token", False)
+    monkeypatch.setattr(traffic_analytics, "_logged_missing_hourly_token", False)
     yield
     get_settings.cache_clear()
 

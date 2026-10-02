@@ -3,6 +3,8 @@ from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import repositories.admin as admin_repo
+import repositories.export as export_repo
+import repositories.rate_limits as rate_limits_repo
 import repositories.users as users_repo
 import services.contributions as contributions_service
 import services.series_proposals as series_proposals_service
@@ -106,12 +108,26 @@ async def delete_current_user(
     session: AsyncSession = Depends(get_session),
 ) -> None:
     """#29/#18: self-service account deletion, no admin approval gate.
-    Every FK referencing users is ON DELETE SET NULL (schema.sql) — past
-    contributions/votes/citations anonymize automatically, nothing else to
-    clean up here. NOT `async with session.begin():` — get_current_user's
+    Every FK referencing users is ON DELETE SET NULL or ON DELETE CASCADE
+    (schema.sql) — past contributions/votes/citations anonymize and
+    bulk_submission_events rows disappear automatically, nothing to clean
+    up there. NOT `async with session.begin():` — get_current_user's
     SELECT already autobegan a transaction on this session (the same fix
     noted throughout this codebase, e.g. routers/contributions.py).
+
+    #257 security-review finding: two tables have NO FK to `users` at
+    all, by design (both are free-text bookkeeping, not account data —
+    see their own schema.sql comments), so they silently outlived every
+    account deletion before this: rate_limit_events.identifier can embed
+    this account's id or email, and export_api_keys.email can hold the
+    same email from an unrelated, pre-#8 anonymous export request. Run
+    BEFORE the user row is deleted, since the email is only available via
+    current_user while the row still exists; same transaction as the
+    delete itself, so this is all-or-nothing.
     """
+    await rate_limits_repo.delete_for_user(session, user_id=current_user.id, email=current_user.email)
+    if current_user.email:
+        await export_repo.forget_by_email(session, current_user.email)
     await users_repo.delete_user(session, current_user.id)
     await session.commit()
     response.delete_cookie(SESSION_COOKIE_NAME, path="/")

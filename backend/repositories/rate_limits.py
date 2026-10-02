@@ -58,6 +58,44 @@ async def list_recent_grouped(
     return list(result.fetchall())
 
 
+async def delete_for_user(session: AsyncSession, *, user_id: int, email: str | None) -> int:
+    """#257 security-review finding: rate_limit_events.identifier can
+    embed a deleted account's identity in two different shapes — the
+    generic `user:<id>` form every authenticated-caller scope here uses
+    (get_rate_limit_identifier, core/deps.py), and `local_login`'s own
+    `login:<email>:<ip>` form (routers/auth.py builds that one directly,
+    since login happens before there's a current_user to key on).
+    DELETE /users/me never touched either, so a deleted account's rows —
+    including an email embedded verbatim in the login scope — outlived
+    the account forever. `identifier` has no FK to `users` (by design,
+    per schema.sql: this table is transient bookkeeping, not an audit
+    trail), so this is a plain text-match delete, not a cascade.
+    """
+    # Escaped so a literal '%' or '_' in the email can't widen the match
+    # beyond this exact address — this is a delete, not a read, so an
+    # unintended wildcard match would be a correctness bug, not just a
+    # privacy one.
+    escaped_email = email.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") if email else None
+    result = await session.execute(
+        text(
+            """
+            DELETE FROM rate_limit_events
+            WHERE identifier = :user_identifier
+               OR (
+                   CAST(:login_pattern AS TEXT) IS NOT NULL
+                   AND identifier LIKE CAST(:login_pattern AS TEXT) ESCAPE '\\'
+               )
+            RETURNING id
+            """
+        ),
+        {
+            "user_identifier": f"user:{user_id}",
+            "login_pattern": f"login:{escaped_email}:%" if escaped_email else None,
+        },
+    )
+    return len(result.fetchall())
+
+
 async def count_recent_totals(session: AsyncSession, *, window_hours: int):
     """Headline totals for the same window, independent of list_recent_
     grouped's LIMIT — so a summary sentence stays accurate even when the

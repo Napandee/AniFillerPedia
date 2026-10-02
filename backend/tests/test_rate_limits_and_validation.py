@@ -188,6 +188,58 @@ async def test_contribution_submit_rate_limit_blocks_anonymous_after_threshold()
 
 
 @pytest.mark.asyncio
+async def test_contribution_submit_failed_attempt_still_counts_against_rate_limit() -> None:
+    """#257 security-review finding: record() used to run only AFTER a
+    successful insert, so a deliberately-failing submission (404 here —
+    a bogus series_id) was free to retry forever. Seeds the counter one
+    below the limit, then sends ONE failing (404) request and ONE more —
+    if the failed request hadn't counted, the second would still be a
+    404 too; getting 429 instead proves the failed attempt was recorded.
+    """
+    await _seed_rate_limit_events("contribution_submit", ANONYMOUS_IDENTIFIER, 19)
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            failing_payload = {
+                "series_id": 999999999,
+                "episode_number": 1,
+                "proposed_status": "canon",
+                "citation": {"description": f"{TEST_PREFIX} citation"},
+                "license_accepted": True,
+            }
+            first = await client.post("/api/v1/contributions", json=failing_payload)
+            assert first.status_code == 404, first.text
+
+            second = await client.post("/api/v1/contributions", json=failing_payload)
+            assert second.status_code == 429, second.text
+    finally:
+        pass  # a 404/429 never creates a contribution row — nothing to clean up
+
+
+@pytest.mark.asyncio
+async def test_synonym_suggestion_submit_failed_attempt_still_counts_against_rate_limit() -> None:
+    """#257: same bug class as the contribution test above, for the
+    synonym-suggestion endpoint's independent counter.
+    """
+    await _seed_rate_limit_events("synonym_suggestion_submit", ANONYMOUS_IDENTIFIER, 19)
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            failing_payload = {
+                "series_id": 999999999,
+                "synonym": f"{TEST_PREFIX}synonym",
+                "license_accepted": True,
+            }
+            first = await client.post("/api/v1/synonym-suggestions", json=failing_payload)
+            assert first.status_code == 404, first.text
+
+            second = await client.post("/api/v1/synonym-suggestions", json=failing_payload)
+            assert second.status_code == 429, second.text
+    finally:
+        pass  # a 404/429 never creates a synonym-suggestion row — nothing to clean up
+
+
+@pytest.mark.asyncio
 async def test_contribution_submit_rate_limit_is_scoped_per_identifier() -> None:
     """An authenticated user hitting their OWN limit doesn't affect a
     different anonymous caller's budget, and vice versa — proves

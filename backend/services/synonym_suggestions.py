@@ -85,6 +85,11 @@ async def submit_synonym_suggestion(
             ),
         )
 
+    # #257: see services/contributions.py's identical comment —
+    # recorded via a separate, immediately-committed connection so a
+    # later 404/409/422 in this same function can't silently undo it.
+    await rate_limits_repo.record_independently(scope="synonym_suggestion_submit", identifier=identifier)
+
     series_row = await series_repo.get_series_by_identifier(session, str(payload.series_id))
     if series_row is None:
         raise HTTPException(status_code=404, detail="Series not found")
@@ -150,8 +155,6 @@ async def submit_synonym_suggestion(
         event_type="synonym_suggestion.submitted",
         payload={"synonym_suggestion_id": suggestion_row.id, "series_id": payload.series_id},
     )
-
-    await rate_limits_repo.record(session, scope="synonym_suggestion_submit", identifier=identifier)
 
     return SynonymSuggestionOut(
         id=suggestion_row.id,

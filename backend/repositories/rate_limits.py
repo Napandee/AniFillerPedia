@@ -12,6 +12,8 @@ caller.
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.db import async_session_factory
+
 
 async def count_recent(
     session: AsyncSession, *, scope: str, identifier: str, window_seconds: int
@@ -34,6 +36,31 @@ async def record(session: AsyncSession, *, scope: str, identifier: str) -> None:
         text("INSERT INTO rate_limit_events (scope, identifier) VALUES (:scope, :identifier)"),
         {"scope": scope, "identifier": identifier},
     )
+
+
+async def record_independently(*, scope: str, identifier: str) -> None:
+    """#257 security-review finding: contribution_submit and
+    synonym_suggestion_submit both only ever called record() AFTER their
+    guarded insert succeeded, inside the SAME transaction as everything
+    else in the request — so a failed submission (404 series-not-found,
+    409 duplicate-pending, 422 validation) never counted, and an attacker
+    could probe either endpoint with deliberately-failing payloads for
+    free. Unlike local_signup's own fix for this exact bug class
+    (routers/auth.py), these two endpoints have no clean place to split
+    a two-phase check+record block — their single caller-owned
+    transaction is autobegun by an auth dependency's SELECT before the
+    service function ever runs (see routers/contributions.py's own
+    comment on this). So instead: record the attempt in a BRAND NEW
+    session/connection/transaction, committed immediately, independent
+    of the caller's session entirely. If the caller's transaction later
+    rolls back (because the guarded work failed), this commit already
+    happened on a different connection and is unaffected — "every
+    attempt counts" without needing the caller's transaction boundaries
+    touched at all.
+    """
+    async with async_session_factory() as session:
+        async with session.begin():
+            await record(session, scope=scope, identifier=identifier)
 
 
 async def list_recent_grouped(

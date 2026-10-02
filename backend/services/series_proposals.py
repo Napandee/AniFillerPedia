@@ -33,12 +33,45 @@ from schemas.series_proposals import (
 # finding. Scope name for the anonymous-caller counter below.
 ANONYMOUS_EPISODE_DATA_RATE_LIMIT_SCOPE = "series_proposal_bulk_anonymous"
 
+# #257 security-review finding: the check above only ever ran inside the
+# `episode_data is not None` branch — a plain proposal (no episode data,
+# the common case) had ZERO rate-limit coverage of any kind, for either
+# anonymous or authenticated callers. This is a second, always-applied
+# limiter covering every submission regardless of episode_data. Tighter
+# than services/contributions.py's own CONTRIBUTION_SUBMIT_RATE_LIMIT
+# (20/hour) — a series proposal lands in the moderation queue as a new
+# entry needing its own review, not a correction to something that
+# already exists, so it warrants a stricter cap than a plain
+# contribution despite sharing the same hourly window shape.
+SERIES_PROPOSAL_SUBMIT_RATE_LIMIT = 10
+SERIES_PROPOSAL_SUBMIT_RATE_LIMIT_WINDOW_SECONDS = 60 * 60
+
 
 async def submit_series_proposal(
     session: AsyncSession, payload: SeriesProposalCreate, current_user: Row | None, identifier: str
 ) -> SeriesProposalOut:
     if not payload.license_accepted:
         raise HTTPException(status_code=422, detail="license_accepted must be true")
+
+    # #257: checked before any other work, unconditionally — unlike the
+    # episode_data-specific check further down, this always runs.
+    # `identifier` is the caller's user id when authenticated or their IP
+    # otherwise (core/deps.py's get_rate_limit_identifier), same keying
+    # convention as every other submit-style limiter in this codebase.
+    recent_submit_count = await rate_limits_repo.count_recent(
+        session,
+        scope="series_proposal_submit",
+        identifier=identifier,
+        window_seconds=SERIES_PROPOSAL_SUBMIT_RATE_LIMIT_WINDOW_SECONDS,
+    )
+    if recent_submit_count >= SERIES_PROPOSAL_SUBMIT_RATE_LIMIT:
+        raise HTTPException(
+            status_code=429,
+            detail=(
+                f"You've made {recent_submit_count} series-proposal submissions in the last "
+                f"hour (limit {SERIES_PROPOSAL_SUBMIT_RATE_LIMIT}). Try again later."
+            ),
+        )
 
     episode_data_dict: dict | None = None
     if payload.episode_data is not None:
@@ -120,6 +153,11 @@ async def submit_series_proposal(
             await rate_limits_repo.record(
                 session, scope=ANONYMOUS_EPISODE_DATA_RATE_LIMIT_SCOPE, identifier=identifier
             )
+
+    # #257: unconditional counterpart to the unconditional check above —
+    # every successful submission counts against the general scope,
+    # regardless of episode_data.
+    await rate_limits_repo.record(session, scope="series_proposal_submit", identifier=identifier)
 
     return await _row_to_out(session, row)
 

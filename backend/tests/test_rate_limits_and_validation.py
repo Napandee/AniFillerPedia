@@ -349,6 +349,49 @@ async def test_series_proposal_without_episode_data_is_never_rate_limited_by_bul
         await _cleanup_series_proposals(title)
 
 
+@pytest.mark.asyncio
+async def test_series_proposal_without_episode_data_is_rate_limited_by_its_own_general_scope() -> None:
+    """#257 security-review finding: a plain proposal (no episode_data)
+    previously had ZERO rate-limit coverage at all — the only limiter
+    checked (series_proposal_bulk_anonymous) lives entirely inside the
+    `episode_data is not None` branch. This proves the new, always-applied
+    general-submission scope actually blocks after its own cap, regardless
+    of episode_data being present or absent.
+    """
+    await _seed_rate_limit_events("series_proposal_submit", ANONYMOUS_IDENTIFIER, 10)
+    title = f"{TEST_PREFIX}GeneralLimitNoEpisodeData"
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/api/v1/series-proposals",
+                json={
+                    "title": title,
+                    "justification": f"{TEST_PREFIX} justification",
+                    "license_accepted": True,
+                },
+            )
+        assert response.status_code == 429, response.text
+    finally:
+        await _cleanup_series_proposals(title)
+
+
+@pytest.mark.asyncio
+async def test_series_proposal_title_over_max_length_rejected() -> None:
+    """#257: no cleanup needed — a 422 means nothing was ever created."""
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/series-proposals",
+            json={
+                "title": "x" * 301,
+                "justification": f"{TEST_PREFIX} justification",
+                "license_accepted": True,
+            },
+        )
+    assert response.status_code == 422, response.text
+
+
 # ---------------------------------------------------------------------
 # #140 — max_length on freeform text fields
 # ---------------------------------------------------------------------

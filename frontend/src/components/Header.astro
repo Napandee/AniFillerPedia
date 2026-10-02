@@ -15,9 +15,13 @@ const user = Astro.locals.user;
 // not the homepage. `startsWith("/")` and rejecting a leading "//" guards
 // against this becoming an open-redirect vector via a crafted query param
 // (an absolute or protocol-relative URL is never a legitimate same-site
-// "next").
+// "next"). #257 security-review finding: a leading "/\" (e.g. "/\evil.com")
+// passed this same check — some browsers normalize a backslash to a
+// forward slash in a URL, turning "/\evil.com" into the protocol-relative
+// "//evil.com" this guard otherwise exists to block. Rejected explicitly.
 const nextParam = Astro.url.searchParams.get("next");
-const isSafeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//");
+const isSafeNext =
+  nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//") && !nextParam.startsWith("/\\");
 const next = encodeURIComponent(isSafeNext ? nextParam : Astro.url.pathname);
 
 const locale = resolveLocale(Astro.currentLocale);

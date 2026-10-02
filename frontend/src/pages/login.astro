@@ -16,13 +16,20 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 
 // Same open-redirect guard as Header.astro's own `next` handling: only a
-// real same-site path (leading "/", not a protocol-relative "//") is
-// trusted, whether it feeds an OAuth authorize link or the client-side
-// post-login redirect in the script below. Falls back to "/" rather than
-// the current pathname (unlike Header.astro) — redirecting back to /login
+// real same-site path (leading "/", not a protocol-relative "//", and not
+// a leading "/\" — #257 security-review finding: some browsers normalize
+// a backslash to a forward slash in a URL, so "/\evil.com" would
+// otherwise resolve the same way "//evil.com" does) is trusted, whether
+// it feeds an OAuth authorize link or the client-side post-login
+// redirect in the script below. Falls back to "/" rather than the
+// current pathname (unlike Header.astro) — redirecting back to /login
 // itself after a successful login would be useless.
 const nextParam = Astro.url.searchParams.get("next");
-const isSafeNext = nextParam !== null && nextParam.startsWith("/") && !nextParam.startsWith("//");
+const isSafeNext =
+  nextParam !== null &&
+  nextParam.startsWith("/") &&
+  !nextParam.startsWith("//") &&
+  !nextParam.startsWith("/\\");
 const next = isSafeNext ? nextParam : "/";
 
 // Final-review fix (C1): deliberately a RELATIVE path, not

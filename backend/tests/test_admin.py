@@ -370,9 +370,47 @@ async def test_rate_limit_summary_redacts_embedded_email() -> None:
 
         body = response.json()
         entry = next(e for e in body["top_entries"] if e["scope"] == "local_login" and "***" in e["identifier"])
-        # The redaction regex's local-part match is greedy up to "@" (by
-        # design — safer to over-redact a test-prefix than under-redact a
-        # real email), so the test prefix is swallowed into the match too.
+        # #257: redaction now parses the known login:<email>:<ip> shape by
+        # its delimiters (the first ':' after the "login:" prefix) rather
+        # than pattern-matching an email-shaped substring, so the whole
+        # middle segment is masked regardless of its contents.
+        assert entry["identifier"] == "login:***:ip:9.9.9.9"
+    finally:
+        await _cleanup(admin_id)
+
+
+@pytest.mark.asyncio
+async def test_rate_limit_summary_redacts_email_with_rfc_valid_special_characters() -> None:
+    """#257 security-review finding: the previous regex-based redaction
+    (`[\\w.+-]+@[\\w-]+\\.[\\w.-]+`) only matched a subset of RFC 5322's
+    actual allowed local-part characters — an address like
+    `a!b#c$d@example.com` (all of !#$%&'*/=?^`{|}~ are valid dot-atom
+    local-part characters) would only have its `@example.com` half
+    masked, leaking `a!b#c$d` in the response. Parsing the known
+    login:<email>:<ip> structure by its ':' delimiters, rather than
+    pattern-matching an email shape, redacts the whole segment regardless
+    of what characters the local part contains.
+    """
+    admin_id = await _create_user("admin")
+    raw_identifier = "login:a!b#c$d%e&f'g*h@example.com:ip:9.9.9.9"
+    async with async_session_factory() as session:
+        async with session.begin():
+            await session.execute(
+                text("INSERT INTO rate_limit_events (scope, identifier) VALUES (:scope, :id)"),
+                {"scope": "local_login", "id": raw_identifier},
+            )
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(
+            transport=transport, base_url="http://test", cookies=_cookie(admin_id)
+        ) as client:
+            response = await client.get("/api/v1/admin/rate-limit-summary")
+        assert response.status_code == 200
+        raw_body = response.text
+        assert "a!b#c$d%e&f'g*h" not in raw_body
+
+        body = response.json()
+        entry = next(e for e in body["top_entries"] if e["scope"] == "local_login" and "***" in e["identifier"])
         assert entry["identifier"] == "login:***:ip:9.9.9.9"
     finally:
         await _cleanup(admin_id)

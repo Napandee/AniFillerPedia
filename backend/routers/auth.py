@@ -249,7 +249,11 @@ async def local_signup(
         try:
             async with session.begin_nested():
                 user = await signup_local_user(
-                    session, email=payload.email, password=payload.password, display_name=payload.display_name
+                    session,
+                    email=payload.email,
+                    password=payload.password,
+                    display_name=payload.display_name,
+                    bootstrap_token=payload.bootstrap_token,
                 )
         except EmailAlreadyRegistered as exc:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc

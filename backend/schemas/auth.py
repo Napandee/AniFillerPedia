@@ -47,6 +47,10 @@ class LocalSignupIn(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=200)
     display_name: str = Field(min_length=1, max_length=100)
+    # #257: only meaningful for the one-shot owner-bootstrap signup (see
+    # core/config.py's initial_admin_bootstrap_token) — every other
+    # signup ignores this field entirely.
+    bootstrap_token: str | None = Field(default=None, max_length=200)
 
 
 class LocalLoginIn(BaseModel):

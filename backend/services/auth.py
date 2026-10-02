@@ -111,26 +111,41 @@ def _verify_against_dummy_hash(password: str) -> None:
     verify_password(password, _dummy_password_hash_cache)
 
 
-async def _is_bootstrap_owner_email(session: AsyncSession, email: str) -> bool:
-    """Email-keyed counterpart to _is_bootstrap_owner, with one extra
-    guard the OAuth path doesn't need: a signup email is attacker-
-    controlled free text, whereas a GitHub provider_id is provider-
-    attested (you must actually control that account to present it). So
-    a bare string match is NOT sufficient here — whoever signs up first
-    with the configured address would otherwise mint themselves 'owner'.
-    Only fires while no owner row exists at all, making it a genuine
-    one-shot bootstrap rather than a standing privilege grant.
+async def _is_bootstrap_owner_email(
+    session: AsyncSession, email: str, bootstrap_token: str | None
+) -> bool:
+    """Email-keyed counterpart to _is_bootstrap_owner, with extra guards
+    the OAuth path doesn't need: a signup email is attacker-controlled
+    free text, whereas a GitHub provider_id is provider-attested (you
+    must actually control that account to present it).
+
+    #257 security-review fix: the "no owner exists yet" check alone used
+    to be the only gate, which meant whoever signed up first with the
+    configured address won 'owner' on any fresh database — and that
+    address is visible to anyone who can read this deployment's config,
+    so it's a guessable target, not a secret. Now ALSO requires a
+    separately-held, high-entropy bootstrap_token (set once via
+    initial_admin_bootstrap_token, supplied by the real operator at
+    signup time) to match exactly, via a constant-time comparison so a
+    wrong guess can't be timed. An attacker who only knows the email —
+    which is the entire realistic threat model here — can no longer win
+    owner. Still only fires while no owner row exists at all, making it
+    a genuine one-shot bootstrap rather than a standing privilege grant.
     """
     settings = get_settings()
-    if not settings.initial_admin_email:
+    if not settings.initial_admin_email or not settings.initial_admin_bootstrap_token:
         return False
     if email != normalize_email(settings.initial_admin_email):
+        return False
+    if not bootstrap_token or not secrets.compare_digest(
+        bootstrap_token, settings.initial_admin_bootstrap_token
+    ):
         return False
     return not await owner_exists(session)
 
 
 async def signup_local_user(
-    session: AsyncSession, *, email: str, password: str, display_name: str
+    session: AsyncSession, *, email: str, password: str, display_name: str, bootstrap_token: str | None = None
 ) -> Row:
     email = normalize_email(email)
     existing = await find_by_email_local(session, email)
@@ -140,7 +155,7 @@ async def signup_local_user(
     # 'owner', not 'admin' — same bootstrap-identity rule as the OAuth path
     # above (_is_bootstrap_owner), just keyed by email instead of a GitHub
     # provider_id, since a local account has no provider_id at all.
-    role = "owner" if await _is_bootstrap_owner_email(session, email) else "contributor"
+    role = "owner" if await _is_bootstrap_owner_email(session, email, bootstrap_token) else "contributor"
     # argon2 is deliberately slow (~50-100ms of real CPU); running it
     # inline would block the whole event loop for that long on every
     # signup, so it goes to a worker thread.

@@ -416,6 +416,75 @@ async def test_suspended_user_cannot_vote() -> None:
 
 
 @pytest.mark.asyncio
+async def test_delete_current_user_also_forgets_rate_limit_and_export_key_rows() -> None:
+    """#257 security-review finding: rate_limit_events.identifier and
+    export_api_keys.email have no FK to `users` (both are free-text
+    bookkeeping tables, by design), so DELETE /users/me never touched
+    either before this — a deleted account's PII (its id embedded as
+    "user:<id>", and its email embedded both in a "login:<email>:<ip>"
+    rate-limit identifier and verbatim in export_api_keys) outlived the
+    account forever. Proves all three are gone/anonymized after deletion.
+    """
+    email = f"{TEST_PREFIX}-gdpr-delete-{uuid.uuid4().hex[:8]}@example.com"
+    user_id = await _make_user(email=email)
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("INSERT INTO rate_limit_events (scope, identifier) VALUES "
+                         "('contribution_submit', :user_identifier), "
+                         "('local_login', :login_identifier)"),
+                    {"user_identifier": f"user:{user_id}", "login_identifier": f"login:{email}:ip:1.2.3.4"},
+                )
+                await session.execute(
+                    text(
+                        "INSERT INTO export_api_keys (key_hash, email, license_accepted, terms_version) "
+                        "VALUES (:key_hash, :email, true, 'v1')"
+                    ),
+                    {"key_hash": f"{TEST_PREFIX}-{uuid.uuid4().hex}", "email": email},
+                )
+
+        deleted_user_id = user_id
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test", cookies=_cookie(user_id)) as client:
+            delete_resp = await client.delete("/api/v1/users/me")
+            assert delete_resp.status_code == 204
+        user_id = None  # deleted by the request above, not by the finally block
+
+        async with async_session_factory() as session:
+            remaining_rate_limit_count = (
+                await session.execute(
+                    text(
+                        "SELECT count(*) FROM rate_limit_events "
+                        "WHERE identifier = :user_identifier OR identifier = :login_identifier"
+                    ),
+                    {
+                        "user_identifier": f"user:{deleted_user_id}",
+                        "login_identifier": f"login:{email}:ip:1.2.3.4",
+                    },
+                )
+            ).scalar_one()
+            assert remaining_rate_limit_count == 0, "deleted account's rate_limit_events rows must be gone"
+
+            export_key_row = (
+                await session.execute(
+                    text("SELECT email, revoked_at FROM export_api_keys WHERE key_hash LIKE :prefix"),
+                    {"prefix": f"{TEST_PREFIX}%"},
+                )
+            ).one()
+            assert export_key_row.email == "", "deleted account's export_api_keys email must be forgotten"
+            assert export_key_row.revoked_at is not None
+    finally:
+        if user_id:
+            await _delete_user(user_id)
+        async with async_session_factory() as session:
+            async with session.begin():
+                await session.execute(
+                    text("DELETE FROM export_api_keys WHERE key_hash LIKE :prefix"), {"prefix": f"{TEST_PREFIX}%"}
+                )
+
+
+@pytest.mark.asyncio
 async def test_suspended_user_keeps_read_and_gdpr_access() -> None:
     """#209's own scope note: suspension blocks submit/vote, never reading
     or the GDPR-rights endpoints (GET /users/me, GET /users/me/export,

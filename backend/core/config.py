@@ -43,12 +43,27 @@ class Settings(BaseSettings):
     # Because a signup email is attacker-controlled free text, the email
     # path additionally only grants 'owner' while no owner row exists yet
     # (services/auth.py::_is_bootstrap_owner_email).
+    #
+    # #257 security-review finding: "no owner exists yet" alone isn't
+    # sufficient — on a fresh database, whoever signs up first with
+    # initial_admin_email wins 'owner', and that address is visible to
+    # anyone who can read this deployment's config (it's not a secret,
+    # it's an identity). initial_admin_bootstrap_token closes that race:
+    # it's a high-entropy value the real operator generates and holds
+    # alongside the email (e.g. `openssl rand -hex 32`), passed as
+    # LocalSignupIn.bootstrap_token at signup time. Bootstrap now requires
+    # BOTH the email match AND this token to match — an attacker who only
+    # knows (or guesses) the configured email can no longer win owner.
+    # Left empty, email-based bootstrap is disabled entirely (fails
+    # closed) rather than silently falling back to the old email-only
+    # behavior.
     github_oauth_client_id: str = ""
     github_oauth_client_secret: str = ""
     discord_oauth_client_id: str = ""
     discord_oauth_client_secret: str = ""
     initial_admin_github_id: str = ""
     initial_admin_email: str = ""
+    initial_admin_bootstrap_token: str = ""
 
     # Signs session cookies and the OAuth `state` param (CSRF protection +
     # carrying "this is a /settings/link attempt for user N" safely across

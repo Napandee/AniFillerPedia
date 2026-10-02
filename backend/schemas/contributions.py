@@ -229,9 +229,20 @@ class BulkContributionCreate(BaseModel):
     episode must be declared across all three combined.
     """
 
-    canon_ranges: str = ""
-    mixed_ranges: str = ""
-    filler_ranges: str = ""
+    # #257 security-review finding: episode_ranges.parse_ranges bounds
+    # any single segment's SPAN (e.g. rejects "1-999999999999" before
+    # materializing a huge set), but a raw string like "1,"*50_000_000
+    # — tens of millions of trivially-small segments — collapses to a
+    # 1-element result set and never trips MAX_BATCH_SIZE at all, while
+    # still costing a huge split()+regex-match pass on every call
+    # (including dry_run, which has no insert to otherwise bound cost).
+    # 20000 chars comfortably covers the worst REAL case (2000 singleton
+    # episodes, "9999, " × 2000 ≈ 12000 chars) with headroom, while
+    # bounding the parse cost to a fixed, cheap size regardless of how
+    # many commas a malicious payload packs in.
+    canon_ranges: str = Field(default="", max_length=20000)
+    mixed_ranges: str = Field(default="", max_length=20000)
+    filler_ranges: str = Field(default="", max_length=20000)
     citation: CitationIn
     license_accepted: bool
     # When true, parses/validates (including the #20 pending-conflict

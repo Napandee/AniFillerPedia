@@ -99,6 +99,14 @@ async def submit_contribution(
             ),
         )
 
+    # #257: recorded here, via a separate connection/transaction that
+    # commits immediately (rate_limits_repo.record_independently) — not
+    # at the end of this function inside the caller's own transaction.
+    # Every attempt past the check above counts, successful or not; see
+    # that function's own docstring for why a same-session record() here
+    # wouldn't actually achieve that.
+    await rate_limits_repo.record_independently(scope="contribution_submit", identifier=identifier)
+
     # #152: the target series must exist (previously unchecked here — a
     # bogus series_id would just 500 on the FK-constrained insert below),
     # and its anilist_episode_count (#49's AniList sync column), if known,
@@ -210,11 +218,6 @@ async def submit_contribution(
             "episode_number": payload.episode_number,
         },
     )
-
-    # #139: logged once per real submission, same transaction as the
-    # insert above — counts against `identifier`'s rolling-window limit
-    # checked at the top of this function.
-    await rate_limits_repo.record(session, scope="contribution_submit", identifier=identifier)
 
     return ContributionOut(
         id=contribution_row.id,

@@ -179,6 +179,10 @@ async def test_signup_local_user_rejects_duplicate_email() -> None:
 
 @pytest.mark.asyncio
 async def test_signup_local_user_matching_initial_admin_email_becomes_owner(monkeypatch) -> None:
+    """#257: bootstrap now requires BOTH the configured email AND the
+    separately-held bootstrap_token to match — this is the happy path
+    exercising the real operator's actual bootstrap flow.
+    """
     email = _unique_email()
     from core.config import get_settings
     from repositories.users import owner_exists
@@ -191,14 +195,136 @@ async def test_signup_local_user_matching_initial_admin_email_becomes_owner(monk
 
     get_settings.cache_clear()
     monkeypatch.setenv("INITIAL_ADMIN_EMAIL", email)
+    monkeypatch.setenv("INITIAL_ADMIN_BOOTSTRAP_TOKEN", "a-real-high-entropy-token")
     get_settings.cache_clear()
     try:
         async with async_session_factory() as session:
             async with session.begin():
                 user = await signup_local_user(
-                    session, email=email, password="owner password", display_name="Owner"
+                    session,
+                    email=email,
+                    password="owner password",
+                    display_name="Owner",
+                    bootstrap_token="a-real-high-entropy-token",
                 )
             assert user.role == "owner"
+    finally:
+        get_settings.cache_clear()
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_matching_initial_admin_email_without_bootstrap_token_does_not_become_owner(
+    monkeypatch,
+) -> None:
+    """#257 security-review finding, the actual race this closes: on a
+    FRESH database (no owner row at all — the exact scenario the review
+    flagged, since production's existing owner row already masked it
+    there), signing up with the configured bootstrap email but WITHOUT
+    the separately-held token must NOT grant owner. Before this fix, the
+    email match alone was sufficient — whoever signed up first with a
+    guessable/known address won. This is the attacker's exact move;
+    proving it now yields 'contributor' is what closes the original race.
+    """
+    email = _unique_email()
+    from core.config import get_settings
+    from repositories.users import owner_exists
+
+    async with async_session_factory() as session:
+        if await owner_exists(session):
+            pytest.skip("an owner row already exists in this database — this "
+                        "test specifically needs a fresh-database scenario")
+
+    get_settings.cache_clear()
+    monkeypatch.setenv("INITIAL_ADMIN_EMAIL", email)
+    monkeypatch.setenv("INITIAL_ADMIN_BOOTSTRAP_TOKEN", "the-real-operators-secret-token")
+    get_settings.cache_clear()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                attacker = await signup_local_user(
+                    session,
+                    email=email,
+                    password="attacker password",
+                    display_name="Attacker",
+                    bootstrap_token=None,
+                )
+            assert attacker.role == "contributor", (
+                "knowing only the bootstrap email must never be enough to win owner"
+            )
+    finally:
+        get_settings.cache_clear()
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_matching_initial_admin_email_with_wrong_bootstrap_token_does_not_become_owner(
+    monkeypatch,
+) -> None:
+    """#257: a wrong-but-present token must fail exactly like no token at
+    all — the comparison is exact-match, not merely "something was sent".
+    """
+    email = _unique_email()
+    from core.config import get_settings
+    from repositories.users import owner_exists
+
+    async with async_session_factory() as session:
+        if await owner_exists(session):
+            pytest.skip("an owner row already exists in this database — this "
+                        "test specifically needs a fresh-database scenario")
+
+    get_settings.cache_clear()
+    monkeypatch.setenv("INITIAL_ADMIN_EMAIL", email)
+    monkeypatch.setenv("INITIAL_ADMIN_BOOTSTRAP_TOKEN", "the-real-operators-secret-token")
+    get_settings.cache_clear()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                attacker = await signup_local_user(
+                    session,
+                    email=email,
+                    password="attacker password",
+                    display_name="Attacker",
+                    bootstrap_token="a-wrong-guess",
+                )
+            assert attacker.role == "contributor"
+    finally:
+        get_settings.cache_clear()
+        await _delete_user_by_email(email)
+
+
+@pytest.mark.asyncio
+async def test_signup_matching_initial_admin_email_with_no_token_configured_does_not_become_owner(
+    monkeypatch,
+) -> None:
+    """#257: if the operator never set INITIAL_ADMIN_BOOTSTRAP_TOKEN at
+    all, email-based bootstrap must fail closed rather than silently
+    falling back to the old, vulnerable email-only behavior.
+    """
+    email = _unique_email()
+    from core.config import get_settings
+    from repositories.users import owner_exists
+
+    async with async_session_factory() as session:
+        if await owner_exists(session):
+            pytest.skip("an owner row already exists in this database — this "
+                        "test specifically needs a fresh-database scenario")
+
+    get_settings.cache_clear()
+    monkeypatch.setenv("INITIAL_ADMIN_EMAIL", email)
+    monkeypatch.delenv("INITIAL_ADMIN_BOOTSTRAP_TOKEN", raising=False)
+    get_settings.cache_clear()
+    try:
+        async with async_session_factory() as session:
+            async with session.begin():
+                user = await signup_local_user(
+                    session,
+                    email=email,
+                    password="whatever password",
+                    display_name="Nobody",
+                    bootstrap_token="anything-at-all",
+                )
+            assert user.role == "contributor"
     finally:
         get_settings.cache_clear()
         await _delete_user_by_email(email)
@@ -213,7 +339,9 @@ async def test_signup_matching_initial_admin_email_is_ignored_once_an_owner_exis
     on. Without this guard, anyone who guessed (or simply raced to) the
     configured address would mint themselves 'owner'. The bootstrap must
     be genuinely one-shot: once an owner exists, a matching email is
-    treated exactly as if it hadn't matched at all."""
+    treated exactly as if it hadn't matched at all — proven here even
+    with the #257 bootstrap_token supplied CORRECTLY, so this is
+    specifically testing the one-shot guard, not just the token check."""
     owner_email = _unique_email()
     attacker_email = _unique_email()
     from core.config import get_settings
@@ -232,6 +360,7 @@ async def test_signup_matching_initial_admin_email_is_ignored_once_an_owner_exis
 
         get_settings.cache_clear()
         monkeypatch.setenv("INITIAL_ADMIN_EMAIL", attacker_email)
+        monkeypatch.setenv("INITIAL_ADMIN_BOOTSTRAP_TOKEN", "a-correctly-known-token")
         get_settings.cache_clear()
 
         async with async_session_factory() as session:
@@ -241,6 +370,7 @@ async def test_signup_matching_initial_admin_email_is_ignored_once_an_owner_exis
                     email=attacker_email,
                     password="not the owner",
                     display_name="Latecomer",
+                    bootstrap_token="a-correctly-known-token",
                 )
             assert user.role == "contributor"
     finally:

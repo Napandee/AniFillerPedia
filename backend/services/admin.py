@@ -17,8 +17,6 @@ listing, services/contributions.py's vote-casting), never two
 implementations that could drift apart.
 """
 
-import re
-
 import fastapi
 
 from repositories import admin as admin_repo
@@ -228,11 +226,34 @@ async def list_hourly_traffic_rollups(session, limit: int) -> TrafficHourlyRollu
 # just hidden by the frontend. The IP portion and the scope stay visible
 # (an admin can still see "this IP is hammering local_login" and spot the
 # same identifier recurring), only the email substring itself is masked.
-_EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
+#
+# #257 security-review finding: the previous approach used a generic
+# best-effort regex to FIND an email-shaped substring anywhere in the
+# identifier — but RFC 5322's local-part allows characters that regex's
+# character class didn't (!#$%&'*/=?^`{|}~), so an unusual-but-valid
+# address like `a!b@example.com` only had its `@example.com` half masked,
+# partially leaking the local part. `login:<email>:<ip>` is the ONLY
+# identifier shape that ever embeds an email at all (every other scope's
+# identifier is `user:<id>` or a bare `ip:<address>`, confirmed via
+# core/deps.py's get_rate_limit_identifier — neither ever contains one),
+# so parsing that known structure directly, by its delimiters, is exact
+# rather than pattern-matching: it redacts the whole middle segment no
+# matter what characters the email itself contains. EmailStr validation
+# (schemas/auth.py) never allows a literal ':' in the local part, so the
+# FIRST ':' after the "login:" prefix is unambiguously the email/IP
+# boundary — the IP half may itself contain further colons (IPv6).
+_LOGIN_SCOPE_PREFIX = "login:"
 
 
 def _redact_identifier(identifier: str) -> str:
-    return _EMAIL_RE.sub("***", identifier)
+    if not identifier.startswith(_LOGIN_SCOPE_PREFIX):
+        return identifier
+    rest = identifier[len(_LOGIN_SCOPE_PREFIX):]
+    _email, separator, ip_part = rest.partition(":")
+    if not separator:
+        # Malformed/unexpected shape — redact nothing rather than guess.
+        return identifier
+    return f"{_LOGIN_SCOPE_PREFIX}***:{ip_part}"
 
 
 async def get_rate_limit_summary(session, *, window_hours: int, limit: int) -> RateLimitSummaryOut:

@@ -78,6 +78,30 @@ async def revoke_and_forget(session: AsyncSession, key_hash: str) -> bool:
     return result.first() is not None
 
 
+async def forget_by_email(session: AsyncSession, email: str) -> int:
+    """#257 security-review finding, GDPR counterpart to revoke_and_forget
+    above: #46 only ever forgot a SINGLE key (the requester presents one
+    plaintext key to revoke it), but DELETE /users/me has no key at all —
+    only the deleted account's own email, which may have requested export
+    access more than once. Same "forgotten" semantics (empty string, not
+    NULL — the column stays NOT NULL per schema.sql) applied to every
+    matching row at once. Idempotent and a no-op on zero matches, same as
+    revoke_and_forget.
+    """
+    result = await session.execute(
+        text(
+            """
+            UPDATE export_api_keys
+            SET revoked_at = COALESCE(revoked_at, now()), email = ''
+            WHERE email = :email AND email != ''
+            RETURNING id
+            """
+        ),
+        {"email": email},
+    )
+    return len(result.fetchall())
+
+
 async def fetch_full_dataset(session: AsyncSession) -> list[Row]:
     """All series + their episodes + citations, one row per episode. A
     series with zero approved episodes yet still needs representing (per

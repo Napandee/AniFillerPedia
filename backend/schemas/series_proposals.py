@@ -17,9 +17,15 @@ class EpisodeDataIn(BaseModel):
     against.
     """
 
-    canon_ranges: str = ""
-    mixed_ranges: str = ""
-    filler_ranges: str = ""
+    # #257 security-review finding — same fix as schemas/contributions.py's
+    # BulkContributionCreate (see its own comment on these three fields):
+    # the raw string's length, not just per-segment span, needs a cap or
+    # a payload with tens of millions of trivially-small comma-separated
+    # segments collapses to a tiny result set without ever tripping
+    # MAX_BATCH_SIZE, while still costing a full split()+regex pass.
+    canon_ranges: str = Field(default="", max_length=20000)
+    mixed_ranges: str = Field(default="", max_length=20000)
+    filler_ranges: str = Field(default="", max_length=20000)
     citation: CitationIn
 
 
@@ -33,7 +39,12 @@ class EpisodeDataOut(EpisodeDataIn):
 
 
 class SeriesProposalCreate(BaseModel):
-    title: str = Field(min_length=1)
+    # #257 security-review finding: every other freeform field in this
+    # schema already got a #140 cap; this one was missed. 300 matches the
+    # existing cap on GET /series-proposals/check-title's own `title`
+    # query param (routers/series_proposals.py) — the two should agree,
+    # since check-title is the same field pre-submission.
+    title: str = Field(min_length=1, max_length=300)
     anilist_id: int | None = None
     mal_id: int | None = None
     anidb_id: int | None = None

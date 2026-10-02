@@ -188,6 +188,58 @@ async def test_contribution_submit_rate_limit_blocks_anonymous_after_threshold()
 
 
 @pytest.mark.asyncio
+async def test_contribution_submit_failed_attempt_still_counts_against_rate_limit() -> None:
+    """#257 security-review finding: record() used to run only AFTER a
+    successful insert, so a deliberately-failing submission (404 here —
+    a bogus series_id) was free to retry forever. Seeds the counter one
+    below the limit, then sends ONE failing (404) request and ONE more —
+    if the failed request hadn't counted, the second would still be a
+    404 too; getting 429 instead proves the failed attempt was recorded.
+    """
+    await _seed_rate_limit_events("contribution_submit", ANONYMOUS_IDENTIFIER, 19)
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            failing_payload = {
+                "series_id": 999999999,
+                "episode_number": 1,
+                "proposed_status": "canon",
+                "citation": {"description": f"{TEST_PREFIX} citation"},
+                "license_accepted": True,
+            }
+            first = await client.post("/api/v1/contributions", json=failing_payload)
+            assert first.status_code == 404, first.text
+
+            second = await client.post("/api/v1/contributions", json=failing_payload)
+            assert second.status_code == 429, second.text
+    finally:
+        pass  # a 404/429 never creates a contribution row — nothing to clean up
+
+
+@pytest.mark.asyncio
+async def test_synonym_suggestion_submit_failed_attempt_still_counts_against_rate_limit() -> None:
+    """#257: same bug class as the contribution test above, for the
+    synonym-suggestion endpoint's independent counter.
+    """
+    await _seed_rate_limit_events("synonym_suggestion_submit", ANONYMOUS_IDENTIFIER, 19)
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            failing_payload = {
+                "series_id": 999999999,
+                "synonym": f"{TEST_PREFIX}synonym",
+                "license_accepted": True,
+            }
+            first = await client.post("/api/v1/synonym-suggestions", json=failing_payload)
+            assert first.status_code == 404, first.text
+
+            second = await client.post("/api/v1/synonym-suggestions", json=failing_payload)
+            assert second.status_code == 429, second.text
+    finally:
+        pass  # a 404/429 never creates a synonym-suggestion row — nothing to clean up
+
+
+@pytest.mark.asyncio
 async def test_contribution_submit_rate_limit_is_scoped_per_identifier() -> None:
     """An authenticated user hitting their OWN limit doesn't affect a
     different anonymous caller's budget, and vice versa — proves
@@ -347,6 +399,75 @@ async def test_series_proposal_without_episode_data_is_never_rate_limited_by_bul
         assert response.status_code == 201, response.text
     finally:
         await _cleanup_series_proposals(title)
+
+
+@pytest.mark.asyncio
+async def test_series_proposal_without_episode_data_is_rate_limited_by_its_own_general_scope() -> None:
+    """#257 security-review finding: a plain proposal (no episode_data)
+    previously had ZERO rate-limit coverage at all — the only limiter
+    checked (series_proposal_bulk_anonymous) lives entirely inside the
+    `episode_data is not None` branch. This proves the new, always-applied
+    general-submission scope actually blocks after its own cap, regardless
+    of episode_data being present or absent.
+    """
+    await _seed_rate_limit_events("series_proposal_submit", ANONYMOUS_IDENTIFIER, 10)
+    title = f"{TEST_PREFIX}GeneralLimitNoEpisodeData"
+    try:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/api/v1/series-proposals",
+                json={
+                    "title": title,
+                    "justification": f"{TEST_PREFIX} justification",
+                    "license_accepted": True,
+                },
+            )
+        assert response.status_code == 429, response.text
+    finally:
+        await _cleanup_series_proposals(title)
+
+
+@pytest.mark.asyncio
+async def test_series_proposal_title_over_max_length_rejected() -> None:
+    """#257: no cleanup needed — a 422 means nothing was ever created."""
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/series-proposals",
+            json={
+                "title": "x" * 301,
+                "justification": f"{TEST_PREFIX} justification",
+                "license_accepted": True,
+            },
+        )
+    assert response.status_code == 422, response.text
+
+
+@pytest.mark.asyncio
+async def test_series_proposal_episode_data_canon_ranges_over_max_length_rejected() -> None:
+    """#257: same fix as test_bulk_contributions.py's identical test for
+    the bulk-contribution endpoint — see schemas/series_proposals.py's
+    EpisodeDataIn.canon_ranges for why this cap exists at all (a raw
+    string of many tiny comma-separated segments collapses to a tiny
+    result set without ever tripping MAX_BATCH_SIZE).
+    """
+    title = f"{TEST_PREFIX}OversizedRanges"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/series-proposals",
+            json={
+                "title": title,
+                "justification": f"{TEST_PREFIX} justification",
+                "license_accepted": True,
+                "episode_data": {
+                    "canon_ranges": "1," * 10001,  # 20002 chars, 1 over the 20000 cap
+                    "citation": {"description": f"{TEST_PREFIX} oversized ranges"},
+                },
+            },
+        )
+    assert response.status_code == 422, response.text
 
 
 # ---------------------------------------------------------------------

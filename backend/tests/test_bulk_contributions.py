@@ -91,6 +91,30 @@ async def authed_client():
 
 
 @pytest.mark.asyncio
+async def test_bulk_submission_canon_ranges_over_max_length_rejected(authed_client: AsyncClient) -> None:
+    """#257 security-review finding: episode_ranges.parse_ranges bounds a
+    single segment's SPAN, but a raw string of many tiny segments (e.g.
+    "1,"*50_000_000) collapses to a 1-element set and never trips
+    MAX_BATCH_SIZE, while still costing a full split()+regex pass on
+    every call. The schema-level max_length below is what actually
+    bounds this — proven here with a string just over that cap.
+    """
+    series_id = await _make_test_series("OverMaxRangesLength")
+    try:
+        response = await authed_client.post(
+            f"/api/v1/series/{series_id}/contributions/bulk",
+            json={
+                "canon_ranges": "1," * 10001,  # 20002 chars, 1 over the 20000 cap
+                "citation": {"description": "__test_80__ oversized ranges"},
+                "license_accepted": True,
+            },
+        )
+        assert response.status_code == 422, response.text
+    finally:
+        await _cleanup_series(series_id)
+
+
+@pytest.mark.asyncio
 async def test_bulk_submission_creates_one_contribution_per_episode(authed_client: AsyncClient) -> None:
     series_id = await _make_test_series("Basic")
     try:

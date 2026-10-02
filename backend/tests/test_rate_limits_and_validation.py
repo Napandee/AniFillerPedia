@@ -444,6 +444,32 @@ async def test_series_proposal_title_over_max_length_rejected() -> None:
     assert response.status_code == 422, response.text
 
 
+@pytest.mark.asyncio
+async def test_series_proposal_episode_data_canon_ranges_over_max_length_rejected() -> None:
+    """#257: same fix as test_bulk_contributions.py's identical test for
+    the bulk-contribution endpoint — see schemas/series_proposals.py's
+    EpisodeDataIn.canon_ranges for why this cap exists at all (a raw
+    string of many tiny comma-separated segments collapses to a tiny
+    result set without ever tripping MAX_BATCH_SIZE).
+    """
+    title = f"{TEST_PREFIX}OversizedRanges"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/series-proposals",
+            json={
+                "title": title,
+                "justification": f"{TEST_PREFIX} justification",
+                "license_accepted": True,
+                "episode_data": {
+                    "canon_ranges": "1," * 10001,  # 20002 chars, 1 over the 20000 cap
+                    "citation": {"description": f"{TEST_PREFIX} oversized ranges"},
+                },
+            },
+        )
+    assert response.status_code == 422, response.text
+
+
 # ---------------------------------------------------------------------
 # #140 — max_length on freeform text fields
 # ---------------------------------------------------------------------

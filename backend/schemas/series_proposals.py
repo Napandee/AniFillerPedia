@@ -17,9 +17,15 @@ class EpisodeDataIn(BaseModel):
     against.
     """
 
-    canon_ranges: str = ""
-    mixed_ranges: str = ""
-    filler_ranges: str = ""
+    # #257 security-review finding — same fix as schemas/contributions.py's
+    # BulkContributionCreate (see its own comment on these three fields):
+    # the raw string's length, not just per-segment span, needs a cap or
+    # a payload with tens of millions of trivially-small comma-separated
+    # segments collapses to a tiny result set without ever tripping
+    # MAX_BATCH_SIZE, while still costing a full split()+regex pass.
+    canon_ranges: str = Field(default="", max_length=20000)
+    mixed_ranges: str = Field(default="", max_length=20000)
+    filler_ranges: str = Field(default="", max_length=20000)
     citation: CitationIn
 
 

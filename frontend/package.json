@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@astrojs/node": "^11.1.4",
-    "astro": "^7.2.8",
+    "astro": "^7.4.4",
     "marked": "^14.1.4",
     "openapi-fetch": "^0.13.4"
   }
